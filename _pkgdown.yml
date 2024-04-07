@@ -15,5 +15,5 @@ reference:
   - matches("plot")
 - subtitle: Helper functions
 - contents:
-  - macthes("options|mock")
+  - matches("options|mock")
 
