@@ -18,7 +18,7 @@
 #'
 #' `r lifecycle::badge("experimental")`
 #'
-#' @param result A summarised_large_scalecharacteristics object.
+#' @param result A summarised_large_scale_characteristics object.
 #' @param type Output type ("gt" or "flextable").
 #' @param formatEstimateName Named list of estimate name's to join, sorted by
 #' computation order. Indicate estimate_name's between <...>.

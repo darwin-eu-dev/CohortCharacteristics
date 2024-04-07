@@ -388,11 +388,6 @@ checkSnakeCase <- function(name, verbose = TRUE) {
 }
 
 #' @noRd
-checkVariableType <- function(variableType) {
-  assertChoice(x = variableType, choices = formats$variable_type |> unique())
-}
-
-#' @noRd
 checkExclude <- function(exclude) {
   if (!is.null(exclude) & !is.character(exclude)) {
     cli::cli_abort("eclude must a character vector or NULL")
@@ -426,79 +421,6 @@ checkStrata <- function(list, table, type = "strata") {
       ))
     }
   }
-}
-
-#' @noRd
-checkVariablesFunctions <- function(variables, estimates, table) {
-  errorMessage <- "variables should be a unique named list that point to columns in table"
-  assertList(x = variables, class = "character")
-  assertList(x = estimates, class = "character")
-  if (length(variables) != length(estimates)) {
-    cli::cli_abort("Variables and estimates must have the same length")
-  }
-  if (!is.null(names(variables)) & !is.null(names(estimates))) {
-    if (!identical(sort(names(variables)), sort(names(estimates)))) {
-      cli::cli_abort("Names from variables and estimates must be the same")
-    }
-    variables <- variables[order(names(variables))]
-    estimates <- estimates[order(names(estimates))]
-  }
-
-  if (length(variables) == 0) {
-    return(dplyr::tibble(
-      "variable_name" = character(),
-      "estimate_name" = character(),
-      "variable_type" = character(),
-      "estimate_type" = character()
-    ))
-  }
-
-  functions <- lapply(seq_along(variables), function(k){
-    tidyr::expand_grid(
-      variable_name = variables[[k]],
-      estimate_name = estimates[[k]]
-    )
-  }) |>
-    dplyr::bind_rows() |>
-    dplyr::inner_join(variableTypes(table), by = "variable_name") |>
-    dplyr::inner_join(
-      availableEstimates(fullQuantiles = TRUE) |>
-        dplyr::select(-"estimate_description"),
-      by = c("variable_type", "estimate_name")
-    )
-
-  # check binary
-  binaryVars <- functions |>
-    dplyr::filter(
-      .data$variable_type %in% c("numeric", "integer") &
-        .data$estimate_name %in% c("count", "percentage")
-    ) |>
-    dplyr::select("variable_name") |>
-    dplyr::distinct() |>
-    dplyr::pull()
-  if (length(binaryVars) > 0) {
-    notBinary <- character()
-    for (binVar in binaryVars) {
-      x <- table |>
-        dplyr::select(dplyr::all_of(binVar)) |>
-        dplyr::distinct() |>
-        dplyr::pull()
-      if (length(x) <= 3) {
-        if (!all(as.numeric(x) %in% c(0, 1, NA))) {
-          notBinary <- c(notBinary, binVar)
-        }
-      } else {
-        notBinary <- c(notBinary, binVar)
-      }
-    }
-    functions <- functions |>
-      dplyr::filter(
-        !.data$variable_name %in% .env$notBinary |
-          !.data$estimate_name %in% c("count", "percentage")
-      )
-  }
-
-  return(functions)
 }
 
 #' @noRd

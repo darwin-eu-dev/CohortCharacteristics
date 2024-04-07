@@ -269,7 +269,7 @@ getTable <- function(tab, x, includeSource, minWindow, maxWindow, tablePrefix, e
     "standard" = PatientProfiles::standardConceptIdColumn(tab),
     "source" = PatientProfiles::sourceConceptIdColumn(tab)
   )
-  if (includeSource == FALSE || is.na(sourceConceptIdColumn(tab))) {
+  if (includeSource == FALSE || is.na(PatientProfiles::sourceConceptIdColumn(tab))) {
     toSelect <- toSelect["source" != names(toSelect)]
   }
   table <- cdm[[tab]] |>

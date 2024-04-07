@@ -91,7 +91,7 @@ plotCohortTiming(meds_timing,
                                   hjust=1))
 ```
 
-If we want to see an even more granular summary of cohort timings we can make a desity plot instead of a box plot. Note, for this we'll need to set density as TRUE when getting our initial results.
+If we want to see an even more granular summary of cohort timings we can make a density plot instead of a box plot. Note, for this we'll need to set density as TRUE when getting our initial results.
 
 ```{r}
 meds_timing <- cdm$meds |> 

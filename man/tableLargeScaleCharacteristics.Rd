@@ -15,7 +15,7 @@ tableLargeScaleCharacteristics(
 )
 }
 \arguments{
-\item{result}{A summarised_large_scalecharacteristics object.}
+\item{result}{A summarised_large_scale_characteristics object.}
 
 \item{type}{Output type ("gt" or "flextable").}
 
