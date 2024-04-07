@@ -13,3 +13,6 @@ reference:
   desc: Functions to generate plots (ggplot2) from summarised objects.
 - contents:
   - matches("plot")
+- subtitle: Helper functions
+  - macthes("options|mock")
+

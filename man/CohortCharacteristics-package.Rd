@@ -4,7 +4,7 @@
 \name{CohortCharacteristics-package}
 \alias{CohortCharacteristics}
 \alias{CohortCharacteristics-package}
-\title{CohortCharacteristics: Summarise and visualise Characteristics of Patients in the OMOP CDM.}
+\title{CohortCharacteristics: Summarise and visualise Characteristics of Patients in the OMOP CDM}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 

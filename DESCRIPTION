@@ -1,6 +1,6 @@
 Package: CohortCharacteristics
 Type: Package
-Title: Summarise and visualise Characteristics of Patients in the OMOP CDM.
+Title: Summarise and visualise Characteristics of Patients in the OMOP CDM
 Version: 0.1.0
 Authors@R: c(
     person("Marti", "Catala", , "marti.catalasabate@ndorms.ox.ac.uk", 
@@ -65,8 +65,6 @@ Imports:
     stringr,
     omopgenerics (>= 0.1.2),
     visOmopResults (>= 0.2.0),
-    lifecycle,
-    purrr,
     PatientProfiles (>= 0.8.0)
 URL: https://darwin-eu-dev.github.io/CohortCharacteristics/
 BugReports: https://github.com/darwin-eu-dev/CohortCharacteristics/issues
