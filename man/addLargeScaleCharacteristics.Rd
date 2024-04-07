@@ -47,7 +47,7 @@ a cohort table.
 \donttest{
 library(CohortCharacteristics)
 cdm <- CohortCharacteristics::mockCohortCharacteristics()
-results <- cdm$cohort2 \%>\%
+results <- cdm$cohort2 |>
   addLargeScaleCharacteristics(
   episodeInWindow = c("condition_occurrence"),
   minimumFrequency = 0

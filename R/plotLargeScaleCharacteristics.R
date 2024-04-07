@@ -27,12 +27,16 @@
 #' @param facetVarY column in data to facet by on vertical axis
 #' @param colorVars column in data to color by.
 #' @param vertical_x whether to display x axis string vertically.
+#'
 #' @return A ggplot.
+#'
 #' @export
+#'
 #' @examples
 #' \donttest{
 #' library(CohortCharacteristics)
-#' cdm <- CohortCharacteristics::mockCohortCharacteristics()
+#'
+#' cdm <- mockCohortCharacteristics()
 #'
 #' concept <- dplyr::tibble(
 #'   concept_id = c(1125315, 1503328, 1516978, 317009, 378253, 4266367),

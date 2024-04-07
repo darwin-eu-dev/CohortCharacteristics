@@ -66,10 +66,10 @@ concept_class_id = NA_character_,
 concept_code = NA_character_,
 valid_start_date = as.Date("1900-01-01"),
 valid_end_date = as.Date("2099-01-01")
-) \%>\%
+) |>
  dplyr::mutate(concept_name = paste0("concept: ", .data$concept_id))
 cdm <- CDMConnector::insertTable(cdm, "concept", concept)
-results <- cdm$cohort2 \%>\%
+results <- cdm$cohort2 |>
 summariseLargeScaleCharacteristics(
  episodeInWindow = c("condition_occurrence"),
  minimumFrequency = 0
