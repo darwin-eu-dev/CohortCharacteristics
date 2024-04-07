@@ -45,8 +45,8 @@ a cohort table.
 }
 \examples{
 \donttest{
-library(PatientProfiles)
-cdm <- PatientProfiles::mockPatientProfiles()
+library(CohortCharacteristics)
+cdm <- CohortCharacteristics::mockCohortCharacteristics()
 results <- cdm$cohort2 \%>\%
   addLargeScaleCharacteristics(
   episodeInWindow = c("condition_occurrence"),

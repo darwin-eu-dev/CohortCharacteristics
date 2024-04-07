@@ -21,7 +21,7 @@ stratifications.
 }
 \examples{
 \donttest{
-cdm <- mockPatientProfiles()
+cdm <- mockCohortCharacteristics()
 
 cdm$cohort1 |>
   addSex() |>

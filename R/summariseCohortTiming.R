@@ -1,3 +1,19 @@
+# Copyright 2024 DARWIN EU (C)
+#
+# This file is part of CohortCharacteristics
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 #' Summarise cohort timing
 #'
 #' @param cohort  A cohort table in a cdm reference.
@@ -16,8 +32,8 @@
 #'
 #' @examples
 #' \donttest{
-#' library(PatientProfiles)
-#' cdm <- PatientProfiles::mockPatientProfiles()
+#' library(CohortCharacteristics)
+#' cdm <- CohortCharacteristics::mockCohortCharacteristics()
 #' results <- summariseCohortTiming(cdm$cohort2)
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
@@ -59,7 +75,7 @@ summariseCohortTiming <- function(cohort,
       cli::cli_warn("{paste0(cohortId[indNot], collapse = ', ')} {?is/are} not in the cohort table.")
     }
   }
-  cdm[[name]] <- PatientProfiles::addCohortName(cdm[[name]]) |>
+  cdm[[name]] <- CohortCharacteristics::addCohortName(cdm[[name]]) |>
     dplyr::filter(.data$cohort_definition_id %in% .env$cohortId)
 
   if(isTRUE(restrictToFirstEntry)){
@@ -88,7 +104,7 @@ summariseCohortTiming <- function(cohort,
                                       "cohort_start_date_comparator", "cohort_end_date_comparator",
                                       "subject_id"))),
       by = c("subject_id", unique(strataCols))) |>
-    dplyr::filter(.data$cohort_name_reference != .data$cohort_name_comparator) %>%
+    dplyr::filter(.data$cohort_name_reference != .data$cohort_name_comparator) |>
     dplyr::mutate(diff_days = !!CDMConnector::datediff("cohort_start_date",
                                                        "cohort_start_date_comparator",
                                                        interval = "day")) |>
@@ -151,8 +167,8 @@ summariseCohortTiming <- function(cohort,
               result_id = as.integer(1),
               cdm_name = CDMConnector::cdmName(cdm),
               result_type = "cohort_timing",
-              package_name = "PatientProfiles",
-              package_version = as.character(utils::packageVersion("PatientProfiles")),
+              package_name = "CohortCharacteristics",
+              package_version = as.character(utils::packageVersion("CohortCharacteristics")),
               group_name = "cohort_name_reference &&& cohort_name_comparator",
               variable_name = "density",
               estimate_type = "numeric",
@@ -171,8 +187,8 @@ summariseCohortTiming <- function(cohort,
           result_id = as.integer(1),
           "cdm_name" = omopgenerics::cdmName(cdm),
           "result_type" = "cohort_timing",
-          "package_name" = "PatientProfiles",
-          "package_version" = as.character(utils::packageVersion("PatientProfiles")),
+          "package_name" = "CohortCharacteristics",
+          "package_version" = as.character(utils::packageVersion("CohortCharacteristics")),
           "group_name" = "overall",
           "group_level" = "overall",
           "strata_name" = "overall",

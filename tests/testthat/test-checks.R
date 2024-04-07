@@ -29,16 +29,16 @@ test_that("test checkCategory with length 1 ", {
     period_type_concept_id = 0
   )
 
-  cdm <- mockPatientProfiles(
+  cdm <- mockCohortCharacteristics(
     connectionDetails = connectionDetails, cohort1 = cohort1, person = person,
     observation_period = op
   )
 
   categories <- list("age_group" = list(c(0, 69), c(70)))
 
-  a <- cdm$cohort1 %>%
-    addAge(indexDate = "cohort_start_date") %>%
-    addCategories("age", categories) %>%
+  a <- cdm$cohort1 |>
+    addAge(indexDate = "cohort_start_date") |>
+    addCategories("age", categories) |>
     dplyr::collect()
   expect_true(a[a$subject_id == 2, ]$age_group == "70 to 70")
 
@@ -46,7 +46,7 @@ test_that("test checkCategory with length 1 ", {
 
   categories <- list("age_group" = list(c(69, 0), c(70)))
 
-  expect_error(cdm$cohort1 %>% addAge(indexDate = "cohort_start_date") %>%
+  expect_error(cdm$cohort1 |> addAge(indexDate = "cohort_start_date") |>
     addCategories("age", categories))
 })
 
@@ -85,7 +85,7 @@ test_that(" test checkNewName renames duplicate column names in addInObservation
     period_type_concept_id = 0
   )
 
-  cdm <- mockPatientProfiles(
+  cdm <- mockCohortCharacteristics(
     connectionDetails = connectionDetails, cohort1 = cohort1, person = person,
     observation_period = op
   )
@@ -119,7 +119,7 @@ test_that(" test checkNewName renames duplicate column names in addInObservation
     flag = c(0, 0),
     flag_1 = c(0, 0)
   )
-  cdm <- mockPatientProfiles(
+  cdm <- mockCohortCharacteristics(
     connectionDetails = connectionDetails, cohort1 = cohort1, person = person,
     observation_period = op
   )
@@ -143,15 +143,15 @@ test_that(" test checkNewName renames duplicate column names in addInObservation
 })
 
 test_that(" test checkWindow in addIntersect", {
-  cdm <- mockPatientProfiles(connectionDetails, seed = 11, patient_size = 2)
+  cdm <- mockCohortCharacteristics(connectionDetails, seed = 11, patient_size = 2)
 
-  expect_error(cdm$cohort1 %>% .addIntersect(tableName = "cohort2", window = list(c(-NA, 0)), value = "date"))
-  expect_error(cdm$cohort1 %>% .addIntersect(tableName = "cohort2", window = list(c(-365, 0, 1)), value = "date"))
-  expect_warning(cdm$cohort1 %>% .addIntersect(tableName = "cohort2", window = list(c(-365), -c(0), -c(30)), value = "date"))
+  expect_error(cdm$cohort1 |> .addIntersect(tableName = "cohort2", window = list(c(-NA, 0)), value = "date"))
+  expect_error(cdm$cohort1 |> .addIntersect(tableName = "cohort2", window = list(c(-365, 0, 1)), value = "date"))
+  expect_warning(cdm$cohort1 |> .addIntersect(tableName = "cohort2", window = list(c(-365), -c(0), -c(30)), value = "date"))
 
-  expect_error(cdm$cohort1 %>% .addIntersect(tableName = "cohort2", window = list(c(30, -365)), value = "date"))
-  expect_error(cdm$cohort1 %>% .addIntersect(tableName = "cohort2", window = list(c(Inf, Inf)), value = "date"))
-  expect_error(cdm$cohort1 %>% .addIntersect(tableName = "cohort2", window = list(c(-Inf, -Inf)), value = "date"))
+  expect_error(cdm$cohort1 |> .addIntersect(tableName = "cohort2", window = list(c(30, -365)), value = "date"))
+  expect_error(cdm$cohort1 |> .addIntersect(tableName = "cohort2", window = list(c(Inf, Inf)), value = "date"))
+  expect_error(cdm$cohort1 |> .addIntersect(tableName = "cohort2", window = list(c(-Inf, -Inf)), value = "date"))
 })
 
 test_that("test checkSnakeCase", {
@@ -240,12 +240,12 @@ test_that("checkNameStyle", {
     period_type_concept_id = 0
   )
 
-  cdm <- mockPatientProfiles(
+  cdm <- mockCohortCharacteristics(
     connectionDetails = connectionDetails, cohort1 = cohort1, person = person,
     observation_period = op, cohort2 = cohort2
   )
 
-  expect_true(all(c("count_all", "flag_all") %in% colnames(cdm$cohort1 %>% .addIntersect(
+  expect_true(all(c("count_all", "flag_all") %in% colnames(cdm$cohort1 |> .addIntersect(
     tableName = "cohort2", value = c("flag", "count"),
     nameStyle = "{value}_{id_name}"
   ))))

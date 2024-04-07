@@ -1,6 +1,6 @@
-# Copyright 2023 DARWIN EU (C)
+# Copyright 2024 DARWIN EU (C)
 #
-# This file is part of PatientProfiles
+# This file is part of CohortCharacteristics
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,17 +14,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#' Pipe operator
-#'
-#' See \code{magrittr::\link[magrittr:pipe]{\%>\%}} for details.
-#'
-#' @name %>%
-#' @rdname pipe
-#' @keywords internal
+#' @importFrom omopgenerics suppress
 #' @export
-#' @importFrom magrittr %>%
-#' @usage lhs \%>\% rhs
-#' @param lhs A value or the magrittr placeholder.
-#' @param rhs A function call using the magrittr semantics.
-#' @return The result of calling `rhs(lhs)`.
-NULL
+omopgenerics::suppress
+
+#' @importFrom omopgenerics settings
+#' @export
+omopgenerics::settings
+
+#' @export
+mockCohortCharacteristics <- PatientProfiles::mockPatientProfiles

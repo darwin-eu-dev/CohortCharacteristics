@@ -38,8 +38,8 @@ Summarise cohort timing
 }
 \examples{
 \donttest{
-library(PatientProfiles)
-cdm <- PatientProfiles::mockPatientProfiles()
+library(CohortCharacteristics)
+cdm <- CohortCharacteristics::mockCohortCharacteristics()
 results <- summariseCohortTiming(cdm$cohort2)
 CDMConnector::cdmDisconnect(cdm = cdm)
 }

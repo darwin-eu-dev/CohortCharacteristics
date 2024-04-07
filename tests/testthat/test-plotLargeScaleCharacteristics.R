@@ -62,7 +62,7 @@ test_that("Function returns a ggplot object", {
     )),
     condition_type_concept_id = 32020
   )
-  cdm <- mockPatientProfiles(
+  cdm <- mockCohortCharacteristics(
     connectionDetails,
     person = person, observation_period = observation_period,
     cohort_interest = cohort_interest, drug_exposure = drug_exposure,
@@ -77,16 +77,16 @@ test_that("Function returns a ggplot object", {
     concept_code = NA_character_,
     valid_start_date = as.Date("1900-01-01"),
     valid_end_date = as.Date("2099-01-01")
-  ) %>%
+  ) |>
     dplyr::mutate(concept_name = paste0("concept: ", .data$concept_id))
 
   cdm <- CDMConnector::insertTable(cdm, "concept", concept)
 
 
-  test_data <- cdm$cohort_interest %>%
+  test_data <- cdm$cohort_interest |>
     addDemographics(
       ageGroup = list(c(0, 24), c(25, 150))
-    ) %>%
+    ) |>
     summariseLargeScaleCharacteristics(
       strata = list("age_group", c("age_group", "sex")),
       episodeInWindow = c("condition_occurrence", "drug_exposure"),
@@ -97,7 +97,7 @@ test_that("Function returns a ggplot object", {
   # levels_ordered <- c("-inf to -366", "-365 to -31", "-30 to -1", "0 to 0", "1 to 30", "31 to 365", "366 to inf")
   #
   # plot <- plotLargeScaleCharacteristics(
-  #   data =  test_data %>% dplyr::filter(group_level  ==  "cohort_1"),
+  #   data =  test_data |> dplyr::filter(group_level  ==  "cohort_1"),
   #   xAxis = "variable_name",
   #   yAxis = "estimate_value",
   #   facetVarX = c("variable_level"),
@@ -110,7 +110,7 @@ test_that("Function returns a ggplot object", {
   # levels_ordered <- c("-inf to -366.cohort_1", "-inf to -366.cohort_2",
   #                     "-365 to -31.cohort_1", "-365 to -31.cohort_2")
   plot_multiple <- plotLargeScaleCharacteristics(
-    data =  test_data %>% dplyr::filter(group_level  %in% c("cohort_1", "cohort_2")),
+    data =  test_data |> dplyr::filter(group_level  %in% c("cohort_1", "cohort_2")),
     xAxis = "variable_name",
     yAxis = "estimate_value",
     facetVarX = c("variable_level",  "group_level"),

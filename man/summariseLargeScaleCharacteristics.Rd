@@ -55,8 +55,8 @@ cohort table
 }
 \examples{
 \donttest{
-library(PatientProfiles)
-cdm <- PatientProfiles::mockPatientProfiles()
+library(CohortCharacteristics)
+cdm <- CohortCharacteristics::mockCohortCharacteristics()
 
 concept <- dplyr::tibble(
 concept_id = c(1125315, 1503328, 1516978, 317009, 378253, 4266367),

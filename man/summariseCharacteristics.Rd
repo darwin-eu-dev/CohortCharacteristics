@@ -47,9 +47,9 @@ Summarise characteristics of individuals
 }
 \examples{
 \donttest{
-library(PatientProfiles)
+library(CohortCharacteristics)
 
-cdm <- mockPatientProfiles()
+cdm <- mockCohortCharacteristics()
 
 summariseCharacteristics(
   cohort = cdm$cohort1,

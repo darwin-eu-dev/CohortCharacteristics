@@ -42,9 +42,9 @@ Create a ggplot from the output of summariseCharacteristics.
 }
 \examples{
 \donttest{
-library(PatientProfiles)
+library(CohortCharacteristics)
 
-cdm <- mockPatientProfiles()
+cdm <- mockCohortCharacteristics()
 
 results <- summariseCharacteristics(
   cohort = cdm$cohort1,

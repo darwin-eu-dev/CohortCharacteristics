@@ -30,7 +30,7 @@ test_that("summariseCohortTiming", {
     period_type_concept_id = NA
   )
 
-  cdm <- mockPatientProfiles(person = person, observation_period = obs, table = table)
+  cdm <- mockCohortCharacteristics(person = person, observation_period = obs, table = table)
 
   timing1 <- summariseCohortTiming(cdm$table,
                                     restrictToFirstEntry = TRUE)

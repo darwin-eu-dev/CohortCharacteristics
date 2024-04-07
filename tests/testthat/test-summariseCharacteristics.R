@@ -48,7 +48,7 @@ test_that("test summariseCharacteristics", {
     period_type_concept_id = 0
   )
 
-  cdm <- mockPatientProfiles(
+  cdm <- mockCohortCharacteristics(
     connectionDetails,
     dus_cohort = dus_cohort, person = person,
     comorbidities = comorbidities, medication = medication,
@@ -86,92 +86,92 @@ test_that("test summariseCharacteristics", {
     suppress(minCellCount = 1))
   expect_true(inherits(result, "summarised_result"))
   expect_identical(
-    result %>%
-      dplyr::filter(group_level == "exposed") %>%
-      dplyr::filter(variable_level == "Covid") %>%
-      dplyr::filter(estimate_name == "count") %>%
-      dplyr::pull("estimate_value") %>%
+    result |>
+      dplyr::filter(group_level == "exposed") |>
+      dplyr::filter(variable_level == "Covid") |>
+      dplyr::filter(estimate_name == "count") |>
+      dplyr::pull("estimate_value") |>
       as.numeric(),
     2
   )
   expect_identical(
-    result %>%
-      dplyr::filter(group_level == "exposed") %>%
-      dplyr::filter(variable_level == "Headache") %>%
-      dplyr::filter(estimate_name == "count") %>%
-      dplyr::pull("estimate_value") %>%
+    result |>
+      dplyr::filter(group_level == "exposed") |>
+      dplyr::filter(variable_level == "Headache") |>
+      dplyr::filter(estimate_name == "count") |>
+      dplyr::pull("estimate_value") |>
       as.numeric(),
     1
   )
   expect_identical(
-    result %>%
-      dplyr::filter(group_level == "exposed") %>%
-      dplyr::filter(variable_level == "Acetaminophen") %>%
-      dplyr::filter(estimate_name == "count") %>%
-      dplyr::pull("estimate_value") %>%
+    result |>
+      dplyr::filter(group_level == "exposed") |>
+      dplyr::filter(variable_level == "Acetaminophen") |>
+      dplyr::filter(estimate_name == "count") |>
+      dplyr::pull("estimate_value") |>
       as.numeric(),
     2
   )
   expect_identical(
-    result %>%
-      dplyr::filter(group_level == "exposed") %>%
-      dplyr::filter(variable_level == "Ibuprophen") %>%
-      dplyr::filter(estimate_name == "count") %>%
-      dplyr::pull("estimate_value") %>%
+    result |>
+      dplyr::filter(group_level == "exposed") |>
+      dplyr::filter(variable_level == "Ibuprophen") |>
+      dplyr::filter(estimate_name == "count") |>
+      dplyr::pull("estimate_value") |>
       as.numeric(),
     0
   )
   expect_identical(
-    result %>%
-      dplyr::filter(group_level == "exposed") %>%
-      dplyr::filter(variable_level == "Naloxone") %>%
-      dplyr::filter(estimate_name == "count") %>%
-      dplyr::pull("estimate_value") %>%
+    result |>
+      dplyr::filter(group_level == "exposed") |>
+      dplyr::filter(variable_level == "Naloxone") |>
+      dplyr::filter(estimate_name == "count") |>
+      dplyr::pull("estimate_value") |>
       as.numeric(),
     0
   )
   expect_identical(
-    result %>%
-      dplyr::filter(group_level == "unexposed") %>%
-      dplyr::filter(variable_level == "Covid") %>%
-      dplyr::filter(estimate_name == "count") %>%
-      dplyr::pull("estimate_value") %>%
+    result |>
+      dplyr::filter(group_level == "unexposed") |>
+      dplyr::filter(variable_level == "Covid") |>
+      dplyr::filter(estimate_name == "count") |>
+      dplyr::pull("estimate_value") |>
       as.numeric(),
     0
   )
   expect_identical(
-    result %>%
-      dplyr::filter(group_level == "unexposed") %>%
-      dplyr::filter(variable_level == "Headache") %>%
-      dplyr::filter(estimate_name == "count") %>%
-      dplyr::pull("estimate_value") %>%
+    result |>
+      dplyr::filter(group_level == "unexposed") |>
+      dplyr::filter(variable_level == "Headache") |>
+      dplyr::filter(estimate_name == "count") |>
+      dplyr::pull("estimate_value") |>
       as.numeric(),
     1
   )
   expect_identical(
-    result %>%
-      dplyr::filter(group_level == "unexposed") %>%
-      dplyr::filter(variable_level == "Acetaminophen") %>%
-      dplyr::filter(estimate_name == "count") %>%
-      dplyr::pull("estimate_value") %>%
+    result |>
+      dplyr::filter(group_level == "unexposed") |>
+      dplyr::filter(variable_level == "Acetaminophen") |>
+      dplyr::filter(estimate_name == "count") |>
+      dplyr::pull("estimate_value") |>
       as.numeric(),
     0
   )
   expect_identical(
-    result %>%
-      dplyr::filter(group_level == "unexposed") %>%
-      dplyr::filter(variable_level == "Ibuprophen") %>%
-      dplyr::filter(estimate_name == "count") %>%
-      dplyr::pull("estimate_value") %>%
+    result |>
+      dplyr::filter(group_level == "unexposed") |>
+      dplyr::filter(variable_level == "Ibuprophen") |>
+      dplyr::filter(estimate_name == "count") |>
+      dplyr::pull("estimate_value") |>
       as.numeric(),
     0
   )
   expect_identical(
-    result %>%
-      dplyr::filter(group_level == "unexposed") %>%
-      dplyr::filter(variable_level == "Naloxone") %>%
-      dplyr::filter(estimate_name == "count") %>%
-      dplyr::pull("estimate_value") %>%
+    result |>
+      dplyr::filter(group_level == "unexposed") |>
+      dplyr::filter(variable_level == "Naloxone") |>
+      dplyr::filter(estimate_name == "count") |>
+      dplyr::pull("estimate_value") |>
       as.numeric(),
     0
   )
@@ -191,34 +191,34 @@ test_that("test summariseCharacteristics", {
     suppress(minCellCount = 1))
   expect_true(inherits(result, "summarised_result"))
   expect_true(
-    result %>%
+    result |>
       visOmopResults::splitAdditional() |>
-      dplyr::filter(window == "short") %>%
-      dplyr::tally() %>%
+      dplyr::filter(window == "short") |>
+      dplyr::tally() |>
       dplyr::pull() ==
       omopgenerics::settings(cdm$medication) |> nrow() * 4 # 2 group_level 4 estimate type
   )
   expect_true(
-    result %>%
+    result |>
       visOmopResults::splitAdditional() |>
-      dplyr::filter(window == "long") %>%
-      dplyr::tally() %>%
+      dplyr::filter(window == "long") |>
+      dplyr::tally() |>
       dplyr::pull() ==
       omopgenerics::settings(cdm$medication) |> nrow() * 4 # 2 group_level 4 estimate type
   )
   expect_true(
-    result %>%
+    result |>
       visOmopResults::splitAdditional() |>
-      dplyr::filter(table == "medication") %>%
-      dplyr::tally() %>%
+      dplyr::filter(table == "medication") |>
+      dplyr::tally() |>
       dplyr::pull() ==
       omopgenerics::settings(cdm$medication) |> nrow() * 8 # 2 group_level 4 estimate type 2 window
   )
   expect_true(
-    result %>%
+    result |>
       visOmopResults::splitAdditional() |>
-      dplyr::filter(table == "comorbidities") %>%
-      dplyr::tally() %>%
+      dplyr::filter(table == "comorbidities") |>
+      dplyr::tally() |>
       dplyr::pull() ==
       omopgenerics::settings(cdm$comorbidities) |> nrow() * 4 # 2 group_level 4 estimate type
   )
@@ -275,10 +275,10 @@ test_that("test summariseCharacteristics", {
 })
 
 test_that("test empty cohort", {
-  cdm <- mockPatientProfiles(connectionDetails = connectionDetails)
+  cdm <- mockCohortCharacteristics(connectionDetails = connectionDetails)
 
   expect_no_error(
-    cdm$cohort1 %>% dplyr::filter(cohort_definition_id == 0) %>%
+    cdm$cohort1 |> dplyr::filter(cohort_definition_id == 0) |>
       summariseCharacteristics(cohortIntersect = list(
         "Medications" = list(
           targetCohortTable = "cohort2", value = "flag", window = c(-365, 0)
@@ -288,7 +288,7 @@ test_that("test empty cohort", {
       ))
   )
   expect_no_error(
-    cdm$cohort1 %>%
+    cdm$cohort1 |>
       summariseCharacteristics(cohortIntersect = list(
         "Medications" = list(
           targetCohortTable = "cohort2", value = "flag", window = c(-365, 0), targetCohortId = 1
@@ -298,14 +298,14 @@ test_that("test empty cohort", {
       ))
   )
   expect_no_error(
-    x1 <- cdm$cohort1 %>%
+    x1 <- cdm$cohort1 |>
       summariseCharacteristics(tableIntersect = list("Visits" = list(
         tableName = "visit_occurrence", value = "flag", window = c(-365, 0)
       )))
   )
 
   expect_no_error(
-    x3 <- cdm$cohort1 %>%
+    x3 <- cdm$cohort1 |>
       summariseCharacteristics(tableIntersect = list("Visits" = list(
         tableName = "visit_occurrence", value = "visit_concept_id",
         window = c(-Inf, Inf)

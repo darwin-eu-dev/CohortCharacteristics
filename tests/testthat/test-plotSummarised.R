@@ -32,7 +32,7 @@ test_that("plotCohortTiming, boxplot", {
     period_type_concept_id = NA
   )
 
-  cdm <- mockPatientProfiles(person = person, observation_period = obs, table = table)
+  cdm <- mockCohortCharacteristics(person = person, observation_period = obs, table = table)
 
   timing1 <- summariseCohortTiming(cdm$table,
                                    restrictToFirstEntry = TRUE)
@@ -87,7 +87,7 @@ test_that("plotCohortTiming, density", {
     day_of_birth = runif(n=20, min=1, max=28),
     race_concept_id= 0,
     ethnicity_concept_id = 0
-  ) %>%
+  ) |>
     dplyr::mutate(gender_concept_id = sample(c(8532, 8507), size = dplyr::n(), replace = TRUE))
 
   table <- dplyr::tibble(
@@ -112,7 +112,7 @@ test_that("plotCohortTiming, density", {
     period_type_concept_id = NA
   )
 
-  cdm <- mockPatientProfiles(person = person, observation_period = obs, table = table)
+  cdm <- mockCohortCharacteristics(person = person, observation_period = obs, table = table)
 
   timing1 <- summariseCohortTiming(cdm$table,
                                    density = TRUE,
@@ -209,7 +209,7 @@ test_that("plotCohortOverlap", {
     period_type_concept_id = NA
   )
 
-  cdm <- mockPatientProfiles(person = person, observation_period = obs, table = table)
+  cdm <- mockCohortCharacteristics(person = person, observation_period = obs, table = table)
 
   overlap <- summariseCohortOverlap(cdm$table)
 
@@ -312,7 +312,7 @@ test_that("plotTableIntersect", {
     period_type_concept_id = 0
   )
 
-  cdm <- mockPatientProfiles(
+  cdm <- mockCohortCharacteristics(
     dus_cohort = dus_cohort, person = person,
     observation_period = observation_period,
     visit_occurrence = visit_ocurrence
@@ -384,7 +384,7 @@ test_that("plotCohortIntersect", {
     period_type_concept_id = 0
   )
 
-  cdm <- mockPatientProfiles(
+  cdm <- mockCohortCharacteristics(
     dus_cohort = dus_cohort, person = person,
     comorbidities = comorbidities, medication = medication,
     observation_period = observation_period
@@ -419,7 +419,7 @@ test_that("plotCohortIntersect", {
     )
   )
 
-  result1 <- result1 %>% dplyr::filter(estimate_name == "percentage")
+  result1 <- result1 |> dplyr::filter(estimate_name == "percentage")
   gg1 <- plotCohortIntersect(result1,
                              colorVars = "variable_level",
                              xAxis = "estimate_value",
@@ -460,7 +460,7 @@ test_that("plotDemographics", {
     period_type_concept_id = 0
   )
 
-  cdm <- mockPatientProfiles(
+  cdm <- mockCohortCharacteristics(
     dus_cohort = dus_cohort, person = person,
     observation_period = observation_period
   )

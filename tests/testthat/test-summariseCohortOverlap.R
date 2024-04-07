@@ -32,7 +32,7 @@ test_that("summariseCohortOverlap", {
     period_type_concept_id = NA
   )
 
-  cdm <- mockPatientProfiles(person = person, observation_period = obs, table = table)
+  cdm <- mockCohortCharacteristics(person = person, observation_period = obs, table = table)
 
   overlap1 <- summariseCohortOverlap(cdm$table)
   expect_equal(omopgenerics::resultColumns("summarised_result"),

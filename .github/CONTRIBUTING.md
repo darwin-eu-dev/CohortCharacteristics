@@ -1,4 +1,4 @@
-# Contributing to PatientProfiles
+# Contributing to CohortCharacteristics
 
 ## Filing issues
 If you have found a bug, have a question, or want to suggest a new feature please open an issue. If reporting a bug, then a [reprex](https://reprex.tidyverse.org/) would be much appreciated. Before contributing either documentation or code, please make sure to open an issue beforehand to identify what needs to be done and who will do it.
@@ -24,7 +24,7 @@ devtools::test()
 Code to add new functionality should be accompanied by tests. Code coverage can be checked using: 
 ``` r
 # note, you may first have to detach the package
-# detach("package:PatientProfiles", unload=TRUE)
+# detach("package:CohortCharacteristics", unload=TRUE)
 devtools::test_coverage()
 ```
 

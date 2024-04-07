@@ -23,8 +23,8 @@ Summarise cohort overlap
 }
 \examples{
 \donttest{
-library(PatientProfiles)
-cdm <- PatientProfiles::mockPatientProfiles()
+library(CohortCharacteristics)
+cdm <- CohortCharacteristics::mockCohortCharacteristics()
 results <- summariseCohortOverlap(cdm$cohort2)
 CDMConnector::cdmDisconnect(cdm = cdm)
 }

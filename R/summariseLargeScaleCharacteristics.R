@@ -1,6 +1,6 @@
-# Copyright 2022 DARWIN EU (C)
+# Copyright 2024 DARWIN EU (C)
 #
-# This file is part of DrugUtilisation
+# This file is part of CohortCharacteristics
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -38,8 +38,8 @@
 #'
 #' @examples
 #' \donttest{
-#' library(PatientProfiles)
-#' cdm <- PatientProfiles::mockPatientProfiles()
+#' library(CohortCharacteristics)
+#' cdm <- CohortCharacteristics::mockCohortCharacteristics()
 #'
 #' concept <- dplyr::tibble(
 #' concept_id = c(1125315, 1503328, 1516978, 317009, 378253, 4266367),
@@ -49,10 +49,10 @@
 #' concept_code = NA_character_,
 #' valid_start_date = as.Date("1900-01-01"),
 #' valid_end_date = as.Date("2099-01-01")
-#' ) %>%
+#' ) |>
 #'  dplyr::mutate(concept_name = paste0("concept: ", .data$concept_id))
 #' cdm <- CDMConnector::insertTable(cdm, "concept", concept)
-#' results <- cdm$cohort2 %>%
+#' results <- cdm$cohort2 |>
 #' summariseLargeScaleCharacteristics(
 #'  episodeInWindow = c("condition_occurrence"),
 #'  minimumFrequency = 0
@@ -117,7 +117,7 @@ summariseLargeScaleCharacteristics <- function(cohort,
   # perform lsc
   lsc <- NULL
   for (tab in unique(analyses$table)) {
-    analysesTable <- analyses %>% dplyr::filter(.data$table == .env$tab)
+    analysesTable <- analyses |> dplyr::filter(.data$table == .env$tab)
     table <- getTable(
       tab, x, includeSource, minWindow, maxWindow, tablePrefix, excludedCodes
     )
@@ -127,9 +127,9 @@ summariseLargeScaleCharacteristics <- function(cohort,
       tableAnalysis <- getTableAnalysis(table, type, analysis, tablePrefix)
       for (win in seq_along(window)) {
         tableWindow <- getTableWindow(tableAnalysis, window[[win]], tablePrefix)
-        lsc <- lsc %>%
+        lsc <- lsc |>
           dplyr::bind_rows(
-            summariseConcept(cohort, tableWindow, strata, tablePrefix) %>%
+            summariseConcept(cohort, tableWindow, strata, tablePrefix) |>
               dplyr::mutate(
                 "window_name" = names(window)[win],
                 "table_name" = .env$tab,
@@ -142,9 +142,9 @@ summariseLargeScaleCharacteristics <- function(cohort,
         tableAnalysis <- getTableAnalysis(table, type, "source", tablePrefix)
         for (win in seq_along(window)) {
           tableWindow <- getTableWindow(tableAnalysis, window[[win]], tablePrefix)
-          lsc <- lsc %>%
+          lsc <- lsc |>
             dplyr::bind_rows(
-              summariseConcept(cohort, tableWindow, strata, tablePrefix) %>%
+              summariseConcept(cohort, tableWindow, strata, tablePrefix) |>
                 dplyr::mutate(
                   "window_name" = names(window)[win],
                   "table_name" = .env$tab,
@@ -161,15 +161,15 @@ summariseLargeScaleCharacteristics <- function(cohort,
   den <- denominatorCounts(cohort, x, strata, window, tablePrefix)
 
   # format results
-  results <- lsc %>%
+  results <- lsc |>
     formatLscResult(den, cdm, minimumFrequency)
 
   # summarised_result format
   results <- results |>
     dplyr::mutate(
       "result_type" = "summarised_large_scale_characteristics",
-      "package_name" = "PatientProfiles",
-      "package_version" = as.character(utils::packageVersion("PatientProfiles")),
+      "package_name" = "CohortCharacteristics",
+      "package_version" = as.character(utils::packageVersion("CohortCharacteristics")),
       "variable_name" = .data$variable,
       "estimate_name" = .data$estimate_type,
       "estimate_value" = .data$estimate,
@@ -217,9 +217,9 @@ summariseLargeScaleCharacteristics <- function(cohort,
 #' @export
 #' @examples
 #' \donttest{
-#' library(PatientProfiles)
-#' cdm <- PatientProfiles::mockPatientProfiles()
-#' results <- cdm$cohort2 %>%
+#' library(CohortCharacteristics)
+#' cdm <- CohortCharacteristics::mockCohortCharacteristics()
+#' results <- cdm$cohort2 |>
 #'   addLargeScaleCharacteristics(
 #'   episodeInWindow = c("condition_occurrence"),
 #'   minimumFrequency = 0
@@ -288,7 +288,7 @@ addLargeScaleCharacteristics <- function(cohort,
 
   lsc <- NULL
   for (tab in unique(analyses$table)) {
-    analysesTable <- analyses %>% dplyr::filter(.data$table == .env$tab)
+    analysesTable <- analyses |> dplyr::filter(.data$table == .env$tab)
     table <- getTable(
       tab, x, FALSE, minWindow, maxWindow, tablePrefix, excludedCodes
     )
@@ -298,7 +298,7 @@ addLargeScaleCharacteristics <- function(cohort,
       tableAnalysis <- getTableAnalysis(table, type, analysis, tablePrefix)
       for (win in seq_along(window)) {
         tableWindow <- getTableWindow(tableAnalysis, window[[win]], tablePrefix)
-        lsc <- lsc %>%
+        lsc <- lsc |>
           trimCounts(tableWindow, minimumCount, tablePrefix, names(window)[win])
       }
     }
@@ -306,27 +306,27 @@ addLargeScaleCharacteristics <- function(cohort,
 
   # add new columns
   originalCols <- colnames(cohort)
-  cohort <- cohort %>%
+  cohort <- cohort |>
     dplyr::left_join(
-      lsc %>%
+      lsc |>
         dplyr::select(
           "subject_id", "cohort_start_date", "concept", "window_name"
-        ) %>%
-        dplyr::inner_join(cdm[[dicTblName]], by = "window_name") %>%
+        ) |>
+        dplyr::inner_join(cdm[[dicTblName]], by = "window_name") |>
         dplyr::mutate(
           value = 1,
           concept = as.character(as.integer(.data$concept)),
           name = paste0(.data$window_nam, "_", .data$concept)
-        ) %>%
-        dplyr::select("subject_id", "cohort_start_date", "name", "value") %>%
+        ) |>
+        dplyr::select("subject_id", "cohort_start_date", "name", "value") |>
         tidyr::pivot_wider(
           names_from = "name", values_from = "value"
         ),
       by = c("subject_id", "cohort_start_date")
-    ) %>%
+    ) |>
     dplyr::mutate(dplyr::across(
       !dplyr::all_of(originalCols), ~ dplyr::if_else(is.na(.x), 0, 1)
-    )) %>%
+    )) |>
     dplyr::compute()
 
   # eliminate permanent tables
@@ -364,35 +364,35 @@ getAnalyses <- function(eventInWindow, episodeInWindow) {
       table = "condition_occurrence", type = "episode",
       analysis = episodeInWindow[episodeInWindow %in% icd10],
     )
-  ) %>%
-    dplyr::bind_rows() %>%
+  ) |>
+    dplyr::bind_rows() |>
     tidyr::drop_na()
 }
 getInitialTable <- function(cohort, tablePrefix, indexDate, censorDate) {
-  x <- cohort %>%
+  x <- cohort |>
     addDemographics(
       indexDate = indexDate, age = FALSE, sex = FALSE,
       priorObservationName = "start_obs", futureObservationName = "end_obs"
-    ) %>%
+    ) |>
     dplyr::mutate(start_obs = -.data$start_obs)
   if (!is.null(censorDate)) {
-    x <- x %>%
-      dplyr::mutate("censor_obs" = !!CDMConnector::datediff(indexDate, censorDate)) %>%
+    x <- x |>
+      dplyr::mutate("censor_obs" = !!CDMConnector::datediff(indexDate, censorDate)) |>
       dplyr::mutate("end_obs" = dplyr::if_else(
         is.na(.data$censor_obs) | .data$censor_obs > .data$end_obs,
         .data$end_obs,
         .data$censor_obs
       ))
   }
-  x <- x %>%
+  x <- x |>
     dplyr::select(
       "subject_id", "cohort_start_date" = dplyr::all_of(indexDate), "start_obs",
       "end_obs"
-    ) %>%
-    dplyr::distinct() %>%
-    dbplyr::window_order(.data$subject_id, .data$cohort_start_date) %>%
-    dplyr::mutate(obs_id = dplyr::row_number()) %>%
-    dbplyr::window_order() %>%
+    ) |>
+    dplyr::distinct() |>
+    dbplyr::window_order(.data$subject_id, .data$cohort_start_date) |>
+    dplyr::mutate(obs_id = dplyr::row_number()) |>
+    dbplyr::window_order() |>
     dplyr::compute(
       name = paste0(tablePrefix, "individuals"),
       temporary = FALSE,
@@ -412,27 +412,27 @@ getTable <- function(tab, x, includeSource, minWindow, maxWindow, tablePrefix, e
   if (includeSource == FALSE || is.na(sourceConceptIdColumn(tab))) {
     toSelect <- toSelect["source" != names(toSelect)]
   }
-  table <- cdm[[tab]] %>%
-    dplyr::select(dplyr::all_of(toSelect)) %>%
-    dplyr::inner_join(x, by = "subject_id") %>%
+  table <- cdm[[tab]] |>
+    dplyr::select(dplyr::all_of(toSelect)) |>
+    dplyr::inner_join(x, by = "subject_id") |>
     dplyr::mutate(end_diff = dplyr::if_else(
       is.na(.data$end_diff), .data$start_diff, .data$end_diff
-    )) %>%
+    )) |>
     dplyr::mutate(start_diff = !!CDMConnector::datediff(
       "cohort_start_date", "start_diff"
-    )) %>%
+    )) |>
     dplyr::mutate(end_diff = !!CDMConnector::datediff(
       "cohort_start_date", "end_diff"
-    )) %>%
+    )) |>
     dplyr::filter(
       .data$end_diff >= .data$start_obs & .data$start_diff <= .data$end_obs
     )
   if (!is.infinite(minWindow)) {
-    table <- table %>%
+    table <- table |>
       dplyr::filter(.data$end_diff >= .env$minWindow)
   }
   if (!is.infinite(maxWindow)) {
-    table <- table %>%
+    table <- table |>
       dplyr::filter(.data$start_diff <= .env$maxWindow)
   }
   if (length(excludedCodes) > 0) {
@@ -451,8 +451,8 @@ getTable <- function(tab, x, includeSource, minWindow, maxWindow, tablePrefix, e
         )
     }
   }
-  table <- table %>%
-    dplyr::select(-"start_obs", -"end_obs") %>%
+  table <- table |>
+    dplyr::select(-"start_obs", -"end_obs") |>
     dplyr::compute(
       name = paste0(tablePrefix, "table"),
       temporary = FALSE,
@@ -463,31 +463,31 @@ summariseConcept <- function(cohort, tableWindow, strata, tablePrefix) {
   result <- NULL
   cohortNames <- omopgenerics::settings(cohort)$cohort_name
   for (cohortName in cohortNames) {
-    cdi <- omopgenerics::settings(cohort) %>%
-      dplyr::filter(.data$cohort_name == .env$cohortName) %>%
+    cdi <- omopgenerics::settings(cohort) |>
+      dplyr::filter(.data$cohort_name == .env$cohortName) |>
       dplyr::pull("cohort_definition_id")
-    tableWindowCohort <- tableWindow %>%
+    tableWindowCohort <- tableWindow |>
       dplyr::inner_join(
-        cohort %>%
+        cohort |>
           dplyr::filter(.data$cohort_definition_id == .env$cdi),
         by = c("subject_id", "cohort_start_date")
-      ) %>%
+      ) |>
       dplyr::select(
         "obs_id", "concept", dplyr::all_of(unique(unlist(strata)))
-      ) %>%
+      ) |>
       dplyr::compute(
         name = paste0(tablePrefix, "table_window_cohort"),
         temporary = FALSE,
         overwrite = TRUE
       )
-    result <- result %>%
+    result <- result |>
       dplyr::bind_rows(
-        tableWindowCohort %>%
-          dplyr::group_by(.data$concept) %>%
-          dplyr::summarise(count = as.numeric(dplyr::n()), .groups = "drop") %>%
-          dplyr::collect() %>%
-          dplyr::mutate(strata_name = "overall", strata_level = "overall") %>%
-          dplyr::bind_rows(summariseStrataCounts(tableWindowCohort, strata)) %>%
+        tableWindowCohort |>
+          dplyr::group_by(.data$concept) |>
+          dplyr::summarise(count = as.numeric(dplyr::n()), .groups = "drop") |>
+          dplyr::collect() |>
+          dplyr::mutate(strata_name = "overall", strata_level = "overall") |>
+          dplyr::bind_rows(summariseStrataCounts(tableWindowCohort, strata)) |>
           dplyr::mutate(group_name = "cohort_name", group_level = cohortName)
       )
   }
@@ -496,56 +496,56 @@ summariseConcept <- function(cohort, tableWindow, strata, tablePrefix) {
 summariseStrataCounts <- function(tableWindowCohort, strata) {
   result <- NULL
   for (k in seq_along(strata)) {
-    result <- result %>%
+    result <- result |>
       dplyr::union_all(
-        tableWindowCohort %>%
-          dplyr::group_by(dplyr::pick(c("concept", strata[[k]]))) %>%
-          dplyr::summarise(count = as.numeric(dplyr::n()), .groups = "drop") %>%
-          dplyr::collect() %>%
+        tableWindowCohort |>
+          dplyr::group_by(dplyr::pick(c("concept", strata[[k]]))) |>
+          dplyr::summarise(count = as.numeric(dplyr::n()), .groups = "drop") |>
+          dplyr::collect() |>
           visOmopResults::uniteStrata(cols = strata[[k]])
       )
   }
   return(result)
 }
 denominatorCounts <- function(cohort, x, strata, window, tablePrefix) {
-  table <- x %>%
-    dplyr::rename("start_diff" = "start_obs", "end_diff" = "end_obs") %>%
+  table <- x |>
+    dplyr::rename("start_diff" = "start_obs", "end_diff" = "end_obs") |>
     dplyr::mutate(concept = "denominator")
   den <- NULL
   for (win in seq_along(window)) {
     tableWindow <- getTableWindow(table, window[[win]], tablePrefix)
-    den <- den %>%
+    den <- den |>
       dplyr::bind_rows(
-        summariseConcept(cohort, tableWindow, strata, tablePrefix) %>%
+        summariseConcept(cohort, tableWindow, strata, tablePrefix) |>
           dplyr::mutate(window_name = names(window)[win])
       )
   }
   return(den)
 }
 formatLscResult <- function(lsc, den, cdm, minimumFrequency) {
-  lsc %>%
+  lsc |>
     dplyr::inner_join(
-      den %>%
-        dplyr::rename("denominator" = "count") %>%
+      den |>
+        dplyr::rename("denominator" = "count") |>
         dplyr::select(-"concept"),
       by = c(
         "strata_name", "strata_level", "group_name", "group_level",
         "window_name"
       )
-    ) %>%
-    dplyr::mutate(percentage = round(100 * .data$count / .data$denominator, 2)) %>%
-    dplyr::select(-"denominator") %>%
-    dplyr::filter(.data$percentage >= 100 * .env$minimumFrequency) %>%
+    ) |>
+    dplyr::mutate(percentage = round(100 * .data$count / .data$denominator, 2)) |>
+    dplyr::select(-"denominator") |>
+    dplyr::filter(.data$percentage >= 100 * .env$minimumFrequency) |>
     tidyr::pivot_longer(
       cols = c("count", "percentage"), names_to = "estimate_type",
       values_to = "estimate"
-    ) %>%
-    addCdmName(cdm = cdm) %>%
+    ) |>
+    addCdmName(cdm = cdm) |>
     dplyr::mutate(
       estimate = as.character(.data$estimate),
       result_type = "Summarised Large Scale Characteristics"
-    ) %>%
-    dplyr::inner_join(addConceptName(lsc, cdm), by = c("concept", "analysis")) %>%
+    ) |>
+    dplyr::inner_join(addConceptName(lsc, cdm), by = c("concept", "analysis")) |>
     dplyr::select(
       "result_type", "cdm_name", "group_name", "group_level", "strata_name",
       "strata_level", "table_name", "type", "analysis", "concept",
@@ -554,8 +554,8 @@ formatLscResult <- function(lsc, den, cdm, minimumFrequency) {
     )
 }
 addConceptName <- function(lsc, cdm) {
-  concepts <- lsc %>%
-    dplyr::select("concept", "analysis") %>%
+  concepts <- lsc |>
+    dplyr::select("concept", "analysis") |>
     dplyr::distinct()
 
   conceptsTblName <- omopgenerics::uniqueTableName(omopgenerics::tmpPrefix())
@@ -564,13 +564,13 @@ addConceptName <- function(lsc, cdm) {
                                    table = concepts,
                                    overwrite = TRUE )
 
-  conceptNames <- cdm[["concept"]] %>%
-    dplyr::select("concept" = "concept_id", "concept_name") %>%
+  conceptNames <- cdm[["concept"]] |>
+    dplyr::select("concept" = "concept_id", "concept_name") |>
     dplyr::inner_join(
-      cdm[[conceptsTblName]] %>%
+      cdm[[conceptsTblName]] |>
         dplyr::mutate(concept = as.numeric(.data$concept)),
       by = "concept"
-    ) %>%
+    ) |>
     dplyr::collect()
 
   omopgenerics::dropTable(cdm = cdm, name = conceptsTblName)
@@ -579,16 +579,16 @@ addConceptName <- function(lsc, cdm) {
 }
 getTableAnalysis <- function(table, type, analysis, tablePrefix) {
   if (type == "event") {
-    table <- table %>%
+    table <- table |>
       dplyr::mutate("end_diff" = .data$start_diff)
   }
   if (analysis %in% c("standard", "source")) {
-    table <- table %>%
-      dplyr::rename("concept" = dplyr::all_of(analysis)) %>%
+    table <- table |>
+      dplyr::rename("concept" = dplyr::all_of(analysis)) |>
       dplyr::select(-dplyr::any_of(c("standard", "source")))
   } else {
-    table <- table %>%
-      dplyr::rename("concept" = "standard") %>%
+    table <- table |>
+      dplyr::rename("concept" = "standard") |>
       dplyr::select(-dplyr::any_of("source"))
     table <- getCodesGroup(table, analysis, tablePrefix)
   }
@@ -597,12 +597,12 @@ getTableAnalysis <- function(table, type, analysis, tablePrefix) {
 getCodesGroup <- function(table, analysis, tablePrefix) {
   cdm <- omopgenerics::cdmReference(table)
   if (analysis %in% c("ATC 1st", "ATC 2nd", "ATC 3rd", "ATC 4th", "ATC 5h")) {
-    codes <- cdm[["concept"]] %>%
-      dplyr::filter(.data$vocabulary_id == "ATC") %>%
-      dplyr::filter(.data$concept_class_id == .env$analysis) %>%
-      dplyr::select("concept_new" = "concept_id") %>%
+    codes <- cdm[["concept"]] |>
+      dplyr::filter(.data$vocabulary_id == "ATC") |>
+      dplyr::filter(.data$concept_class_id == .env$analysis) |>
+      dplyr::select("concept_new" = "concept_id") |>
       dplyr::inner_join(
-        cdm[["concept_ancestor"]] %>%
+        cdm[["concept_ancestor"]] |>
           dplyr::select(
             "concept_new" = "ancestor_concept_id",
             "concept" = "descendant_concept_id"
@@ -610,16 +610,16 @@ getCodesGroup <- function(table, analysis, tablePrefix) {
         by = "concept_new"
       )
   } else {
-    codes <- cdm[["concept"]] %>%
-      dplyr::filter(.data$vocabulary_id == "ICD10") %>%
-      dplyr::filter(.data$concept_class_id == .env$analysis) %>%
+    codes <- cdm[["concept"]] |>
+      dplyr::filter(.data$vocabulary_id == "ICD10") |>
+      dplyr::filter(.data$concept_class_id == .env$analysis) |>
       dplyr::select("concept_new" = "concept_id")
     # TODO
   }
-  table <- table %>%
-    dplyr::inner_join(codes, by = "concept") %>%
-    dplyr::select(-"concept") %>%
-    dplyr::rename("concept" = "concept_new") %>%
+  table <- table |>
+    dplyr::inner_join(codes, by = "concept") |>
+    dplyr::select(-"concept") |>
+    dplyr::rename("concept" = "concept_new") |>
     dplyr::compute(
       name = paste0(tablePrefix, "table_group"),
       temporary = FALSE,
@@ -634,24 +634,24 @@ getTableWindow <- function(table, window, tablePrefix) {
     if (is.infinite(endWindow)) {
       tableWindow <- table
     } else {
-      tableWindow <- table %>%
+      tableWindow <- table |>
         dplyr::filter(.data$start_diff <= .env$endWindow)
     }
   } else {
     if (is.infinite(endWindow)) {
-      tableWindow <- table %>%
+      tableWindow <- table |>
         dplyr::filter(.data$end_diff >= .env$startWindow)
     } else {
-      tableWindow <- table %>%
+      tableWindow <- table |>
         dplyr::filter(
           .data$end_diff >= .env$startWindow &
             .data$start_diff <= .env$endWindow
         )
     }
   }
-  tableWindow <- tableWindow %>%
-    dplyr::select("subject_id", "cohort_start_date", "obs_id", "concept") %>%
-    dplyr::distinct() %>%
+  tableWindow <- tableWindow |>
+    dplyr::select("subject_id", "cohort_start_date", "obs_id", "concept") |>
+    dplyr::distinct() |>
     dplyr::compute(
       name = paste0(tablePrefix, "table_window"),
       temporary = FALSE,
@@ -660,24 +660,24 @@ getTableWindow <- function(table, window, tablePrefix) {
   return(tableWindow)
 }
 trimCounts <- function(lsc, tableWindow, minimumCount, tablePrefix, winName) {
-  x <- tableWindow %>%
+  x <- tableWindow |>
     dplyr::inner_join(
-      tableWindow %>%
-        dplyr::group_by(.data$concept) %>%
-        dplyr::summarise(count = dplyr::n(), .groups = "drop") %>%
-        dplyr::filter(.data$count >= .env$minimumCount) %>%
+      tableWindow |>
+        dplyr::group_by(.data$concept) |>
+        dplyr::summarise(count = dplyr::n(), .groups = "drop") |>
+        dplyr::filter(.data$count >= .env$minimumCount) |>
         dplyr::select("concept"),
       by = "concept"
-    ) %>%
+    ) |>
     dplyr::mutate("window_name" = .env$winName)
   if (is.null(lsc)) {
-    lsc <- x %>%
+    lsc <- x |>
       dplyr::compute(
         name = paste0(tablePrefix, "lsc"), temporary = FALSE, overwrite = TRUE
       )
   } else {
-    lsc <- lsc %>%
-      dplyr::union_all(x) %>%
+    lsc <- lsc |>
+      dplyr::union_all(x) |>
       dplyr::compute(
         name = paste0(tablePrefix, "lsc"), temporary = FALSE, overwrite = TRUE
       )

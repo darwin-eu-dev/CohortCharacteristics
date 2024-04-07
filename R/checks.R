@@ -1,6 +1,6 @@
-# Copyright 2023 DARWIN EU (C)
+# Copyright 2024 DARWIN EU (C)
 #
-# This file is part of PatientProfiles
+# This file is part of CohortCharacteristics
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -106,9 +106,9 @@ checkCategory <- function(category, overlap = FALSE, type = "numeric") {
   # built tibble
   result <- lapply(category, function(x) {
     dplyr::tibble(lower_bound = x[1], upper_bound = x[2])
-  }) %>%
-    dplyr::bind_rows() %>%
-    dplyr::mutate(category_label = names(.env$category)) %>%
+  }) |>
+    dplyr::bind_rows() |>
+    dplyr::mutate(category_label = names(.env$category)) |>
     dplyr::mutate(category_label = dplyr::if_else(
       .data$category_label == "",
       dplyr::case_when(
@@ -118,7 +118,7 @@ checkCategory <- function(category, overlap = FALSE, type = "numeric") {
         TRUE ~ paste(.data$lower_bound, "to", .data$upper_bound)
       ),
       .data$category_label
-    )) %>%
+    )) |>
     dplyr::arrange(.data$lower_bound)
 
   # check overlap
@@ -193,8 +193,8 @@ checkWindow <- function(window) {
   }
 
   names(window) <- getWindowNames(window)
-  lower <- lapply(window, function(x) {x[1]}) %>% unlist()
-  upper <- lapply(window, function(x) {x[2]}) %>% unlist()
+  lower <- lapply(window, function(x) {x[1]}) |> unlist()
+  upper <- lapply(window, function(x) {x[2]}) |> unlist()
 
   if (any(lower > upper)) {
     cli::cli_abort("First element in window must be smaller or equal to the second one")
@@ -247,7 +247,7 @@ checkFilter <- function(filterVariable, filterId, idName, x) {
   } else {
     checkVariableInX(filterVariable, x, FALSE, "filterVariable")
     checkmate::assertNumeric(filterId, any.missing = FALSE)
-    checkmate::assertNumeric(utils::head(x, 1) %>% dplyr::pull(dplyr::all_of(filterVariable)))
+    checkmate::assertNumeric(utils::head(x, 1) |> dplyr::pull(dplyr::all_of(filterVariable)))
     if (is.null(idName)) {
       idName <- paste0("id", filterId)
     } else {
@@ -337,12 +337,12 @@ checkCohortNames <- function(x, targetCohortId, name) {
     if (is.null(cohort)) {
       idName <- paste0(name, "_", targetCohortId)
     } else {
-      idName <- cohort %>%
+      idName <- cohort |>
         dplyr::filter(
           as.integer(.data$cohort_definition_id) %in%
             as.integer(.env$targetCohortId)
-        ) %>%
-        dplyr::arrange(.data$cohort_definition_id) %>%
+        ) |>
+        dplyr::arrange(.data$cohort_definition_id) |>
         dplyr::pull("cohort_name")
       if (length(idName) != length(targetCohortId)) {
         cli::cli_abort(
@@ -654,10 +654,10 @@ checkConceptIntersect <- function(conceptIntersect, cdm) {
 
 #' @noRd
 checkCensorDate <- function(x, censorDate) {
-  check <- x %>%
-    dplyr::select(dplyr::all_of(censorDate)) %>%
-    utils::head(1) %>%
-    dplyr::pull() %>%
+  check <- x |>
+    dplyr::select(dplyr::all_of(censorDate)) |>
+    utils::head(1) |>
+    dplyr::pull() |>
     inherits("Date")
   if (!check) {
     cli::cli_abort("{censorDate} is not a date variable")

@@ -49,7 +49,7 @@ test_that("tableCharacteristics", {
     period_type_concept_id = 0
   )
 
-  cdm <- mockPatientProfiles(
+  cdm <- mockCohortCharacteristics(
     dus_cohort = dus_cohort, person = person,
     comorbidities = comorbidities, medication = medication,
     observation_period = observation_period
@@ -98,7 +98,7 @@ test_that("tableCharacteristics", {
   expect_true(all(c("Variable name", "Variable level", "Estimate name",
                     "CDM name\nPP_MOCK\nCohort name\nExposed", "CDM name\nPP_MOCK\nCohort name\nUnexposed") %in%
                     colnames(fx1$body$dataset)))
-  expect_true(all(fx1$body$dataset$`Variable name` %>% unique() %in%
+  expect_true(all(fx1$body$dataset$`Variable name` |> unique() %in%
                     c("Number records", "Number subjects", "Cohort start date", "Cohort end date", "Age", "Sex", "Prior observation",
                       "Future observation", "Medications", "Comorbidities")))
 
@@ -144,7 +144,7 @@ test_that("tableCohortOverlap", {
     period_type_concept_id = NA
   )
 
-  cdm <- mockPatientProfiles(person = person, observation_period = obs, table = table)
+  cdm <- mockCohortCharacteristics(person = person, observation_period = obs, table = table)
 
   overlap <- summariseCohortOverlap(cdm$table)
 
@@ -266,7 +266,7 @@ test_that("tableCohortTiming", {
     period_type_concept_id = NA
   )
 
-  cdm <- mockPatientProfiles(person = person, observation_period = obs, table = table)
+  cdm <- mockCohortCharacteristics(person = person, observation_period = obs, table = table)
 
   timing1 <- summariseCohortTiming(cdm$table,
                                    restrictToFirstEntry = TRUE)
@@ -402,7 +402,7 @@ test_that("tableDemographics", {
     period_type_concept_id = 0
   )
 
-  cdm <- mockPatientProfiles(
+  cdm <- mockCohortCharacteristics(
     dus_cohort = dus_cohort, person = person,
     comorbidities = comorbidities, medication = medication,
     observation_period = observation_period
@@ -433,7 +433,7 @@ test_that("tableDemographics", {
   expect_true(all(c("Variable name", "Variable level", "Estimate name",
                     "CDM name\nPP_MOCK\nCohort name\nCohort 2", "CDM name\nPP_MOCK\nCohort name\nCohort 1") %in%
                     colnames(fx1$body$dataset)))
-  expect_true(all(fx1$body$dataset$`Variable name` %>% unique() %in%
+  expect_true(all(fx1$body$dataset$`Variable name` |> unique() %in%
                     c( "Age", "Sex", "Prior observation",
                       "Future observation", "Age group")))
 
@@ -498,7 +498,7 @@ test_that("tableCohortIntersect", {
     period_type_concept_id = 0
   )
 
-  cdm <- mockPatientProfiles(
+  cdm <- mockCohortCharacteristics(
     dus_cohort = dus_cohort, person = person,
     comorbidities = comorbidities, medication = medication,
     observation_period = observation_period
@@ -603,7 +603,7 @@ test_that("tableTabletIntersect", {
     period_type_concept_id = 0
   )
 
-  cdm <- mockPatientProfiles(
+  cdm <- mockCohortCharacteristics(
     dus_cohort = dus_cohort, person = person,
     observation_period = observation_period,
     visit_occurrence = visit_ocurrence

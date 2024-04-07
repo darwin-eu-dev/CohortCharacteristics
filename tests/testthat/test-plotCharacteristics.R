@@ -49,7 +49,7 @@ test_that("test plot", {
     period_type_concept_id = 0
   )
 
-  cdm <- mockPatientProfiles(
+  cdm <- mockCohortCharacteristics(
     connectionDetails,
     dus_cohort = dus_cohort, person = person,
     comorbidities = comorbidities, medication = medication,

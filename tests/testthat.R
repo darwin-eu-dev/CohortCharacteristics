@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/reference/test_package.html#special-files
 
 library(testthat)
-library(PatientProfiles)
+library(CohortCharacteristics)
 
-test_check("PatientProfiles")
+test_check("CohortCharacteristics")

@@ -61,7 +61,7 @@ test_that("basic functionality summarise large scale characteristics", {
     )),
     condition_type_concept_id = 32020
   )
-  cdm <- mockPatientProfiles(
+  cdm <- mockCohortCharacteristics(
     connectionDetails,
     person = person, observation_period = observation_period,
     cohort_interest = cohort_interest, drug_exposure = drug_exposure,
@@ -75,7 +75,7 @@ test_that("basic functionality summarise large scale characteristics", {
     concept_code = NA_character_,
     valid_start_date = as.Date("1900-01-01"),
     valid_end_date = as.Date("2099-01-01")
-  ) %>%
+  ) |>
     dplyr::mutate(concept_name = paste0("concept: ", .data$concept_id))
   name <- CDMConnector::inSchema(
     schema = connectionDetails$write_schema, table = "concept"
@@ -86,7 +86,7 @@ test_that("basic functionality summarise large scale characteristics", {
   cdm$concept <- dplyr::tbl(connectionDetails$con, name)
 
   expect_no_error(
-    result <- cdm$cohort_interest %>%
+    result <- cdm$cohort_interest |>
       summariseLargeScaleCharacteristics(
         eventInWindow = c("condition_occurrence", "drug_exposure"),
         minimumFrequency = 0
@@ -100,7 +100,7 @@ test_that("basic functionality summarise large scale characteristics", {
   den <- c(3, 3, 3, 3, 3, 3)
   percentage <- as.character(round((100 * count / den),2))
   for (k in seq_along(conceptId)) {
-    r <- result %>%
+    r <- result |>
       dplyr::filter(
         .data$concept_id == .env$conceptId[k] &
           .data$variable_level == .env$windowName[k] &
@@ -116,7 +116,7 @@ test_that("basic functionality summarise large scale characteristics", {
   }
 
   expect_no_error(
-    result <- cdm$cohort_interest %>%
+    result <- cdm$cohort_interest |>
       summariseLargeScaleCharacteristics(
         episodeInWindow = c("condition_occurrence", "drug_exposure"),
         minimumFrequency = 0
@@ -130,7 +130,7 @@ test_that("basic functionality summarise large scale characteristics", {
   den <- c(3, 3, 3, 3, 3, 3)
   percentage <- as.character(round(100 * count / den, 2))
   for (k in seq_along(conceptId)) {
-    r <- result %>%
+    r <- result |>
       dplyr::filter(
         .data$concept_id == .env$conceptId[k] &
           .data$variable_level == .env$windowName[k] &
@@ -146,10 +146,10 @@ test_that("basic functionality summarise large scale characteristics", {
   }
 
   expect_no_error(
-    result <- cdm$cohort_interest %>%
+    result <- cdm$cohort_interest |>
       addDemographics(
         ageGroup = list(c(0, 24), c(25, 150))
-      ) %>%
+      ) |>
       summariseLargeScaleCharacteristics(
         strata = list("age_group", c("age_group", "sex")),
         episodeInWindow = c("condition_occurrence", "drug_exposure"),
@@ -162,7 +162,7 @@ test_that("basic functionality summarise large scale characteristics", {
     "overall", "0 to 24", "25 to 150", "0 to 24 &&& Female",
     "25 to 150 &&& Male", "0 to 24 &&& Male"
   ) %in% result$strata_level))
-  result <- result %>%
+  result <- result |>
     dplyr::filter(strata_level == "0 to 24 &&& Female")
   result <- result |> visOmopResults::splitAdditional()
   conceptId <- c(317009, 317009, 378253, 378253, 4266367, 4266367)
@@ -172,7 +172,7 @@ test_that("basic functionality summarise large scale characteristics", {
   den <- c(1, 1, 1, 1, 1, 1)
   percentage <- as.character(round(100 * count / den, 2))
   for (k in seq_along(conceptId)) {
-    r <- result %>%
+    r <- result |>
       dplyr::filter(
         .data$concept_id == .env$conceptId[k] &
           .data$variable_level == .env$windowName[k] &
@@ -190,7 +190,7 @@ test_that("basic functionality summarise large scale characteristics", {
   expect_true(inherits(result, "summarised_result"))
 
   expect_no_error(
-    result <- cdm$cohort_interest %>%
+    result <- cdm$cohort_interest |>
       summariseLargeScaleCharacteristics(
         episodeInWindow = c("condition_occurrence", "drug_exposure"),
         minimumFrequency = 0, excludedCodes = 317009
@@ -263,7 +263,7 @@ test_that("basic functionality add large scale characteristics", {
     )),
     condition_type_concept_id = 32020
   )
-  cdm <- mockPatientProfiles(
+  cdm <- mockCohortCharacteristics(
     connectionDetails,
     person = person, observation_period = observation_period,
     cohort_interest = cohort_interest, drug_exposure = drug_exposure,
@@ -277,7 +277,7 @@ test_that("basic functionality add large scale characteristics", {
     concept_code = NA_character_,
     valid_start_date = as.Date("1900-01-01"),
     valid_end_date = as.Date("2099-01-01")
-  ) %>%
+  ) |>
     dplyr::mutate(concept_name = paste0("concept: ", .data$concept_id))
   name <- CDMConnector::inSchema(
     schema = connectionDetails$write_schema, table = "concept"
@@ -288,8 +288,8 @@ test_that("basic functionality add large scale characteristics", {
   cdm$concept <- dplyr::tbl(connectionDetails$con, name)
 
   expect_no_error(
-    result <- cdm$cohort_interest %>%
-      dplyr::filter(.data$cohort_definition_id == 1) %>%
+    result <- cdm$cohort_interest |>
+      dplyr::filter(.data$cohort_definition_id == 1) |>
       addLargeScaleCharacteristics(
         window = list(c(0, 0), c(-Inf, -366)),
         eventInWindow = c("condition_occurrence", "drug_exposure"),
@@ -304,14 +304,14 @@ test_that("basic functionality add large scale characteristics", {
     column <- paste0("lsc_", windowName, "_", conceptId[k])
     expect_true(column %in% colnames(result))
     expect_equal(
-      result %>% dplyr::pull(dplyr::all_of(column)) %>% sum(),
+      result |> dplyr::pull(dplyr::all_of(column)) |> sum(),
       count[k]
     )
   }
 
   expect_no_error(
-    result <- cdm$cohort_interest %>%
-      dplyr::filter(.data$cohort_definition_id == 1) %>%
+    result <- cdm$cohort_interest |>
+      dplyr::filter(.data$cohort_definition_id == 1) |>
       addLargeScaleCharacteristics(
         window = list(c(0, 0), c(-Inf, -366)),
         episodeInWindow = c("condition_occurrence", "drug_exposure"),
@@ -325,14 +325,14 @@ test_that("basic functionality add large scale characteristics", {
   for (k in seq_along(conceptId)) {
     expect_true(cols[k] %in% colnames(result))
     expect_equal(
-      result %>% dplyr::pull(dplyr::all_of(cols[k])) %>% sum(),
+      result |> dplyr::pull(dplyr::all_of(cols[k])) |> sum(),
       count[k]
     )
   }
 
   expect_no_error(
-    result2 <- cdm$cohort_interest %>%
-      dplyr::filter(.data$cohort_definition_id == 1) %>%
+    result2 <- cdm$cohort_interest |>
+      dplyr::filter(.data$cohort_definition_id == 1) |>
       addLargeScaleCharacteristics(
         window = list(c(0, 0), c(-Inf, -366)),
         episodeInWindow = c("condition_occurrence", "drug_exposure"),
@@ -340,19 +340,19 @@ test_that("basic functionality add large scale characteristics", {
       )
   )
   expect_identical(
-    result %>%
-      dplyr::select(dplyr::all_of(sort(colnames(result)))) %>%
-      dplyr::collect() %>%
+    result |>
+      dplyr::select(dplyr::all_of(sort(colnames(result)))) |>
+      dplyr::collect() |>
       dplyr::arrange(.data$cohort_start_date),
-    result2 %>%
-      dplyr::select(dplyr::all_of(sort(colnames(result2)))) %>%
-      dplyr::collect() %>%
+    result2 |>
+      dplyr::select(dplyr::all_of(sort(colnames(result2)))) |>
+      dplyr::collect() |>
       dplyr::arrange(.data$cohort_start_date)
   )
 
   expect_no_error(
-    result3 <- cdm$cohort_interest %>%
-      dplyr::filter(.data$cohort_definition_id == 1) %>%
+    result3 <- cdm$cohort_interest |>
+      dplyr::filter(.data$cohort_definition_id == 1) |>
       addLargeScaleCharacteristics(
         window = list(c(0, 0), c(-Inf, -366)),
         episodeInWindow = c("condition_occurrence", "drug_exposure"),
@@ -365,8 +365,8 @@ test_that("basic functionality add large scale characteristics", {
   expect_false(any(noCols %in% colnames(result3)))
 
   expect_no_error(
-    result4 <- cdm$cohort_interest %>%
-      dplyr::filter(.data$cohort_definition_id == 1) %>%
+    result4 <- cdm$cohort_interest |>
+      dplyr::filter(.data$cohort_definition_id == 1) |>
       addLargeScaleCharacteristics(
         window = list(c(0, 0), c(-Inf, -366)),
         episodeInWindow = c("condition_occurrence", "drug_exposure"),
