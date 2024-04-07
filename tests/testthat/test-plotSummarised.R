@@ -58,8 +58,8 @@ test_that("plotCohortTiming, boxplot", {
 
   # strata
   cdm$table <- cdm$table |>
-    addAge(ageGroup = list(c(0, 40), c(41, 150))) |>
-    addSex() |>
+    PatientProfiles::addAge(ageGroup = list(c(0, 40), c(41, 150))) |>
+    PatientProfiles::addSex() |>
     dplyr::compute(name = "table", temporary = FALSE) |>
     omopgenerics::newCohortTable()
   timing3 <- summariseCohortTiming(cdm$table,
@@ -138,7 +138,7 @@ test_that("plotCohortTiming, density", {
   # expect_null(density2$labels$fill)
 
   timing2 <- summariseCohortTiming(cdm$table,
-                                   timing = character(),
+                                   estimates = character(),
                                    density = TRUE)
   density4 <- plotCohortTiming(timing2,
                                plotType = "density",
@@ -150,8 +150,8 @@ test_that("plotCohortTiming, density", {
 
   # strata
   cdm$table <- cdm$table |>
-    addAge(ageGroup = list(c(0, 40), c(41, 150))) |>
-    addSex() |>
+    PatientProfiles::addAge(ageGroup = list(c(0, 40), c(41, 150))) |>
+    PatientProfiles::addSex() |>
     dplyr::compute(name = "table", temporary = FALSE) |>
     omopgenerics::newCohortTable()
   timing3 <- summariseCohortTiming(cdm$table,
@@ -231,8 +231,8 @@ test_that("plotCohortOverlap", {
   #                                    .data$cohort_name_comparator %in% c("cohort_1", "cohort_2"))) == 3)
   # strata ----
   cdm$table <- cdm$table |>
-    addAge(ageGroup = list(c(0,40), c(41,150))) |>
-    addSex() |>
+    PatientProfiles::addAge(ageGroup = list(c(0,40), c(41,150))) |>
+    PatientProfiles::addSex() |>
     dplyr::compute(name = "table", temporary = FALSE) |>
     omopgenerics::newCohortTable()
 

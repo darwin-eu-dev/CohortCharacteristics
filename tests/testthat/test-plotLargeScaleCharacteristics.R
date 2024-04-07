@@ -84,7 +84,7 @@ test_that("Function returns a ggplot object", {
 
 
   test_data <- cdm$cohort_interest |>
-    addDemographics(
+    PatientProfiles::addDemographics(
       ageGroup = list(c(0, 24), c(25, 150))
     ) |>
     summariseLargeScaleCharacteristics(

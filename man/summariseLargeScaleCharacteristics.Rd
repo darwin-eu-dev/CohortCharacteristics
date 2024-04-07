@@ -16,8 +16,7 @@ summariseLargeScaleCharacteristics(
   censorDate = NULL,
   includeSource = FALSE,
   minimumFrequency = 0.005,
-  excludedCodes = c(0),
-  cdm = lifecycle::deprecated()
+  excludedCodes = c(0)
 )
 }
 \arguments{
@@ -42,8 +41,6 @@ or a column date of x}
 \item{minimumFrequency}{Minimum frequency covariates to report.}
 
 \item{excludedCodes}{Codes excluded.}
-
-\item{cdm}{A cdm reference.}
 }
 \value{
 The output of this function is a `ResultSummary` containing the

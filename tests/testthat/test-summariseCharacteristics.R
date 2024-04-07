@@ -78,7 +78,8 @@ test_that("test summariseCharacteristics", {
     cohortIntersect = list(
       "Medications" = list(
         targetCohortTable = "medication", value = "flag", window = c(-365, 0)
-      ), "Comorbidities" = list(
+      ),
+      "Comorbidities" = list(
         targetCohortTable = "comorbidities", value = "flag", window = c(-Inf, 0)
       )
     )

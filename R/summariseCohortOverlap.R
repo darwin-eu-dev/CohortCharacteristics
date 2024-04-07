@@ -63,7 +63,7 @@ summariseCohortOverlap <- function(cohort,
     }
   }
 
-  cdm[[name]] <- CohortCharacteristics::addCohortName(cdm[[name]]) |>
+  cdm[[name]] <- PatientProfiles::addCohortName(cdm[[name]]) |>
     dplyr::filter(.data$cohort_definition_id %in% .env$cohortId) |>
     dplyr::compute()
 

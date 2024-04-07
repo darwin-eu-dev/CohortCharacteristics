@@ -190,8 +190,8 @@ test_that("tableCohortOverlap", {
                     colnames(fxResult1$body$dataset)))
 
   cdm$table <- cdm$table |>
-    addAge(ageGroup = list(c(0,40), c(41,100))) |>
-    addSex() |>
+    PatientProfiles::addAge(ageGroup = list(c(0,40), c(41,100))) |>
+    PatientProfiles::addSex() |>
     dplyr::compute(name = "table", temporary = FALSE) |>
     omopgenerics::newCohortTable()
 
@@ -310,8 +310,8 @@ test_that("tableCohortTiming", {
 
   # strata ----
   cdm$table <- cdm$table |>
-    addAge(ageGroup = list(c(0, 40), c(41, 150))) |>
-    addSex() |>
+    PatientProfiles::addAge(ageGroup = list(c(0, 40), c(41, 150))) |>
+    PatientProfiles::addSex() |>
     dplyr::compute(name = "table", temporary = FALSE) |>
     omopgenerics::newCohortTable()
   timing2 <- summariseCohortTiming(cdm$table,

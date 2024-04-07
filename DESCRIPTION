@@ -67,7 +67,7 @@ Imports:
     visOmopResults (>= 0.2.0),
     lifecycle,
     purrr,
-    PatientProfiles
+    PatientProfiles (>= 0.8.0)
 URL: https://darwin-eu-dev.github.io/CohortCharacteristics/
 BugReports: https://github.com/darwin-eu-dev/CohortCharacteristics/issues
 Language: en-US
@@ -76,3 +76,5 @@ Depends:
 Config/testthat/edition: 3
 Config/testthat/parallel: true
 VignetteBuilder: knitr
+Remotes:
+    darwin-eu-dev/PatientProfiles

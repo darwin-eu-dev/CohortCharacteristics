@@ -34,7 +34,7 @@ test_that("test methods against sql test server", {
 
   expect_true(all(c("sex", "age") %in% colnames(cdm$condition_occurrence)))
 
-  cdm$condition_occurrence |> addDemographics(
+  cdm$condition_occurrence |> PatientProfiles::addDemographics(
     age = TRUE,
     ageName = "age",
     ageGroup = NULL,

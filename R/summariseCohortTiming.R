@@ -24,7 +24,7 @@
 #' @param restrictToFirstEntry If TRUE only an individual's first entry per
 #' cohort will be considered. If FALSE all entries per individual will be
 #' considered.
-#' @param timing Summary statistics for timing.
+#' @param estimates Summary statistics for timing.
 #' @param density Get data for density plot.
 #'
 #' @return A summarised result.
@@ -38,22 +38,21 @@
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
 #'
+#' @importFrom dplyr %>%
 summariseCohortTiming <- function(cohort,
                                   cohortId = NULL,
                                   strata = list(),
                                   restrictToFirstEntry = TRUE,
-                                  timing = c("min", "q25",
-                                             "median","q75",
-                                             "max"),
+                                  estimates = c("min", "q25", "median","q75", "max"),
                                   density = FALSE){
-
   # validate inputs
   assertClass(cohort, "cohort_table")
   checkmate::assertNumeric(cohortId, any.missing = FALSE, null.ok = TRUE)
   checkStrata(strata, cohort)
   checkmate::assertTRUE(all(c("cohort_definition_id", "subject_id", "cohort_start_date", "cohort_end_date") %in% colnames(cohort)))
   checkmate::assertLogical(restrictToFirstEntry, any.missing = FALSE, len = 1, null.ok = FALSE)
-  checkmate::assertCharacter(timing, any.missing = FALSE, null.ok = FALSE)
+  checkmate::assertCharacter(estimates, any.missing = FALSE, null.ok = FALSE)
+  timing <- estimates
 
   # add cohort names
   cdm <- omopgenerics::cdmReference(cohort)
@@ -75,7 +74,7 @@ summariseCohortTiming <- function(cohort,
       cli::cli_warn("{paste0(cohortId[indNot], collapse = ', ')} {?is/are} not in the cohort table.")
     }
   }
-  cdm[[name]] <- CohortCharacteristics::addCohortName(cdm[[name]]) |>
+  cdm[[name]] <- PatientProfiles::addCohortName(cdm[[name]]) |>
     dplyr::filter(.data$cohort_definition_id %in% .env$cohortId)
 
   if(isTRUE(restrictToFirstEntry)){
@@ -104,7 +103,7 @@ summariseCohortTiming <- function(cohort,
                                       "cohort_start_date_comparator", "cohort_end_date_comparator",
                                       "subject_id"))),
       by = c("subject_id", unique(strataCols))) |>
-    dplyr::filter(.data$cohort_name_reference != .data$cohort_name_comparator) |>
+    dplyr::filter(.data$cohort_name_reference != .data$cohort_name_comparator) %>% # to be removed
     dplyr::mutate(diff_days = !!CDMConnector::datediff("cohort_start_date",
                                                        "cohort_start_date_comparator",
                                                        interval = "day")) |>
@@ -114,11 +113,14 @@ summariseCohortTiming <- function(cohort,
 
   if (nrow(cohort_timings) > 0 & length(timing) > 0) {
     timingsResult <- cohort_timings |>
-      summariseResult(group = list(c("cohort_name_reference", "cohort_name_comparator")),
-                      includeOverallGroup = FALSE,
-                      strata = strata,
-                      variables = list(diff_days = "diff_days"),
-                      estimates = list(diff_days = timing)) |>
+      PatientProfiles::summariseResult(
+        group = c("cohort_name_reference", "cohort_name_comparator"),
+        includeOverallGroup = FALSE,
+        strata = strata,
+        includeOverallStrata = TRUE,
+        variables = "diff_days",
+        estimates = timing
+      ) |>
       dplyr::mutate(result_type = "cohort_timing",
                     cdm_name = CDMConnector::cdmName(cdm))
   }

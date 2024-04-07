@@ -24,7 +24,7 @@ stratifications.
 cdm <- mockCohortCharacteristics()
 
 cdm$cohort1 |>
-  addSex() |>
+  PatientProfiles::addSex() |>
   summariseCohortCounts(strata = "sex")
 }
 

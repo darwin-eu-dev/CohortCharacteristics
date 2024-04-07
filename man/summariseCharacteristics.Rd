@@ -6,7 +6,6 @@
 \usage{
 summariseCharacteristics(
   cohort,
-  cdm = lifecycle::deprecated(),
   strata = list(),
   demographics = TRUE,
   ageGroup = NULL,
@@ -18,8 +17,6 @@ summariseCharacteristics(
 }
 \arguments{
 \item{cohort}{A cohort in the cdm.}
-
-\item{cdm}{A cdm reference.}
 
 \item{strata}{Stratification list.}
 

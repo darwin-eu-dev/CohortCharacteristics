@@ -57,8 +57,8 @@ test_that("summariseCohortOverlap", {
     unique(overlap2$group_level)))
 
   cdm$table <- cdm$table |>
-    addAge(ageGroup = list(c(0,40), c(41,100))) |>
-    addSex() |>
+    PatientProfiles::addAge(ageGroup = list(c(0,40), c(41,100))) |>
+    PatientProfiles::addSex() |>
     dplyr::compute(name = "table", temporary = FALSE) |>
     omopgenerics::newCohortTable()
 

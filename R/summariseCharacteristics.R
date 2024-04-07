@@ -17,7 +17,6 @@
 #' Summarise characteristics of individuals
 #'
 #' @param cohort A cohort in the cdm.
-#' @param cdm A cdm reference.
 #' @param strata Stratification list.
 #' @param demographics Whether to summarise demographics data.
 #' @param ageGroup A list of age groups.
@@ -60,7 +59,6 @@
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
 summariseCharacteristics <- function(cohort,
-                                     cdm = lifecycle::deprecated(),
                                      strata = list(),
                                      demographics = TRUE,
                                      ageGroup = NULL,
@@ -68,9 +66,6 @@ summariseCharacteristics <- function(cohort,
                                      cohortIntersect = list(),
                                      conceptIntersect = list(),
                                      otherVariables = character()) {
-  if (lifecycle::is_present(cdm)) {
-    lifecycle::deprecate_warn("0.6.0", "summariseCharacteristics(cdm)")
-  }
   # check initial tables
   cdm <- omopgenerics::cdmReference(cohort)
   checkX(cohort)
@@ -206,7 +201,7 @@ summariseCharacteristics <- function(cohort,
       "adding table intersect columns for table: {tableIntersect[[k]]$tableName}"
     )
     # prepare arguments
-    arguments <- formals(.addTableIntersect)
+    arguments <- formals(PatientProfiles:::.addTableIntersect)
     arguments <- updateArguments(arguments, tableIntersect[[k]])
     shortNames <- uniqueVariableName(length(arguments$window))
     fullNames <- names(arguments$window)
@@ -259,7 +254,7 @@ summariseCharacteristics <- function(cohort,
       "adding cohort intersect columns for table: {cohortIntersect[[k]]$targetCohortTable}"
     )
     # prepare arguments
-    arguments <- formals(.addCohortIntersect)
+    arguments <- formals(PatientProfiles:::.addCohortIntersect)
     arguments <- updateArguments(arguments, cohortIntersect[[k]])
 
     # rename windows
@@ -347,7 +342,7 @@ summariseCharacteristics <- function(cohort,
       "adding concept intersect columns for conceptSet {k}/{length(conceptIntersect)}"
     )
     # prepare arguments
-    arguments <- formals(.addConceptIntersect)
+    arguments <- formals(PatientProfiles:::.addConceptIntersect)
     arguments <- updateArguments(arguments, conceptIntersect[[k]])
 
     # rename windows
@@ -395,10 +390,10 @@ summariseCharacteristics <- function(cohort,
   }
 
   # update cohort_names
-  cohort <- cohort |> addCohortName()
+  cohort <- cohort |> PatientProfiles::addCohortName()
 
   # detect other variables
-  x <- variableTypes(cohort |> dplyr::select(dplyr::all_of(otherVariables)))
+  x <- PatientProfiles::variableTypes(cohort |> dplyr::select(dplyr::all_of(otherVariables)))
   datesVariables <- x |>
     dplyr::filter(.data$variable_type == "date") |>
     dplyr::pull("variable_name")
@@ -426,7 +421,6 @@ summariseCharacteristics <- function(cohort,
       binary = binaryVariables,
       categorical = categoricalVariables
     )
-
   variables <- variables[lengths(variables) > 0]
 
   cli::cli_alert_info("summarising data")
@@ -497,7 +491,7 @@ summariseCharacteristics <- function(cohort,
 #' cdm <- mockCohortCharacteristics()
 #'
 #' cdm$cohort1 |>
-#'   addSex() |>
+#'   PatientProfiles::addSex() |>
 #'   summariseCohortCounts(strata = "sex")
 #' }
 #'

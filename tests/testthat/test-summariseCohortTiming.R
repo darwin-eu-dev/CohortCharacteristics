@@ -44,8 +44,7 @@ test_that("summariseCohortTiming", {
 
   timing2 <- summariseCohortTiming(cdm$table,
                                     restrictToFirstEntry = FALSE,
-                                    timing = c("min",
-                                               "max"))
+                                    estimates = c("min", "max"))
   expect_equal(omopgenerics::resultColumns("summarised_result"),
                colnames(timing2))
   expect_false(timing2$estimate_value[5] == timing2$estimate_value[6])
@@ -54,7 +53,7 @@ test_that("summariseCohortTiming", {
 
   timing3 <- summariseCohortTiming(cdm$table,
                                    restrictToFirstEntry = FALSE,
-                                   timing = character(),
+                                   estimates = character(),
                                    density = TRUE)
   expect_true(all(c("density", "settings") %in%
                     unique(timing3$variable_name)))
@@ -67,8 +66,8 @@ test_that("summariseCohortTiming", {
 
   ## Strata and cohortId----
   cdm$table <- cdm$table |>
-    addAge(ageGroup = list(c(0,40), c(41, 150))) |>
-    addSex() |>
+    PatientProfiles::addAge(ageGroup = list(c(0,40), c(41, 150))) |>
+    PatientProfiles::addSex() |>
     dplyr::compute(name = "table", temporary = FALSE) |>
     omopgenerics::newCohortTable()
   timing4 <- summariseCohortTiming(cdm$table,
@@ -79,7 +78,7 @@ test_that("summariseCohortTiming", {
   # add density tests
   timing5 <- summariseCohortTiming(cdm$table,
                                    strata = list("age_group", c("age_group", "sex")),
-                                   timing = character(),
+                                   estimates = character(),
                                    density = TRUE)
   timing5 <- timing5 |> dplyr::filter(.data$variable_name != "settings")
   expect_true(all(unique(timing5$estimate_name[timing5$strata_name == "age_group &&& sex"]) %in% c("x", "y", "count")))

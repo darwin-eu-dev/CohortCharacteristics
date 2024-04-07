@@ -530,7 +530,7 @@ checkSignificantDecimals <- function(significantDecimals) {
 #' @noRd
 checkTableIntersect <- function(tableIntersect, cdm) {
   checkmate::assertList(tableIntersect)
-  arguments <- getArguments(addTableIntersect)
+  arguments <- getArguments(PatientProfiles::addTableIntersect)
   tableIntersect <- assertInputIntersect(
     inputList = tableIntersect,
     possibleArguments = c(arguments$all, "value"),
@@ -627,7 +627,7 @@ getArguments <- function(fun) {
 #' @noRd
 checkCohortIntersect <- function(cohortIntersect, cdm) {
   checkmate::assertList(cohortIntersect)
-  arguments <- getArguments(.addCohortIntersect)
+  arguments <- getArguments(PatientProfiles:::.addCohortIntersect)
   cohortIntersect <- assertInputIntersect(
     inputList = cohortIntersect,
     possibleArguments = c(arguments$all, "value"),
@@ -641,7 +641,7 @@ checkCohortIntersect <- function(cohortIntersect, cdm) {
 #' @noRd
 checkConceptIntersect <- function(conceptIntersect, cdm) {
   checkmate::assertList(conceptIntersect)
-  arguments <- getArguments(.addConceptIntersect)
+  arguments <- getArguments(PatientProfiles:::.addConceptIntersect)
   conceptIntersect <- assertInputIntersect(
     inputList = conceptIntersect,
     possibleArguments = c(arguments$all, "value"),

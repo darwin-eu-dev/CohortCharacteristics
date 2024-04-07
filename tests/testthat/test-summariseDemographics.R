@@ -10,7 +10,7 @@ test_that("test summariseCharacteristics", {
   ))
 
   cdm$cohort1 <- cdm$cohort1 |>
-    CohortCharacteristics::addSex() |>
+    PatientProfiles::addSex() |>
     dplyr::compute()
 
   expect_no_error(
