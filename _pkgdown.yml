@@ -14,5 +14,6 @@ reference:
 - contents:
   - matches("plot")
 - subtitle: Helper functions
+- contents:
   - macthes("options|mock")
 
