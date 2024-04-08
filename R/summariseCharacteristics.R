@@ -340,7 +340,7 @@ summariseCharacteristics <- function(cohort,
       "adding concept intersect columns for conceptSet {k}/{length(conceptIntersect)}"
     )
     # prepare arguments
-    arguments <- formals(PatientProfiles:::.addConceptIntersect)
+    arguments <- formals(addConceptIntersect)
     arguments <- updateArguments(arguments, conceptIntersect[[k]])
 
     # rename windows
@@ -363,7 +363,7 @@ summariseCharacteristics <- function(cohort,
 
     # add intersect
     cohort <- cohort |>
-      PatientProfiles:::.addConceptIntersect(
+      addConceptIntersect(
         conceptSet = arguments$conceptSet,
         indexDate = arguments$indexDate,
         censorDate = arguments$censorDate,
@@ -685,7 +685,7 @@ updateArguments <- function(arguments, provided) {
   if (!is.list(arguments[["window"]])) {
     arguments[["window"]] <- list(arguments[["window"]])
   }
-  if (!"targetCohortTable" %in% names(arguments)) {
+  if ("tableName" %in% names(arguments)) {
     values <- c("flag", "count", "date", "days")
     arguments$flag <- FALSE
     arguments$count <- FALSE
@@ -743,7 +743,6 @@ updateDic <- function(value,
     )
 }
 
-# Internal function for addCohort intersect
 addCohortIntersect <- function(x,
                                targetCohortTable,
                                targetCohortId = NULL,
@@ -811,3 +810,64 @@ addCohortIntersect <- function(x,
   return(x)
 }
 
+addConceptIntersect <- function(x,
+                                conceptSet,
+                                indexDate = "cohort_start_date",
+                                censorDate = NULL,
+                                targetStartDate = "event_start_date",
+                                targetDate = "event_start_date",
+                                targetEndDate = "event_end_date",
+                                window = list(c(0, Inf)),
+                                order = "first",
+                                value,
+                                nameStyle = "{value}_{concept_name}_{window_name}") {
+  if ("flag" %in% value) {
+    x <- x |>
+      PatientProfiles::addConceptIntersectFlag(
+        conceptSet = conceptSet,
+        indexDate = indexDate,
+        censorDate = censorDate,
+        targetStartDate = targetStartDate,
+        targetEndDate = targetEndDate,
+        window = window,
+        nameStyle = nameStyle
+      )
+  }
+  if ("count" %in% value) {
+    x <- x |>
+      PatientProfiles::addConceptIntersectCount(
+        conceptSet = conceptSet,
+        indexDate = indexDate,
+        censorDate = censorDate,
+        targetStartDate = targetStartDate,
+        targetEndDate = targetEndDate,
+        window = window,
+        nameStyle = nameStyle
+      )
+  }
+  if ("date" %in% value) {
+    x <- x |>
+      PatientProfiles::addConceptIntersectDate(
+        conceptSet = conceptSet,
+        indexDate = indexDate,
+        censorDate = censorDate,
+        targetDate = targetStartDate,
+        order = order,
+        window = window,
+        nameStyle = nameStyle
+      )
+  }
+  if ("days" %in% value) {
+    x <- x |>
+      PatientProfiles::addConceptIntersectDays(
+        conceptSet = conceptSet,
+        indexDate = indexDate,
+        censorDate = censorDate,
+        targetDate = targetStartDate,
+        order = order,
+        window = window,
+        nameStyle = nameStyle
+      )
+  }
+  return(x)
+}

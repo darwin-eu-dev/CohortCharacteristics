@@ -563,7 +563,7 @@ checkCohortIntersect <- function(cohortIntersect, cdm) {
 #' @noRd
 checkConceptIntersect <- function(conceptIntersect, cdm) {
   checkmate::assertList(conceptIntersect)
-  arguments <- getArguments(PatientProfiles:::.addConceptIntersect)
+  arguments <- getArguments(addConceptIntersect)
   conceptIntersect <- assertInputIntersect(
     inputList = conceptIntersect,
     possibleArguments = c(arguments$all, "value"),
