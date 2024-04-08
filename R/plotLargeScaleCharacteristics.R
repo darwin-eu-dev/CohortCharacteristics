@@ -58,13 +58,29 @@
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
 #'
+
 plotLargeScaleCharacteristics <- function(data,
-                                          xAxis = "variable_name",
-                                          yAxis = "estimate_value",
-                                          facetVarX = c("variable_name"),
-                                          facetVarY = c("group_level", "strata_level", "estimate_name"),
-                                          colorVars = "variable_level",
-                                          vertical_x = FALSE) {
+                                          position   = "horizontal",
+                                          facet      = NULL,
+                                          colorVars  = "variable_level") {
+
+  # Select percentage values of large scale characteristics
+  data <- data |> dplyr::filter(.data$estimate_name == "percentage")
+
+  # Position of the plot
+  x <- positionFunction(position)
+  xAxis <- x$xAxis
+  yAxis <- x$yAxis
+
+  # Facet of the plot
+  x <- facetFunction(facet)
+  facetVarX <- x$facetVarX
+  facetVarY <- x$facetVarY
+
+  # Rename facet variables
+  facetVarX <- checkFacetNames(facetVarX)
+  facetVarY <- checkFacetNames(facetVarY)
+
   return(plotfunction(data,
     xAxis,
     yAxis,
@@ -72,6 +88,89 @@ plotLargeScaleCharacteristics <- function(data,
     facetVarX,
     facetVarY,
     colorVars,
-    vertical_x = vertical_x
+    vertical_x = FALSE
   ))
 }
+
+positionFunction <- function(position){
+  if(position == "horizontal"){
+    xAxis = "estimate_value"
+    yAxis = "variable_name"
+  }else if(position == "vertical"){
+    xAxis = "variable_name"
+    yAxis = "estimate_value"
+  }else{
+    stop(sprintf("'position' input must be either 'horizontal' or 'vertical'."))
+  }
+  return(list("xAxis" = xAxis, "yAxis" = yAxis))
+}
+
+facetFunction <- function(facet){
+  checkmate::assertTRUE(inherits(facet, c("formula","character")))
+
+  if(class(facet) == "formula"){
+    facet <- Reduce(paste, deparse(facet))
+  }
+
+  return(extractFacetVar(facet))
+}
+
+extractFacetVar <- function(facet){
+
+  if(unique(stringr::str_detect(facet,"~"))){
+    # Separate x and y from the formula
+    facetVarX <- gsub("~.*","",facet)
+    facetVarY <- gsub(".*~","",facet)
+
+    # Remove
+    facetVarX <- stringr::str_split(facetVarX, pattern = "\\+")[[1]]
+    facetVarY <- stringr::str_split(facetVarY, pattern = "\\+")[[1]]
+  }else{
+    if(length(facet) == 1){
+      facetVarX <- facet
+      facetVarY <- ""
+    }else{
+      # Assign "randomly" the positions
+      horizontal <- 1:round(length(facet)/2)
+      vertical   <- (round(length(facet)/2)+1):length(facet)
+
+      facetVarX <- facet[horizontal]
+      facetVarY <- facet[vertical]
+    }
+  }
+
+  return(list("facetVarX" = facetVarX, "facetVarY" = facetVarY))
+}
+
+checkFacetNames <- function(facetVar){
+  if(!is.null(facetVar)){
+    facetVarX[facetVar == "cohort_name"] <- "group_level"
+    facetVarX[facetVar == "window_name"] <- "variable_level"
+
+    # Remove spaces at the beginning or at the end
+    facetVar <- gsub(" $","",facetVar)
+    facetVar <- gsub("^ ","",facetVar)
+
+    # Replace empty spaces with "_"
+    facetVar <- gsub(" ","_",facetVar)
+
+    # Replace empty or "." facet by NULL
+    if(facetVar %in% c("",".",as.character())){
+      facetVar <- NULL
+    }
+
+    # Turn to lower case
+    facetVar <- tolower(facetVar)
+
+    # Check correct column names
+    x <- unique(facetVar %in% c(NULL, "cdm_name", "group_level", "strata_level", "variable_level"))
+
+    if(c("FALSE") %in% as.character(x)){
+      stop(sprintf(paste0(facetVar[!x]," is not a valid facet variable")))
+    }
+  }
+  return(facetVar)
+}
+
+
+
