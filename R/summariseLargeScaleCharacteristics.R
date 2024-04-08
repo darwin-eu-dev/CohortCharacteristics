@@ -82,7 +82,10 @@ summariseLargeScaleCharacteristics <- function(cohort,
   checkStrata(strata, cohort)
   checkWindow(window)
   tables <- c(
-    PatientProfiles:::namesTable$table_name, paste("ATC", c("1st", "2nd", "3rd", "4th", "5th"))
+    "visit_occurrence", "condition_occurrence", "drug_exposure",
+    "procedure_occurrence", "device_exposure", "measurement", "observation",
+    "drug_era", "condition_era", "specimen",
+    paste("ATC", c("1st", "2nd", "3rd", "4th", "5th"))
   )
   checkmate::assertSubset(eventInWindow, tables)
   checkmate::assertSubset(episodeInWindow, tables)

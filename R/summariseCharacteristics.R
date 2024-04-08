@@ -254,7 +254,7 @@ summariseCharacteristics <- function(cohort,
       "adding cohort intersect columns for table: {cohortIntersect[[k]]$targetCohortTable}"
     )
     # prepare arguments
-    arguments <- formals(PatientProfiles:::.addCohortIntersect)
+    arguments <- formals(addCohortIntersect)
     arguments <- updateArguments(arguments, cohortIntersect[[k]])
 
     # rename windows
@@ -305,19 +305,17 @@ summariseCharacteristics <- function(cohort,
 
     # add intersect
     cohort <- cohort |>
-      PatientProfiles:::.addCohortIntersect(
+      addCohortIntersect(
         targetCohortTable = arguments$targetCohortTable,
         targetCohortId = arguments$targetCohortId,
         indexDate = arguments$indexDate,
         censorDate = arguments$censorDate,
         targetStartDate = arguments$targetStartDate,
+        targetDate = arguments$targetDate,
         targetEndDate = arguments$targetEndDate,
         window = arguments$window,
         order = arguments$order,
-        flag = arguments$flag,
-        count = arguments$count,
-        date = arguments$date,
-        days = arguments$days,
+        value = arguments$value,
         nameStyle = "{value}_{cohort_name}_{window_name}"
       )
 
@@ -406,7 +404,7 @@ summariseCharacteristics <- function(cohort,
         dplyr::select(dplyr::all_of(x)) |>
         dplyr::distinct() |>
         dplyr::pull() |>
-        PatientProfiles:::binaryVariable()
+        binaryVariable()
     }) |>
       unlist()
   ]
@@ -474,6 +472,15 @@ summariseCharacteristics <- function(cohort,
   cli::cli_alert_success("summariseCharacteristics finished!")
 
   return(results)
+}
+
+binaryVariable <- function(x) {
+  u <- unique(x)
+  if (length(u) <= 3) {
+    u <- as.character(u)
+    return(all(u %in% c("0", "1", NA_character_)))
+  }
+  return(FALSE)
 }
 
 #' Summarise counts for each different cohort. You can add a list of
@@ -678,16 +685,18 @@ updateArguments <- function(arguments, provided) {
   if (!is.list(arguments[["window"]])) {
     arguments[["window"]] <- list(arguments[["window"]])
   }
-  values <- c("flag", "count", "date", "days")
-  arguments$flag <- FALSE
-  arguments$count <- FALSE
-  arguments$date <- FALSE
-  arguments$days <- FALSE
-  id <- arguments$value[arguments$value %in% values]
-  if (length(id) > 0) {
-    arguments[[id]] <- TRUE
+  if (!"targetCohortTable" %in% names(arguments)) {
+    values <- c("flag", "count", "date", "days")
+    arguments$flag <- FALSE
+    arguments$count <- FALSE
+    arguments$date <- FALSE
+    arguments$days <- FALSE
+    id <- arguments$value[arguments$value %in% values]
+    if (length(id) > 0) {
+      arguments[[id]] <- TRUE
+    }
+    arguments$field <- arguments$value[!arguments$value %in% values]
   }
-  arguments$field <- arguments$value[!arguments$value %in% values]
   names(arguments$window) <- getWindowNames(arguments$window)
   return(arguments)
 }
@@ -733,3 +742,72 @@ updateDic <- function(value,
       "window", "value", "result_type"
     )
 }
+
+# Internal function for addCohort intersect
+addCohortIntersect <- function(x,
+                               targetCohortTable,
+                               targetCohortId = NULL,
+                               indexDate = "cohort_start_date",
+                               censorDate = NULL,
+                               targetStartDate = "cohort_start_date",
+                               targetDate = "cohort_start_date",
+                               targetEndDate = "cohort_end_date",
+                               window = list(c(0, Inf)),
+                               order = "first",
+                               value,
+                               nameStyle = "{value}_{cohort_name}_{window_name}") {
+  if ("flag" %in% value) {
+    x <- x |>
+      PatientProfiles::addCohortIntersectFlag(
+        targetCohortTable = targetCohortTable,
+        targetCohortId = targetCohortId,
+        indexDate = indexDate,
+        censorDate = censorDate,
+        targetStartDate = targetStartDate,
+        targetEndDate = targetEndDate,
+        window = window,
+        nameStyle = nameStyle
+      )
+  }
+  if ("count" %in% value) {
+    x <- x |>
+      PatientProfiles::addCohortIntersectCount(
+        targetCohortTable = targetCohortTable,
+        targetCohortId = targetCohortId,
+        indexDate = indexDate,
+        censorDate = censorDate,
+        targetStartDate = targetStartDate,
+        targetEndDate = targetEndDate,
+        window = window,
+        nameStyle = nameStyle
+      )
+  }
+  if ("date" %in% value) {
+    x <- x |>
+      PatientProfiles::addCohortIntersectDate(
+        targetCohortTable = targetCohortTable,
+        targetCohortId = targetCohortId,
+        indexDate = indexDate,
+        censorDate = censorDate,
+        targetDate = targetStartDate,
+        order = order,
+        window = window,
+        nameStyle = nameStyle
+      )
+  }
+  if ("days" %in% value) {
+    x <- x |>
+      PatientProfiles::addCohortIntersectDays(
+        targetCohortTable = targetCohortTable,
+        targetCohortId = targetCohortId,
+        indexDate = indexDate,
+        censorDate = censorDate,
+        targetDate = targetStartDate,
+        order = order,
+        window = window,
+        nameStyle = nameStyle
+      )
+  }
+  return(x)
+}
+
