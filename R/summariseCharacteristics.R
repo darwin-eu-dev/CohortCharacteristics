@@ -201,7 +201,7 @@ summariseCharacteristics <- function(cohort,
       "adding table intersect columns for table: {tableIntersect[[k]]$tableName}"
     )
     # prepare arguments
-    arguments <- formals(PatientProfiles:::.addTableIntersect)
+    arguments <- formals(addTableIntersect)
     arguments <- updateArguments(arguments, tableIntersect[[k]])
     shortNames <- uniqueVariableName(length(arguments$window))
     fullNames <- names(arguments$window)
@@ -217,7 +217,7 @@ summariseCharacteristics <- function(cohort,
 
     # add intersect
     cohort <- cohort |>
-      PatientProfiles:::.addTableIntersect(
+      addTableIntersect(
         tableName = arguments$tableName,
         window = arguments$window,
         indexDate = arguments$indexDate,
@@ -225,12 +225,9 @@ summariseCharacteristics <- function(cohort,
         order = arguments$order,
         targetStartDate = arguments$targetStartDate,
         targetEndDate = arguments$targetEndDate,
-        flag = arguments$flag,
-        count = arguments$count,
-        date = arguments$date,
-        days = arguments$days,
-        field = arguments$field,
-        nameStyle = "{value}_{table_name}_{window_name}"
+        targetDate = arguments$targetDate,
+        value = arguments$value,
+        nameStyle = arguments$nameStyle
       )
 
     # update summary settings
@@ -313,10 +310,11 @@ summariseCharacteristics <- function(cohort,
         targetStartDate = arguments$targetStartDate,
         targetDate = arguments$targetDate,
         targetEndDate = arguments$targetEndDate,
+        targetDate = arguments$targetDate,
         window = arguments$window,
         order = arguments$order,
         value = arguments$value,
-        nameStyle = "{value}_{cohort_name}_{window_name}"
+        nameStyle = arguments$nameStyle
       )
 
     # update summary settings
@@ -370,9 +368,10 @@ summariseCharacteristics <- function(cohort,
         window = arguments$window,
         targetStartDate = arguments$targetStartDate,
         targetEndDate = arguments$targetEndDate,
+        targetDate = arguments$targetDate,
         order = arguments$order,
         value = arguments$value,
-        nameStyle = "{value}_{concept_name}_{window_name}"
+        nameStyle = arguments$nameStyle
       )
 
     # update summary settings
@@ -788,7 +787,7 @@ addCohortIntersect <- function(x,
         targetCohortId = targetCohortId,
         indexDate = indexDate,
         censorDate = censorDate,
-        targetDate = targetStartDate,
+        targetDate = targetDate,
         order = order,
         window = window,
         nameStyle = nameStyle
@@ -801,7 +800,7 @@ addCohortIntersect <- function(x,
         targetCohortId = targetCohortId,
         indexDate = indexDate,
         censorDate = censorDate,
-        targetDate = targetStartDate,
+        targetDate = targetDate,
         order = order,
         window = window,
         nameStyle = nameStyle
@@ -851,7 +850,7 @@ addConceptIntersect <- function(x,
         conceptSet = conceptSet,
         indexDate = indexDate,
         censorDate = censorDate,
-        targetDate = targetStartDate,
+        targetDate = targetDate,
         order = order,
         window = window,
         nameStyle = nameStyle
@@ -863,7 +862,69 @@ addConceptIntersect <- function(x,
         conceptSet = conceptSet,
         indexDate = indexDate,
         censorDate = censorDate,
-        targetDate = targetStartDate,
+        targetDate = targetDate,
+        order = order,
+        window = window,
+        nameStyle = nameStyle
+      )
+  }
+  return(x)
+}
+
+addTableIntersect <- function(x,
+                              tableName,
+                              indexDate = "cohort_start_date",
+                              censorDate = NULL,
+                              window = list(c(0, Inf)),
+                              targetStartDate = startDateColumn(tableName),
+                              targetDate = startDateColumn(tableName),
+                              targetEndDate = endDateColumn(tableName),
+                              order = "first",
+                              value,
+                              nameStyle = "{value}_{table_name}_{window_name}") {
+  if ("flag" %in% value) {
+    x <- x |>
+      PatientProfiles::addTableIntersectFlag(
+        tableName = tableName,
+        indexDate = indexDate,
+        censorDate = censorDate,
+        targetStartDate = targetStartDate,
+        targetEndDate = targetEndDate,
+        window = window,
+        nameStyle = nameStyle
+      )
+  }
+  if ("count" %in% value) {
+    x <- x |>
+      PatientProfiles::addTableIntersectCount(
+        tableName = tableName,
+        indexDate = indexDate,
+        censorDate = censorDate,
+        targetStartDate = targetStartDate,
+        targetEndDate = targetEndDate,
+        window = window,
+        nameStyle = nameStyle
+      )
+  }
+  if ("date" %in% value) {
+    x <- x |>
+      PatientProfiles::addTableIntersectDate(
+        tableName = tableName,
+        indexDate = indexDate,
+        censorDate = censorDate,
+        targetDate = targetDate,
+        order = order,
+        window = window,
+        nameStyle = nameStyle
+      )
+  }
+  if ("days" %in% value) {
+    x <- x |>
+      PatientProfiles::addTableIntersectDays(
+        tableName = tableName,
+        indexDate = indexDate,
+        censorDate = censorDate,
+        targetDate = targetDate,
         order = order,
         window = window,
         nameStyle = nameStyle
