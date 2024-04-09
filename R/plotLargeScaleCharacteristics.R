@@ -19,14 +19,16 @@
 #' `r lifecycle::badge("experimental")`
 #'
 #' @param data output of summariseLargeScaleCharacteristics.
-#' @param xAxis what to plot on x axis, default as variable_name column.
-#' Has to be a column in data.
-#' @param yAxis what to plot on y axis, default as estimate_value column.
-#' Has to be a column in data. One of the xAxis or yAxis has to be estimate_value.
-#' @param facetVarX column in data to facet by on horizontal axis
-#' @param facetVarY column in data to facet by on vertical axis
-#' @param colorVars column in data to color by.
-#' @param vertical_x whether to display x axis string vertically.
+#' @param position if set to *horizontal* the horizontal axis will plot "variable_name" column and the vertical axis "estimate_value" column.
+#' If *vertical*, axis will be the other way around.
+#' @param splitStrata boolean variable (TRUE/FALSE)
+#' @param facet columns in data to facet. If the facet position wants to be specified, use the formula class for the input
+#' (e.g., strata + table_name ~ group_level + cdm_name). Variables before "~" will be facet by on horizontal axis, whereas those after "~" on vertical axis.
+#' Character format is also allowed (e.g., c("strata","table_name","group_level","cdm_name")).
+#' Only the following columns are allowed to be facet by: c("cdm_name", "group_level", "strata_level", "variable_level", "strata", "table_name").
+#' If splitStrata = TRUE, strata levels are also allowed.
+#' @param colorVars column in data to color by. Only the following columns are allowed to be used: c("cdm_name", "group_level", "strata_level", "variable_level", "strata", "table_name").
+#' If splitStrata = TRUE, strata levels are also allowed.
 #'
 #' @return A ggplot.
 #'
@@ -54,6 +56,7 @@
 #'     episodeInWindow = c("condition_occurrence"),
 #'     minimumFrequency = 0
 #'   )
+#'
 #' graphs <- plotLargeScaleCharacteristics(results)
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
@@ -72,12 +75,7 @@ plotLargeScaleCharacteristics <- function(data,
   x <- positionFunction(position)
   xAxis <- x$xAxis
   yAxis <- x$yAxis
-
-  # Split strata
-  # if(splitStrata == TRUE){
-  #   strata_names <- data$strata_name |> unique()
-  #   data <- data |> visOmopResults::splitStrata()
-  # }
+  verticalX <- x$verticalX
 
   # Facet of the plot
   x <- facetFunction(facet, splitStrata, data)
@@ -85,52 +83,74 @@ plotLargeScaleCharacteristics <- function(data,
   facetVarY <- x$facetVarY
   data      <- x$data
 
-  return(plotfunction(data,
-    xAxis,
-    yAxis,
-    plotStyle = "scatterplot",
-    facetVarX,
-    facetVarY,
-    colorVars,
-    vertical_x = FALSE
-  ))
+  # Color of the plot
+  checkName(colorVars, splitStrata, data, type = "colorVars")
+
+  # Split strata
+  if(splitStrata == TRUE){
+    data <- data |> visOmopResults::splitStrata()
+  }
+
+  y <- plotfunction(data,
+               xAxis,
+               yAxis,
+               plotStyle = "scatterplot",
+               facetVarX,
+               facetVarY,
+               colorVars,
+               vertical_x = verticalX)
+
+  y <- addAxis(y,position)
+
+  return(y)
 }
 
 positionFunction <- function(position){
   if(position == "horizontal"){
     xAxis = "estimate_value"
     yAxis = "variable_name"
+    verticalX = FALSE
   }else if(position == "vertical"){
     xAxis = "variable_name"
     yAxis = "estimate_value"
+    verticalX = TRUE
   }else{
     stop(sprintf("'position' input must be either 'horizontal' or 'vertical'."))
   }
-  return(list("xAxis" = xAxis, "yAxis" = yAxis))
+  return(list("xAxis" = xAxis, "yAxis" = yAxis, "verticalX" = verticalX))
 }
 
 facetFunction <- function(facet, splitStrata, data){
-  checkmate::assertTRUE(inherits(facet, c("formula","character")))
+  if(!is.null(facet)){
 
-  if(class(facet) == "formula"){
-    facet <- Reduce(paste, deparse(facet))
+    checkmate::assertTRUE(inherits(facet, c("formula","character")))
+
+    if(inherits(facet,"formula")){
+      facet <- Reduce(paste, deparse(facet))
+    }
+
+    # Extract facet names
+    x <- extractFacetVar(facet)
+    facetVarX <- x$facetVarX
+    facetVarY <- x$facetVarY
+
+    # Check facet names validity
+    facetVarX <- checkFacetNames(facetVarX, splitStrata, data)
+    facetVarY <- checkFacetNames(facetVarY, splitStrata, data)
+
+    # Specific case - table name
+    if("table_name" %in% c(facetVarX, facetVarY)){
+      data <- data |>
+        dplyr::left_join(
+          CDMConnector::settings(data),
+          by = c("result_id", "result_type", "cdm_name")
+        )
+    }
+
+    return(list("facetVarX" = facetVarX, "facetVarY" = facetVarY, "data" = data))
+  }else{
+    return(list("facetVarX" = NULL, "facetVarY" = NULL, "data" = data))
   }
-
-  # Extract facet names
-  x <- extractFacetVar(facet)
-  facetVarX <- x$facetVarX
-  facetVarY <- x$facetVarY
-
-  # Check facet names validity
-  facetVarX <- checkFacetNames(facetVarX, splitStrata, data)
-  facetVarY <- checkFacetNames(facetVarY, splitStrata, data)
-
-  # Specific case - table name
-  if("table_name" %in% c(facetVarX, facetVarY)){
-    data <- data |> left_join(settings(lsc), by = c("result_id", "result_type", "cdm_name"))
-  }
-
-  return(list("facetVarX" = facetVarX, "facetVarY" = facetVarY, "data" = data))
 }
 
 extractFacetVar <- function(facet){
@@ -181,20 +201,15 @@ checkFacetNames <- function(facetVar, splitStrata, data){
     facetVar[facetVar == "window_name"] <- "variable_level"
 
     # Check correct column names
-    x <- unique(facetVar %in% c(NULL, "cdm_name", "group_level", "strata_level",
-                                "variable_level", "strata", "table_name",  data |> visOmopResults::strataColumns()))
-
-    if(c("FALSE") %in% as.character(x)){
-      stop(sprintf(paste0(facetVar[!x]," is not a valid facet variable")))
-    }
+    checkName(facetVar, splitStrata, data, type = "facet")
 
     # Specific cases - strata
-    facetVar <- checkStrataName(facetVar, splitStrata)
+    facetVar <- checkStrataName(facetVar, splitStrata, data)
   }
   return(facetVar)
 }
 
-checkStrataName <- function(facetVar,splitStrata){
+checkStrataName <- function(facetVar,splitStrata, data){
   if("strata" %in% c(facetVar) & splitStrata == FALSE){
     facetVar <- gsub("strata","strata_level",facetVar)
   }else if("strata" %in% c(facetVar) & splitStrata == TRUE){
@@ -203,3 +218,43 @@ checkStrataName <- function(facetVar,splitStrata){
   }
   return(facetVar)
 }
+
+checkName <- function(var, splitStrata, data, type){
+  # Check correct column names
+  if(!is.null(var)){
+    if(splitStrata == TRUE){
+      x <- var %in% c("cdm_name", "group_level", "strata_name", "strata_level",
+                            "variable_level", "strata", "table_name",  data |> visOmopResults::strataColumns())
+
+      if(FALSE %in% x){
+        stop(sprintf(paste0(var[!x]," is not a valid variable for ", type)))
+      }
+    }else if (splitStrata == FALSE){
+      x <- var %in% c("cdm_name", "group_level", "strata_name", "strata_level",
+                           "variable_level", "strata", "table_name")
+      y <- var %in% (data |> visOmopResults::strataColumns())
+
+      if(FALSE %in% x){
+        if(TRUE %in% y){
+          stop("'",sprintf(paste0(var[y], "' is not a valid value for ", type, " name when 'splitStrata = FALSE'. Try 'splitStrata = TRUE'")))
+        }else{
+          stop("'", sprintf(paste0(var[!x],"' is not a valid value for ", type)))
+        }
+      }
+    }
+  }
+}
+
+addAxis <- function(y, position){
+  if(position == "horizontal"){
+    y <- y +
+      ggplot2::xlab("Estimate") +
+      ggplot2::ylab("Concept id")
+  }else{
+    y <- y +
+      ggplot2::ylab("Estimate") +
+      ggplot2::xlab("Concept id")
+  }
+  return(y)
+}
+
