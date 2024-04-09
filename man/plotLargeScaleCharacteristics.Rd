@@ -6,16 +6,15 @@
 \usage{
 plotLargeScaleCharacteristics(
   data,
-  xAxis = "variable_name",
-  yAxis = "estimate_value",
-  facetVarX = c("variable_name"),
-  facetVarY = c("group_level", "strata_level", "estimate_name"),
-  colorVars = "variable_level",
-  vertical_x = FALSE
+  position = "horizontal",
+  facet = NULL,
+  colorVars = "variable_level"
 )
 }
 \arguments{
 \item{data}{output of summariseLargeScaleCharacteristics.}
+
+\item{colorVars}{column in data to color by.}
 
 \item{xAxis}{what to plot on x axis, default as variable_name column.
 Has to be a column in data.}
@@ -26,8 +25,6 @@ Has to be a column in data. One of the xAxis or yAxis has to be estimate_value.}
 \item{facetVarX}{column in data to facet by on horizontal axis}
 
 \item{facetVarY}{column in data to facet by on vertical axis}
-
-\item{colorVars}{column in data to color by.}
 
 \item{vertical_x}{whether to display x axis string vertically.}
 }

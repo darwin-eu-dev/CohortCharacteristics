@@ -60,9 +60,10 @@
 #'
 
 plotLargeScaleCharacteristics <- function(data,
-                                          position   = "horizontal",
-                                          facet      = NULL,
-                                          colorVars  = "variable_level") {
+                                          position    = "horizontal",
+                                          splitStrata = FALSE,
+                                          facet       = NULL,
+                                          colorVars   = "variable_level") {
 
   # Select percentage values of large scale characteristics
   data <- data |> dplyr::filter(.data$estimate_name == "percentage")
@@ -72,14 +73,17 @@ plotLargeScaleCharacteristics <- function(data,
   xAxis <- x$xAxis
   yAxis <- x$yAxis
 
+  # Split strata
+  # if(splitStrata == TRUE){
+  #   strata_names <- data$strata_name |> unique()
+  #   data <- data |> visOmopResults::splitStrata()
+  # }
+
   # Facet of the plot
-  x <- facetFunction(facet)
+  x <- facetFunction(facet, splitStrata, data)
   facetVarX <- x$facetVarX
   facetVarY <- x$facetVarY
-
-  # Rename facet variables
-  facetVarX <- checkFacetNames(facetVarX)
-  facetVarY <- checkFacetNames(facetVarY)
+  data      <- x$data
 
   return(plotfunction(data,
     xAxis,
@@ -105,14 +109,28 @@ positionFunction <- function(position){
   return(list("xAxis" = xAxis, "yAxis" = yAxis))
 }
 
-facetFunction <- function(facet){
+facetFunction <- function(facet, splitStrata, data){
   checkmate::assertTRUE(inherits(facet, c("formula","character")))
 
   if(class(facet) == "formula"){
     facet <- Reduce(paste, deparse(facet))
   }
 
-  return(extractFacetVar(facet))
+  # Extract facet names
+  x <- extractFacetVar(facet)
+  facetVarX <- x$facetVarX
+  facetVarY <- x$facetVarY
+
+  # Check facet names validity
+  facetVarX <- checkFacetNames(facetVarX, splitStrata, data)
+  facetVarY <- checkFacetNames(facetVarY, splitStrata, data)
+
+  # Specific case - table name
+  if("table_name" %in% c(facetVarX, facetVarY)){
+    data <- data |> left_join(settings(lsc), by = c("result_id", "result_type", "cdm_name"))
+  }
+
+  return(list("facetVarX" = facetVarX, "facetVarY" = facetVarY, "data" = data))
 }
 
 extractFacetVar <- function(facet){
@@ -128,7 +146,7 @@ extractFacetVar <- function(facet){
   }else{
     if(length(facet) == 1){
       facetVarX <- facet
-      facetVarY <- ""
+      facetVarY <- NULL
     }else{
       # Assign "randomly" the positions
       horizontal <- 1:round(length(facet)/2)
@@ -142,11 +160,8 @@ extractFacetVar <- function(facet){
   return(list("facetVarX" = facetVarX, "facetVarY" = facetVarY))
 }
 
-checkFacetNames <- function(facetVar){
+checkFacetNames <- function(facetVar, splitStrata, data){
   if(!is.null(facetVar)){
-    facetVarX[facetVar == "cohort_name"] <- "group_level"
-    facetVarX[facetVar == "window_name"] <- "variable_level"
-
     # Remove spaces at the beginning or at the end
     facetVar <- gsub(" $","",facetVar)
     facetVar <- gsub("^ ","",facetVar)
@@ -155,22 +170,36 @@ checkFacetNames <- function(facetVar){
     facetVar <- gsub(" ","_",facetVar)
 
     # Replace empty or "." facet by NULL
-    if(facetVar %in% c("",".",as.character())){
+    if(TRUE %in% (facetVar %in% c("",".",as.character()))){
       facetVar <- NULL
     }
 
     # Turn to lower case
     facetVar <- tolower(facetVar)
 
+    facetVar[facetVar == "cohort_name"] <- "group_level"
+    facetVar[facetVar == "window_name"] <- "variable_level"
+
     # Check correct column names
-    x <- unique(facetVar %in% c(NULL, "cdm_name", "group_level", "strata_level", "variable_level"))
+    x <- unique(facetVar %in% c(NULL, "cdm_name", "group_level", "strata_level",
+                                "variable_level", "strata", "table_name",  data |> visOmopResults::strataColumns()))
 
     if(c("FALSE") %in% as.character(x)){
       stop(sprintf(paste0(facetVar[!x]," is not a valid facet variable")))
     }
+
+    # Specific cases - strata
+    facetVar <- checkStrataName(facetVar, splitStrata)
   }
   return(facetVar)
 }
 
-
-
+checkStrataName <- function(facetVar,splitStrata){
+  if("strata" %in% c(facetVar) & splitStrata == FALSE){
+    facetVar <- gsub("strata","strata_level",facetVar)
+  }else if("strata" %in% c(facetVar) & splitStrata == TRUE){
+    facetVar[facetVar == "strata"] <- paste(c(data |> visOmopResults::strataColumns()), collapse = " &&& ")
+    facetVar <- unlist(stringr::str_split(facetVar, pattern = " &&& "))
+  }
+  return(facetVar)
+}
