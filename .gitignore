@@ -56,8 +56,8 @@ inst/doc
 .DS_Store
 .quarto
 
-R/extra.R
-R/GiBleed_5.3.zip
+extras/extra.R
+
 
 
 
