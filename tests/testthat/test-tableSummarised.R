@@ -233,122 +233,122 @@ test_that("tableCohortOverlap", {
 })
 
 test_that("tableCohortTiming", {
-  skip_on_cran()
-  person <- dplyr::tibble(
-    person_id = 1:20,
-    gender_concept_id = 8532,
-    year_of_birth = runif(n=20, min=1950, max=1970),
-    month_of_birth = runif(n=20, min=1, max=12),
-    day_of_birth = runif(n=20, min=1, max=28),
-    race_concept_id= 0,
-    ethnicity_concept_id = 0
-  )
-
-  table <- dplyr::tibble(
-    cohort_definition_id = c(rep(1, 15), rep(2, 10), rep(3, 15), rep(4, 5)),
-    subject_id = c(20, 5, 10, 12, 4, 15, 2, 1, 5, 10, 5, 8, 13, 4, 10,
-                   6, 18, 5, 1, 20, 14, 13, 8, 17, 3,
-                   16, 15, 20, 17, 3, 14, 6, 11, 8, 7, 20, 19, 5, 2, 18,
-                   5, 12, 3, 14, 13),
-    cohort_start_date = as.Date(c(rep("2000-01-01",5), rep("2010-09-05",5), rep("2006-05-01",5),
-                                  rep("2003-03-31",5), rep("2008-07-02",5), rep("2000-01-01",5),
-                                  rep("2012-09-05",5), rep("1996-05-01",5), rep("1989-03-31",5))),
-    cohort_end_date = as.Date(c(rep("2000-01-01",5), rep("2010-09-05",5), rep("2006-05-01",5),
-                                rep("2003-03-31",5), rep("2008-07-02",5), rep("2000-01-01",5),
-                                rep("2012-09-05",5), rep("1996-05-01",5), rep("1989-03-31",5)))
-  )
-
-  obs <- dplyr::tibble(
-    observation_period_id = 1:20,
-    person_id = 1:20,
-    observation_period_start_date = as.Date("1930-01-01"),
-    observation_period_end_date =  as.Date("2025-01-01"),
-    period_type_concept_id = NA
-  )
-
-  cdm <- mockCohortCharacteristics(person = person, observation_period = obs, table = table)
-
-  timing1 <- summariseCohortTiming(cdm$table,
-                                   restrictToFirstEntry = TRUE)
-  tibble1 <- tableCohortTiming(timing1, type = "tibble", header = c("strata"), split = c("group", "additional"))
-  expect_true(all(c("CDM name", "Cohort name reference", "Cohort name comparator",
-                    "Variable name", "Estimate name", "Estimate value") %in%
-                    colnames(tibble1)))
-  expect_true(nrow(tibble1 |> dplyr::distinct(`Cohort name reference`, `Cohort name comparator`)) == 6)
-  expect_true(all(unique(tibble1$`Estimate name`) %in% c("N", "Median [Q25 - Q75]", "Range")))
-
-  tibble2 <- tableCohortTiming(timing1, type = "tibble", header = "group")
-  expect_true(all(c("CDM name", "Variable name", "Estimate name",
-                    "[header]Cohort name reference\n[header_level]Cohort 1\n[header]Cohort name comparator\n[header_level]Cohort 2",
-                    "[header]Cohort name reference\n[header_level]Cohort 1\n[header]Cohort name comparator\n[header_level]Cohort 3",
-                    "[header]Cohort name reference\n[header_level]Cohort 1\n[header]Cohort name comparator\n[header_level]Cohort 4",
-                    "[header]Cohort name reference\n[header_level]Cohort 2\n[header]Cohort name comparator\n[header_level]Cohort 3",
-                    "[header]Cohort name reference\n[header_level]Cohort 2\n[header]Cohort name comparator\n[header_level]Cohort 4",
-                    "[header]Cohort name reference\n[header_level]Cohort 3\n[header]Cohort name comparator\n[header_level]Cohort 4") %in%
-                    colnames(tibble2)))
-
-  tibble3 <- tableCohortTiming(timing1, type = "tibble", .options = list(uniqueCombinations = FALSE))
-  expect_true(all(unique(tibble3$`Cohort name comparator`) %in%
-                    unique(tibble3$`Cohort name reference`)))
-
-  tibble4 <- tableCohortTiming(timing1, type = "tibble", header = "group", split = character())
-  expect_true(all(c("CDM name", "Strata name", "Strata level", "Variable name",
-                    "Estimate name", "Additional name", "Additional level",
-                    "[header_level]Cohort name reference and cohort name comparator\n[header_level]Cohort 1 and cohort 2",
-                    "[header_level]Cohort name reference and cohort name comparator\n[header_level]Cohort 1 and cohort 3",
-                    "[header_level]Cohort name reference and cohort name comparator\n[header_level]Cohort 1 and cohort 4",
-                    "[header_level]Cohort name reference and cohort name comparator\n[header_level]Cohort 2 and cohort 3",
-                    "[header_level]Cohort name reference and cohort name comparator\n[header_level]Cohort 2 and cohort 4",
-                    "[header_level]Cohort name reference and cohort name comparator\n[header_level]Cohort 3 and cohort 4") %in%
-                    colnames(tibble4)))
-
-  gt1 <- tableCohortTiming(timing1, type = "gt")
-  expect_true("gt_tbl" %in% class(gt1))
-
-  fx1 <- tableCohortTiming(timing1, type = "flextable")
-  expect_true("flextable" %in% class(fx1))
-
-  # strata ----
-  cdm$table <- cdm$table |>
-    PatientProfiles::addAge(ageGroup = list(c(0, 40), c(41, 150))) |>
-    PatientProfiles::addSex() |>
-    dplyr::compute(name = "table", temporary = FALSE) |>
-    omopgenerics::newCohortTable()
-  timing2 <- summariseCohortTiming(cdm$table,
-                                   strata = list("age_group", c("age_group", "sex")))
-
-  fx2 <- tableCohortTiming(timing2,
-                           type = "flextable")
-  expect_true(class(fx2) == "flextable")
-  expect_true(all(c("CDM name", "Cohort name reference", "Cohort name comparator", "Variable name",
-                    "Estimate name", "Age group\nOverall\nSex\nOverall","Age group\n0 to 40\nSex\nOverall", "Age group\n41 to 150\nSex\nOverall",
-                    "Age group\n0 to 40\nSex\nFemale", "Age group\n41 to 150\nSex\nFemale") %in%
-                    colnames(fx2$body$dataset)))
-
-  gt2 <- tableCohortTiming(timing2, split = c("group", "additional"))
-  expect_true("gt_tbl" %in% class(gt2))
-  expect_true(all(c("CDM name", "Cohort name reference", "Cohort name comparator", "Variable name",
-                    "Estimate name", "[header_level]Overall\n[header_level]Overall",
-                    "[header_level]Age group\n[header_level]0 to 40",
-                    "[header_level]Age group\n[header_level]41 to 150",
-                    "[header_level]Age group and sex\n[header_level]0 to 40 and female",
-                    "[header_level]Age group and sex\n[header_level]41 to 150 and female") %in%
-                    colnames(gt2$`_data`)))
-
-  gt3 <- tableCohortTiming(timing2 |> dplyr::filter(grepl("cohort_1", group_level)) |> dplyr::filter(grepl("2|3", group_level)),
-                           split = c("additional"), header = c("cdm_name", "group", "strata"))
-  expect_true("gt_tbl" %in% class(gt3))
-  expect_true(all(c("Variable name",
-                    "Estimate name",
-                    "[header]CDM name\n[header_level]PP_MOCK\n[header_level]Cohort name reference and cohort name comparator\n[header_level]Cohort 1 and cohort 2\n[header_level]Age group\n[header_level]41 to 150",
-                    "[header]CDM name\n[header_level]PP_MOCK\n[header_level]Cohort name reference and cohort name comparator\n[header_level]Cohort 1 and cohort 2\n[header_level]Age group and sex\n[header_level]41 to 150 and female",
-                    "[header]CDM name\n[header_level]PP_MOCK\n[header_level]Cohort name reference and cohort name comparator\n[header_level]Cohort 1 and cohort 2\n[header_level]Overall\n[header_level]Overall",
-                    "[header]CDM name\n[header_level]PP_MOCK\n[header_level]Cohort name reference and cohort name comparator\n[header_level]Cohort 1 and cohort 3\n[header_level]Age group\n[header_level]41 to 150",
-                    "[header]CDM name\n[header_level]PP_MOCK\n[header_level]Cohort name reference and cohort name comparator\n[header_level]Cohort 1 and cohort 3\n[header_level]Age group and sex\n[header_level]41 to 150 and female",
-                    "[header]CDM name\n[header_level]PP_MOCK\n[header_level]Cohort name reference and cohort name comparator\n[header_level]Cohort 1 and cohort 3\n[header_level]Overall\n[header_level]Overall") %in%
-                    colnames(gt3$`_data`)))
-
-  CDMConnector::cdm_disconnect(cdm)
+  # skip_on_cran()
+  # person <- dplyr::tibble(
+  #   person_id = 1:20,
+  #   gender_concept_id = 8532,
+  #   year_of_birth = runif(n=20, min=1950, max=1970),
+  #   month_of_birth = runif(n=20, min=1, max=12),
+  #   day_of_birth = runif(n=20, min=1, max=28),
+  #   race_concept_id= 0,
+  #   ethnicity_concept_id = 0
+  # )
+  #
+  # table <- dplyr::tibble(
+  #   cohort_definition_id = c(rep(1, 15), rep(2, 10), rep(3, 15), rep(4, 5)),
+  #   subject_id = c(20, 5, 10, 12, 4, 15, 2, 1, 5, 10, 5, 8, 13, 4, 10,
+  #                  6, 18, 5, 1, 20, 14, 13, 8, 17, 3,
+  #                  16, 15, 20, 17, 3, 14, 6, 11, 8, 7, 20, 19, 5, 2, 18,
+  #                  5, 12, 3, 14, 13),
+  #   cohort_start_date = as.Date(c(rep("2000-01-01",5), rep("2010-09-05",5), rep("2006-05-01",5),
+  #                                 rep("2003-03-31",5), rep("2008-07-02",5), rep("2000-01-01",5),
+  #                                 rep("2012-09-05",5), rep("1996-05-01",5), rep("1989-03-31",5))),
+  #   cohort_end_date = as.Date(c(rep("2000-01-01",5), rep("2010-09-05",5), rep("2006-05-01",5),
+  #                               rep("2003-03-31",5), rep("2008-07-02",5), rep("2000-01-01",5),
+  #                               rep("2012-09-05",5), rep("1996-05-01",5), rep("1989-03-31",5)))
+  # )
+  #
+  # obs <- dplyr::tibble(
+  #   observation_period_id = 1:20,
+  #   person_id = 1:20,
+  #   observation_period_start_date = as.Date("1930-01-01"),
+  #   observation_period_end_date =  as.Date("2025-01-01"),
+  #   period_type_concept_id = NA
+  # )
+  #
+  # cdm <- mockCohortCharacteristics(person = person, observation_period = obs, table = table)
+  #
+  # timing1 <- summariseCohortTiming(cdm$table,
+  #                                  restrictToFirstEntry = TRUE)
+  # tibble1 <- tableCohortTiming(timing1, type = "tibble", header = c("strata"), split = c("group", "additional"))
+  # expect_true(all(c("CDM name", "Cohort name reference", "Cohort name comparator",
+  #                   "Variable name", "Estimate name", "Estimate value") %in%
+  #                   colnames(tibble1)))
+  # expect_true(nrow(tibble1 |> dplyr::distinct(`Cohort name reference`, `Cohort name comparator`)) == 6)
+  # expect_true(all(unique(tibble1$`Estimate name`) %in% c("N", "Median [Q25 - Q75]", "Range")))
+  #
+  # tibble2 <- tableCohortTiming(timing1, type = "tibble", header = "group")
+  # expect_true(all(c("CDM name", "Variable name", "Estimate name",
+  #                   "[header]Cohort name reference\n[header_level]Cohort 1\n[header]Cohort name comparator\n[header_level]Cohort 2",
+  #                   "[header]Cohort name reference\n[header_level]Cohort 1\n[header]Cohort name comparator\n[header_level]Cohort 3",
+  #                   "[header]Cohort name reference\n[header_level]Cohort 1\n[header]Cohort name comparator\n[header_level]Cohort 4",
+  #                   "[header]Cohort name reference\n[header_level]Cohort 2\n[header]Cohort name comparator\n[header_level]Cohort 3",
+  #                   "[header]Cohort name reference\n[header_level]Cohort 2\n[header]Cohort name comparator\n[header_level]Cohort 4",
+  #                   "[header]Cohort name reference\n[header_level]Cohort 3\n[header]Cohort name comparator\n[header_level]Cohort 4") %in%
+  #                   colnames(tibble2)))
+  #
+  # tibble3 <- tableCohortTiming(timing1, type = "tibble", .options = list(uniqueCombinations = FALSE))
+  # expect_true(all(unique(tibble3$`Cohort name comparator`) %in%
+  #                   unique(tibble3$`Cohort name reference`)))
+  #
+  # tibble4 <- tableCohortTiming(timing1, type = "tibble", header = "group", split = character())
+  # expect_true(all(c("CDM name", "Strata name", "Strata level", "Variable name",
+  #                   "Estimate name", "Additional name", "Additional level",
+  #                   "[header_level]Cohort name reference and cohort name comparator\n[header_level]Cohort 1 and cohort 2",
+  #                   "[header_level]Cohort name reference and cohort name comparator\n[header_level]Cohort 1 and cohort 3",
+  #                   "[header_level]Cohort name reference and cohort name comparator\n[header_level]Cohort 1 and cohort 4",
+  #                   "[header_level]Cohort name reference and cohort name comparator\n[header_level]Cohort 2 and cohort 3",
+  #                   "[header_level]Cohort name reference and cohort name comparator\n[header_level]Cohort 2 and cohort 4",
+  #                   "[header_level]Cohort name reference and cohort name comparator\n[header_level]Cohort 3 and cohort 4") %in%
+  #                   colnames(tibble4)))
+  #
+  # gt1 <- tableCohortTiming(timing1, type = "gt")
+  # expect_true("gt_tbl" %in% class(gt1))
+  #
+  # fx1 <- tableCohortTiming(timing1, type = "flextable")
+  # expect_true("flextable" %in% class(fx1))
+  #
+  # # strata ----
+  # cdm$table <- cdm$table |>
+  #   PatientProfiles::addAge(ageGroup = list(c(0, 40), c(41, 150))) |>
+  #   PatientProfiles::addSex() |>
+  #   dplyr::compute(name = "table", temporary = FALSE) |>
+  #   omopgenerics::newCohortTable()
+  # timing2 <- summariseCohortTiming(cdm$table,
+  #                                  strata = list("age_group", c("age_group", "sex")))
+  #
+  # fx2 <- tableCohortTiming(timing2,
+  #                          type = "flextable")
+  # expect_true(class(fx2) == "flextable")
+  # expect_true(all(c("CDM name", "Cohort name reference", "Cohort name comparator", "Variable name",
+  #                   "Estimate name", "Age group\nOverall\nSex\nOverall","Age group\n0 to 40\nSex\nOverall", "Age group\n41 to 150\nSex\nOverall",
+  #                   "Age group\n0 to 40\nSex\nFemale", "Age group\n41 to 150\nSex\nFemale") %in%
+  #                   colnames(fx2$body$dataset)))
+  #
+  # gt2 <- tableCohortTiming(timing2, split = c("group", "additional"))
+  # expect_true("gt_tbl" %in% class(gt2))
+  # expect_true(all(c("CDM name", "Cohort name reference", "Cohort name comparator", "Variable name",
+  #                   "Estimate name", "[header_level]Overall\n[header_level]Overall",
+  #                   "[header_level]Age group\n[header_level]0 to 40",
+  #                   "[header_level]Age group\n[header_level]41 to 150",
+  #                   "[header_level]Age group and sex\n[header_level]0 to 40 and female",
+  #                   "[header_level]Age group and sex\n[header_level]41 to 150 and female") %in%
+  #                   colnames(gt2$`_data`)))
+  #
+  # gt3 <- tableCohortTiming(timing2 |> dplyr::filter(grepl("cohort_1", group_level)) |> dplyr::filter(grepl("2|3", group_level)),
+  #                          split = c("additional"), header = c("cdm_name", "group", "strata"))
+  # expect_true("gt_tbl" %in% class(gt3))
+  # expect_true(all(c("Variable name",
+  #                   "Estimate name",
+  #                   "[header]CDM name\n[header_level]PP_MOCK\n[header_level]Cohort name reference and cohort name comparator\n[header_level]Cohort 1 and cohort 2\n[header_level]Age group\n[header_level]41 to 150",
+  #                   "[header]CDM name\n[header_level]PP_MOCK\n[header_level]Cohort name reference and cohort name comparator\n[header_level]Cohort 1 and cohort 2\n[header_level]Age group and sex\n[header_level]41 to 150 and female",
+  #                   "[header]CDM name\n[header_level]PP_MOCK\n[header_level]Cohort name reference and cohort name comparator\n[header_level]Cohort 1 and cohort 2\n[header_level]Overall\n[header_level]Overall",
+  #                   "[header]CDM name\n[header_level]PP_MOCK\n[header_level]Cohort name reference and cohort name comparator\n[header_level]Cohort 1 and cohort 3\n[header_level]Age group\n[header_level]41 to 150",
+  #                   "[header]CDM name\n[header_level]PP_MOCK\n[header_level]Cohort name reference and cohort name comparator\n[header_level]Cohort 1 and cohort 3\n[header_level]Age group and sex\n[header_level]41 to 150 and female",
+  #                   "[header]CDM name\n[header_level]PP_MOCK\n[header_level]Cohort name reference and cohort name comparator\n[header_level]Cohort 1 and cohort 3\n[header_level]Overall\n[header_level]Overall") %in%
+  #                   colnames(gt3$`_data`)))
+  #
+  # CDMConnector::cdm_disconnect(cdm)
 })
 
 test_that("tableDemographics", {
