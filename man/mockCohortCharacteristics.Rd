@@ -116,6 +116,8 @@ mockCohortCharacteristics(
 \item{seed}{seed.}
 
 \item{...}{user self defined tibble table to put in cdm, it can input as many as the user want.}
+
+\item{death}{default null user can define its own table}
 }
 \value{
 cdm of the mock database following user's specifications.
@@ -125,8 +127,10 @@ It creates a mock database for testing PatientProfiles package
 }
 \examples{
 \donttest{
-library(PatientProfiles)
-cdm <- mockPatientProfiles()
+library(CohortCharacteristics)
+cdm <- mockCohortCharacteristics()
+cdm
 CDMConnector::cdmDisconnect(cdm = cdm)
 }
+
 }

@@ -31,6 +31,7 @@ omopgenerics::settings
 #' @param condition_occurrence default null user can define its own table.
 #' @param visit_occurrence default null user can define its own visit_occurrence table.
 #' @param person default null user can define its own table.
+#' @param death default null user can define its own table
 #' @param drug_concept_id_size number of unique drug concept id.
 #' @param ingredient_concept_id_size number of unique drug ingredient concept id.
 #' @param drug_exposure_size number of unique drug exposure.
@@ -65,8 +66,10 @@ omopgenerics::settings
 #'
 #' @examples
 #' \donttest{
-#' library(PatientProfiles)
-#' cdm <- mockPatientProfiles()
+#' library(CohortCharacteristics)
+#' cdm <- mockCohortCharacteristics()
+#' cdm
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
+#'
 mockCohortCharacteristics <- PatientProfiles::mockPatientProfiles
