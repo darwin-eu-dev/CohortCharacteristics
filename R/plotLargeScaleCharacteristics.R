@@ -18,7 +18,7 @@
 #'
 #' `r lifecycle::badge("experimental")`
 #'
-#' @param data output of summariseLargeScaleCharacteristics.
+#' @param data output of summariseLargeScaleCharacteristics().
 #' @param position if set to *horizontal* the horizontal axis will plot "variable_name" column and the vertical axis "estimate_value" column.
 #' If *vertical*, axis will be the other way around.
 #' @param splitStrata boolean variable (TRUE/FALSE)
