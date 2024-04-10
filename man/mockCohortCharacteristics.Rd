@@ -14,6 +14,7 @@ mockCohortCharacteristics(
   visit_occurrence = NULL,
   concept_ancestor = NULL,
   person = NULL,
+  death = NULL,
   cohort1 = NULL,
   cohort2 = NULL,
   drug_concept_id_size = 5,
@@ -60,6 +61,8 @@ mockCohortCharacteristics(
 \item{concept_ancestor}{the concept ancestor table.}
 
 \item{person}{default null user can define its own table.}
+
+\item{death}{default null user can define its own table}
 
 \item{cohort1}{cohort table for test to run in getindication.}
 
@@ -116,8 +119,6 @@ mockCohortCharacteristics(
 \item{seed}{seed.}
 
 \item{...}{user self defined tibble table to put in cdm, it can input as many as the user want.}
-
-\item{death}{default null user can define its own table}
 }
 \value{
 cdm of the mock database following user's specifications.
