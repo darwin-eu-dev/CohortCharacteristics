@@ -201,7 +201,7 @@ summariseCharacteristics <- function(cohort,
       "adding table intersect columns for table: {tableIntersect[[k]]$tableName}"
     )
     # prepare arguments
-    arguments <- formals(PatientProfiles:::.addTableIntersect)
+    arguments <- formals(addTableIntersect)
     arguments <- updateArguments(arguments, tableIntersect[[k]])
     shortNames <- uniqueVariableName(length(arguments$window))
     fullNames <- names(arguments$window)
@@ -217,7 +217,7 @@ summariseCharacteristics <- function(cohort,
 
     # add intersect
     cohort <- cohort |>
-      PatientProfiles:::.addTableIntersect(
+      addTableIntersect(
         tableName = arguments$tableName,
         window = arguments$window,
         indexDate = arguments$indexDate,
@@ -225,12 +225,9 @@ summariseCharacteristics <- function(cohort,
         order = arguments$order,
         targetStartDate = arguments$targetStartDate,
         targetEndDate = arguments$targetEndDate,
-        flag = arguments$flag,
-        count = arguments$count,
-        date = arguments$date,
-        days = arguments$days,
-        field = arguments$field,
-        nameStyle = "{value}_{table_name}_{window_name}"
+        targetDate = arguments$targetDate,
+        value = arguments$value,
+        nameStyle = arguments$nameStyle
       )
 
     # update summary settings
@@ -254,7 +251,7 @@ summariseCharacteristics <- function(cohort,
       "adding cohort intersect columns for table: {cohortIntersect[[k]]$targetCohortTable}"
     )
     # prepare arguments
-    arguments <- formals(PatientProfiles:::.addCohortIntersect)
+    arguments <- formals(addCohortIntersect)
     arguments <- updateArguments(arguments, cohortIntersect[[k]])
 
     # rename windows
@@ -305,20 +302,18 @@ summariseCharacteristics <- function(cohort,
 
     # add intersect
     cohort <- cohort |>
-      PatientProfiles:::.addCohortIntersect(
+      addCohortIntersect(
         targetCohortTable = arguments$targetCohortTable,
         targetCohortId = arguments$targetCohortId,
         indexDate = arguments$indexDate,
         censorDate = arguments$censorDate,
         targetStartDate = arguments$targetStartDate,
+        targetDate = arguments$targetDate,
         targetEndDate = arguments$targetEndDate,
         window = arguments$window,
         order = arguments$order,
-        flag = arguments$flag,
-        count = arguments$count,
-        date = arguments$date,
-        days = arguments$days,
-        nameStyle = "{value}_{cohort_name}_{window_name}"
+        value = arguments$value,
+        nameStyle = arguments$nameStyle
       )
 
     # update summary settings
@@ -342,7 +337,7 @@ summariseCharacteristics <- function(cohort,
       "adding concept intersect columns for conceptSet {k}/{length(conceptIntersect)}"
     )
     # prepare arguments
-    arguments <- formals(PatientProfiles:::.addConceptIntersect)
+    arguments <- formals(addConceptIntersect)
     arguments <- updateArguments(arguments, conceptIntersect[[k]])
 
     # rename windows
@@ -365,16 +360,17 @@ summariseCharacteristics <- function(cohort,
 
     # add intersect
     cohort <- cohort |>
-      PatientProfiles:::.addConceptIntersect(
+      addConceptIntersect(
         conceptSet = arguments$conceptSet,
         indexDate = arguments$indexDate,
         censorDate = arguments$censorDate,
         window = arguments$window,
         targetStartDate = arguments$targetStartDate,
         targetEndDate = arguments$targetEndDate,
+        targetDate = arguments$targetDate,
         order = arguments$order,
         value = arguments$value,
-        nameStyle = "{value}_{concept_name}_{window_name}"
+        nameStyle = arguments$nameStyle
       )
 
     # update summary settings
@@ -406,7 +402,7 @@ summariseCharacteristics <- function(cohort,
         dplyr::select(dplyr::all_of(x)) |>
         dplyr::distinct() |>
         dplyr::pull() |>
-        PatientProfiles:::binaryVariable()
+        binaryVariable()
     }) |>
       unlist()
   ]
@@ -474,6 +470,15 @@ summariseCharacteristics <- function(cohort,
   cli::cli_alert_success("summariseCharacteristics finished!")
 
   return(results)
+}
+
+binaryVariable <- function(x) {
+  u <- unique(x)
+  if (length(u) <= 3) {
+    u <- as.character(u)
+    return(all(u %in% c("0", "1", NA_character_)))
+  }
+  return(FALSE)
 }
 
 #' Summarise counts for each different cohort. You can add a list of
@@ -678,16 +683,18 @@ updateArguments <- function(arguments, provided) {
   if (!is.list(arguments[["window"]])) {
     arguments[["window"]] <- list(arguments[["window"]])
   }
-  values <- c("flag", "count", "date", "days")
-  arguments$flag <- FALSE
-  arguments$count <- FALSE
-  arguments$date <- FALSE
-  arguments$days <- FALSE
-  id <- arguments$value[arguments$value %in% values]
-  if (length(id) > 0) {
-    arguments[[id]] <- TRUE
+  if ("tableName" %in% names(arguments)) {
+    values <- c("flag", "count", "date", "days")
+    arguments$flag <- FALSE
+    arguments$count <- FALSE
+    arguments$date <- FALSE
+    arguments$days <- FALSE
+    id <- arguments$value[arguments$value %in% values]
+    if (length(id) > 0) {
+      arguments[[id]] <- TRUE
+    }
+    arguments$field <- arguments$value[!arguments$value %in% values]
   }
-  arguments$field <- arguments$value[!arguments$value %in% values]
   names(arguments$window) <- getWindowNames(arguments$window)
   return(arguments)
 }
@@ -732,4 +739,195 @@ updateDic <- function(value,
       "short_name", "new_variable_name", "new_variable_level", "table",
       "window", "value", "result_type"
     )
+}
+
+addCohortIntersect <- function(x,
+                               targetCohortTable,
+                               targetCohortId = NULL,
+                               indexDate = "cohort_start_date",
+                               censorDate = NULL,
+                               targetStartDate = "cohort_start_date",
+                               targetDate = "cohort_start_date",
+                               targetEndDate = "cohort_end_date",
+                               window = list(c(0, Inf)),
+                               order = "first",
+                               value,
+                               nameStyle = "{value}_{cohort_name}_{window_name}") {
+  if ("flag" %in% value) {
+    x <- x |>
+      PatientProfiles::addCohortIntersectFlag(
+        targetCohortTable = targetCohortTable,
+        targetCohortId = targetCohortId,
+        indexDate = indexDate,
+        censorDate = censorDate,
+        targetStartDate = targetStartDate,
+        targetEndDate = targetEndDate,
+        window = window,
+        nameStyle = nameStyle
+      )
+  }
+  if ("count" %in% value) {
+    x <- x |>
+      PatientProfiles::addCohortIntersectCount(
+        targetCohortTable = targetCohortTable,
+        targetCohortId = targetCohortId,
+        indexDate = indexDate,
+        censorDate = censorDate,
+        targetStartDate = targetStartDate,
+        targetEndDate = targetEndDate,
+        window = window,
+        nameStyle = nameStyle
+      )
+  }
+  if ("date" %in% value) {
+    x <- x |>
+      PatientProfiles::addCohortIntersectDate(
+        targetCohortTable = targetCohortTable,
+        targetCohortId = targetCohortId,
+        indexDate = indexDate,
+        censorDate = censorDate,
+        targetDate = targetDate,
+        order = order,
+        window = window,
+        nameStyle = nameStyle
+      )
+  }
+  if ("days" %in% value) {
+    x <- x |>
+      PatientProfiles::addCohortIntersectDays(
+        targetCohortTable = targetCohortTable,
+        targetCohortId = targetCohortId,
+        indexDate = indexDate,
+        censorDate = censorDate,
+        targetDate = targetDate,
+        order = order,
+        window = window,
+        nameStyle = nameStyle
+      )
+  }
+  return(x)
+}
+
+addConceptIntersect <- function(x,
+                                conceptSet,
+                                indexDate = "cohort_start_date",
+                                censorDate = NULL,
+                                targetStartDate = "event_start_date",
+                                targetDate = "event_start_date",
+                                targetEndDate = "event_end_date",
+                                window = list(c(0, Inf)),
+                                order = "first",
+                                value,
+                                nameStyle = "{value}_{concept_name}_{window_name}") {
+  if ("flag" %in% value) {
+    x <- x |>
+      PatientProfiles::addConceptIntersectFlag(
+        conceptSet = conceptSet,
+        indexDate = indexDate,
+        censorDate = censorDate,
+        targetStartDate = targetStartDate,
+        targetEndDate = targetEndDate,
+        window = window,
+        nameStyle = nameStyle
+      )
+  }
+  if ("count" %in% value) {
+    x <- x |>
+      PatientProfiles::addConceptIntersectCount(
+        conceptSet = conceptSet,
+        indexDate = indexDate,
+        censorDate = censorDate,
+        targetStartDate = targetStartDate,
+        targetEndDate = targetEndDate,
+        window = window,
+        nameStyle = nameStyle
+      )
+  }
+  if ("date" %in% value) {
+    x <- x |>
+      PatientProfiles::addConceptIntersectDate(
+        conceptSet = conceptSet,
+        indexDate = indexDate,
+        censorDate = censorDate,
+        targetDate = targetDate,
+        order = order,
+        window = window,
+        nameStyle = nameStyle
+      )
+  }
+  if ("days" %in% value) {
+    x <- x |>
+      PatientProfiles::addConceptIntersectDays(
+        conceptSet = conceptSet,
+        indexDate = indexDate,
+        censorDate = censorDate,
+        targetDate = targetDate,
+        order = order,
+        window = window,
+        nameStyle = nameStyle
+      )
+  }
+  return(x)
+}
+
+addTableIntersect <- function(x,
+                              tableName,
+                              indexDate = "cohort_start_date",
+                              censorDate = NULL,
+                              window = list(c(0, Inf)),
+                              targetStartDate = PatientProfiles::startDateColumn(tableName),
+                              targetDate = PatientProfiles::startDateColumn(tableName),
+                              targetEndDate = PatientProfiles::endDateColumn(tableName),
+                              order = "first",
+                              value,
+                              nameStyle = "{value}_{table_name}_{window_name}") {
+  if ("flag" %in% value) {
+    x <- x |>
+      PatientProfiles::addTableIntersectFlag(
+        tableName = tableName,
+        indexDate = indexDate,
+        censorDate = censorDate,
+        targetStartDate = targetStartDate,
+        targetEndDate = targetEndDate,
+        window = window,
+        nameStyle = nameStyle
+      )
+  }
+  if ("count" %in% value) {
+    x <- x |>
+      PatientProfiles::addTableIntersectCount(
+        tableName = tableName,
+        indexDate = indexDate,
+        censorDate = censorDate,
+        targetStartDate = targetStartDate,
+        targetEndDate = targetEndDate,
+        window = window,
+        nameStyle = nameStyle
+      )
+  }
+  if ("date" %in% value) {
+    x <- x |>
+      PatientProfiles::addTableIntersectDate(
+        tableName = tableName,
+        indexDate = indexDate,
+        censorDate = censorDate,
+        targetDate = targetDate,
+        order = order,
+        window = window,
+        nameStyle = nameStyle
+      )
+  }
+  if ("days" %in% value) {
+    x <- x |>
+      PatientProfiles::addTableIntersectDays(
+        tableName = tableName,
+        indexDate = indexDate,
+        censorDate = censorDate,
+        targetDate = targetDate,
+        order = order,
+        window = window,
+        nameStyle = nameStyle
+      )
+  }
+  return(x)
 }
