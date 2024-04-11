@@ -6,7 +6,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light" data-bs-theme="light"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">CohortCharacteristics</a>
 
@@ -67,6 +67,7 @@
 <span>  visit_occurrence <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  concept_ancestor <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  person <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  death <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  cohort1 <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  cohort2 <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  drug_concept_id_size <span class="op">=</span> <span class="fl">5</span>,</span>
@@ -130,6 +131,10 @@
 
 <dt>person</dt>
 <dd><p>default null user can define its own table.</p></dd>
+
+
+<dt>death</dt>
+<dd><p>default null user can define its own table</p></dd>
 
 
 <dt>cohort1</dt>
@@ -254,24 +259,19 @@
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://darwin-eu-dev.github.io/PatientProfiles/" class="external-link">PatientProfiles</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://darwin-eu-dev.github.io/CohortCharacteristics/">CohortCharacteristics</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">cdm</span> <span class="op">&lt;-</span> <span class="fu">mockCohortCharacteristics</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">cdm</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘PatientProfiles’</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:CohortCharacteristics’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     optionsTableCharacteristics, optionsTableCohortOverlap,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     optionsTableCohortTiming, plotCharacteristics, plotCohortIntersect,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     plotCohortOverlap, plotCohortTiming, plotDemographics,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     plotLargeScaleCharacteristics, summariseCharacteristics,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     summariseCohortCounts, summariseCohortIntersect,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     summariseCohortOverlap, summariseCohortTiming,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     summariseConceptIntersect, summariseDemographics,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     summariseLargeScaleCharacteristics, tableCharacteristics,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     tableCohortIntersect, tableCohortOverlap, tableCohortTiming,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     tableDemographics, tableLargeScaleCharacteristics</span>
-<span class="r-in"><span><span class="va">cdm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://darwin-eu-dev.github.io/PatientProfiles/reference/mockPatientProfiles.html" class="external-link">mockPatientProfiles</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;"># OMOP CDM reference (duckdb) of PP_MOCK</span> <span style="color: #00BBBB;">────────────────────────────────────</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> • <span style="font-weight: bold;">omop tables:</span> person, observation_period, visit_occurrence,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> condition_occurrence, drug_exposure, death, concept_ancestor, drug_strength</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> • <span style="font-weight: bold;">cohort tables:</span> cohort1, cohort2</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> • <span style="font-weight: bold;">achilles tables:</span> -</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> • <span style="font-weight: bold;">other tables:</span> -</span>
 <span class="r-in"><span><span class="fu">CDMConnector</span><span class="fu">::</span><span class="fu"><a href="https://darwin-eu.github.io/CDMConnector/reference/cdmDisconnect.html" class="external-link">cdmDisconnect</a></span><span class="op">(</span>cdm <span class="op">=</span> <span class="va">cdm</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -283,7 +283,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.8.</p>
 </div>
 
     </footer></div>

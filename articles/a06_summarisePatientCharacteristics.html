@@ -22,7 +22,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light" data-bs-theme="light"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">CohortCharacteristics</a>
 
@@ -180,6 +180,21 @@ create a mock data.</p>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> adding cohort intersect columns for table: medication</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> adding cohort intersect columns for table: comorbidities</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> summarising data</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The following estimates will be computed:</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> flag_variable_00006_variable_00005: count, percentage</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> flag_variable_00007_variable_00005: count, percentage</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> flag_variable_00008_variable_00005: count, percentage</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> flag_variable_00010_variable_00009: count, percentage</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> flag_variable_00011_variable_00009: count, percentage</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> variable_00001: count, percentage</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> cohort_start_date: min, q05, q25, median, q75, q95, max</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> cohort_end_date: min, q05, q25, median, q75, q95, max</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> variable_00003: min, q05, q25, median, q75, q95, max, mean, sd</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> variable_00004: min, q05, q25, median, q75, q95, max, mean, sd</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> variable_00002: min, q05, q25, median, q75, q95, max, mean, sd</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span></span>
+<span><span class="co">#&gt;   the database side</span></span>
+<span><span class="co">#&gt; → Start summary of data, at 2024-04-11 14:49:36.582932</span></span>
 <span><span class="co">#&gt; Warning: There were 2 warnings in `dplyr::summarise()`.</span></span>
 <span><span class="co">#&gt; The first warning was:</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> In argument: `dplyr::across(...)`.</span></span>
@@ -187,6 +202,7 @@ create a mock data.</p>
 <span><span class="co">#&gt; Caused by warning in `base::min()`:</span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> no non-missing arguments to min; returning Inf</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Run `dplyr::last_dplyr_warnings()` to see the 1 remaining warning.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Summary finished, at 2024-04-11 14:49:36.800295</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> summariseCharacteristics finished!</span></span></code></pre></div>
 <p>Now we show barplot example by setting plotStyle = “barplot” in
 <code>plotCharacteristics</code>. Similar to previous function, user can
@@ -194,7 +210,7 @@ define axes, facetVars and colorVars. Barplot shows both percentage and
 count, user can filter to only percentage, or plot both.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plotCharacteristics.html">plotCharacteristics</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span>  <span class="va">characteristicsResult</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">estimate_type</span> <span class="op">==</span> <span class="st">"percentage"</span><span class="op">)</span>,</span>
+<span>    data <span class="op">=</span>  <span class="va">characteristicsResult</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">estimate_type</span> <span class="op">==</span> <span class="st">"percentage"</span><span class="op">)</span>,</span>
 <span>    xAxis <span class="op">=</span> <span class="st">"estimate_value"</span>,</span>
 <span>    yAxis <span class="op">=</span> <span class="st">"variable_name"</span>,</span>
 <span>    plotStyle <span class="op">=</span> <span class="st">"barplot"</span>,</span>
@@ -255,7 +271,7 @@ of the xAxis or yAxis has to be estimate_value.</p>
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.8.</p>
 </div>
 
     </footer>
