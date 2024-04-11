@@ -50,7 +50,6 @@ Suggests:
     DBI,
     gt,
     flextable,
-    ggpubr,
     tictoc,
     withr,
     scales
@@ -65,7 +64,9 @@ Imports:
     stringr,
     omopgenerics (>= 0.1.2),
     visOmopResults (>= 0.2.0),
-    PatientProfiles (>= 0.8.0)
+    PatientProfiles (>= 0.8.0),
+    ggpubr,
+    magrittr
 URL: https://darwin-eu-dev.github.io/CohortCharacteristics/
 BugReports: https://github.com/darwin-eu-dev/CohortCharacteristics/issues
 Language: en-US

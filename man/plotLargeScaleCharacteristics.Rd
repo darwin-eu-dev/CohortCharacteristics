@@ -6,30 +6,28 @@
 \usage{
 plotLargeScaleCharacteristics(
   data,
-  xAxis = "variable_name",
-  yAxis = "estimate_value",
-  facetVarX = c("variable_name"),
-  facetVarY = c("group_level", "strata_level", "estimate_name"),
-  colorVars = "variable_level",
-  vertical_x = FALSE
+  position = "horizontal",
+  splitStrata = FALSE,
+  facet = NULL,
+  colorVars = "variable_level"
 )
 }
 \arguments{
-\item{data}{output of summariseLargeScaleCharacteristics.}
+\item{data}{output of summariseLargeScaleCharacteristics().}
 
-\item{xAxis}{what to plot on x axis, default as variable_name column.
-Has to be a column in data.}
+\item{position}{if set to *horizontal* the horizontal axis will plot "variable_name" column and the vertical axis "estimate_value" column.
+If *vertical*, axis will be the other way around.}
 
-\item{yAxis}{what to plot on y axis, default as estimate_value column.
-Has to be a column in data. One of the xAxis or yAxis has to be estimate_value.}
+\item{splitStrata}{boolean variable (TRUE/FALSE)}
 
-\item{facetVarX}{column in data to facet by on horizontal axis}
+\item{facet}{columns in data to facet. If the facet position wants to be specified, use the formula class for the input
+(e.g., strata + table_name ~ group_level + cdm_name). Variables before "~" will be facet by on horizontal axis, whereas those after "~" on vertical axis.
+Character format is also allowed (e.g., c("strata","table_name","group_level","cdm_name")).
+Only the following columns are allowed to be facet by: c("cdm_name", "group_level", "strata_level", "variable_level", "strata", "table_name").
+If splitStrata = TRUE, strata levels are also allowed.}
 
-\item{facetVarY}{column in data to facet by on vertical axis}
-
-\item{colorVars}{column in data to color by.}
-
-\item{vertical_x}{whether to display x axis string vertically.}
+\item{colorVars}{column in data to color by. Only the following columns are allowed to be used: c("cdm_name", "group_level", "strata_level", "variable_level", "strata", "table_name").
+If splitStrata = TRUE, strata levels are also allowed.}
 }
 \value{
 A ggplot.
@@ -59,6 +57,7 @@ results <- cdm$cohort2 |>
     episodeInWindow = c("condition_occurrence"),
     minimumFrequency = 0
   )
+
 graphs <- plotLargeScaleCharacteristics(results)
 CDMConnector::cdmDisconnect(cdm = cdm)
 }

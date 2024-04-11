@@ -63,7 +63,6 @@ test_that("Function returns a ggplot object", {
     condition_type_concept_id = 32020
   )
   cdm <- mockCohortCharacteristics(
-    connectionDetails,
     person = person, observation_period = observation_period,
     cohort_interest = cohort_interest, drug_exposure = drug_exposure,
     condition_occurrence = condition_occurrence
@@ -81,7 +80,6 @@ test_that("Function returns a ggplot object", {
     dplyr::mutate(concept_name = paste0("concept: ", .data$concept_id))
 
   cdm <- CDMConnector::insertTable(cdm, "concept", concept)
-
 
   test_data <- cdm$cohort_interest |>
     PatientProfiles::addDemographics(
@@ -111,18 +109,16 @@ test_that("Function returns a ggplot object", {
   #                     "-365 to -31.cohort_1", "-365 to -31.cohort_2")
   plot_multiple <- plotLargeScaleCharacteristics(
     data =  test_data |> dplyr::filter(group_level  %in% c("cohort_1", "cohort_2")),
-    xAxis = "variable_name",
-    yAxis = "estimate_value",
-    facetVarX = c("variable_level",  "group_level"),
+    position = "horizontal",
+    splitStrata = FALSE,
+    facet = c("variable_level",  "group_level"),
     colorVars = c("strata_level", "strata_name")
   )
 
   expect_true(ggplot2::is.ggplot(plot_multiple))
 
-  #do not throw error even if they do not specify color or facet
+  #do not throw error even if they do not specify color or facet or position
   expect_no_error(plotLargeScaleCharacteristics(
-    data =  test_data,
-    xAxis = "variable_name",
-    yAxis = "estimate_value"))
+    data =  test_data))
 
 })
