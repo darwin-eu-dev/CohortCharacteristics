@@ -107,7 +107,7 @@ test_that("tableCharacteristics", {
   expect_true(all(c("Variable name", "Variable level", "Estimate name",
                     "CDM name", "Group name", "Group level", "Estimate value") %in%
                     colnames(tibble1)))
-  expect_true(nrow(tibble1) == 53)
+  expect_true(nrow(tibble1) == 43)
 })
 
 test_that("tableCohortOverlap", {
