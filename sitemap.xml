@@ -67,9 +67,6 @@
     <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/plotCohortTiming.html</loc>
   </url>
   <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/plotDemographics.html</loc>
-  </url>
-  <url>
     <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/plotLargeScaleCharacteristics.html</loc>
   </url>
   <url>
@@ -97,9 +94,6 @@
     <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/summariseConceptIntersect.html</loc>
   </url>
   <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/summariseDemographics.html</loc>
-  </url>
-  <url>
     <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/summariseLargeScaleCharacteristics.html</loc>
   </url>
   <url>
@@ -116,9 +110,6 @@
   </url>
   <url>
     <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/tableCohortTiming.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/tableDemographics.html</loc>
   </url>
   <url>
     <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/tableLargeScaleCharacteristics.html</loc>
