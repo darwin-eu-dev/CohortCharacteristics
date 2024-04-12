@@ -68,9 +68,6 @@ plotLargeScaleCharacteristics <- function(data,
                                           facet       = NULL,
                                           colorVars   = "variable_level") {
 
-  # Select percentage values of large scale characteristics
-  data <- data |> dplyr::filter(.data$estimate_name == "percentage")
-
   # Position of the plot
   x <- positionFunction(position)
   xAxis <- x$xAxis
@@ -86,19 +83,22 @@ plotLargeScaleCharacteristics <- function(data,
   # Color of the plot
   checkName(colorVars, splitStrata, data, type = "colorVars")
 
+  # All that is not a facet variable will be a color variable if colorVar = NULL
+  colorVars <- colorVarsIfNull(data, facetVarX, facetVarY, splitStrata, colorVars)
+
   # Split strata
   if(splitStrata == TRUE){
     data <- data |> visOmopResults::splitStrata()
   }
 
   y <- plotfunction(data,
-               xAxis,
-               yAxis,
-               plotStyle = "scatterplot",
-               facetVarX,
-               facetVarY,
-               colorVars,
-               vertical_x = verticalX)
+                    xAxis,
+                    yAxis,
+                    plotStyle = "scatterplot",
+                    facetVarX,
+                    facetVarY,
+                    colorVars,
+                    vertical_x = verticalX)
 
   y <- addAxis(y,position)
 
@@ -138,19 +138,20 @@ facetFunction <- function(facet, splitStrata, data){
     facetVarX <- checkFacetNames(facetVarX, splitStrata, data)
     facetVarY <- checkFacetNames(facetVarY, splitStrata, data)
 
-    # Specific case - table name
-    if("table_name" %in% c(facetVarX, facetVarY)){
-      data <- data |>
-        dplyr::left_join(
-          CDMConnector::settings(data),
-          by = c("result_id", "result_type", "cdm_name")
-        )
-    }
-
-    return(list("facetVarX" = facetVarX, "facetVarY" = facetVarY, "data" = data))
   }else{
-    return(list("facetVarX" = NULL, "facetVarY" = NULL, "data" = data))
+    facetVarX <- NULL
+    facetVarY <- NULL
   }
+
+  # Add table_name column
+  data <- data |>
+    dplyr::left_join(
+      CDMConnector::settings(data),
+      by = c("result_id", "result_type", "cdm_name")
+    ) |>
+    filter(estimate_name == "percentage")
+  return(list("facetVarX" = facetVarX, "facetVarY" = facetVarY, "data" = data))
+
 }
 
 extractFacetVar <- function(facet){
@@ -189,16 +190,17 @@ checkFacetNames <- function(facetVar, splitStrata, data){
     # Replace empty spaces with "_"
     facetVar <- gsub(" ","_",facetVar)
 
-    # Replace empty or "." facet by NULL
-    if(TRUE %in% (facetVar %in% c("",".",as.character()))){
-      facetVar <- NULL
-    }
-
     # Turn to lower case
     facetVar <- tolower(facetVar)
 
     facetVar[facetVar == "cohort_name"] <- "group_level"
     facetVar[facetVar == "window_name"] <- "variable_level"
+    facetVar[facetVar == "strata"]      <- "strata_level"
+
+    # Replace empty or "." facet by NULL
+    if(TRUE %in% (facetVar %in% c("",".",as.character()))){
+      facetVar <- NULL
+    }
 
     # Check correct column names
     checkName(facetVar, splitStrata, data, type = "facet")
@@ -210,10 +212,8 @@ checkFacetNames <- function(facetVar, splitStrata, data){
 }
 
 checkStrataName <- function(facetVar,splitStrata, data){
-  if("strata" %in% c(facetVar) & splitStrata == FALSE){
-    facetVar <- gsub("strata","strata_level",facetVar)
-  }else if("strata" %in% c(facetVar) & splitStrata == TRUE){
-    facetVar[facetVar == "strata"] <- paste(c(data |> visOmopResults::strataColumns()), collapse = " &&& ")
+  if(("strata_level" %in% c(facetVar)) & splitStrata == TRUE){
+    facetVar[facetVar == "strata_level"] <- paste(c(data |> visOmopResults::strataColumns()), collapse = " &&& ")
     facetVar <- unlist(stringr::str_split(facetVar, pattern = " &&& "))
   }
   return(facetVar)
@@ -223,15 +223,13 @@ checkName <- function(var, splitStrata, data, type){
   # Check correct column names
   if(!is.null(var)){
     if(splitStrata == TRUE){
-      x <- var %in% c("cdm_name", "group_level", "strata_name", "strata_level",
-                            "variable_level", "strata", "table_name",  data |> visOmopResults::strataColumns())
-
+      x <- var %in% c("cdm_name", "group_level", "strata_level",
+                      "variable_level", "table_name",  data |> visOmopResults::strataColumns())
       if(FALSE %in% x){
         stop(sprintf(paste0(var[!x]," is not a valid variable for ", type)))
       }
-    }else if (splitStrata == FALSE){
-      x <- var %in% c("cdm_name", "group_level", "strata_name", "strata_level",
-                           "variable_level", "strata", "table_name")
+    }else if(splitStrata == FALSE){
+      x <- var %in% c("cdm_name", "group_level", "strata_level", "variable_level", "table_name")
       y <- var %in% (data |> visOmopResults::strataColumns())
 
       if(FALSE %in% x){
@@ -243,6 +241,20 @@ checkName <- function(var, splitStrata, data, type){
       }
     }
   }
+}
+
+colorVarsIfNull <- function(data, facetVarX, facetVarY, splitStrata, colorVars){
+  if(is.null(colorVars) & splitStrata == TRUE){
+    colorVars <- c("cdm_name", "group_level",
+                   "variable_level", "table_name",  data |> visOmopResults::strataColumns())
+    colorVars  <- colorVars[!c(colorVars %in% names(reference) | colorVars %in% facetVarX | colorVars %in% facetVarY)]
+  }else if(is.null(colorVars) & splitStrata == FALSE){
+    colorVars <- c("cdm_name", "group_level", "strata_level",
+                   "variable_level", "table_name")
+    colorVars  <- colorVars[!c(colorVars %in% names(reference) | colorVars %in% facetVarX | colorVars %in% facetVarY)]
+  }
+
+  return(colorVars)
 }
 
 addAxis <- function(y, position){

@@ -23,10 +23,24 @@ cdm <- generateConceptCohortSet(
 )
 
 lsc <- cdm$meds %>%
+  addAge(ageGroup = list("<40" = c(0,39), ">=40" = c(40,Inf))) |>
+  addSex() |>
   summariseLargeScaleCharacteristics(
-    window = c(-Inf,0),
+    window = list("-Inf to 0" = c(-Inf,0), "0 to 30" = c(0,30)),
+    strata = list("age_group","sex"),
     eventInWindow ="condition_occurrence",
     minimumFrequency = 0.05
   )
 
-lsc
+plotComparedLargeScaleCharacteristics(data = lsc,
+                                      reference = list(group_level  = "morphine"),
+                                      facet     = . ~ strata,
+                                      splitStrata = TRUE,
+                                      colorVars   = NULL,
+                                      missings    = NA)
+
+plotLargeScaleCharacteristics(data = lsc,
+                              position = "horizontal",
+                                      facet     = . ~ strata,
+                                       splitStrata = TRUE,
+                                      colorVars   = NULL)
