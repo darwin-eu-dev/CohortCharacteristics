@@ -84,7 +84,7 @@ plotLargeScaleCharacteristics <- function(data,
   checkName(colorVars, splitStrata, data, type = "colorVars")
 
   # All that is not a facet variable will be a color variable if colorVar = NULL
-  colorVars <- colorVarsIfNull(data, facetVarX, facetVarY, splitStrata, colorVars)
+  colorVars <- colorVarsIfNull(data, vars = c(facetVarX, facetVarY), splitStrata, colorVars)
 
   # Split strata
   if(splitStrata == TRUE){
@@ -149,13 +149,12 @@ facetFunction <- function(facet, splitStrata, data){
       CDMConnector::settings(data),
       by = c("result_id", "result_type", "cdm_name")
     ) |>
-    filter(estimate_name == "percentage")
+    dplyr::filter(.data$estimate_type == "percentage",
+                  .data$result_type   == "summarised_large_scale_characteristics")
   return(list("facetVarX" = facetVarX, "facetVarY" = facetVarY, "data" = data))
-
 }
 
 extractFacetVar <- function(facet){
-
   if(unique(stringr::str_detect(facet,"~"))){
     # Separate x and y from the formula
     facetVarX <- gsub("~.*","",facet)
@@ -243,15 +242,15 @@ checkName <- function(var, splitStrata, data, type){
   }
 }
 
-colorVarsIfNull <- function(data, facetVarX, facetVarY, splitStrata, colorVars){
+colorVarsIfNull <- function(data, vars, splitStrata, colorVars){
   if(is.null(colorVars) & splitStrata == TRUE){
     colorVars <- c("cdm_name", "group_level",
                    "variable_level", "table_name",  data |> visOmopResults::strataColumns())
-    colorVars  <- colorVars[!c(colorVars %in% names(reference) | colorVars %in% facetVarX | colorVars %in% facetVarY)]
+    colorVars  <- colorVars[!c(colorVars %in% vars)]
   }else if(is.null(colorVars) & splitStrata == FALSE){
     colorVars <- c("cdm_name", "group_level", "strata_level",
                    "variable_level", "table_name")
-    colorVars  <- colorVars[!c(colorVars %in% names(reference) | colorVars %in% facetVarX | colorVars %in% facetVarY)]
+    colorVars  <- colorVars[!c(colorVars %in% vars)]
   }
 
   return(colorVars)

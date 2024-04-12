@@ -112,7 +112,7 @@ test_that("Function returns a ggplot object", {
     position = "horizontal",
     splitStrata = FALSE,
     facet = c("variable_level",  "group_level"),
-    colorVars = c("strata_level", "strata_name")
+    colorVars = c("strata_level")
   )
 
   expect_true(ggplot2::is.ggplot(plot_multiple))

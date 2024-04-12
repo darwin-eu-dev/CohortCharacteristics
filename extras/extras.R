@@ -41,6 +41,6 @@ plotComparedLargeScaleCharacteristics(data = lsc,
 
 plotLargeScaleCharacteristics(data = lsc,
                               position = "horizontal",
-                                      facet     = . ~ strata,
-                                       splitStrata = TRUE,
-                                      colorVars   = NULL)
+                              facet     = . ~ strata,
+                              splitStrata = TRUE,
+                              colorVars   = NULL)

@@ -27,7 +27,7 @@ plotComparedLargeScaleCharacteristics <- function(data,
   checkName(colorVars, splitStrata, data, type = "colorVars")
 
   # All that is not a facet variable will be a color variable if colorVar = NULL
-  colorVars <- colorVarsIfNull(data, facetVarX, facetVarY, splitStrata, colorVars)
+  colorVars <- colorVarsIfNull(data, vars = c(facetVarX, facetVarY, names(reference)), splitStrata, colorVars)
 
   # Split strata
   if(splitStrata == TRUE){
@@ -50,7 +50,6 @@ plotComparedLargeScaleCharacteristics <- function(data,
 }
 
 checkReference <- function(reference, data, type){
-
   if(!is.null(reference)){
     # Reference can be a character or a list
     if(!inherits(reference, c("list","character"))){
@@ -63,7 +62,7 @@ checkReference <- function(reference, data, type){
         stop(sprintf("'", type,"' argument must be length = 1. If willing to add more details, please use list() format."))
       }
 
-      if(!reference %in% group_level){
+      if(!reference %in% data$group_level){
         stop(sprintf(paste0("'", reference, "' must be a group_level value.")))
       }
     }
@@ -81,9 +80,9 @@ checkReference <- function(reference, data, type){
 
       # Check that inputs are elements in the lsc table
       for(x in names(reference)){
-        y <- data |> dplyr::select(x)
+        y <- data |> dplyr::select(.data[[x]])
 
-        if(!reference[x] %in% (data |> dplyr::select(x) |> dplyr::distinct() |> dplyr::pull())){
+        if(!reference[x] %in% (data |> dplyr::select(.data[[x]]) |> dplyr::distinct() |> dplyr::pull())){
           stop(sprintf(paste0(reference[x], " is not present in column ", x)))
         }
       }
@@ -93,14 +92,11 @@ checkReference <- function(reference, data, type){
 }
 
 tidyData <- function(data, reference, missings){
-  data <- data |> dplyr::filter(estimate_type == "percentage",
-                                result_type == "summarised_large_scale_characteristics")
-
   # Create table reference
   table_reference  <- data
   for(x in names(reference)){
     table_reference <- table_reference |>
-      filter(.data[[x]] == reference[[x]])
+      dplyr::filter(.data[[x]] == reference[[x]])
   }
 
   # Create table comparator
@@ -124,14 +120,14 @@ tidyData <- function(data, reference, missings){
 
   # Cleaning the dataset
   data <- data |>
-    dplyr::mutate(estimate_value_comparator = as.numeric(estimate_value_comparator),
-                  estimate_value_reference  = as.numeric(estimate_value_reference))
+    dplyr::mutate(estimate_value_comparator = as.numeric(.data$estimate_value_comparator),
+                  estimate_value_reference  = as.numeric(.data$estimate_value_reference))
 
   # Replace missings
   for(i in colnames(data)){
     if(grepl("reference", i) & i != "estimate_value_comparator"){
       data <- data |>
-        mutate(across(
+        dplyr::mutate(dplyr::across(
           .cols = .data[[i]],
           .fns  = ~dplyr::if_else(is.na(.x), .data[[gsub("reference","comparator",i)]], .x)
         ))
@@ -141,7 +137,7 @@ tidyData <- function(data, reference, missings){
   for(i in colnames(data)){
     if(grepl("comparator", i) & i != "estimate_value_comparator"){
       data <- data |>
-        mutate(across(
+        dplyr::mutate(dplyr::across(
           .cols = .data[[i]],
           .fns  = ~dplyr::if_else(is.na(.x), .data[[gsub("comparator","reference",i)]], .x)
         ))
@@ -149,9 +145,9 @@ tidyData <- function(data, reference, missings){
   }
 
   data <- data |>
-    tidyr::replace_na(list(estimate_value_comparator = missings,
-                           estimate_value_reference = missings)) |>
-    dplyr::rename(estimate_value = estimate_value_reference)
+    tidyr::replace_na(list(estimate_value_comparator = .env$missings,
+                           estimate_value_reference = .env$missings)) |>
+    dplyr::rename(estimate_value = .data$estimate_value_reference)
 }
 
 changeNames <- function(reference, var, type){
