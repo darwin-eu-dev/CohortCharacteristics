@@ -576,41 +576,6 @@ summariseCohortIntersect <- function(cohort,
     dplyr::filter(.data$result_type == "summarised_cohort_intersect")
 }
 
-#' Summarise demographics of individuals
-#'
-#' @param cohort A cohort in the cdm.
-#' @param strata Stratification list.
-#' @param ageGroup A list of age groups.
-#'
-#' @return A summary of the demographics of the individuals.
-#'
-#' @export
-#'
-#' @examples
-#' \donttest{
-#' library(CohortCharacteristics)
-#'
-#' cdm <- mockCohortCharacteristics()
-#'
-#' summariseDemographics(
-#'   cohort = cdm$cohort1,
-#'   ageGroup = list(c(0, 19), c(20, 39), c(40, 59), c(60, 79), c(80, 150))
-#' )
-#' CDMConnector::cdmDisconnect(cdm = cdm)
-#' }
-summariseDemographics <- function(cohort,
-                                  strata = list(),
-                                  ageGroup = NULL) {
-
-  results <- CohortCharacteristics::summariseCharacteristics(
-    cohort = cohort,
-    strata = strata,
-    demographics = TRUE,
-    ageGroup = ageGroup
-  ) |>
-    dplyr::filter(.data$result_type == "summarised_demographics")
-  return(results)
-}
 
 #' Summarise table intersection information
 #'
