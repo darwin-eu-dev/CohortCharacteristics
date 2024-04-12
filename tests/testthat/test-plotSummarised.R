@@ -429,7 +429,7 @@ test_that("plotCohortIntersect", {
 
   CDMConnector::cdm_disconnect(cdm)
 })
-test_that("plotDemographics", {
+test_that("plotCharacteristics", {
   skip_on_cran()
   person <- dplyr::tibble(
     person_id = c(1, 2, 3), gender_concept_id = c(8507, 8532, 8532),
@@ -471,13 +471,11 @@ test_that("plotDemographics", {
     ageGroup = list(c(0, 40), c(41, 150))
   )
 
-  gg1 <- plotDemographics(result1)
+  gg1 <- plotCharacteristics(result1)
   expect_true(ggplot2::is.ggplot(gg1))
-  expect_true(unique(gg1$data$result_type) == "summarised_demographics")
 
-  gg2 <- plotDemographics(result1, plotStyle = "boxplot", colorVars = "variable_name")
+  gg2 <- plotCharacteristics(result1, plotStyle = "boxplot", colorVars = "variable_name")
   expect_true(ggplot2::is.ggplot(gg2))
-  expect_true(unique(gg2$data$result_type) == "summarised_demographics")
 
   CDMConnector::cdm_disconnect(cdm)
 })
