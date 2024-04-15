@@ -59,7 +59,6 @@ tableCharacteristics <- function(result,
                                    "N (%)" = "<count> (<percentage>%)",
                                    "N" = "<count>",
                                    "Median [Q25 - Q75]" = "<median> [<q25> - <q75>]",
-                                   "[Q05 - Q95]" = "[<q05> - <q95>]",
                                    "Mean (SD)" = "<mean> (<sd>)",
                                    "Range" = "<min> to <max>"
                                  ),

@@ -83,9 +83,9 @@ summariseCharacteristics <- function(cohort,
 
   # functions
   functions <- list(
-    date = c("min", "q05", "q25", "median", "q75", "q95", "max"),
+    date = c("min", "q25", "median", "q75", "max"),
     numeric = c(
-      "min", "q05", "q25", "median", "q75", "q95", "max", "mean", "sd"
+      "min", "q25", "median", "q75", "max", "mean", "sd"
     ),
     categorical = c("count", "percentage"),
     binary = c("count", "percentage")
