@@ -1,21 +1,23 @@
 
 plotComparedLargeScaleCharacteristics <- function(data,
-                                                 reference, # c("cohort_1") | list(cdm_name = "X",
-                                                 #                      group_level  = "X",
-                                                 #                      strata_level = "X",
-                                                 #                      window_level = "X" / variable_level = "X")
-                                                 # comparator  = NULL, # NULL := everything that is not the reference cohort,
-                                                 # c("cohort_2") | list(cdm_name = "X",
-                                                 #                      group_level  = "X",
-                                                 #                      strata_level = "X",
-                                                 #                      window_level = "X"),
+                                                 referenceGroupLevel    = NULL,
+                                                 referenceStrataLevel   = NULL,
+                                                 # referenceStrataLevel = c("<40 &&& Female")
+                                                 # referenceStrataLevel = c("<40", "Female")
+                                                 # referenceStrataLevel = list(age_group = "<40", sex = "Female") || c("overall") || c("<40) - but if it's a character it can only have length 1!
+                                                 referenceVariableLevel = NULL,
+                                                 referenceCdmName       = NULL,
                                                  facet       = NULL,
                                                  splitStrata = FALSE,
                                                  colorVars   = NULL,
                                                  missings    = 0){
 
-  # Check inputs
-  checkReference(reference, data, type = "reference")
+  checkSettings(data)
+  referenceGroupLevel    <- checkReference(referenceGroupLevel,    data, type = "group_level",    argument = "referenceGroupLevel")
+  referenceVariableLevel <- checkReference(referenceVariableLevel, data, type = "variable_level", argument = "referenceVariableLevel")
+  referenceCdmName       <- checkReference(referenceCdmName,       data, type = "cdm_name",       argument = "referenceCdmName")
+
+  referenceStrataLevel <- checkReferenceStrataLevel(referenceStrataLevel, data)
 
   # Extract facet names
   x <- facetFunction(facet, splitStrata, data)
@@ -27,7 +29,7 @@ plotComparedLargeScaleCharacteristics <- function(data,
   checkName(colorVars, splitStrata, data, type = "colorVars")
 
   # All that is not a facet variable will be a color variable if colorVar = NULL
-  colorVars <- colorVarsIfNull(data, vars = c(facetVarX, facetVarY, names(reference)), splitStrata, colorVars)
+  colorVars <- colorVarsIfNull(data, vars = c(facetVarX, facetVarY, referenceGroupLevel, referenceVariableLevel, referenceCdmName), splitStrata, colorVars)
 
   # Split strata
   if(splitStrata == TRUE){
@@ -35,7 +37,7 @@ plotComparedLargeScaleCharacteristics <- function(data,
   }
 
   # Tidying dataset
-  data <- tidyData(data, reference, missings)
+  data <- tidyData(data, referenceGroupLevel, referenceVariableLevel, referenceCdmName, referenceStrataLevel, missings)
 
   # Change facet names
   facetVarX <- changeNames(reference, facetVarX, type = "facet")
@@ -49,90 +51,79 @@ plotComparedLargeScaleCharacteristics <- function(data,
   return(y)
 }
 
-checkReference <- function(reference, data, type){
-  if(!is.null(reference)){
-    # Reference can be a character or a list
-    if(!inherits(reference, c("list","character"))){
-      stop(sprintf(paste0("'", type, "' must be either a list or a character.")))
+
+checkReference <- function(reference, data, type, argument){
+  if(length(reference) > 1){
+    stop(sprintf(paste0(argument, " must have length = 1.")))
+  }
+  if(is.null(reference)){
+    # Check there is only one type
+    if(length(unique(data[[type]])) > 1){
+      stop(sprintf(paste0("Please, use the ", argument," argument to define which ", type, " must be used as a reference: ", paste0(paste0("'",unique(data[[type]]),"'"), collapse = " or "))))
+    }else{
+      reference <- unique(data[[type]])
     }
-
-    # If is a character
-    if(inherits(reference, c("character"))){
-      if(length(reference) > 1){
-        stop(sprintf("'", type,"' argument must be length = 1. If willing to add more details, please use list() format."))
-      }
-
-      if(!reference %in% data$group_level){
-        stop(sprintf(paste0("'", reference, "' must be a group_level value.")))
-      }
+  }else{
+    # Format variable
+    if(!inherits(reference, "character")){
+      stop(sprintf(paste0("'", argument,"' must be a character string.")))
     }
-
-    # If is a list
-    if(inherits(reference, c("list"))){
-      # Change window_level to variable_level for internal usage
-      names(reference)[names(reference) == "window_level"] <- "variable_level"
-
-      # Check that inputs correspond to tables of the lsc
-      x <- names(reference) %in% colnames(data)
-      if(FALSE %in% x){
-        stop(sprintf(paste0(names(reference)[x], " must be a column in large scale characterisation table.\n")))
-      }
-
-      # Check that inputs are elements in the lsc table
-      for(x in names(reference)){
-        y <- data |> dplyr::select(.data[[x]])
-
-        if(!reference[x] %in% (data |> dplyr::select(.data[[x]]) |> dplyr::distinct() |> dplyr::pull())){
-          stop(sprintf(paste0(reference[x], " is not present in column ", x)))
-        }
-      }
+    # If variable is not present in the dataset
+    if(!reference %in% data[[type]]){
+      stop(sprintf(paste0("'", reference,"' is not present in ", type," column.")))
     }
   }
-
+  return(reference)
 }
 
-tidyData <- function(data, reference, missings){
+checkReferenceStrataLevel <- function(referenceStrataLevel, data){
+  referenceStrataLevel <- "overall"
+}
+
+tidyData <- function(data, referenceGroupLevel, referenceVariableLevel, referenceCdmName, referenceStrataLevel, missings){
   # Create table reference
-  table_reference  <- data
-  for(x in names(reference)){
-    table_reference <- table_reference |>
-      dplyr::filter(.data[[x]] == reference[[x]])
-  }
+  table_reference  <- data |>
+    dplyr::filter(.data$group_level %in% .env$referenceGroupLevel) |>
+    dplyr::filter(.data$variable_level %in% .env$referenceVariableLevel) |>
+    dplyr::filter(.data$cdm_name %in% .env$referenceCdmName)
 
   # Create table comparator
   table_comparator <- data |>
-    dplyr::anti_join(table_reference)
+    dplyr::anti_join(
+      table_reference
+    )
+
+  if((table_comparator$result_id |> length())== 0){
+    stop(sprintf(paste0("There is no comparator variables in the data.")))
+  }
 
   # Rename tables
   table_reference <- table_reference |>
-    dplyr::rename_at(dplyr::vars(-c("variable_name", "result_type",
-                             "package_version", "estimate_name", "estimate_type", dplyr::all_of(names(reference)))), ~paste0(.,"_reference"))
+    dplyr::rename_at(dplyr::vars(-c("variable_name", "result_id", "result_type", "package_name", "package_version",
+                              "estimate_name", "estimate_type", "table_name", "type", "analysis", "additional_name", "additional_level")), ~paste0(.,"_reference"))
   table_comparator <- table_comparator |>
-    dplyr::rename_at(dplyr::vars(-c("variable_name", "result_type",
-                             "package_version", "estimate_name", "estimate_type", dplyr::all_of(names(reference)))), ~paste0(.,"_comparator"))
+    dplyr::rename_at(dplyr::vars(-c("variable_name", "result_id", "result_type", "package_name", "package_version",
+                                    "estimate_name", "estimate_type", "table_name", "type", "analysis", "additional_name", "additional_level")), ~paste0(.,"_comparator"))
 
   # Join both tables
   data <- table_reference |>
     dplyr::full_join(
       table_comparator,
-      by = c("variable_name", "result_type", "package_version", "estimate_name", "estimate_type", dplyr::all_of(names(reference)))
-    )
+      by = c("variable_name", "result_id", "result_type", "package_name", "package_version",
+             "estimate_name", "estimate_type", "table_name", "type", "analysis", "additional_name", "additional_level")
+    ) |>
+    distinct()
 
   # Cleaning the dataset
   data <- data |>
     dplyr::mutate(estimate_value_comparator = as.numeric(.data$estimate_value_comparator),
                   estimate_value_reference  = as.numeric(.data$estimate_value_reference))
 
-  # Replace missings
-  for(i in colnames(data)){
-    if(grepl("reference", i) & i != "estimate_value_comparator"){
-      data <- data |>
-        dplyr::mutate(dplyr::across(
-          .cols = .data[[i]],
-          .fns  = ~dplyr::if_else(is.na(.x), .data[[gsub("reference","comparator",i)]], .x)
-        ))
-    }
-  }
+  # Replace reference missings
+  data <- replaceReferenceMissings(data, referenceCdmName, referenceGroupLevel, referenceVariableLevel, referenceStrataLevel, missings)
+
+  # Replace comparator missings
+  data <- replaceComparatorMissings(data, table_comparator, referenceCdmName, referenceGroupLevel, referenceVariableLevel, referenceStrataLevel, missings)
 
   for(i in colnames(data)){
     if(grepl("comparator", i) & i != "estimate_value_comparator"){
@@ -145,9 +136,40 @@ tidyData <- function(data, reference, missings){
   }
 
   data <- data |>
-    tidyr::replace_na(list(estimate_value_comparator = .env$missings,
-                           estimate_value_reference = .env$missings)) |>
-    dplyr::rename(estimate_value = .data$estimate_value_reference)
+    tidyr::replace_na(list(estimate_value_comparator = missings,
+                           estimate_value_reference = missings)) |>
+    dplyr::rename(estimate_value = estimate_value_reference)
+}
+
+replaceReferenceMissings <- function(data, referenceCdmName, referenceGroupLevel, referenceVariableLevel, referenceStrataLevel, missings){
+  data <- data |>
+    mutate(cdm_name_reference       = referenceCdmName,
+           group_name_reference     = data |> select(group_name_reference) |> filter(!is.na(group_name_reference)) |> distinct() |> pull(),
+           group_level_reference    = referenceGroupLevel,
+           variable_level_reference = referenceVariableLevel,
+           strata_name_reference    = "overall",
+           strata_level_reference   = referenceStrataLevel,
+           estimate_value_reference = if_else(is.na(estimate_value_reference), missings, estimate_value_reference))
+
+  return(data)
+}
+
+replaceComparatorMissings <- function(data, table_comparator, referenceCdmName, referenceGroupLevel, referenceVariableLevel, referenceStrataLevel, missings){
+  comparator_groups <- table_comparator |>
+    select(cdm_name_comparator, group_name_comparator, group_level_comparator, strata_name_comparator, strata_level_comparator, variable_level_comparator) |>
+    distinct()
+
+  data <- data |>
+    select(-c(ends_with("comparator"))) |>
+    distinct() |>
+    cross_join(comparator_groups) |>
+    left_join(
+      data |>
+        select("variable_name", ends_with("comparator"))
+    ) |>
+    mutate(estimate_value_comparator = if_else(is.na(estimate_value_comparator), missings, estimate_value_comparator))
+
+  return(data)
 }
 
 changeNames <- function(reference, var, type){
@@ -159,6 +181,8 @@ changeNames <- function(reference, var, type){
       var <- paste0(var,"_comparator")
     }
   }
+
+  var <- gsub("table_name_comparator","table_name",var)
   return(var)
 }
 

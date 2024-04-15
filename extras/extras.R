@@ -26,18 +26,26 @@ lsc <- cdm$meds %>%
   addAge(ageGroup = list("<40" = c(0,39), ">=40" = c(40,Inf))) |>
   addSex() |>
   summariseLargeScaleCharacteristics(
-    window = list("-Inf to 0" = c(-Inf,0), "0 to 30" = c(0,30)),
+    window = list("-Inf to 0" = c(-Inf,0),  "0 to Inf" = c(0,Inf)),
     strata = list("age_group","sex"),
     eventInWindow ="condition_occurrence",
+    episodeInWindow = "drug_exposure",
     minimumFrequency = 0.05
   )
 
-plotComparedLargeScaleCharacteristics(data = lsc,
-                                      reference = list(group_level  = "morphine"),
-                                      facet     = . ~ strata,
-                                      splitStrata = TRUE,
+lsc1 <- lsc |>
+  filter((group_level == "morphine") | variable_name == "settings")
+
+lsc1 <- lsc1 |> filter(!(variable_name == "remifentanil" & variable_level == "0 to 30"))
+plotComparedLargeScaleCharacteristics(data = lsc1,
+                                      referenceGroupLevel    = "morphine",
+                                      referenceStrataLevel   = "overall",
+                                      referenceVariableLevel = "-Inf to 0",
+                                      referenceCdmName       = NULL,
+                                      facet       = NULL,
+                                      splitStrata = FALSE,
                                       colorVars   = NULL,
-                                      missings    = NA)
+                                      missings    = 0)
 
 plotLargeScaleCharacteristics(data = lsc,
                               position = "horizontal",

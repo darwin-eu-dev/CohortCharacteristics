@@ -91,7 +91,6 @@ test_that("Function returns a ggplot object", {
       minimumFrequency = 0
     )
 
-
   # levels_ordered <- c("-inf to -366", "-365 to -31", "-30 to -1", "0 to 0", "1 to 30", "31 to 365", "366 to inf")
   #
   # plot <- plotLargeScaleCharacteristics(

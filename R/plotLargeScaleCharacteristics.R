@@ -68,6 +68,8 @@ plotLargeScaleCharacteristics <- function(data,
                                           facet       = NULL,
                                           colorVars   = "variable_level") {
 
+  checkSettings(data)
+
   # Position of the plot
   x <- positionFunction(position)
   xAxis <- x$xAxis
@@ -105,6 +107,11 @@ plotLargeScaleCharacteristics <- function(data,
   return(y)
 }
 
+checkSettings <- function(data){
+  if(length(settings(data)$result_id) == 0){
+    stop(sprintf("Settings table is not present in the data. Please, when filtering the large scale characterisation table, include the following argument: filter( ... | variable_name == 'settings')"))
+  }
+}
 positionFunction <- function(position){
   if(position == "horizontal"){
     xAxis = "estimate_value"
@@ -153,6 +160,7 @@ facetFunction <- function(facet, splitStrata, data){
                   .data$result_type   == "summarised_large_scale_characteristics")
   return(list("facetVarX" = facetVarX, "facetVarY" = facetVarY, "data" = data))
 }
+
 
 extractFacetVar <- function(facet){
   if(unique(stringr::str_detect(facet,"~"))){
