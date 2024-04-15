@@ -58,9 +58,6 @@
     <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/plotCharacteristics.html</loc>
   </url>
   <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/plotCohortIntersect.html</loc>
-  </url>
-  <url>
     <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/plotCohortOverlap.html</loc>
   </url>
   <url>
@@ -68,9 +65,6 @@
   </url>
   <url>
     <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/plotLargeScaleCharacteristics.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/plotTableIntersect.html</loc>
   </url>
   <url>
     <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/reexports.html</loc>
@@ -103,9 +97,6 @@
     <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/tableCharacteristics.html</loc>
   </url>
   <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/tableCohortIntersect.html</loc>
-  </url>
-  <url>
     <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/tableCohortOverlap.html</loc>
   </url>
   <url>
@@ -113,8 +104,5 @@
   </url>
   <url>
     <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/tableLargeScaleCharacteristics.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/tableTableIntersect.html</loc>
   </url>
 </urlset>
