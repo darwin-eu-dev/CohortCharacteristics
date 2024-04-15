@@ -40,11 +40,11 @@ plotComparedLargeScaleCharacteristics <- function(data,
   data <- tidyData(data, referenceGroupLevel, referenceVariableLevel, referenceCdmName, referenceStrataLevel, missings)
 
   # Change facet names
-  facetVarX <- changeNames(reference, facetVarX, type = "facet")
-  facetVarY <- changeNames(reference, facetVarY, type = "facet")
+  facetVarX <- changeNames(facetVarX, type = "facet")
+  facetVarY <- changeNames(facetVarY, type = "facet")
 
   # Change colorVars names
-  colorVars <- changeNames(reference, colorVars, type = "colorVars")
+  colorVars <- changeNames(colorVars, type = "colorVars")
 
   # Edit plot
   y <- editPlot(data = data, facetVarX = facetVarX, facetVarY = facetVarY, colorVars = colorVars, vertical_x = FALSE)
@@ -82,7 +82,7 @@ checkReferenceStrataLevel <- function(referenceStrataLevel, data){
 
 tidyData <- function(data, referenceGroupLevel, referenceVariableLevel, referenceCdmName, referenceStrataLevel, missings){
   # Create table reference
-  table_reference  <- data |>
+  table_reference <- data |>
     dplyr::filter(.data$group_level %in% .env$referenceGroupLevel) |>
     dplyr::filter(.data$variable_level %in% .env$referenceVariableLevel) |>
     dplyr::filter(.data$cdm_name %in% .env$referenceCdmName)
@@ -112,7 +112,7 @@ tidyData <- function(data, referenceGroupLevel, referenceVariableLevel, referenc
       by = c("variable_name", "result_id", "result_type", "package_name", "package_version",
              "estimate_name", "estimate_type", "table_name", "type", "analysis", "additional_name", "additional_level")
     ) |>
-    distinct()
+    dplyr::distinct()
 
   # Cleaning the dataset
   data <- data |>
@@ -125,64 +125,50 @@ tidyData <- function(data, referenceGroupLevel, referenceVariableLevel, referenc
   # Replace comparator missings
   data <- replaceComparatorMissings(data, table_comparator, referenceCdmName, referenceGroupLevel, referenceVariableLevel, referenceStrataLevel, missings)
 
-  for(i in colnames(data)){
-    if(grepl("comparator", i) & i != "estimate_value_comparator"){
-      data <- data |>
-        dplyr::mutate(dplyr::across(
-          .cols = .data[[i]],
-          .fns  = ~dplyr::if_else(is.na(.x), .data[[gsub("comparator","reference",i)]], .x)
-        ))
-    }
-  }
-
   data <- data |>
     tidyr::replace_na(list(estimate_value_comparator = missings,
                            estimate_value_reference = missings)) |>
-    dplyr::rename(estimate_value = estimate_value_reference)
+    dplyr::rename(estimate_value = .data$estimate_value_reference)
 }
 
 replaceReferenceMissings <- function(data, referenceCdmName, referenceGroupLevel, referenceVariableLevel, referenceStrataLevel, missings){
   data <- data |>
-    mutate(cdm_name_reference       = referenceCdmName,
-           group_name_reference     = data |> select(group_name_reference) |> filter(!is.na(group_name_reference)) |> distinct() |> pull(),
+    dplyr::mutate(cdm_name_reference = referenceCdmName,
+           group_name_reference     = data |> dplyr::select("group_name_reference") |> dplyr::filter(!is.na(.data$group_name_reference)) |> dplyr::distinct() |> dplyr::pull(),
            group_level_reference    = referenceGroupLevel,
            variable_level_reference = referenceVariableLevel,
            strata_name_reference    = "overall",
            strata_level_reference   = referenceStrataLevel,
-           estimate_value_reference = if_else(is.na(estimate_value_reference), missings, estimate_value_reference))
+           estimate_value_reference = dplyr::if_else(is.na(.data$estimate_value_reference), missings, .data$estimate_value_reference))
 
   return(data)
 }
 
 replaceComparatorMissings <- function(data, table_comparator, referenceCdmName, referenceGroupLevel, referenceVariableLevel, referenceStrataLevel, missings){
   comparator_groups <- table_comparator |>
-    select(cdm_name_comparator, group_name_comparator, group_level_comparator, strata_name_comparator, strata_level_comparator, variable_level_comparator) |>
-    distinct()
+    dplyr::select("cdm_name_comparator", "group_name_comparator", "group_level_comparator",
+                  "strata_name_comparator", "strata_level_comparator", "variable_level_comparator") |>
+    dplyr::distinct()
 
   data <- data |>
-    select(-c(ends_with("comparator"))) |>
-    distinct() |>
-    cross_join(comparator_groups) |>
-    left_join(
+    dplyr::select(-c(dplyr::ends_with("comparator"))) |>
+    dplyr::distinct() |>
+    dplyr::cross_join(comparator_groups) |>
+    dplyr::left_join(
       data |>
-        select("variable_name", ends_with("comparator"))
+        dplyr::select("variable_name", dplyr::ends_with("comparator"))
     ) |>
-    mutate(estimate_value_comparator = if_else(is.na(estimate_value_comparator), missings, estimate_value_comparator))
+    dplyr::mutate(estimate_value_comparator = dplyr::if_else(is.na(.data$estimate_value_comparator), missings, .data$estimate_value_comparator))
 
   return(data)
 }
 
-changeNames <- function(reference, var, type){
+changeNames <- function(var, type){
   if(!is.null(var)){
-    # Change facet names to do the plot
-    if(TRUE %in% (names(reference) %in% var)){
-      warning(paste0(type," variable and reference variable are identic. Consider using different variables."))
-    }else{
       var <- paste0(var,"_comparator")
-    }
+      var <- gsub("table_name_comparator","table_name",var)
   }
 
-  var <- gsub("table_name_comparator","table_name",var)
   return(var)
 }
 

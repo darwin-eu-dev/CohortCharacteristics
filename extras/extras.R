@@ -37,6 +37,7 @@ lsc1 <- lsc |>
   filter((group_level == "morphine") | variable_name == "settings")
 
 lsc1 <- lsc1 |> filter(!(variable_name == "remifentanil" & variable_level == "0 to 30"))
+
 plotComparedLargeScaleCharacteristics(data = lsc1,
                                       referenceGroupLevel    = "morphine",
                                       referenceStrataLevel   = "overall",
@@ -52,3 +53,7 @@ plotLargeScaleCharacteristics(data = lsc,
                               facet     = . ~ strata,
                               splitStrata = TRUE,
                               colorVars   = NULL)
+
+
+
+

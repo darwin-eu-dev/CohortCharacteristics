@@ -37,30 +37,18 @@
 #' @examples
 #' \donttest{
 #' library(CohortCharacteristics)
+#' library(DrugUtilisation)
+#' cdm <- DrugUtilisation::mockDrugUtilisation()
 #'
-#' cdm <- mockCohortCharacteristics()
-#'
-#' concept <- dplyr::tibble(
-#'   concept_id = c(1125315, 1503328, 1516978, 317009, 378253, 4266367),
-#'   domain_id = NA_character_,
-#'   vocabulary_id = NA_character_,
-#'   concept_class_id = NA_character_,
-#'   concept_code = NA_character_,
-#'   valid_start_date = as.Date("1900-01-01"),
-#'   valid_end_date = as.Date("2099-01-01")
-#' ) |>
-#'   dplyr::mutate(concept_name = paste0("concept: ", .data$concept_id))
-#' cdm <- CDMConnector::insertTable(cdm, "concept", concept)
-#' results <- cdm$cohort2 |>
-#'   summariseLargeScaleCharacteristics(
-#'     episodeInWindow = c("condition_occurrence"),
-#'     minimumFrequency = 0
-#'   )
-#'
-#' graphs <- plotLargeScaleCharacteristics(results)
+#' lsc <- CohortCharacteristics::summariseLargeScaleCharacteristics(cdm$cohort1,
+#' eventInWindow = "condition_occurrence", minimumFrequency = 0.05)
+#' plotLargeScaleCharacteristics(data = lsc,
+#'                               position = "horizontal",
+#'                               facet     = NULL,
+#'                               splitStrata = TRUE,
+#'                               colorVars   = NULL)
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
-#'
 
 plotLargeScaleCharacteristics <- function(data,
                                           position    = "horizontal",

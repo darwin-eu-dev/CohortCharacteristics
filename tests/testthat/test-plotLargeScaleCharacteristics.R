@@ -107,7 +107,7 @@ test_that("Function returns a ggplot object", {
   # levels_ordered <- c("-inf to -366.cohort_1", "-inf to -366.cohort_2",
   #                     "-365 to -31.cohort_1", "-365 to -31.cohort_2")
   plot_multiple <- plotLargeScaleCharacteristics(
-    data =  test_data |> dplyr::filter(group_level  %in% c("cohort_1", "cohort_2")),
+    data =  test_data |> dplyr::filter((group_level  %in% c("cohort_1", "cohort_2")) | variable_name == 'settings'),
     position = "horizontal",
     splitStrata = FALSE,
     facet = c("variable_level",  "group_level"),
