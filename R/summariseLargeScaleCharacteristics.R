@@ -114,7 +114,12 @@ summariseLargeScaleCharacteristics <- function(cohort,
 
   # perform lsc
   lsc <- NULL
-  for (tab in unique(analyses$table)) {
+  cli::cli_alert_info("Summarising large scale characteristics ")
+  id <- cli::cli_status("")
+  for (i in seq_along(unique(analyses$table))) {
+    tab <- unique(analyses$table)[i]
+    cli::cli_status_update(id,
+                           " - getting characteristics from table {tab} ({i} of {length(unique(analyses$table))})")
     analysesTable <- analyses |> dplyr::filter(.data$table == .env$tab)
     table <- getTable(
       tab, x, includeSource, minWindow, maxWindow, tablePrefix, excludedCodes
@@ -154,6 +159,7 @@ summariseLargeScaleCharacteristics <- function(cohort,
       }
     }
   }
+  cli::cli_status_clear(id)
 
   # calculate denominators
   den <- denominatorCounts(cohort, x, strata, window, tablePrefix)
