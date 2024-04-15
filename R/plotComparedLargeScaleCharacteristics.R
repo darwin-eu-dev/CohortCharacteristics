@@ -3,8 +3,6 @@ plotComparedLargeScaleCharacteristics <- function(data,
                                                  referenceGroupLevel    = NULL,
                                                  referenceStrataLevel   = NULL,
                                                  # referenceStrataLevel = c("<40 &&& Female")
-                                                 # referenceStrataLevel = c("<40", "Female")
-                                                 # referenceStrataLevel = list(age_group = "<40", sex = "Female") || c("overall") || c("<40) - but if it's a character it can only have length 1!
                                                  referenceVariableLevel = NULL,
                                                  referenceCdmName       = NULL,
                                                  facet       = NULL,
