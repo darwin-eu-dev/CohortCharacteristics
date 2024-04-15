@@ -365,6 +365,7 @@ summariseStrataCounts <- function(tableWindowCohort, strata) {
           dplyr::group_by(dplyr::pick(c("concept", strata[[k]]))) |>
           dplyr::summarise(count = as.numeric(dplyr::n()), .groups = "drop") |>
           dplyr::collect() |>
+          dplyr::filter(!is.na(!!as.symbol(strata[[k]]))) |>
           visOmopResults::uniteStrata(cols = strata[[k]])
       )
   }
