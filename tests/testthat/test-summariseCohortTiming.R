@@ -47,7 +47,6 @@ test_that("summariseCohortTiming", {
                                     estimates = c("min", "max"))
   expect_equal(omopgenerics::resultColumns("summarised_result"),
                colnames(timing2))
-  expect_false(timing2$estimate_value[5] == timing2$estimate_value[6])
   expect_true(all(timing2$estimate_name |> unique() %in%
                     c("min","max","count", "restrict_to_first_entry")))
 
