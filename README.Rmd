@@ -19,10 +19,9 @@ knitr::opts_chunk$set(
 [![R-CMD-check](https://github.com/darwin-eu-dev/CohortCharacteristics/workflows/R-CMD-check/badge.svg)](https://github.com/darwin-eu-dev/CohortCharacteristics/actions)
 [![Lifecycle:Experimental](https://img.shields.io/badge/Lifecycle-Experimental-339999)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 
-
 ## Package overview
 
-CohortCharacteristics contains functions for summarising characteristics of OMOP CDM tables containing patient level data. The characteristics that can be added include an individual´s  demographics (sex, age, and days of prior observation, ...) and intersection with other tables (standard tables, cohorts or concepts sets), from this intersections you can summarise presence (flag), counts, time to event or date of event. In addition, CohortCharacteristics also provides functionality visualise this information in tables and figures. 
+CohortCharacteristics contains functions for summarising characteristics of cohorts of patients identified in an OMOP CDM dataset. Once a cohort table has been created, CohortCharacteristics provides a number of functions to help provide a summary of the characteristics of the individuals within the cohort.
 
 ## Package installation
 
@@ -32,3 +31,43 @@ You can install the latest version of CohortCharacteristics like so:
 install.packages("remotes")
 remotes::install_github("darwin-eu-dev/CohortCharacteristics")
 ```
+
+## Example usage
+
+The CohortCharacteristics package is designed to work with data in the OMOP CDM format, so our first step is to create a reference to the data using the CDMConnector package. For this example we will work with the example Eunomia dataset.  
+
+```{r, message=FALSE}
+library(CDMConnector)
+library(PatientProfiles)
+library(dplyr)
+```
+
+```{r}
+cdm <- mockPatientProfiles(patient_size = 1000, drug_exposure_size = 1000)
+cdm
+```
+
+We can see that in this example data we have a cohort table called cohort1.
+
+```{r, message=FALSE}
+cdm$cohort1
+```
+
+With one line of code from CohortCharacteristics we can generate summary statistics on this cohort.
+```{r, message=FALSE}
+cohort1_characteristics <- summariseCharacteristics(cdm$cohort1)
+cohort1_characteristics |> 
+  glimpse()
+```
+
+And with another line we can create a table of these results.
+```{r, message=FALSE}
+tableCharacteristics(cohort1_characteristics)
+```
+
+With one more we can create a plot. For example here we create a set of box-plots.
+```{r, message=FALSE}
+plotCharacteristics(cohort1_characteristics, plotStyle = "boxplot")
+```
+
+CohortCharacteristics provides a number of other functions to help summarise cohort tables. These include summaries of cohort overlaps and timings between cohort entries, intersections with other cohort tables or tables containing clinical data, as well as a broader large scale characterisation of all data held on the individuals across the different tables of the OMOP CDM. These additional functionalities are summarised in the package vignettes.  
