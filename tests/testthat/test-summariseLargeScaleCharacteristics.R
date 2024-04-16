@@ -232,6 +232,13 @@ test_that("basic functionality summarise large scale characteristics", {
       minimumFrequency = 0
     ))
 
+ # minimum frequencey
+ expect_message(result <- cdm$cohort_interest |>
+   summariseLargeScaleCharacteristics(
+     eventInWindow = c("condition_occurrence", "drug_exposure"),
+     minimumFrequency = 0.5
+   ))
+
  # empty event table
  cdm$visit_occurrence <-  cdm$visit_occurrence |>
    dplyr::filter(visit_occurrence_id == 9999)
