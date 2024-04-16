@@ -84,6 +84,18 @@ summariseCharacteristics <- function(cohort,
   conceptIntersect <- checkConceptIntersect(conceptIntersect, cdm)
   assertLogical(counts)
 
+  # return empty result if no analyses chosen
+  if (length(strata) == 0 &
+    isFALSE(counts) &
+    isFALSE(demographics) &
+    is.null(ageGroup) &
+    length(tableIntersect) == 0 &
+    length(cohortIntersect) == 0 &
+    length(conceptIntersect) == 0 &
+    length(otherVariables) == 0) {
+    return(omopgenerics::emptySummarisedResult())
+  }
+
   # functions
   functions <- list(
     date = c("min", "q25", "median", "q75", "max"),

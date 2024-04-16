@@ -251,6 +251,14 @@ test_that("test summariseCharacteristics", {
     cdm$dus_cohort, counts = "not an option", demographics = FALSE
   ))
 
+  # no options chosen
+  expect_no_error(empty <- summariseCharacteristics(
+    cdm$dus_cohort, counts = FALSE, demographics = FALSE
+  ))
+  expect_equal(empty,
+               omopgenerics::emptySummarisedResult())
+
+
   # demographics
   expect_no_error(result <- summariseCharacteristics(
     cdm$dus_cohort,
