@@ -231,6 +231,26 @@ test_that("test summariseCharacteristics", {
     suppress(minCellCount = 1)
   expect_true(inherits(result, "summarised_result"))
 
+  # counts - both records and persons
+  sc_person_record <- summariseCharacteristics(
+    cdm$dus_cohort, counts = TRUE, demographics = FALSE
+  )
+  expect_true(nrow(sc_person_record |>
+                    dplyr::filter(variable_name == "Number records")) > 0)
+  expect_true(nrow(sc_person_record |>
+                     dplyr::filter(variable_name == "Number subjects")) > 0)
+  # counts - none
+  sc_no_counts <- summariseCharacteristics(
+    cdm$dus_cohort, counts = FALSE, demographics = TRUE
+  )
+  expect_true(nrow(sc_no_counts |>
+                     dplyr::filter(variable_name == "Number records")) == 0)
+  expect_true(nrow(sc_no_counts |>
+                     dplyr::filter(variable_name == "Number subjects")) == 0)
+  expect_error(summariseCharacteristics(
+    cdm$dus_cohort, counts = "not an option", demographics = FALSE
+  ))
+
   # demographics
   expect_no_error(result <- summariseCharacteristics(
     cdm$dus_cohort,

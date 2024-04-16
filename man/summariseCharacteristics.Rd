@@ -7,6 +7,7 @@
 summariseCharacteristics(
   cohort,
   strata = list(),
+  counts = TRUE,
   demographics = TRUE,
   ageGroup = NULL,
   tableIntersect = list(),
@@ -19,6 +20,9 @@ summariseCharacteristics(
 \item{cohort}{A cohort in the cdm.}
 
 \item{strata}{Stratification list.}
+
+\item{counts}{TRUE or FALSE. If TRUE, record and person counts will
+be produced.}
 
 \item{demographics}{Whether to summarise demographics data.}
 
