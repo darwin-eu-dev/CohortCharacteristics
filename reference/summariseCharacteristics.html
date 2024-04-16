@@ -60,6 +60,7 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">summariseCharacteristics</span><span class="op">(</span></span>
 <span>  <span class="va">cohort</span>,</span>
 <span>  strata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  counts <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  demographics <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  ageGroup <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  tableIntersect <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
@@ -77,6 +78,11 @@
 
 <dt>strata</dt>
 <dd><p>Stratification list.</p></dd>
+
+
+<dt>counts</dt>
+<dd><p>TRUE or FALSE. If TRUE, record and person counts will
+be produced.</p></dd>
 
 
 <dt>demographics</dt>
@@ -158,8 +164,8 @@ summarised.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> count_visit_occurrence_variable_00015: min, q25, median, q75, max, mean, sd</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2024-04-16 09:46:59.046981</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2024-04-16 09:46:59.190608</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2024-04-16 13:29:33.373179</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2024-04-16 13:29:33.526766</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> summariseCharacteristics finished!</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 52 × 16</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    result_id cdm_name result_type        package_name package_version group_name</span>
