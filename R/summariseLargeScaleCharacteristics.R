@@ -407,7 +407,8 @@ denominatorCounts <- function(cohort, x, strata, window, tablePrefix) {
   return(den)
 }
 formatLscResult <- function(lsc, den, cdm, minimumFrequency) {
-  lsc |>
+
+  lsc <- lsc |>
     dplyr::inner_join(
       den |>
         dplyr::rename("denominator" = "count") |>
@@ -416,10 +417,21 @@ formatLscResult <- function(lsc, den, cdm, minimumFrequency) {
         "strata_name", "strata_level", "group_name", "group_level",
         "window_name"
       )
-    ) |>
+    )
+
+  start_rows <- lsc |> dplyr::tally() |> dplyr::pull("n")
+  lsc <- lsc |>
     dplyr::mutate(percentage = round(100 * .data$count / .data$denominator, 2)) |>
     dplyr::select(-"denominator") |>
-    dplyr::filter(.data$percentage >= 100 * .env$minimumFrequency) |>
+    dplyr::filter(.data$percentage >= 100 * .env$minimumFrequency)
+  end_rows <- lsc |> dplyr::tally() |> dplyr::pull("n")
+
+  if(end_rows < start_rows){
+  cli::cli_inform("{start_rows - end_rows} estimate{?s} dropped as
+                  frequency less than {paste0(minimumFrequency*100)}%")
+  }
+
+  lsc <- lsc |>
     tidyr::pivot_longer(
       cols = c("count", "percentage"), names_to = "estimate_type",
       values_to = "estimate"
@@ -436,6 +448,8 @@ formatLscResult <- function(lsc, den, cdm, minimumFrequency) {
       "variable" = "concept_name", "variable_level" = "window_name",
       "estimate_type", "estimate"
     )
+
+  lsc
 }
 addConceptName <- function(lsc, cdm) {
   concepts <- lsc |>
