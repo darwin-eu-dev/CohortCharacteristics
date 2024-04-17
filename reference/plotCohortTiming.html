@@ -60,10 +60,10 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plotCohortTiming</span><span class="op">(</span></span>
 <span>  <span class="va">result</span>,</span>
 <span>  plotType <span class="op">=</span> <span class="st">"boxplot"</span>,</span>
+<span>  timeScale <span class="op">=</span> <span class="st">"days"</span>,</span>
 <span>  facetVarX <span class="op">=</span> <span class="st">"variable_name"</span>,</span>
 <span>  facetVarY <span class="op">=</span> <span class="st">"group_level"</span>,</span>
 <span>  colorVars <span class="op">=</span> <span class="st">"group_level"</span>,</span>
-<span>  timingLabel <span class="op">=</span> <span class="st">"{cohort_name_reference} &amp;&amp;&amp; {cohort_name_comparator}"</span>,</span>
 <span>  uniqueCombinations <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -79,6 +79,10 @@
 "density".</p></dd>
 
 
+<dt>timeScale</dt>
+<dd><p>Time scale to plot results. Can be days or years.</p></dd>
+
+
 <dt>facetVarX</dt>
 <dd><p>column in data to facet by on horizontal axis</p></dd>
 
@@ -89,11 +93,6 @@
 
 <dt>colorVars</dt>
 <dd><p>Column names to distinct by colors. default set to group_level</p></dd>
-
-
-<dt>timingLabel</dt>
-<dd><p>A glue expression to identify each plotted cohort
-overlap.</p></dd>
 
 
 <dt>uniqueCombinations</dt>
@@ -115,11 +114,11 @@ comparator plots will be plotted.</p></dd>
 <span class="r-in"><span><span class="va">cdm</span> <span class="op">&lt;-</span> <span class="fu">CohortCharacteristics</span><span class="fu">::</span><span class="fu"><a href="mockCohortCharacteristics.html">mockCohortCharacteristics</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">timing</span> <span class="op">&lt;-</span> <span class="fu"><a href="summariseCohortTiming.html">summariseCohortTiming</a></span><span class="op">(</span><span class="va">cdm</span><span class="op">$</span><span class="va">cohort2</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be computed:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> diff_days: min, q25, median, q75, max</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> days_between_cohort_entries: min, q25, median, q75, max</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2024-04-16 13:33:22.886217</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2024-04-16 13:33:22.938331</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2024-04-17 08:48:23.370326</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2024-04-17 08:48:23.425594</span>
 <span class="r-in"><span><span class="fu">plotCohortTiming</span><span class="op">(</span><span class="va">timing</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plotCohortTiming-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu">CDMConnector</span><span class="fu">::</span><span class="fu"><a href="https://darwin-eu.github.io/CDMConnector/reference/cdmDisconnect.html" class="external-link">cdmDisconnect</a></span><span class="op">(</span>cdm <span class="op">=</span> <span class="va">cdm</span><span class="op">)</span></span></span>
