@@ -95,7 +95,21 @@ summariseLargeScaleCharacteristics <- function(cohort,
   checkmate::assertLogical(includeSource, any.missing = FALSE, len = 1)
   checkmate::assertNumber(minimumFrequency, lower = 0, upper = 1)
   checkmate::assert_integerish(excludedCodes, any.missing = FALSE, null.ok = TRUE)
-  checkCdm(cdm)
+
+  checkCdm(cdm, "concept")
+
+  # warn if strata has missing values
+  for (k in seq_along(strata)) {
+  missingWorkingStrata <- cohort |>
+    dplyr::filter(is.na(!!as.symbol(strata[[k]]))) |>
+    dplyr::tally() |>
+    dplyr::pull("n")
+  if(missingWorkingStrata > 0){
+    cli::cli_warn("{missingWorkingStrata} missing value{?s} in
+                    variable {strata[[k]]} will be dropped when
+                    calculating stratified results")
+  }
+}
 
   # add names to windows
   names(window) <- gsub("_", " ", gsub("m", "-", getWindowNames(window)))
@@ -371,6 +385,7 @@ summariseStrataCounts <- function(tableWindowCohort, strata) {
           dplyr::group_by(dplyr::pick(c("concept", strata[[k]]))) |>
           dplyr::summarise(count = as.numeric(dplyr::n()), .groups = "drop") |>
           dplyr::collect() |>
+          dplyr::filter(!is.na(!!as.symbol(strata[[k]]))) |>
           visOmopResults::uniteStrata(cols = strata[[k]])
       )
   }
@@ -392,7 +407,8 @@ denominatorCounts <- function(cohort, x, strata, window, tablePrefix) {
   return(den)
 }
 formatLscResult <- function(lsc, den, cdm, minimumFrequency) {
-  lsc |>
+
+  lsc <- lsc |>
     dplyr::inner_join(
       den |>
         dplyr::rename("denominator" = "count") |>
@@ -401,10 +417,21 @@ formatLscResult <- function(lsc, den, cdm, minimumFrequency) {
         "strata_name", "strata_level", "group_name", "group_level",
         "window_name"
       )
-    ) |>
+    )
+
+  start_rows <- lsc |> dplyr::tally() |> dplyr::pull("n")
+  lsc <- lsc |>
     dplyr::mutate(percentage = round(100 * .data$count / .data$denominator, 2)) |>
     dplyr::select(-"denominator") |>
-    dplyr::filter(.data$percentage >= 100 * .env$minimumFrequency) |>
+    dplyr::filter(.data$percentage >= 100 * .env$minimumFrequency)
+  end_rows <- lsc |> dplyr::tally() |> dplyr::pull("n")
+
+  if(end_rows < start_rows){
+  cli::cli_inform("{start_rows - end_rows} estimate{?s} dropped as
+                  frequency less than {paste0(minimumFrequency*100)}%")
+  }
+
+  lsc <- lsc |>
     tidyr::pivot_longer(
       cols = c("count", "percentage"), names_to = "estimate_type",
       values_to = "estimate"
@@ -421,6 +448,8 @@ formatLscResult <- function(lsc, den, cdm, minimumFrequency) {
       "variable" = "concept_name", "variable_level" = "window_name",
       "estimate_type", "estimate"
     )
+
+  lsc
 }
 addConceptName <- function(lsc, cdm) {
   concepts <- lsc |>

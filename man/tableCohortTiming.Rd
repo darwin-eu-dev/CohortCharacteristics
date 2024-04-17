@@ -6,6 +6,7 @@
 \usage{
 tableCohortTiming(
   result,
+  timeScale = "days",
   type = "gt",
   formatEstimateName = c(N = "<count>", `Median [Q25 - Q75]` =
     "<median> [<q25> - <q75>]", Range = "<min> - <max>"),
@@ -20,6 +21,8 @@ tableCohortTiming(
 }
 \arguments{
 \item{result}{A summariseCohortTiming result}
+
+\item{timeScale}{Time scale to plot results. Can be days or years.}
 
 \item{type}{Type of desired formatted table, possibilities: "gt",
 "flextable", "tibble".}

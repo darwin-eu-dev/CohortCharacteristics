@@ -67,13 +67,25 @@ tableCohortOverlap  <- function(result,
   # default
   .options <- defaultOverlapOptions(.options)
 
+  result <- result %>%
+    dplyr::mutate(
+      variable_level = dplyr::case_when(
+        variable_level == "overlap" ~ "in_both_cohorts",
+        variable_level == "only_in_comparator" ~ "only_in_comparator_cohort",
+        variable_level == "only_in_reference" ~ "only_in_reference_cohort"
+      )
+    )
+
   # unique reference - comparator combinations
   if (.options$uniqueCombinations) {
     x <- result |>
       visOmopResults::splitGroup()
     x <- x |>
       getUniqueCombinations(order = sort(unique(x$cohort_name_reference))) |>
-      dplyr::mutate(variable_level = factor(.data$variable_level, levels = c("only_in_reference", "only_in_comparator", "overlap"))) |>
+      dplyr::mutate(variable_level = factor(.data$variable_level,
+                                            levels = c("only_in_reference_cohort",
+                                                       "in_both_cohorts",
+                                                       "only_in_comparator_cohort"))) |>
       dplyr::arrange(dplyr::across(dplyr::all_of(
         c("result_id", "cdm_name", "cohort_name_reference", "cohort_name_comparator", "strata_name", "strata_level", "variable_name", "variable_level")
       ))) |>
@@ -81,7 +93,10 @@ tableCohortOverlap  <- function(result,
       visOmopResults::uniteGroup(cols = c("cohort_name_reference", "cohort_name_comparator"))
   } else {
     x <- result |>
-      dplyr::mutate(variable_level = factor(.data$variable_level, levels = c("only_in_reference", "only_in_comparator", "overlap"))) |>
+      dplyr::mutate(variable_level = factor(.data$variable_level,
+                                            levels = c("only_in_reference_cohort",
+                                                       "in_both_cohorts",
+                                                       "only_in_comparator_cohort"))) |>
       dplyr::arrange(dplyr::across(dplyr::all_of(
         c("result_id", "cdm_name", "group_name", "group_level", "strata_name", "strata_level", "variable_name", "variable_level")
       ))) |>

@@ -18,6 +18,8 @@
 #'
 #' @param cohort A cohort in the cdm.
 #' @param strata Stratification list.
+#' @param counts TRUE or FALSE. If TRUE, record and person counts will
+#' be produced.
 #' @param demographics Whether to summarise demographics data.
 #' @param ageGroup A list of age groups.
 #' @param tableIntersect A list of arguments that uses addTableIntersect
@@ -60,6 +62,7 @@
 #' }
 summariseCharacteristics <- function(cohort,
                                      strata = list(),
+                                     counts = TRUE,
                                      demographics = TRUE,
                                      ageGroup = NULL,
                                      tableIntersect = list(),
@@ -79,7 +82,19 @@ summariseCharacteristics <- function(cohort,
   tableIntersect <- checkTableIntersect(tableIntersect, cdm)
   cohortIntersect <- checkCohortIntersect(cohortIntersect, cdm)
   conceptIntersect <- checkConceptIntersect(conceptIntersect, cdm)
-  checkOtherVariables(otherVariables, cohort)
+  assertLogical(counts)
+
+  # return empty result if no analyses chosen
+  if (length(strata) == 0 &
+    isFALSE(counts) &
+    isFALSE(demographics) &
+    is.null(ageGroup) &
+    length(tableIntersect) == 0 &
+    length(cohortIntersect) == 0 &
+    length(conceptIntersect) == 0 &
+    length(otherVariables) == 0) {
+    return(omopgenerics::emptySummarisedResult())
+  }
 
   # functions
   functions <- list(
@@ -421,12 +436,14 @@ summariseCharacteristics <- function(cohort,
 
   cli::cli_alert_info("summarising data")
   # summarise results
+
   results <- cohort |>
     PatientProfiles::summariseResult(
       group = list("cohort_name"),
       strata = strata,
       variables = variables,
-      estimates = functions[names(variables)]
+      estimates = functions[names(variables)],
+      counts = counts
     ) |>
     PatientProfiles::addCdmName(cdm = cdm) |>
     dplyr::select(!"result_type")
