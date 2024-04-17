@@ -43,6 +43,7 @@ plotCohortOverlap <- function(result,
   result <- omopgenerics::newSummarisedResult(result) |>
     dplyr::filter(.data$result_type == "cohort_overlap")
   checkmate::assertCharacter(facet, null.ok = TRUE)
+
   checkmate::assertLogical(uniqueCombinations)
 
   overlapLabel <- "{cohort_name_reference} &&& {cohort_name_comparator}"
@@ -50,6 +51,8 @@ plotCohortOverlap <- function(result,
   facetVarX <- NULL
   facetVarY <- NULL
 
+  overlapLabel <- "{cohort_name_reference} &&& {cohort_name_comparator}"
+  colorVars <- "variable_level"
 
   if(is.null(.options[["facetNcols"]])){
     .options[["facetNcols"]] <- 1
