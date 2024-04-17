@@ -130,10 +130,10 @@ plotCohortTiming <- function(result,
 
   if(is.null(colour_name)){
     gg <- gg+
-      labs(color = ggplot2::element_blank())
+      ggplot2::labs(color = ggplot2::element_blank())
   } else{
     gg <- gg +
-      labs(color = colour_name)
+      ggplot2::labs(color = colour_name)
   }
 
   gg <- gg +
@@ -147,7 +147,7 @@ plotCohortTiming <- function(result,
 
   if(is.null(colour_name)){
     gg <- gg +
-    guides(color = guide_legend(title.position = "top"))
+      ggplot2::guides(color = ggplot2::guide_legend(title.position = "top"))
   }
 
   return(gg)
