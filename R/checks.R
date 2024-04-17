@@ -157,7 +157,7 @@ checkAgeGroup <- function(ageGroup, overlap = FALSE) {
       names(ageGroup)[id] <- paste0("age_group_", id)
     }
   }
-  invisible(ageGroup)
+  return(invisible(ageGroup))
 }
 
 #' @noRd
@@ -402,17 +402,17 @@ checkTable <- function(table) {
 }
 
 #' @noRd
-checkStrata <- function(list, table, type = "strata") {
+checkStrata <- function(strata, table, type = "strata") {
   errorMessage <- paste0(type, " should be a list that point to columns in table")
-  if (!is.list(list)) {
-    cli::cli_abort(errorMessage)
+  if (!is.list(strata)) {
+    strata <- list(strata)
   }
-  if (length(list) > 0) {
-    if (!is.character(unlist(list))) {
+  if (length(strata) > 0) {
+    if (!is.character(unlist(strata))) {
       cli::cli_abort(errorMessage)
     }
-    if (!all(unlist(list) %in% colnames(table))) {
-      notPresent <- list |> unlist() |> unique()
+    if (!all(unlist(strata) %in% colnames(table))) {
+      notPresent <- strata |> unlist() |> unique()
       notPresent <- notPresent[! notPresent %in% colnames(table)]
       cli::cli_abort(paste0(
         errorMessage,
@@ -421,6 +421,7 @@ checkStrata <- function(list, table, type = "strata") {
       ))
     }
   }
+  return(invisible(strata))
 }
 
 #' @noRd
@@ -1042,3 +1043,85 @@ errorNull <- function(null) {
   }
   return(str)
 }
+assertIntersect <- function(intersect) {
+  name <- substitute(intersect)
+  functionName <- paste0(
+    "PatientProfiles::add", toupper(substr(name, 1, 1)),
+    substr(name, 2, nchar(name))
+  )
+  arguments <- formals(eval(parse(text = functionName)))
+  arguments <- arguments[!names(arguments) %in% c("x", "cdm")]
+
+  if (any(c("targetCohortTable", "tableName", "conceptSet") %in% names(intersect))) {
+    intersect <- list(intersect)
+  }
+
+  namesIntersect <- names(intersect)
+  if (is.null(namesIntersect)) {
+    namesIntersect <- rep("", length(intersect))
+  }
+
+  for (k in seq_along(intersect)) {
+    # get variables
+    nams <- names(intersect[[k]])
+
+    # validate
+    extraArguments <- names(intersect[[k]])
+    extraArguments <- extraArguments[!extraArguments %in% names(arguments)]
+    if (length(extraArguments) > 0) {
+      cli::cli_abort(c(
+        "{extraArguments} are not arguments of {functionName}()."
+      ))
+    }
+    required <- character()
+    for (kk in seq_along(arguments)) {
+      x <- arguments[[kk]]
+      if (missing(x)) {
+        required <- c(required, names(arguments)[kk])
+      }
+    }
+    notPresent <- required[!required %in% names(intersect[[k]])]
+    if (length(notPresent) > 0) {
+      cli::cli_abort(c(
+        "{notPresent} need to be provided for {functionName}()."
+      ))
+    }
+    if ("window" %in% nams) {
+      if (!is.list(intersect[[k]]$window)) {
+        intersect[[k]]$window <- list(intersect[[k]]$window)
+      }
+      if (length(intersect[[k]]$window) != 1) {
+        cli::cli_abort("{name}: only one window can be provided, please see examples.")
+      }
+      if (is.null(names(intersect[[k]]$window))) {
+        names(intersect[[k]]$window) <- getWindowName(intersect[[k]]$window)
+      } else if (names(intersect[[k]]$window) == "") {
+        names(intersect[[k]]$window) <- getWindowName(intersect[[k]]$window)
+      }
+    } else {
+      cli::cli_abort("{name}: please provide window argument.")
+    }
+
+    # add names if missing
+    if (namesIntersect[k] == "") {
+      if ("tableName" %in% nams) {
+        tblName <- intersect[[k]]$tableName
+      } else if ("conceptSet" %in% nams) {
+        tblName <- "Concepts"
+      } else {
+        tblName <- intersect[[k]]$targetCohortTable
+      }
+      value <- name |> as.character() |> getValue()
+      winName <- getWindowNames(intersect[[k]]$window)
+      namesIntersect[k] <- paste(tblName, value, winName)
+    }
+  }
+
+  names(intersect) <- namesIntersect
+
+  return(invisible(intersect))
+}
+getWindowName <- function(win) {
+  paste0(win[[1]][1], " to ", win[[1]][2])
+}
+

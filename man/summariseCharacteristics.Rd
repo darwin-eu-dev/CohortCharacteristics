@@ -10,9 +10,18 @@ summariseCharacteristics(
   counts = TRUE,
   demographics = TRUE,
   ageGroup = NULL,
-  tableIntersect = list(),
-  cohortIntersect = list(),
-  conceptIntersect = list(),
+  tableIntersectFlag = list(),
+  tableIntersectCount = list(),
+  tableIntersectDate = list(),
+  tableIntersectDays = list(),
+  cohortIntersectFlag = list(),
+  cohortIntersectCount = list(),
+  cohortIntersectDate = list(),
+  cohortIntersectDays = list(),
+  conceptIntersectFlag = list(),
+  conceptIntersectCount = list(),
+  conceptIntersectDate = list(),
+  conceptIntersectDays = list(),
   otherVariables = character()
 )
 }
@@ -28,14 +37,41 @@ be produced.}
 
 \item{ageGroup}{A list of age groups.}
 
-\item{tableIntersect}{A list of arguments that uses addTableIntersect
-function to add variables to summarise.}
+\item{tableIntersectFlag}{A list of arguments that uses
+PatientProfiles::addTableIntersectFlag() to add variables to summarise.}
 
-\item{cohortIntersect}{A list of arguments that uses addCohortIntersect
-function to add variables to summarise.}
+\item{tableIntersectCount}{A list of arguments that uses
+PatientProfiles::addTableIntersectCount() to add variables to summarise.}
 
-\item{conceptIntersect}{A list of arguments that uses addConceptIntersect
-function to add variables to summarise.}
+\item{tableIntersectDate}{A list of arguments that uses
+PatientProfiles::addTableIntersectDate() to add variables to summarise.}
+
+\item{tableIntersectDays}{A list of arguments that uses
+PatientProfiles::addTableIntersectDays() to add variables to summarise.}
+
+\item{cohortIntersectFlag}{A list of arguments that uses
+PatientProfiles::addCohortIntersectFlag() to add variables to summarise.}
+
+\item{cohortIntersectCount}{A list of arguments that uses
+PatientProfiles::addCohortIntersectCount() to add variables to summarise.}
+
+\item{cohortIntersectDate}{A list of arguments that uses
+PatientProfiles::addCohortIntersectDate() to add variables to summarise.}
+
+\item{cohortIntersectDays}{A list of arguments that uses
+PatientProfiles::addCohortIntersectDays() to add variables to summarise.}
+
+\item{conceptIntersectFlag}{A list of arguments that uses
+PatientProfiles::addConceptIntersectFlag() to add variables to summarise.}
+
+\item{conceptIntersectCount}{A list of arguments that uses
+PatientProfiles::addConceptIntersectCount() to add variables to summarise.}
+
+\item{conceptIntersectDate}{A list of arguments that uses
+PatientProfiles::addConceptIntersectDate() to add variables to summarise.}
+
+\item{conceptIntersectDays}{A list of arguments that uses
+PatientProfiles::addConceptIntersectDays() to add variables to summarise.}
 
 \item{otherVariables}{Other variables contained in cohort that you want to be
 summarised.}
@@ -55,17 +91,17 @@ cdm <- mockCohortCharacteristics()
 summariseCharacteristics(
   cohort = cdm$cohort1,
   ageGroup = list(c(0, 19), c(20, 39), c(40, 59), c(60, 79), c(80, 150)),
-  tableIntersect = list(
+  tableIntersectCount = list(
     "Number visits prior year" = list(
-      tableName = "visit_occurrence", value = "count", window = c(-365, -1)
+      tableName = "visit_occurrence", window = c(-365, -1)
     )
   ),
-  cohortIntersect = list(
+  cohortIntersectFlag = list(
     "Drugs prior year" = list(
-      targetCohortTable = "cohort2", value = "flag", window = c(-365, -1)
+      targetCohortTable = "cohort2", window = c(-365, -1)
     ),
     "Conditions any time prior" = list(
-      targetCohortTable = "cohort2", value = "flag", window = c(-Inf, -1)
+      targetCohortTable = "cohort2", window = c(-Inf, -1)
     )
   )
 )

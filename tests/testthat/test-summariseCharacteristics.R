@@ -75,12 +75,12 @@ test_that("test summariseCharacteristics", {
 
   expect_no_error(result <- summariseCharacteristics(
     cdm$dus_cohort,
-    cohortIntersect = list(
+    cohortIntersectFlag = list(
       "Medications" = list(
-        targetCohortTable = "medication", value = "flag", window = c(-365, 0)
+        targetCohortTable = "medication", window = c(-365, 0)
       ),
       "Comorbidities" = list(
-        targetCohortTable = "comorbidities", value = "flag", window = c(-Inf, 0)
+        targetCohortTable = "comorbidities", window = c(-Inf, 0)
       )
     )
   ) |>
@@ -179,13 +179,15 @@ test_that("test summariseCharacteristics", {
 
   expect_no_error(result <- summariseCharacteristics(
     cdm$dus_cohort,
-    cohortIntersect = list(
-      "Medications" = list(
-        targetCohortTable = "medication", value = "flag", window = list(
-          "short" = c(-30, 0), "long" = c(-365, 0)
-        )
-      ), "Comorbidities" = list(
-        targetCohortTable = "comorbidities", value = "flag", window = c(-Inf, 0)
+    cohortIntersectFlag = list(
+      "Medications short" = list(
+        targetCohortTable = "medication", window = list("short" = c(-30, 0))
+      ),
+      "Medications long" = list(
+        targetCohortTable = "medication", window = list("long" = c(-365, 0))
+      ),
+      "Comorbidities" = list(
+        targetCohortTable = "comorbidities", window = c(-Inf, 0)
       )
     )
   )|>
@@ -224,10 +226,7 @@ test_that("test summariseCharacteristics", {
       omopgenerics::settings(cdm$comorbidities) |> nrow() * 4 # 2 group_level 4 estimate type
   )
 
-  result_notables <- summariseCharacteristics(
-    cdm$dus_cohort,
-    cohortIntersect = list(), tableIntersect = list()
-  )|>
+  result_notables <- summariseCharacteristics(cdm$dus_cohort)|>
     suppress(minCellCount = 1)
   expect_true(inherits(result, "summarised_result"))
 
@@ -255,17 +254,15 @@ test_that("test summariseCharacteristics", {
   expect_no_error(empty <- summariseCharacteristics(
     cdm$dus_cohort, counts = FALSE, demographics = FALSE
   ))
-  expect_equal(empty,
-               omopgenerics::emptySummarisedResult())
-
+  expect_equal(empty, omopgenerics::emptySummarisedResult())
 
   # demographics
   expect_no_error(result <- summariseCharacteristics(
     cdm$dus_cohort,
     demographics = TRUE,
-    cohortIntersect = list(
+    cohortIntersectFlag = list(
       "Medications" = list(
-        targetCohortTable = "medication", value = "flag", window = c(-365, 0)
+        targetCohortTable = "medication", window = c(-365, 0)
       )
     )
   ))
@@ -284,9 +281,9 @@ test_that("test summariseCharacteristics", {
   expect_no_error(result <- summariseCharacteristics(
     cdm$dus_cohort,
     demographics = FALSE,
-    cohortIntersect = list(
+    cohortIntersectFlag = list(
       "Medications" = list(
-        targetCohortTable = "medication", value = "flag", window = c(-365, 0)
+        targetCohortTable = "medication", window = c(-365, 0)
       )
     )
   ))
@@ -308,37 +305,37 @@ test_that("test empty cohort", {
 
   expect_no_error(
     cdm$cohort1 |> dplyr::filter(cohort_definition_id == 0) |>
-      summariseCharacteristics(cohortIntersect = list(
+      summariseCharacteristics(cohortIntersectFlag = list(
         "Medications" = list(
-          targetCohortTable = "cohort2", value = "flag", window = c(-365, 0)
+          targetCohortTable = "cohort2", window = c(-365, 0)
         ), "Comorbidities" = list(
-          targetCohortTable = "cohort2", value = "flag", window = c(-Inf, 0)
+          targetCohortTable = "cohort2", window = c(-Inf, 0)
         )
       ))
   )
   expect_no_error(
     cdm$cohort1 |>
-      summariseCharacteristics(cohortIntersect = list(
+      summariseCharacteristics(cohortIntersectFlag = list(
         "Medications" = list(
-          targetCohortTable = "cohort2", value = "flag", window = c(-365, 0), targetCohortId = 1
+          targetCohortTable = "cohort2", window = c(-365, 0), targetCohortId = 1
         ), "Comorbidities" = list(
-          targetCohortTable = "cohort2", value = "flag", window = c(-Inf, 0)
+          targetCohortTable = "cohort2", window = c(-Inf, 0)
         )
       ))
   )
   expect_no_error(
     x1 <- cdm$cohort1 |>
-      summariseCharacteristics(tableIntersect = list("Visits" = list(
-        tableName = "visit_occurrence", value = "flag", window = c(-365, 0)
+      summariseCharacteristics(tableIntersectFlag = list("Visits" = list(
+        tableName = "visit_occurrence", window = c(-365, 0)
       )))
   )
 
-  expect_no_error(
-    x3 <- cdm$cohort1 |>
-      summariseCharacteristics(tableIntersect = list("Visits" = list(
-        tableName = "visit_occurrence", value = "visit_concept_id",
-        window = c(-Inf, Inf)
-      )))
-  )
+  # expect_no_error(
+  #   x3 <- cdm$cohort1 |>
+  #     summariseCharacteristics(tableIntersect = list("Visits" = list(
+  #       tableName = "visit_occurrence", value = "visit_concept_id",
+  #       window = c(-Inf, Inf)
+  #     )))
+  # )
 })
 
