@@ -117,7 +117,7 @@ tableCohortTiming(meds_timing,
 plotCohortTiming(meds_timing,
                  plotType = "boxplot",
                  timeScale = "years",
-                 facetVarY = "strata_level",
+                 facet = "strata_level",
                  colour = "strata_level", 
-                 colour_name = "Age group")
+                 colourName = "Age group")
 ```

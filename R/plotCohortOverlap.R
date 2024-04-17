@@ -19,13 +19,10 @@
 #' `r lifecycle::badge("experimental")`
 #'
 #' @param result A summariseCohortOverlap result.
-#' @param facetVarX column in data to facet by on horizontal axis
-#' @param facetVarY column in data to facet by on vertical axis
-#' @param colorVars column in data to color by
-#' @param overlapLabel A glue expression to identify each plotted cohort
-#' overlap.
+#' @param facet Variables to facet by.
 #' @param uniqueCombinations If TRUE, only unique combinations of reference and
 #' comparator plots will be plotted.
+#' @param .options Additional plotting options
 #'
 #' @return A ggplot.
 #' @export
@@ -39,21 +36,27 @@
 #' }
 #'
 plotCohortOverlap <- function(result,
-                              facetVarX = "variable_name",
-                              facetVarY = "strata_level",
-                              colorVars = "variable_level",
-                              overlapLabel = "{cohort_name_reference} &&& {cohort_name_comparator}",
-                              uniqueCombinations = TRUE) {
+                              facet = NULL,
+                              uniqueCombinations = TRUE,
+                              .options = list()) {
   # initial checks
   result <- omopgenerics::newSummarisedResult(result) |>
     dplyr::filter(.data$result_type == "cohort_overlap")
-  checkmate::assertCharacter(facetVarX, null.ok = TRUE)
-  checkmate::assertCharacter(facetVarY, null.ok = TRUE)
-  checkmate::assertCharacter(overlapLabel)
+  checkmate::assertCharacter(facet, null.ok = TRUE)
   checkmate::assertLogical(uniqueCombinations)
 
+  overlapLabel <- "{cohort_name_reference} &&& {cohort_name_comparator}"
+  colorVars <- "variable_level"
+  facetVarX <- NULL
+  facetVarY <- NULL
 
 
+  if(is.null(.options[["facetNcols"]])){
+    .options[["facetNcols"]] <- 1
+  }
+  if(is.null(.options[["facetScales"]])){
+    .options[["facetScales"]] <- "free_y"
+  }
 
   # split table
   x <- result |>
@@ -70,13 +73,62 @@ plotCohortOverlap <- function(result,
                      dplyr::filter(.data$estimate_type == "percentage") |>
                      dplyr::select(names(result)))
 
-  return(
-    plotCharacteristics(data_to_plot,
+  data_to_plot <- data_to_plot |>
+    dplyr::mutate(estimate_value = as.numeric(.data$estimate_value)) |>
+    dplyr::mutate(group_level = stringr::str_replace_all(.data$group_level,
+                                                         pattern = "&&&",
+                                                         replacement = "and"
+    ))
+
+  data_to_plot <- data_to_plot |>
+    dplyr::mutate(
+      variable_level = dplyr::case_when(
+        .data$variable_level == "overlap" ~ "in_both_cohorts",
+        .data$variable_level == "only_in_comparator" ~ "only_in_comparator_cohort",
+        .data$variable_level == "only_in_reference" ~ "only_in_reference_cohort"
+      )
+    ) |>
+    dplyr::mutate(variable_level = stringr::str_replace_all(.data$variable_level,
+                                                            pattern = "_",
+                                                            replacement = " "
+    )) |>
+    dplyr::mutate(variable_level =
+                    stringr::str_to_sentence(.data$variable_level)) |>
+    dplyr::mutate(variable_level = factor(.data$variable_level,
+                                             levels = c(
+                                               "Only in comparator cohort",
+                                               "In both cohorts",
+                                               "Only in reference cohort"
+                                             )))
+
+
+  lev <- rev(sort(unique(data_to_plot$group_level)))
+  data_to_plot <- data_to_plot |>
+    dplyr::mutate(group_level = factor(.data$group_level,
+                                       levels = lev))
+
+  gg <- plotfunction(data_to_plot,
                         xAxis = "estimate_value",
                         yAxis = "group_level",
                         facetVarX = facetVarX,
                         facetVarY = facetVarY,
                         colorVars = colorVars,
-                        plotStyle = "barplot")
-  )
+                        plotStyle = "barplot",
+                     facet = facet,
+                     .options = .options)
+
+  gg <-    gg +
+      ggplot2::theme_bw() +
+      ggplot2::theme(legend.position = "top",
+                     legend.title = ggplot2::element_blank()) +
+      ggplot2::labs(
+        title = ggplot2::element_blank(),
+        xlab = "Percentage"
+      ) +
+    ggplot2::xlab("Percentage") +
+    ggplot2::ylab("")+
+    ggplot2::scale_fill_discrete(guide = ggplot2::guide_legend(reverse = TRUE) )
+
+
+  gg
 }

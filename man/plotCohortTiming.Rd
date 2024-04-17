@@ -8,30 +8,31 @@ plotCohortTiming(
   result,
   plotType = "boxplot",
   timeScale = "days",
-  facetVarX = "variable_name",
-  facetVarY = "group_level",
+  facet = NULL,
   colour = NULL,
-  colour_name = NULL,
-  uniqueCombinations = TRUE
+  colourName = NULL,
+  uniqueCombinations = TRUE,
+  .options = list()
 )
 }
 \arguments{
 \item{result}{A summariseCohortTiming result.}
 
-\item{plotType}{Can eiter be boxplot or density.}
+\item{plotType}{Type of desired formatted table, possibilities are "boxplot" and
+"density".}
 
 \item{timeScale}{Time scale to plot results. Can be days or years.}
 
-\item{facetVarX}{column in data to facet by on horizontal axis}
-
-\item{facetVarY}{column in data to facet by on vertical axis}
+\item{facet}{variables to facet by}
 
 \item{colour}{Variables to use for colours}
 
-\item{colour_name}{Colour legend name}
+\item{colourName}{Colour legend name}
 
 \item{uniqueCombinations}{If TRUE, only unique combinations of reference and
 comparator plots will be plotted.}
+
+\item{.options}{Additional plotting options}
 }
 \value{
 A ggplot.

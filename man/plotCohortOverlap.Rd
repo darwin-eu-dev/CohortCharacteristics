@@ -6,27 +6,20 @@
 \usage{
 plotCohortOverlap(
   result,
-  facetVarX = "variable_name",
-  facetVarY = "strata_level",
-  colorVars = "variable_level",
-  overlapLabel = "{cohort_name_reference} &&& {cohort_name_comparator}",
-  uniqueCombinations = TRUE
+  facet = NULL,
+  uniqueCombinations = TRUE,
+  .options = list()
 )
 }
 \arguments{
 \item{result}{A summariseCohortOverlap result.}
 
-\item{facetVarX}{column in data to facet by on horizontal axis}
-
-\item{facetVarY}{column in data to facet by on vertical axis}
-
-\item{colorVars}{column in data to color by}
-
-\item{overlapLabel}{A glue expression to identify each plotted cohort
-overlap.}
+\item{facet}{Variables to facet by.}
 
 \item{uniqueCombinations}{If TRUE, only unique combinations of reference and
 comparator plots will be plotted.}
+
+\item{.options}{Additional plotting options}
 }
 \value{
 A ggplot.
