@@ -9,6 +9,7 @@ plotCohortOverlap(
   facet = NULL,
   uniqueCombinations = TRUE,
   .options = list()
+)
 }
 \arguments{
 \item{result}{A summariseCohortOverlap result.}
