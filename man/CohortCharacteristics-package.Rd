@@ -4,7 +4,7 @@
 \name{CohortCharacteristics-package}
 \alias{CohortCharacteristics}
 \alias{CohortCharacteristics-package}
-\title{CohortCharacteristics: Summarise and visualise Characteristics of Patients in the OMOP CDM}
+\title{CohortCharacteristics: Summarise and Visualise Characteristics of Patients in the OMOP CDM}
 \description{
 Summarise and visualise the characteristics of patients in data mapped to the Observational Medical Outcomes Partnership (OMOP) common data model (CDM).
 }
@@ -25,12 +25,12 @@ Authors:
   \item Mike Du \email{mike.du@ndorms.ox.ac.uk} (\href{https://orcid.org/0000-0002-9517-8834}{ORCID})
   \item Kim Lopez-Guell \email{kim.lopez@spc.ox.ac.uk} (\href{https://orcid.org/0000-0002-8462-8668}{ORCID})
   \item Edward Burn \email{edward.burn@ndorms.ox.ac.uk} (\href{https://orcid.org/0000-0002-9286-1128}{ORCID})
+  \item Marta Alcalde \email{marta.alcaldeherraiz@ndorms.ox.ac.uk} (\href{https://orcid.org/0009-0002-4405-1814}{ORCID})
 }
 
 Other contributors:
 \itemize{
   \item Nuria Mercade-Besora \email{nuria.mercadebesora@ndorms.ox.ac.uk} (\href{https://orcid.org/0009-0006-7948-3747}{ORCID}) [contributor]
-  \item Xintong Li \email{xintong.li@ndorms.ox.ac.uk} (\href{https://orcid.org/0000-0002-6872-5804}{ORCID}) [contributor]
 }
 
 }

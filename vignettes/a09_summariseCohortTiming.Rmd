@@ -33,12 +33,12 @@ if (!dir.exists(Sys.getenv("EUNOMIA_DATA_FOLDER"))) dir.create(Sys.getenv("EUNOM
 if (!eunomia_is_available()) downloadEunomiaData()
 ```
 
-We saw in the previous vignette how we can summarise the overlap between cohorts. In addition to this, we might also be interested in timings between cohorts. That is, the time between an individual entering one cohort and another. For this we can use the `summariseCohortTiming()`. In this example we'll look at the time between entering cohorts for acetaminophen, morphine, and oxycodone.
+We saw in the previous vignette how we can summarise the overlap between cohorts. In addition to this, we might also be interested in timings between cohorts. That is, the time between an individual entering one cohort and another. For this we can use the `summariseCohortTiming()`. In this example we'll look at the time between entering cohorts for acetaminophen, morphine, and oxycodone using the Eunomia data.
 
 ```{r}
 library(CDMConnector)
 library(CodelistGenerator)
-library(PatientProfiles)
+library(CohortCharacteristics)
 library(dplyr)
 library(ggplot2)
 
@@ -62,9 +62,12 @@ cdm <- generateConceptCohortSet(
   limit = "all",
   overwrite = TRUE
 )
+
+settings(cdm$meds)
+cohortCount(cdm$meds)
 ```
 
-Now we have our cohorts we can summarise the timing between cohort entry. Note setting restrictToFirstEntry to TRUE will mean that we only consider timing between an individual's first record in each cohort.
+Now we have our cohorts we can summarise the timing between cohort entry. Note setting restrictToFirstEntry to TRUE will mean that we only consider timing between an individual's first record in each cohort (i.e. their first exposure to each of the medications).
 
 ```{r}
 meds_timing <- cdm$meds |> 
@@ -77,18 +80,14 @@ As with cohort overlap, we have table and plotting functions to help view our re
 
 ```{r}
 tableCohortTiming(meds_timing, 
+                  timeScale = "years",
                   .options = list(decimals = c(numeric = 0)))
 ```
 
 ```{r}
 plotCohortTiming(meds_timing, 
-                 plotType = "boxplot",
-                 facetVarX = "cdm_name") + 
-  theme_bw() +
-  theme(legend.position = "none",
-       axis.text.x = element_text(angle = 90,
-                                  vjust = 0.5, 
-                                  hjust=1))
+                 plotType = "boxplot", 
+                 timeScale = "years") 
 ```
 
 If we want to see an even more granular summary of cohort timings we can make a density plot instead of a box plot. Note, for this we'll need to set density as TRUE when getting our initial results.
@@ -97,5 +96,27 @@ If we want to see an even more granular summary of cohort timings we can make a 
 meds_timing <- cdm$meds |> 
   summariseCohortTiming(restrictToFirstEntry = TRUE, 
                         density = TRUE)
-plotCohortTiming(meds_timing, plotType = "density")
+plotCohortTiming(meds_timing, 
+                 plotType = "density", 
+                 timeScale = "years")
+```
+
+As well as generating these estimates for cohorts overall, we can also obtain stratified estimates.
+```{r}
+cdm$meds <- cdm$meds |> 
+  PatientProfiles::addAge(ageGroup = list(c(0,49), c(50,150))) |> 
+  compute(temporary = FALSE, name = "meds") |> 
+  newCohortTable() 
+meds_timing <- cdm$meds |> 
+  summariseCohortTiming(restrictToFirstEntry = TRUE, 
+                        strata = list("age_group"), 
+                        density = TRUE)
+tableCohortTiming(meds_timing,
+                  timeScale = "years",
+                  .options = list(decimals = c(numeric = 0)))
+plotCohortTiming(meds_timing,
+                 plotType = "boxplot",
+                 timeScale = "years",
+                 facetVarY = "strata_level",
+                 colorVars = "strata_level")
 ```
