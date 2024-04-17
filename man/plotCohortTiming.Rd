@@ -10,15 +10,15 @@ plotCohortTiming(
   timeScale = "days",
   facetVarX = "variable_name",
   facetVarY = "group_level",
-  colorVars = "group_level",
+  colour = NULL,
+  colour_name = NULL,
   uniqueCombinations = TRUE
 )
 }
 \arguments{
 \item{result}{A summariseCohortTiming result.}
 
-\item{plotType}{Type of desired formatted table, possibilities are "boxplot" and
-"density".}
+\item{plotType}{Can eiter be boxplot or density.}
 
 \item{timeScale}{Time scale to plot results. Can be days or years.}
 
@@ -26,7 +26,9 @@ plotCohortTiming(
 
 \item{facetVarY}{column in data to facet by on vertical axis}
 
-\item{colorVars}{Column names to distinct by colors. default set to group_level}
+\item{colour}{Variables to use for colours}
+
+\item{colour_name}{Colour legend name}
 
 \item{uniqueCombinations}{If TRUE, only unique combinations of reference and
 comparator plots will be plotted.}

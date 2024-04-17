@@ -19,12 +19,12 @@
 #' `r lifecycle::badge("experimental")`
 #'
 #' @param result A summariseCohortTiming result.
-#' @param plotType Type of desired formatted table, possibilities are "boxplot" and
-#' "density".
+#' @param plotType Can eiter be boxplot or density.
 #' @param timeScale Time scale to plot results. Can be days or years.
 #' @param facetVarX column in data to facet by on horizontal axis
 #' @param facetVarY column in data to facet by on vertical axis
-#' @param colorVars Column names to distinct by colors. default set to group_level
+#' @param colour Variables to use for colours
+#' @param colour_name Colour legend name
 #' @param uniqueCombinations If TRUE, only unique combinations of reference and
 #' comparator plots will be plotted.
 #'
@@ -45,7 +45,8 @@ plotCohortTiming <- function(result,
                              timeScale = "days",
                              facetVarX = "variable_name",
                              facetVarY = "group_level",
-                             colorVars = "group_level",
+                             colour = NULL,
+                             colour_name = NULL,
                              uniqueCombinations = TRUE) {
   # initial checks
   result <- omopgenerics::newSummarisedResult(result) |>
@@ -54,14 +55,15 @@ plotCohortTiming <- function(result,
   checkmate::assertChoice(timeScale, c("days", "years"))
   checkmate::assertCharacter(facetVarX, null.ok = TRUE)
   checkmate::assertCharacter(facetVarY, null.ok = TRUE)
-  checkmate::assertCharacter(colorVars, null.ok = TRUE)
+  checkmate::assertCharacter(colour, null.ok = TRUE)
+  checkmate::assertCharacter(colour, null.ok = TRUE, len = 1)
   checkmate::assertLogical(uniqueCombinations)
   if (plotType == "density" & !"density"%in% result$variable_name) {
     cli::cli_abort("Please provide a cohort timing summarised result with density estimates (use `density = TRUE` in summariseCohortTiming).")
   }
 
 
-
+  colorVars <- colour
 
   # split table
   timingLabel <- "{cohort_name_reference} &&& {cohort_name_comparator}"
@@ -88,7 +90,8 @@ plotCohortTiming <- function(result,
     dplyr::mutate(group_level = stringr::str_replace_all(.data$group_level,
                                                          pattern = "&&&",
                                                          replacement = "to"
-    ))
+    )) |>
+    dplyr::mutate(group_level =  stringr::str_to_title(.data$group_level))
 
   if(timeScale == "years"){
     data_to_plot <- data_to_plot |>
@@ -123,14 +126,29 @@ plotCohortTiming <- function(result,
                               plotStyle = "density")
   }
 
+  gg <- gg
+
+  if(is.null(colour_name)){
+    gg <- gg+
+      labs(color = ggplot2::element_blank())
+  } else{
+    gg <- gg +
+      labs(color = colour_name)
+  }
+
   gg <- gg +
     ggplot2::theme_bw() +
-    ggplot2::theme(legend.position = "none") +
-    ggplot2::labs(
-      title = ggplot2::element_blank(),
-      x = ggplot2::element_blank(),
-      y = xLab
-    )
+  ggplot2::labs(
+    title = ggplot2::element_blank(),
+    x = ggplot2::element_blank(),
+    y = xLab
+  ) +
+    ggplot2::theme(legend.position = "top")
+
+  if(is.null(colour_name)){
+    gg <- gg +
+    guides(color = guide_legend(title.position = "top"))
+  }
 
   return(gg)
 }
