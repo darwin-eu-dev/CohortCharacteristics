@@ -169,24 +169,24 @@ test_that("tableCohortOverlap", {
   expect_true("flextable" %in% class(fxResult1))
   expect_true(all(c("CDM name",
                     "Estimate name",
-                    "Cohort name reference and cohort name comparator\nCohort 1 and cohort 2\nNumber subjects\nOnly in reference",
-                    "Cohort name reference and cohort name comparator\nCohort 1 and cohort 2\nNumber subjects\nOnly in comparator",
-                    "Cohort name reference and cohort name comparator\nCohort 1 and cohort 2\nNumber subjects\nOverlap",
-                    "Cohort name reference and cohort name comparator\nCohort 1 and cohort 3\nNumber subjects\nOnly in reference",
-                    "Cohort name reference and cohort name comparator\nCohort 1 and cohort 3\nNumber subjects\nOnly in comparator",
-                    "Cohort name reference and cohort name comparator\nCohort 1 and cohort 3\nNumber subjects\nOverlap",
-                    "Cohort name reference and cohort name comparator\nCohort 1 and cohort 4\nNumber subjects\nOnly in reference",
-                    "Cohort name reference and cohort name comparator\nCohort 1 and cohort 4\nNumber subjects\nOnly in comparator",
-                    "Cohort name reference and cohort name comparator\nCohort 1 and cohort 4\nNumber subjects\nOverlap",
-                    "Cohort name reference and cohort name comparator\nCohort 2 and cohort 3\nNumber subjects\nOnly in reference",
-                    "Cohort name reference and cohort name comparator\nCohort 2 and cohort 3\nNumber subjects\nOnly in comparator",
-                    "Cohort name reference and cohort name comparator\nCohort 2 and cohort 3\nNumber subjects\nOverlap",
-                    "Cohort name reference and cohort name comparator\nCohort 2 and cohort 4\nNumber subjects\nOnly in reference",
-                    "Cohort name reference and cohort name comparator\nCohort 2 and cohort 4\nNumber subjects\nOnly in comparator",
-                    "Cohort name reference and cohort name comparator\nCohort 2 and cohort 4\nNumber subjects\nOverlap",
-                    "Cohort name reference and cohort name comparator\nCohort 3 and cohort 4\nNumber subjects\nOnly in reference" ,
-                    "Cohort name reference and cohort name comparator\nCohort 3 and cohort 4\nNumber subjects\nOnly in comparator",
-                    "Cohort name reference and cohort name comparator\nCohort 3 and cohort 4\nNumber subjects\nOverlap") %in%
+                    "Cohort name reference and cohort name comparator\nCohort 1 and cohort 2\nNumber subjects\nOnly in reference cohort",
+                    "Cohort name reference and cohort name comparator\nCohort 1 and cohort 2\nNumber subjects\nOnly in comparator cohort",
+                    "Cohort name reference and cohort name comparator\nCohort 1 and cohort 2\nNumber subjects\nIn both cohorts",
+                    "Cohort name reference and cohort name comparator\nCohort 1 and cohort 3\nNumber subjects\nOnly in reference cohort",
+                    "Cohort name reference and cohort name comparator\nCohort 1 and cohort 3\nNumber subjects\nOnly in comparator cohort",
+                    "Cohort name reference and cohort name comparator\nCohort 1 and cohort 3\nNumber subjects\nIn both cohorts",
+                    "Cohort name reference and cohort name comparator\nCohort 1 and cohort 4\nNumber subjects\nOnly in reference cohort",
+                    "Cohort name reference and cohort name comparator\nCohort 1 and cohort 4\nNumber subjects\nOnly in comparator cohort",
+                    "Cohort name reference and cohort name comparator\nCohort 1 and cohort 4\nNumber subjects\nIn both cohorts",
+                    "Cohort name reference and cohort name comparator\nCohort 2 and cohort 3\nNumber subjects\nOnly in reference cohort",
+                    "Cohort name reference and cohort name comparator\nCohort 2 and cohort 3\nNumber subjects\nOnly in comparator cohort",
+                    "Cohort name reference and cohort name comparator\nCohort 2 and cohort 3\nNumber subjects\nIn both cohorts",
+                    "Cohort name reference and cohort name comparator\nCohort 2 and cohort 4\nNumber subjects\nOnly in reference cohort",
+                    "Cohort name reference and cohort name comparator\nCohort 2 and cohort 4\nNumber subjects\nOnly in comparator cohort",
+                    "Cohort name reference and cohort name comparator\nCohort 2 and cohort 4\nNumber subjects\nIn both cohorts",
+                    "Cohort name reference and cohort name comparator\nCohort 3 and cohort 4\nNumber subjects\nOnly in reference cohort" ,
+                    "Cohort name reference and cohort name comparator\nCohort 3 and cohort 4\nNumber subjects\nOnly in comparator cohort",
+                    "Cohort name reference and cohort name comparator\nCohort 3 and cohort 4\nNumber subjects\nIn both cohorts") %in%
                     colnames(fxResult1$body$dataset)))
 
   cdm$table <- cdm$table |>
@@ -204,29 +204,29 @@ test_that("tableCohortOverlap", {
   expect_true(all(c("tbl_df", "tbl", "data.frame") %in% class(tibbleResult1)))
   expect_true(all(c("CDM name", "Group name", "Group level", "Strata name", "Strata level", "Estimate name",
                     "Additional name", "Additional level",
-                    "[header_level]Number subjects\n[header_level]Only in reference",
-                    "[header_level]Number subjects\n[header_level]Only in comparator",
-                    "[header_level]Number subjects\n[header_level]Overlap" ) %in% colnames(tibbleResult1)))
+                    "[header_level]Number subjects\n[header_level]Only in reference cohort",
+                    "[header_level]Number subjects\n[header_level]Only in comparator cohort",
+                    "[header_level]Number subjects\n[header_level]In both cohorts" ) %in% colnames(tibbleResult1)))
 
   gtResult2 <-  tableCohortOverlap(overlap3,
                                    type = "gt")
   expect_true("gt_tbl" %in% class(gtResult2))
   expect_true(all(c("CDM name", "Cohort name reference", "Cohort name comparator", "Estimate name",
-                    "[header]Age group\n[header_level]0 to 40\n[header]Sex\n[header_level]Overall\n[header_level]Number subjects\n[header_level]Only in reference",
-                    "[header]Age group\n[header_level]0 to 40\n[header]Sex\n[header_level]Overall\n[header_level]Number subjects\n[header_level]Only in comparator",
-                    "[header]Age group\n[header_level]0 to 40\n[header]Sex\n[header_level]Overall\n[header_level]Number subjects\n[header_level]Overlap",
-                    "[header]Age group\n[header_level]41 to 100\n[header]Sex\n[header_level]Overall\n[header_level]Number subjects\n[header_level]Only in reference",
-                    "[header]Age group\n[header_level]41 to 100\n[header]Sex\n[header_level]Overall\n[header_level]Number subjects\n[header_level]Only in comparator",
-                    "[header]Age group\n[header_level]41 to 100\n[header]Sex\n[header_level]Overall\n[header_level]Number subjects\n[header_level]Overlap",
-                    "[header]Age group\n[header_level]0 to 40\n[header]Sex\n[header_level]Female\n[header_level]Number subjects\n[header_level]Only in reference",
-                    "[header]Age group\n[header_level]0 to 40\n[header]Sex\n[header_level]Female\n[header_level]Number subjects\n[header_level]Only in comparator",
-                    "[header]Age group\n[header_level]0 to 40\n[header]Sex\n[header_level]Female\n[header_level]Number subjects\n[header_level]Overlap",
-                    "[header]Age group\n[header_level]41 to 100\n[header]Sex\n[header_level]Female\n[header_level]Number subjects\n[header_level]Only in reference",
-                    "[header]Age group\n[header_level]41 to 100\n[header]Sex\n[header_level]Female\n[header_level]Number subjects\n[header_level]Only in comparator",
-                    "[header]Age group\n[header_level]41 to 100\n[header]Sex\n[header_level]Female\n[header_level]Number subjects\n[header_level]Overlap",
-                    "[header]Age group\n[header_level]Overall\n[header]Sex\n[header_level]Overall\n[header_level]Number subjects\n[header_level]Only in reference",
-                    "[header]Age group\n[header_level]Overall\n[header]Sex\n[header_level]Overall\n[header_level]Number subjects\n[header_level]Only in comparator",
-                    "[header]Age group\n[header_level]Overall\n[header]Sex\n[header_level]Overall\n[header_level]Number subjects\n[header_level]Overlap" ) %in%
+                    "[header]Age group\n[header_level]0 to 40\n[header]Sex\n[header_level]Overall\n[header_level]Number subjects\n[header_level]Only in reference cohort",
+                    "[header]Age group\n[header_level]0 to 40\n[header]Sex\n[header_level]Overall\n[header_level]Number subjects\n[header_level]Only in comparator cohort",
+                    "[header]Age group\n[header_level]0 to 40\n[header]Sex\n[header_level]Overall\n[header_level]Number subjects\n[header_level]In both cohorts",
+                    "[header]Age group\n[header_level]41 to 100\n[header]Sex\n[header_level]Overall\n[header_level]Number subjects\n[header_level]Only in reference cohort",
+                    "[header]Age group\n[header_level]41 to 100\n[header]Sex\n[header_level]Overall\n[header_level]Number subjects\n[header_level]Only in comparator cohort",
+                    "[header]Age group\n[header_level]41 to 100\n[header]Sex\n[header_level]Overall\n[header_level]Number subjects\n[header_level]In both cohorts",
+                    "[header]Age group\n[header_level]0 to 40\n[header]Sex\n[header_level]Female\n[header_level]Number subjects\n[header_level]Only in reference cohort",
+                    "[header]Age group\n[header_level]0 to 40\n[header]Sex\n[header_level]Female\n[header_level]Number subjects\n[header_level]Only in comparator cohort",
+                    "[header]Age group\n[header_level]0 to 40\n[header]Sex\n[header_level]Female\n[header_level]Number subjects\n[header_level]In both cohorts",
+                    "[header]Age group\n[header_level]41 to 100\n[header]Sex\n[header_level]Female\n[header_level]Number subjects\n[header_level]Only in reference cohort",
+                    "[header]Age group\n[header_level]41 to 100\n[header]Sex\n[header_level]Female\n[header_level]Number subjects\n[header_level]Only in comparator cohort",
+                    "[header]Age group\n[header_level]41 to 100\n[header]Sex\n[header_level]Female\n[header_level]Number subjects\n[header_level]In both cohorts",
+                    "[header]Age group\n[header_level]Overall\n[header]Sex\n[header_level]Overall\n[header_level]Number subjects\n[header_level]Only in reference cohort",
+                    "[header]Age group\n[header_level]Overall\n[header]Sex\n[header_level]Overall\n[header_level]Number subjects\n[header_level]Only in comparator cohort",
+                    "[header]Age group\n[header_level]Overall\n[header]Sex\n[header_level]Overall\n[header_level]Number subjects\n[header_level]In both cohorts" ) %in%
                     colnames(gtResult2$`_data`)))
 
   CDMConnector::cdm_disconnect(cdm)
