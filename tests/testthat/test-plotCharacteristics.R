@@ -75,12 +75,12 @@ test_that("test plot", {
   )
   test_data <- summariseCharacteristics(
     cdm$dus_cohort,
-    cohortIntersect = list(
+    cohortIntersectFlag = list(
       "Medications" = list(
-        targetCohortTable = "medication", value = "flag", window = c(-365, 0)
+        targetCohortTable = "medication", window = c(-365, 0)
       ),
       "Comorbidities" = list(
-        targetCohortTable = "comorbidities", value = "flag", window = c(-Inf, 0)
+        targetCohortTable = "comorbidities", window = c(-Inf, 0)
       )
     )
   )

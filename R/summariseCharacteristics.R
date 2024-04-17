@@ -474,7 +474,7 @@ getType <- function(name) {
 getSummaryName <- function(intersect) {
   paste0(
     c("summarised",
-      intersect |> strsplit("Intersect") |> unlist() |> tolower()),
+      intersect |> snakecase::to_snake_case() |> strsplit("_") |> unlist()),
     collapse = "_"
   )
 }
