@@ -104,7 +104,7 @@ summariseCohortTiming <- function(cohort,
                                       "subject_id"))),
       by = c("subject_id", unique(strataCols))) |>
     dplyr::filter(.data$cohort_name_reference != .data$cohort_name_comparator) %>% # to be removed
-    dplyr::mutate(diff_days = !!CDMConnector::datediff("cohort_start_date",
+    dplyr::mutate(days_between_cohort_entries = !!CDMConnector::datediff("cohort_start_date",
                                                        "cohort_start_date_comparator",
                                                        interval = "day")) |>
     dplyr::collect()
@@ -118,7 +118,7 @@ summariseCohortTiming <- function(cohort,
         includeOverallGroup = FALSE,
         strata = strata,
         includeOverallStrata = TRUE,
-        variables = "diff_days",
+        variables = "days_between_cohort_entries",
         estimates = timing
       ) |>
       dplyr::mutate(result_type = "cohort_timing",
@@ -212,7 +212,7 @@ summariseCohortTiming <- function(cohort,
 
 
 getDensityData <- function(sLevel, data) {
-  dStrata <- data$diff_days[data$strata_level == sLevel]
+  dStrata <- data$days_between_cohort_entries[data$strata_level == sLevel]
   d <- stats::density(dStrata)
   densityResult <- dplyr::tibble(
     variable_level = as.character(1:length(d$x)),

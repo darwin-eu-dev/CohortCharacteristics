@@ -19,6 +19,7 @@
 #' `r lifecycle::badge("experimental")`
 #'
 #' @param result A summariseCohortTiming result
+#' @param timeScale Time scale to plot results. Can be days or years.
 #' @param type Type of desired formatted table, possibilities: "gt",
 #' "flextable", "tibble".
 #' @param formatEstimateName Named list of estimate name's to join, sorted by
@@ -49,6 +50,7 @@
 #' @export
 #'
 tableCohortTiming <- function(result,
+                              timeScale = "days",
                               type = "gt",
                               formatEstimateName = c(
                                 "N" = "<count>",
@@ -65,8 +67,10 @@ tableCohortTiming <- function(result,
                               .options = list()) {
   # initial checks
   result <- omopgenerics::newSummarisedResult(result) |>
-    dplyr::filter(.data$result_type == "cohort_timing")
+    dplyr::filter(.data$result_type == "cohort_timing" &
+                  .data$variable_name != "density")
   checkmate::assertList(.options)
+  checkmate::assertChoice(timeScale, c("days", "years"))
 
   # defaults
   .options <- defaultTimingOptions(.options)
@@ -81,6 +85,22 @@ tableCohortTiming <- function(result,
   } else {
     x <- result |>
       dplyr::arrange(dplyr::across(dplyr::all_of(c("cdm_name", "group_name", "group_level", "strata_name", "strata_level"))))
+  }
+
+
+
+
+  if(timeScale == "years"){
+    x <- dplyr::bind_rows(
+      x |>
+        dplyr::filter(.data$variable_name != "days_between_cohort_entries"),
+      x |>
+        dplyr::filter(.data$variable_name == "days_between_cohort_entries") |>
+        dplyr::mutate(estimate_value =
+                        as.character(as.numeric(.data$estimate_value)/365.25)) |>
+        dplyr::mutate(variable_name = "years_between_cohort_entries")
+          )
+
   }
 
   # format table
