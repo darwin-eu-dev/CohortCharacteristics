@@ -2,7 +2,6 @@
 plotComparedLargeScaleCharacteristics <- function(data,
                                                  referenceGroupLevel    = NULL,
                                                  referenceStrataLevel   = NULL,
-                                                 # referenceStrataLevel = c("<40 &&& Female")
                                                  referenceVariableLevel = NULL,
                                                  referenceCdmName       = NULL,
                                                  facet       = NULL,
@@ -10,15 +9,18 @@ plotComparedLargeScaleCharacteristics <- function(data,
                                                  colorVars   = NULL,
                                                  missings    = 0){
 
-  checkSettings(data)
-  referenceGroupLevel    <- checkReference(referenceGroupLevel,    data, type = "group_level",    argument = "referenceGroupLevel")
-  referenceVariableLevel <- checkReference(referenceVariableLevel, data, type = "variable_level", argument = "referenceVariableLevel")
-  referenceCdmName       <- checkReference(referenceCdmName,       data, type = "cdm_name",       argument = "referenceCdmName")
+  x <- checkSettings(data)
+  data           <- x$data
+  settings_table <- x$settings_table
 
-  referenceStrataLevel <- checkReferenceStrataLevel(referenceStrataLevel, data)
+  referenceGroupLevel    <- checkReference(referenceGroupLevel, data, type = "group_level",    argument = "referenceGroupLevel")
+  referenceStrataLevel   <- checkReference(referenceStrataLevel, data, type = "strata_level",   argument = "referenceStrataLevel")
+  referenceVariableLevel <- checkReference(referenceVariableLevel, data, type = "variable_level", argument = "referenceVariableLevel")
+  referenceCdmName       <- checkReference(referenceCdmName, data, type = "cdm_name",       argument = "referenceCdmName")
+  splitStrata <- checkSplitStrata(data, splitStrata)
 
   # Extract facet names
-  x <- facetFunction(facet, splitStrata, data)
+  x <- facetFunction(facet, splitStrata, data, settings_table)
   facetVarX <- x$facetVarX
   facetVarY <- x$facetVarY
   data      <- x$data
@@ -27,15 +29,17 @@ plotComparedLargeScaleCharacteristics <- function(data,
   checkName(colorVars, splitStrata, data, type = "colorVars")
 
   # All that is not a facet variable will be a color variable if colorVar = NULL
-  colorVars <- colorVarsIfNull(data, vars = c(facetVarX, facetVarY, referenceGroupLevel, referenceVariableLevel, referenceCdmName), splitStrata, colorVars)
+  colorVars <- colorVarsIfNull(data, vars = c(facetVarX, facetVarY, referenceGroupLevel, referenceStrataLevel, referenceVariableLevel, referenceCdmName), splitStrata, colorVars)
 
   # Split strata
   if(splitStrata == TRUE){
+    strata_levels <- data$strata_name |> unique()
+    strata_levels <- strata_levels[strata_levels != "overall"]
     data <- data |> visOmopResults::splitStrata()
   }
 
   # Tidying dataset
-  data <- tidyData(data, referenceGroupLevel, referenceVariableLevel, referenceCdmName, referenceStrataLevel, missings)
+  data <- tidyData(data, referenceGroupLevel, referenceVariableLevel, referenceCdmName, referenceStrataLevel, missings, splitStrata, strata_levels)
 
   # Change facet names
   facetVarX <- changeNames(facetVarX, type = "facet")
@@ -45,7 +49,8 @@ plotComparedLargeScaleCharacteristics <- function(data,
   colorVars <- changeNames(colorVars, type = "colorVars")
 
   # Edit plot
-  y <- editPlot(data = data, facetVarX = facetVarX, facetVarY = facetVarY, colorVars = colorVars, vertical_x = FALSE)
+  y <- editPlot(data = data, facetVarX = facetVarX, facetVarY = facetVarY,
+                colorVars = colorVars, vertical_x = FALSE)
   return(y)
 }
 
@@ -57,7 +62,8 @@ checkReference <- function(reference, data, type, argument){
   if(is.null(reference)){
     # Check there is only one type
     if(length(unique(data[[type]])) > 1){
-      stop(sprintf(paste0("Please, use the ", argument," argument to define which ", type, " must be used as a reference: ", paste0(paste0("'",unique(data[[type]]),"'"), collapse = " or "))))
+      stop(sprintf(paste0(argument," cannot be NULL, as there are multiple options to be used as the reference value.
+                          Please, use the ", argument," argument to define which ", type, " must be used as a reference: ", paste0(paste0("'",unique(data[[type]]),"'"), collapse = " or "))))
     }else{
       reference <- unique(data[[type]])
     }
@@ -74,16 +80,34 @@ checkReference <- function(reference, data, type, argument){
   return(reference)
 }
 
-checkReferenceStrataLevel <- function(referenceStrataLevel, data){
-  referenceStrataLevel <- "overall"
+checkSplitStrata <- function(data, splitStrata){
+  if(length(data$strata_level |> unique()) == 1){
+    warning("splitStrata cannot be TRUE when strata_level is unique. Changing splitStrata to FALSE.")
+    splitStrata <- FALSE
+  }
+
+  return(splitStrata)
 }
 
-tidyData <- function(data, referenceGroupLevel, referenceVariableLevel, referenceCdmName, referenceStrataLevel, missings){
+tidyData <- function(data, referenceGroupLevel, referenceVariableLevel, referenceCdmName, referenceStrataLevel, missings, splitStrata, strata_levels){
   # Create table reference
-  table_reference <- data |>
-    dplyr::filter(.data$group_level %in% .env$referenceGroupLevel) |>
-    dplyr::filter(.data$variable_level %in% .env$referenceVariableLevel) |>
-    dplyr::filter(.data$cdm_name %in% .env$referenceCdmName)
+  if(splitStrata){
+    table_reference <- data |>
+      dplyr::filter(dplyr::if_any(strata_levels, ~. == .env$referenceStrataLevel)) |>
+        dplyr::filter(.data$group_level == .env$referenceGroupLevel) |>
+        dplyr::filter(.data$variable_level == .env$referenceVariableLevel) |>
+        dplyr::filter(.data$cdm_name == .env$referenceCdmName)
+  }else{
+    table_reference <- data |>
+      dplyr::filter(.data$group_level == .env$referenceGroupLevel) |>
+      dplyr::filter(.data$strata_level == .env$referenceStrataLevel) |>
+      dplyr::filter(.data$variable_level == .env$referenceVariableLevel) |>
+      dplyr::filter(.data$cdm_name == .env$referenceCdmName)
+  }
+
+  if((table_reference$result_id |> length())== 0){
+    stop(sprintf(paste0("There is no reference variables left in data.")))
+  }
 
   # Create table comparator
   table_comparator <- data |>
@@ -92,7 +116,7 @@ tidyData <- function(data, referenceGroupLevel, referenceVariableLevel, referenc
     )
 
   if((table_comparator$result_id |> length())== 0){
-    stop(sprintf(paste0("There is no comparator variables in the data.")))
+    stop(sprintf(paste0("There is no comparator variables left in data.")))
   }
 
   # Rename tables
@@ -118,35 +142,58 @@ tidyData <- function(data, referenceGroupLevel, referenceVariableLevel, referenc
                   estimate_value_reference  = as.numeric(.data$estimate_value_reference))
 
   # Replace reference missings
-  data <- replaceReferenceMissings(data, referenceCdmName, referenceGroupLevel, referenceVariableLevel, referenceStrataLevel, missings)
+  data <- replaceReferenceMissings(data, referenceCdmName, referenceGroupLevel, referenceVariableLevel, referenceStrataLevel, missings, splitStrata, strata_levels)
 
   # Replace comparator missings
-  data <- replaceComparatorMissings(data, table_comparator, referenceCdmName, referenceGroupLevel, referenceVariableLevel, referenceStrataLevel, missings)
+  data <- replaceComparatorMissings(data, table_comparator, referenceCdmName, referenceGroupLevel, referenceVariableLevel, referenceStrataLevel, missings, splitStrata, strata_levels)
 
   data <- data |>
     tidyr::replace_na(list(estimate_value_comparator = missings,
                            estimate_value_reference = missings)) |>
-    dplyr::rename(estimate_value = .data$estimate_value_reference)
-}
-
-replaceReferenceMissings <- function(data, referenceCdmName, referenceGroupLevel, referenceVariableLevel, referenceStrataLevel, missings){
-  data <- data |>
-    dplyr::mutate(cdm_name_reference = referenceCdmName,
-           group_name_reference     = data |> dplyr::select("group_name_reference") |> dplyr::filter(!is.na(.data$group_name_reference)) |> dplyr::distinct() |> dplyr::pull(),
-           group_level_reference    = referenceGroupLevel,
-           variable_level_reference = referenceVariableLevel,
-           strata_name_reference    = "overall",
-           strata_level_reference   = referenceStrataLevel,
-           estimate_value_reference = dplyr::if_else(is.na(.data$estimate_value_reference), missings, .data$estimate_value_reference))
+    dplyr::rename(estimate_value = .data$estimate_value_reference) |>
+    dplyr::mutate(estimate_value_comparator = .data$estimate_value_comparator/100)
 
   return(data)
 }
 
-replaceComparatorMissings <- function(data, table_comparator, referenceCdmName, referenceGroupLevel, referenceVariableLevel, referenceStrataLevel, missings){
-  comparator_groups <- table_comparator |>
-    dplyr::select("cdm_name_comparator", "group_name_comparator", "group_level_comparator",
-                  "strata_name_comparator", "strata_level_comparator", "variable_level_comparator") |>
-    dplyr::distinct()
+replaceReferenceMissings <- function(data, referenceCdmName, referenceGroupLevel, referenceVariableLevel, referenceStrataLevel, missings, splitStrata, strata_levels){
+  if(splitStrata){
+    data <- data |>
+      dplyr::mutate(cdm_name_reference = referenceCdmName,
+                    group_name_reference     = data |> dplyr::select("group_name_reference") |> dplyr::filter(!is.na(.data$group_name_reference)) |> dplyr::distinct() |> dplyr::pull(),
+                    group_level_reference    = referenceGroupLevel,
+                    variable_level_reference = referenceVariableLevel,
+                    estimate_value_reference = dplyr::if_else(is.na(.data$estimate_value_reference), missings, .data$estimate_value_reference))
+
+    for(i in strata_levels){
+      data <- data |>
+        dplyr::mutate_at(paste0(i,"_reference"), ~ data |> dplyr::select(paste0(i,"_reference")) |> dplyr::filter(!is.na(.data[[paste0(i,"_reference")]])) |> dplyr::distinct() |> dplyr::pull())
+    }
+  }else{
+    data <- data |>
+      dplyr::mutate(cdm_name_reference = referenceCdmName,
+                    group_name_reference     = data |> dplyr::select("group_name_reference") |> dplyr::filter(!is.na(.data$group_name_reference)) |> dplyr::distinct() |> dplyr::pull(),
+                    group_level_reference    = referenceGroupLevel,
+                    variable_level_reference = referenceVariableLevel,
+                    strata_name_reference    =  data |> dplyr::select("strata_name_reference") |> dplyr::filter(!is.na(.data$strata_name_reference)) |> dplyr::distinct() |> dplyr::pull(),
+                    strata_level_reference   = referenceStrataLevel,
+                    estimate_value_reference = dplyr::if_else(is.na(.data$estimate_value_reference), missings, .data$estimate_value_reference))
+  }
+  return(data)
+}
+
+replaceComparatorMissings <- function(data, table_comparator, referenceCdmName, referenceGroupLevel, referenceVariableLevel, referenceStrataLevel, missings, splitStrata, strata_levels){
+  if(splitStrata){
+    comparator_groups <- table_comparator |>
+      dplyr::select("cdm_name_comparator", "group_name_comparator", "group_level_comparator",
+                    paste0(strata_levels,"_comparator"), "variable_level_comparator") |>
+      dplyr::distinct()
+  }else{
+    comparator_groups <- table_comparator |>
+      dplyr::select("cdm_name_comparator", "group_name_comparator", "group_level_comparator",
+                    "strata_name_comparator", "strata_level_comparator", "variable_level_comparator") |>
+      dplyr::distinct()
+  }
 
   data <- data |>
     dplyr::select(-c(dplyr::ends_with("comparator"))) |>
@@ -171,7 +218,7 @@ changeNames <- function(var, type){
 }
 
 editPlot <- function(data, facetVarX = NULL, facetVarY = NULL, colorVars = NULL, vertical_x = FALSE){
-    plotfunction(data  = data,
+    x <- plotfunction(data  = data,
                  xAxis = "estimate_value",
                  yAxis = "estimate_value_comparator",
                  plotStyle = "scatterplot",
@@ -179,8 +226,8 @@ editPlot <- function(data, facetVarX = NULL, facetVarY = NULL, colorVars = NULL,
                  facetVarY,
                  colorVars,
                  vertical_x) +
-      ggplot2::scale_x_continuous(limits = c(0, 100)) +
-      ggplot2::scale_y_continuous(limits = c(0, 100)) +
-      ggplot2::geom_abline(slope = 1, colour = "red", linetype = 2, size = 0.25) +
+      ggplot2::scale_x_continuous(limits = c(0, 1), labels = scales::percent) +
+      ggplot2::scale_y_continuous(limits = c(0, 1), labels = scales::percent) +
+      ggplot2::geom_abline(slope = 1, colour = "black", linetype = 2, size = 0.5) +
       ggplot2::labs(x = "Reference", y = "Comparator")
 }

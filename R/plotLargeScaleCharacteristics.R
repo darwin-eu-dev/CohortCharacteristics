@@ -56,7 +56,9 @@ plotLargeScaleCharacteristics <- function(data,
                                           facet       = NULL,
                                           colorVars   = "variable_level") {
 
-  checkSettings(data)
+  x <- checkSettings(data)
+  data           <- x$data
+  settings_table <- x$settings_table
 
   # Position of the plot
   x <- positionFunction(position)
@@ -65,7 +67,7 @@ plotLargeScaleCharacteristics <- function(data,
   verticalX <- x$verticalX
 
   # Facet of the plot
-  x <- facetFunction(facet, splitStrata, data)
+  x <- facetFunction(facet, splitStrata, data, settings_table)
   facetVarX <- x$facetVarX
   facetVarY <- x$facetVarY
   data      <- x$data
@@ -96,10 +98,17 @@ plotLargeScaleCharacteristics <- function(data,
 }
 
 checkSettings <- function(data){
+
   if(length(settings(data)$result_id) == 0){
     stop(sprintf("Settings table is not present in the data. Please, when filtering the large scale characterisation table, include the following argument: filter( ... | variable_name == 'settings')"))
   }
+
+  settings_table <- CDMConnector::settings(data)
+  data           <- data |> dplyr::filter(.data$group_name != "overall")
+
+  return(list("data" = data, "settings_table" = settings_table))
 }
+
 positionFunction <- function(position){
   if(position == "horizontal"){
     xAxis = "estimate_value"
@@ -115,7 +124,7 @@ positionFunction <- function(position){
   return(list("xAxis" = xAxis, "yAxis" = yAxis, "verticalX" = verticalX))
 }
 
-facetFunction <- function(facet, splitStrata, data){
+facetFunction <- function(facet, splitStrata, data, settings_table){
   if(!is.null(facet)){
 
     checkmate::assertTRUE(inherits(facet, c("formula","character")))
@@ -141,7 +150,7 @@ facetFunction <- function(facet, splitStrata, data){
   # Add table_name column
   data <- data |>
     dplyr::left_join(
-      CDMConnector::settings(data),
+      settings_table,
       by = c("result_id", "result_type", "cdm_name")
     ) |>
     dplyr::filter(.data$estimate_type == "percentage",

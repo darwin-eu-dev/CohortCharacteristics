@@ -120,4 +120,20 @@ test_that("Function returns a ggplot object", {
   expect_no_error(plotLargeScaleCharacteristics(
     data =  test_data))
 
+
+  plot_multiple <-  plotComparedLargeScaleCharacteristics(
+    data = test_data |> dplyr::filter((group_level  %in% c("cohort_1", "cohort_2")) | variable_name == 'settings'),
+    referenceGroupLevel    = "cohort_1",
+    referenceStrataLevel   = "overall",
+    referenceVariableLevel = '-inf to -366',
+    referenceCdmName       = NULL,
+    facet       = NULL,
+    splitStrata = FALSE,
+    colorVars   = NULL,
+    missings    = 0
+  )
+
+  #do not throw error even if they do not specify color or facet or position
+  expect_true(ggplot2::is.ggplot(plot_multiple))
+
 })

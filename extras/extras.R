@@ -36,22 +36,33 @@ lsc <- cdm$meds %>%
 lsc1 <- lsc |>
   filter((group_level == "morphine") | variable_name == "settings")
 
-lsc1 <- lsc1 |> filter(!(variable_name == "remifentanil" & variable_level == "0 to 30"))
+lsc1 <- lsc |> filter((group_level == "morphine") |
+                        variable_name == "settings")
 
-plotComparedLargeScaleCharacteristics(data = lsc1,
-                                      referenceGroupLevel    = "morphine",
-                                      referenceStrataLevel   = "overall",
-                                      referenceVariableLevel = "-Inf to 0",
-                                      referenceCdmName       = NULL,
-                                      facet       = NULL,
-                                      splitStrata = FALSE,
-                                      colorVars   = NULL,
-                                      missings    = 0)
+data = lsc1
+referenceGroupLevel  = NULL
+referenceStrataLevel = "Male"
+referenceVariableLevel = NULL
+referenceCdmName       = NULL
+facet       = strata ~ table_name
+splitStrata = FALSE
+colorVars   = NULL
+missings    = 0
+
+plotComparedLargeScaleCharacteristics(data = data,
+                                      referenceGroupLevel    = referenceGroupLevel,
+                                      referenceStrataLevel   = referenceStrataLevel ,
+                                      referenceVariableLevel = referenceVariableLevel,
+                                      referenceCdmName       = referenceCdmName,
+                                      facet       = facet,
+                                      splitStrata =  splitStrata ,
+                                      colorVars   = colorVars ,
+                                      missings    = missings )
 
 plotLargeScaleCharacteristics(data = lsc,
                               position = "horizontal",
-                              facet     = . ~ strata,
-                              splitStrata = TRUE,
+                              facet     = . ~ strata_level,
+                              splitStrata = FALSE,
                               colorVars   = NULL)
 
 
