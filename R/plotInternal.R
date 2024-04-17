@@ -75,13 +75,11 @@ plotfunction <- function(data,
     dplyr::mutate(color_combined = construct_color_variable(data, colorVars))
 
   if (is.null(facetVarX)) {
-    warning("facetVarX put as NULL, plot overall")
     data$overall <- "overall"
     facetVarX <- "overall"
   }
 
   if (is.null(facetVarY)) {
-    warning("facetVarY put as NULL, plot overall")
     data$overall <- "overall"
     facetVarY <- "overall"
   }
@@ -95,7 +93,7 @@ plotfunction <- function(data,
   if (!is.null(facet)) {
     data <- data |>
       tidyr::unite("facet_var",
-                   c(tidyselect::all_of(.env$facet)),
+                   c(dplyr::all_of(.env$facet)),
                    remove = FALSE, sep = "; "
       )
   }
