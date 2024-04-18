@@ -21,8 +21,7 @@
 #' @param xAxis what to plot on x axis, default as variable_name column. Has to be a column in data.
 #' @param yAxis what to plot on y axis, default as estimate_value column. Has to be a column in data. One of the xAxis or yAxis has to be estimate_value.
 #' @param plotStyle Now allows boxplot or barplot only.
-#' @param facetVarX column in data to facet by on horizontal axis
-#' @param facetVarY column in data to facet by on vertical axis
+#' @param facet Variables to facet by
 #' @param colorVars column in data to color by.
 #' @param vertical_x whether to display x axis string vertically.
 #' @return A ggplot.
@@ -52,27 +51,92 @@ plotCharacteristics <- function(data,
                                 xAxis = "variable_name",
                                 yAxis = "estimate_value",
                                 plotStyle = "barplot",
-                                facetVarX = NULL,
-                                facetVarY = NULL,
+                                facet = NULL,
                                 colorVars = NULL,
-                                vertical_x = FALSE) {
+                                vertical_x = FALSE,
+                                .options = list()) {
+
   errorMessage <- checkmate::makeAssertCollection()
 
   checkmate::assertTRUE(plotStyle %in% c("boxplot", "barplot", "density"), add = errorMessage)
 
   checkmate::reportAssertions(collection = errorMessage)
 
-  return(
-    plotfunction(
+  # only allow one variable name to be used
+  nVariableNames <- length(data |>
+    dplyr::select("variable_name") |>
+    dplyr::distinct() |>
+    dplyr::pull())
+  if(nVariableNames != 1){
+    cli::cli_abort("Only one variable name can be plotted at a time.
+                   Please filter variable_name column in results before passing to plotCharacteristics()")
+  }
+
+  nEstimateTypes <- length(data |>
+                             dplyr::select("estimate_type") |>
+                             dplyr::distinct() |>
+                             dplyr::pull())
+  if(nEstimateTypes != 1){
+    cli::cli_abort("Only one estimate type can be plotted at a time.
+                   Please filter estimate_type column in results before passing to plotCharacteristics()")
+  }
+
+  estimateType <- data |>
+    dplyr::select("estimate_type") |>
+    dplyr::distinct() |>
+    dplyr::pull()
+
+  if(!estimateType %in% c("numeric", "percentage")){
+    cli::cli_abort("{estimateType} not currently supported by plotCharacteristics()")
+  }
+
+    gg <- plotfunction(
       data,
       xAxis,
       yAxis,
       plotStyle = plotStyle,
-      facetVarX,
-      facetVarY,
+      facetVarX = NULL,
+      facetVarY = NULL,
       colorVars,
-      vertical_x
+      vertical_x,
+      facet = facet,
+      .options = .options
     )
-  )
+
+
+  gg <- gg +
+    ggplot2::theme_bw()
+
+
+  if(estimateType == "numeric"){
+    var <- unique(data$variable_name)
+
+    if(xAxis == "estimate_value"){
+      gg <- gg +
+        ggplot2::ylab(var) +
+        ggplot2::xlab("")
+    }
+    if(yAxis == "estimate_value"){
+      gg <- gg +
+        ggplot2::xlab(var) +
+        ggplot2::ylab("")
+    }
+  }
+
+
+  if(estimateType == "percentage"){
+    if(xAxis == "estimate_value"){
+    gg <- gg +
+      ggplot2::xlab("Percentage") +
+      ggplot2::ylab("")
+    }
+    if(yAxis == "estimate_value"){
+      gg <- gg +
+        ggplot2::ylab("Percentage") +
+        ggplot2::xlab("")
+    }
+  }
+
+  gg
 }
 
