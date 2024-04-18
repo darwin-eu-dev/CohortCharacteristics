@@ -1,5 +1,4 @@
 test_that("summariseCohortOverlap", {
-  skip_on_cran()
   person <- dplyr::tibble(
     person_id = c(1:20, 199),
     gender_concept_id = 8532,
