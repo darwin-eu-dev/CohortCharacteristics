@@ -63,9 +63,18 @@
 <span>  counts <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  demographics <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  ageGroup <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  tableIntersect <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  cohortIntersect <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  conceptIntersect <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  tableIntersectFlag <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  tableIntersectCount <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  tableIntersectDate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  tableIntersectDays <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  cohortIntersectFlag <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  cohortIntersectCount <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  cohortIntersectDate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  cohortIntersectDays <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  conceptIntersectFlag <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  conceptIntersectCount <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  conceptIntersectDate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  conceptIntersectDays <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  otherVariables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -93,19 +102,64 @@ be produced.</p></dd>
 <dd><p>A list of age groups.</p></dd>
 
 
-<dt>tableIntersect</dt>
-<dd><p>A list of arguments that uses addTableIntersect
-function to add variables to summarise.</p></dd>
+<dt>tableIntersectFlag</dt>
+<dd><p>A list of arguments that uses
+PatientProfiles::addTableIntersectFlag() to add variables to summarise.</p></dd>
 
 
-<dt>cohortIntersect</dt>
-<dd><p>A list of arguments that uses addCohortIntersect
-function to add variables to summarise.</p></dd>
+<dt>tableIntersectCount</dt>
+<dd><p>A list of arguments that uses
+PatientProfiles::addTableIntersectCount() to add variables to summarise.</p></dd>
 
 
-<dt>conceptIntersect</dt>
-<dd><p>A list of arguments that uses addConceptIntersect
-function to add variables to summarise.</p></dd>
+<dt>tableIntersectDate</dt>
+<dd><p>A list of arguments that uses
+PatientProfiles::addTableIntersectDate() to add variables to summarise.</p></dd>
+
+
+<dt>tableIntersectDays</dt>
+<dd><p>A list of arguments that uses
+PatientProfiles::addTableIntersectDays() to add variables to summarise.</p></dd>
+
+
+<dt>cohortIntersectFlag</dt>
+<dd><p>A list of arguments that uses
+PatientProfiles::addCohortIntersectFlag() to add variables to summarise.</p></dd>
+
+
+<dt>cohortIntersectCount</dt>
+<dd><p>A list of arguments that uses
+PatientProfiles::addCohortIntersectCount() to add variables to summarise.</p></dd>
+
+
+<dt>cohortIntersectDate</dt>
+<dd><p>A list of arguments that uses
+PatientProfiles::addCohortIntersectDate() to add variables to summarise.</p></dd>
+
+
+<dt>cohortIntersectDays</dt>
+<dd><p>A list of arguments that uses
+PatientProfiles::addCohortIntersectDays() to add variables to summarise.</p></dd>
+
+
+<dt>conceptIntersectFlag</dt>
+<dd><p>A list of arguments that uses
+PatientProfiles::addConceptIntersectFlag() to add variables to summarise.</p></dd>
+
+
+<dt>conceptIntersectCount</dt>
+<dd><p>A list of arguments that uses
+PatientProfiles::addConceptIntersectCount() to add variables to summarise.</p></dd>
+
+
+<dt>conceptIntersectDate</dt>
+<dd><p>A list of arguments that uses
+PatientProfiles::addConceptIntersectDate() to add variables to summarise.</p></dd>
+
+
+<dt>conceptIntersectDays</dt>
+<dd><p>A list of arguments that uses
+PatientProfiles::addConceptIntersectDays() to add variables to summarise.</p></dd>
 
 
 <dt>otherVariables</dt>
@@ -130,43 +184,25 @@ summarised.</p></dd>
 <span class="r-in"><span><span class="fu">summariseCharacteristics</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  cohort <span class="op">=</span> <span class="va">cdm</span><span class="op">$</span><span class="va">cohort1</span>,</span></span>
 <span class="r-in"><span>  ageGroup <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">19</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">39</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">40</span>, <span class="fl">59</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">79</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">80</span>, <span class="fl">150</span><span class="op">)</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  tableIntersect <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  tableIntersectCount <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    <span class="st">"Number visits prior year"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>      tableName <span class="op">=</span> <span class="st">"visit_occurrence"</span>, value <span class="op">=</span> <span class="st">"count"</span>, window <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">365</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span>      tableName <span class="op">=</span> <span class="st">"visit_occurrence"</span>, window <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">365</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-in"><span>    <span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span>,</span></span>
-<span class="r-in"><span>  cohortIntersect <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  cohortIntersectFlag <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    <span class="st">"Drugs prior year"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>      targetCohortTable <span class="op">=</span> <span class="st">"cohort2"</span>, value <span class="op">=</span> <span class="st">"flag"</span>, window <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">365</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span>      targetCohortTable <span class="op">=</span> <span class="st">"cohort2"</span>, window <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">365</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-in"><span>    <span class="op">)</span>,</span></span>
 <span class="r-in"><span>    <span class="st">"Conditions any time prior"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>      targetCohortTable <span class="op">=</span> <span class="st">"cohort2"</span>, value <span class="op">=</span> <span class="st">"flag"</span>, window <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="cn">Inf</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span>      targetCohortTable <span class="op">=</span> <span class="st">"cohort2"</span>, window <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="cn">Inf</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-in"><span>    <span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> adding demographics columns</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> adding table intersect columns for table: visit_occurrence</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> adding cohort intersect columns for table: cohort2</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> adding cohort intersect columns for table: cohort2</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> adding tableIntersectCount 1/1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> adding cohortIntersectFlag 1/2</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> adding cohortIntersectFlag 2/2</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising data</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be computed:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> flag_variable_00017_variable_00016: count, percentage</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> flag_variable_00018_variable_00016: count, percentage</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> flag_variable_00020_variable_00019: count, percentage</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> flag_variable_00021_variable_00019: count, percentage</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> variable_00010: count, percentage</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> variable_00014: count, percentage</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> cohort_start_date: min, q25, median, q75, max</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> cohort_end_date: min, q25, median, q75, max</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> variable_00012: min, q25, median, q75, max, mean, sd</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> variable_00013: min, q25, median, q75, max, mean, sd</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> variable_00011: min, q25, median, q75, max, mean, sd</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> count_visit_occurrence_variable_00015: min, q25, median, q75, max, mean, sd</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2024-04-18 13:34:48.958957</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2024-04-18 13:34:49.110342</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> The following variables: result_type, package_name, package_version; were added to `settings`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> The following variables: result_type, package_name, package_version; were added to `settings`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> summariseCharacteristics finished!</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 52 × 13</span></span>
