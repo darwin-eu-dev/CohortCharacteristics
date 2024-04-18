@@ -140,11 +140,7 @@ facetFunction <- function(facet, splitStrata, data){
 
     # Specific case - table name
     if("table_name" %in% c(facetVarX, facetVarY)){
-      data <- data |>
-        dplyr::left_join(
-          CDMConnector::settings(data),
-          by = c("result_id", "result_type", "cdm_name")
-        )
+      data <- data |> visOmopResults::addSettings()
     }
 
     return(list("facetVarX" = facetVarX, "facetVarY" = facetVarY, "data" = data))

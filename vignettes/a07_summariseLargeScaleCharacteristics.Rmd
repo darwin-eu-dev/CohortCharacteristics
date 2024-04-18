@@ -30,9 +30,9 @@ if (!eunomia_is_available()) downloadEunomiaData()
 ```{r}
 library(CDMConnector)
 library(CodelistGenerator)
-library(PatientProfiles)
 library(dplyr)
 library(ggplot2)
+library(CohortCharacteristics)
 
 con <- DBI::dbConnect(duckdb::duckdb(),
                        dbdir = CDMConnector::eunomia_dir())
@@ -62,15 +62,7 @@ lsc <- cdm$meds %>%
     minimumFrequency = 0.05
   )
 
-plotLargeScaleCharacteristics(
-  data =  lsc |> 
-        filter(estimate_name == "percentage"), 
-  xAxis = "estimate_value",
-  yAxis = "variable_name", 
-  facetVarX = NULL, 
-  facetVarY = NULL,
-  colorVars= "group_level"
-)
+plotLargeScaleCharacteristics(lsc)
 
 ```
 
