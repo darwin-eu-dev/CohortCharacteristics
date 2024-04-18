@@ -1,11 +1,67 @@
+# Copyright 2024 DARWIN EU (C)
+#
+# This file is part of CohortCharacteristics
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#' create a ggplot from the output of summariseLargeScaleCharacteristics.
+#'
+#' `r lifecycle::badge("experimental")`
+#'
+#' @param data output of summariseLargeScaleCharacteristics().
+#' @param referenceGroupLevel group_level value to be used as the reference.
+#' @param referenceStrataLevel strata_level value to be used as the reference.
+#' @param referenceVariableLevel variable_level value to be used as the reference.
+#' @param referenceCdmName cdm_name value to be used as the reference.
+#' @param splitStrata boolean variable (TRUE/FALSE)
+#' @param facet columns in data to facet. If the facet position wants to be specified, use the formula class for the input
+#' (e.g., strata + table_name ~ group_level + cdm_name). Variables before "~" will be facet by on horizontal axis, whereas those after "~" on vertical axis.
+#' Character format is also allowed (e.g., c("strata","table_name","group_level","cdm_name")).
+#' Only the following columns are allowed to be facet by: c("cdm_name", "group_level", "strata_level", "variable_level", "strata", "table_name").
+#' If splitStrata = TRUE, strata levels are also allowed.
+#' @param colorVars column in data to color by. Only the following columns are allowed to be used: c("cdm_name", "group_level", "strata_level", "variable_level", "strata", "table_name").
+#' If splitStrata = TRUE, strata levels are also allowed.
+#' @param missings value to replace the missings with.
+#'
+#' @return A ggplot.
+#'
+#' @export
+#'
+#' @examples
+#' \donttest{
+#' library(CohortCharacteristics)
+#' library(DrugUtilisation)
+#' cdm <- DrugUtilisation::mockDrugUtilisation()
+#'
+#' lsc <- CohortCharacteristics::summariseLargeScaleCharacteristics(cdm$cohort1,
+#' eventInWindow = "condition_occurrence", episodeInWindow = "drug_exposure",
+#' minimumFrequency = 0.05)
+#'
+#' plotComparedLargeScaleCharacteristics(data = lsc,
+#' referenceGroupLevel = "cohort_2", referenceStrataLevel = NULL,
+#' referenceVariableLevel = '-inf to -366', referenceCdmName = NULL,
+#' splitStrata = TRUE, facet = variable_level ~ group_level, colorVars = NULL,
+#' missings = 0)
+#' CDMConnector::cdmDisconnect(cdm = cdm)
+#' }
 
 plotComparedLargeScaleCharacteristics <- function(data,
                                                  referenceGroupLevel    = NULL,
                                                  referenceStrataLevel   = NULL,
                                                  referenceVariableLevel = NULL,
                                                  referenceCdmName       = NULL,
-                                                 facet       = NULL,
                                                  splitStrata = FALSE,
+                                                 facet       = NULL,
                                                  colorVars   = NULL,
                                                  missings    = 0){
 
