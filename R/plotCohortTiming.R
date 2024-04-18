@@ -49,7 +49,7 @@ plotCohortTiming <- function(result,
                              uniqueCombinations = TRUE) {
   # initial checks
   result <- omopgenerics::newSummarisedResult(result) |>
-    dplyr::filter(.data$result_type == "cohort_timing")
+    visOmopResults::filterSettings(.data$result_type == "cohort_timing")
   checkmate::assertChoice(plotType, c("boxplot", "density"))
   checkmate::assertChoice(timeScale, c("days", "years"))
   checkmate::assertCharacter(facetVarX, null.ok = TRUE)

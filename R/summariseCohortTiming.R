@@ -105,8 +105,8 @@ summariseCohortTiming <- function(cohort,
       by = c("subject_id", unique(strataCols))) |>
     dplyr::filter(.data$cohort_name_reference != .data$cohort_name_comparator) %>% # to be removed
     dplyr::mutate(days_between_cohort_entries = !!CDMConnector::datediff("cohort_start_date",
-                                                       "cohort_start_date_comparator",
-                                                       interval = "day")) |>
+                                                                         "cohort_start_date_comparator",
+                                                                         interval = "day")) |>
     dplyr::collect()
 
   timingsResult <- omopgenerics::emptySummarisedResult()
@@ -161,24 +161,23 @@ summariseCohortTiming <- function(cohort,
       }
     }
 
-      timingsResult <- timingsResult |>
-        dplyr::union_all(
-          timingDensity |>
-            dplyr::bind_rows() |>
-            dplyr::mutate(
-              result_id = as.integer(1),
-              cdm_name = CDMConnector::cdmName(cdm),
-              result_type = "cohort_timing",
-              package_name = "CohortCharacteristics",
-              package_version = as.character(utils::packageVersion("CohortCharacteristics")),
-              group_name = "cohort_name_reference &&& cohort_name_comparator",
-              variable_name = "density",
-              estimate_type = "numeric",
-              additional_name ="overall",
-              additional_level = "overall"
-            )
-        ) |>
-        dplyr::select(dplyr::all_of(omopgenerics::resultColumns("summarised_result")))
+    timingsResult <- timingsResult |>
+      dplyr::union_all(
+        timingDensity |>
+          dplyr::bind_rows() |>
+          dplyr::mutate(
+            result_id = as.integer(1),
+            cdm_name = CDMConnector::cdmName(cdm),
+            result_type = "cohort_timing",
+            package_name = "CohortCharacteristics",
+            package_version = as.character(utils::packageVersion("CohortCharacteristics")),
+            group_name = "cohort_name_reference &&& cohort_name_comparator",
+            variable_name = "density",
+            estimate_type = "numeric",
+            additional_name ="overall",
+            additional_level = "overall"
+          )
+      )
   }
 
   # add settings

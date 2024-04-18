@@ -55,13 +55,11 @@ tableCohortOverlap  <- function(result,
                                 split = c("group", "strata", "additional"),
                                 groupColumn = NULL,
                                 minCellCount = 5,
-                                excludeColumns = c("result_id", "result_type",
-                                                   "package_name", "package_version",
-                                                   "estimate_type"),
+                                excludeColumns = c("result_id", "estimate_type"),
                                 .options = list()) {
   # initial checks
   result <- omopgenerics::newSummarisedResult(result) |>
-    dplyr::filter(.data$result_type == "cohort_overlap")
+    visOmopResults::filterSettings(.data$result_type == "cohort_overlap")
   checkmate::assertList(.options)
 
   # default

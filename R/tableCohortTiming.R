@@ -67,8 +67,8 @@ tableCohortTiming <- function(result,
                               .options = list()) {
   # initial checks
   result <- omopgenerics::newSummarisedResult(result) |>
-    dplyr::filter(.data$result_type == "cohort_timing" &
-                  .data$variable_name != "density")
+    visOmopResults::filterSettings(.data$result_type == "cohort_timing") |>
+    dplyr::filter(.data$variable_name != "density")
   checkmate::assertList(.options)
   checkmate::assertChoice(timeScale, c("days", "years"))
 

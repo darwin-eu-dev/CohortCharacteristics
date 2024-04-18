@@ -590,7 +590,7 @@ summariseCohortIntersect <- function(cohort,
     conceptIntersect = list(),
     otherVariables = character()
   ) |>
-    dplyr::filter(.data$result_type == "summarised_cohort_intersect")
+    visOmopResults::filterSettings(.data$result_type == "summarised_cohort_intersect")
 }
 
 
@@ -616,7 +616,7 @@ summariseTableIntersect <- function(cohort,
     conceptIntersect = list(),
     otherVariables = character()
   ) |>
-    dplyr::filter(.data$result_type == "summarised_demographics")
+    visOmopResults::filterSettings(.data$result_type == "summarised_demographics")
 }
 
 correctWindowName <- function(windowName) {

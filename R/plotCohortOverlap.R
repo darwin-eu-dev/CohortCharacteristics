@@ -41,7 +41,7 @@ plotCohortOverlap <- function(result,
                               uniqueCombinations = TRUE) {
   # initial checks
   result <- omopgenerics::newSummarisedResult(result) |>
-    dplyr::filter(.data$result_type == "cohort_overlap")
+    visOmopResults::filterSettings(.data$result_type == "cohort_overlap")
   checkmate::assertCharacter(facetVarX, null.ok = TRUE)
   checkmate::assertCharacter(facetVarY, null.ok = TRUE)
   checkmate::assertLogical(uniqueCombinations)
