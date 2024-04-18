@@ -61,9 +61,9 @@ tableCohortTiming <- function(result,
                               split = c("group", "strata", "additional"),
                               groupColumn = NULL,
                               minCellCount = 5,
-                              excludeColumns = c("result_id", "result_type",
-                                                 "package_name", "package_version",
-                                                 "estimate_type", "variable_level"),
+                              excludeColumns = c(
+                                "result_id", "estimate_type", "variable_level"
+                              ),
                               .options = list()) {
   # initial checks
   result <- omopgenerics::newSummarisedResult(result) |>
