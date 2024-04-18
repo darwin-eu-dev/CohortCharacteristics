@@ -81,7 +81,7 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://darwin-eu-dev.github.io/PatientProfiles/" class="external-link">PatientProfiles</a></span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://darwin-eu-dev.github.io/CohortCharacteristics/">CohortCharacteristics</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="characteristics-plots">Characteristics plots<a class="anchor" aria-label="anchor" href="#characteristics-plots"></a>
 </h2>
@@ -136,7 +136,7 @@ create a mock data.</p>
 <span>  cohort_start_date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  cohort_end_date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="va">cdm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://darwin-eu-dev.github.io/PatientProfiles/reference/mockPatientProfiles.html" class="external-link">mockPatientProfiles</a></span><span class="op">(</span></span>
+<span><span class="va">cdm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mockCohortCharacteristics.html">mockCohortCharacteristics</a></span><span class="op">(</span></span>
 <span>  dus_cohort <span class="op">=</span> <span class="va">dus_cohort</span>, cohort1 <span class="op">=</span> <span class="va">emptyCohort</span>,</span>
 <span>  cohort2 <span class="op">=</span> <span class="va">emptyCohort</span>, observation_period <span class="op">=</span> <span class="va">observation_period</span>,</span>
 <span>  comorbidities <span class="op">=</span> <span class="va">comorbidities</span>, medication <span class="op">=</span> <span class="va">medication</span></span>
@@ -171,11 +171,6 @@ create a mock data.</p>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: `summariseCharacteristics()` was deprecated in PatientProfiles 0.8.0.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Please use `CohortCharacteristics::summariseCharacteristics()` instead.</span></span>
-<span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
-<span><span class="co">#&gt; <span style="color: #555555;">generated.</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> adding demographics columns</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> adding cohort intersect columns for table: medication</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> adding cohort intersect columns for table: comorbidities</span></span>
@@ -187,14 +182,14 @@ create a mock data.</p>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> flag_variable_00010_variable_00009: count, percentage</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> flag_variable_00011_variable_00009: count, percentage</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> variable_00001: count, percentage</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> cohort_start_date: min, q05, q25, median, q75, q95, max</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> cohort_end_date: min, q05, q25, median, q75, q95, max</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> variable_00003: min, q05, q25, median, q75, q95, max, mean, sd</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> variable_00004: min, q05, q25, median, q75, q95, max, mean, sd</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> variable_00002: min, q05, q25, median, q75, q95, max, mean, sd</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> cohort_start_date: min, q25, median, q75, max</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> cohort_end_date: min, q25, median, q75, max</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> variable_00003: min, q25, median, q75, max, mean, sd</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> variable_00004: min, q25, median, q75, max, mean, sd</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> variable_00002: min, q25, median, q75, max, mean, sd</span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span></span>
 <span><span class="co">#&gt;   the database side</span></span>
-<span><span class="co">#&gt; → Start summary of data, at 2024-04-18 09:07:05.389838</span></span>
+<span><span class="co">#&gt; → Start summary of data, at 2024-04-18 13:35:33.210004</span></span>
 <span><span class="co">#&gt; Warning: There were 2 warnings in `dplyr::summarise()`.</span></span>
 <span><span class="co">#&gt; The first warning was:</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> In argument: `dplyr::across(...)`.</span></span>
@@ -202,7 +197,11 @@ create a mock data.</p>
 <span><span class="co">#&gt; Caused by warning in `base::min()`:</span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> no non-missing arguments to min; returning Inf</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Run `dplyr::last_dplyr_warnings()` to see the 1 remaining warning.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Summary finished, at 2024-04-18 09:07:05.624911</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Summary finished, at 2024-04-18 13:35:33.425278</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> The following variables: result_type, package_name, package_version; were added to `settings`</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> The following variables: result_type, package_name, package_version; were added to `settings`</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> summariseCharacteristics finished!</span></span></code></pre></div>
 <p>Now we show barplot example by setting plotStyle = “barplot” in
 <code>plotCharacteristics</code>. Similar to previous function, user can
@@ -217,9 +216,7 @@ count, user can filter to only percentage, or plot both.</p>
 <span>    facetVarX <span class="op">=</span> <span class="st">"group_level"</span>,</span>
 <span>    facetVarY <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>    colorVars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"variable_level"</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in plotfunction(data, xAxis, yAxis, plotStyle = plotStyle, facetVarX, :</span></span>
-<span><span class="co">#&gt; facetVarY put as NULL, plot overall</span></span></code></pre></div>
+<span>  <span class="op">)</span></span></code></pre></div>
 <p><img src="a06_summarisePatientCharacteristics_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
@@ -233,7 +230,7 @@ count, user can filter to only percentage, or plot both.</p>
 <span>    colorVars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"variable_level"</span><span class="op">)</span>,</span>
 <span>    vertical_x <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: Removed 10 rows containing missing values or values outside the scale range</span></span>
+<span><span class="co">#&gt; Warning: Removed 8 rows containing missing values or values outside the scale range</span></span>
 <span><span class="co">#&gt; (`geom_col()`).</span></span></code></pre></div>
 <p><img src="a06_summarisePatientCharacteristics_files/figure-html/unnamed-chunk-3-2.png" width="700"></p>
 <p>User can plot boxplot based on q25 q75 median min max in data, using
@@ -251,8 +248,6 @@ of the xAxis or yAxis has to be estimate_value.</p>
 <span>    colorVars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"group_level"</span><span class="op">)</span>,</span>
 <span>    vertical_x <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in plotfunction(data, xAxis, yAxis, plotStyle = plotStyle, facetVarX, :</span></span>
-<span><span class="co">#&gt; facetVarY put as NULL, plot overall</span></span>
 <span><span class="co">#&gt; Warning: Removed 2 rows containing missing values or values outside the scale range</span></span>
 <span><span class="co">#&gt; (`geom_segment()`).</span></span>
 <span><span class="co">#&gt; Warning: Removed 1 row containing missing values or values outside the scale range</span></span>
