@@ -48,20 +48,23 @@ plotCohortTiming <- function(result,
                              colorVars = "group_level",
                              uniqueCombinations = TRUE) {
   # initial checks
-  result <- omopgenerics::newSummarisedResult(result) |>
-    visOmopResults::filterSettings(.data$result_type == "cohort_timing")
+  result <- omopgenerics::newSummarisedResult(result)
   checkmate::assertChoice(plotType, c("boxplot", "density"))
   checkmate::assertChoice(timeScale, c("days", "years"))
   checkmate::assertCharacter(facetVarX, null.ok = TRUE)
   checkmate::assertCharacter(facetVarY, null.ok = TRUE)
   checkmate::assertCharacter(colorVars, null.ok = TRUE)
   checkmate::assertLogical(uniqueCombinations)
-  if (plotType == "density" & !"density"%in% result$variable_name) {
-    cli::cli_abort("Please provide a cohort timing summarised result with density estimates (use `density = TRUE` in summariseCohortTiming).")
+  if (plotType == "boxplot") {
+    result <- result |>
+      visOmopResults::filterSettings(.data$result_type == "cohort_timing")
+  } else if (plotType == "density") {
+    result <- result |>
+      visOmopResults::filterSettings(.data$result_type == "cohort_timing_density")
+    if (nrow(result) == 0) {
+      cli::cli_abort("Please provide a cohort timing summarised result with density estimates (use `density = TRUE` in summariseCohortTiming).")
+    }
   }
-
-
-
 
   # split table
   timingLabel <- "{cohort_name_reference} &&& {cohort_name_comparator}"
