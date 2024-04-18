@@ -37,9 +37,8 @@ test_that("plotCohortTiming, boxplot", {
   timing1 <- summariseCohortTiming(cdm$table,
                                    restrictToFirstEntry = TRUE)
   boxplot1 <- plotCohortTiming(timing1,
-                               facetVarX = "cdm_name",
-                               colorVars = "group_level",
-                               # timingLabel = "{cohort_name_reference}; {cohort_name_comparator}",
+                               facet = "cdm_name",
+                               colour = "group_level",
                                uniqueCombinations = TRUE)
   # expect_true(all(c("q0", "q25", "q50", "q75", "q100") %in% colnames(boxplot1$data)))
   # expect_true(all(c("Cohort 1", "Cohort 2") %in% boxplot1$data$cohort_name_reference))
@@ -49,8 +48,7 @@ test_that("plotCohortTiming, boxplot", {
   # expect_true(boxplot1$labels$fill == "group")
 
   boxplot2 <- plotCohortTiming(timing1,
-                               colorVars = "group_level",
-                               # timingLabel = "{cohort_name_reference}; {cohort_name_comparator}",
+                               colour = "group_level",
                                uniqueCombinations = FALSE)
   # expect_true(all(c("Cohort 1", "Cohort 2") %in% boxplot2$data$cohort_name_reference))
   # expect_true(all(c("Cohort 1", "Cohort 2", "Cohort 3", "Cohort 4") %in% boxplot2$data$cohort_name_comparator))
@@ -66,9 +64,8 @@ test_that("plotCohortTiming, boxplot", {
                                    strata = list("age_group", c("age_group", "sex")),
                                    restrictToFirstEntry = FALSE)
   boxplot3 <- plotCohortTiming(timing3,
-                               colorVars = "strata_level",
-                               facetVarX = "strata_name",
-                               # timingLabel = "{cohort_name_reference}; {cohort_name_comparator}",
+                               colour = "strata_level",
+                               facet = "strata_name",
                                uniqueCombinations = FALSE)
   # expect_true(all(c("Cohort 1", "Cohort 2") %in% boxplot3$data$cohort_name_reference))
   # expect_true(all(c("Cohort 1", "Cohort 2", "Cohort 3", "Cohort 4") %in% boxplot3$data$cohort_name_comparator))
@@ -119,8 +116,8 @@ test_that("plotCohortTiming, density", {
                                    restrictToFirstEntry = FALSE)
   density1 <- plotCohortTiming(timing1,
                                plotType = "density",
-                               facetVarX = NULL,
-                               colorVars = "group_level",
+                               facet = NULL,
+                               colour = "group_level",
                                uniqueCombinations = TRUE)
 
   # expect_true(all(c("plot_id", "timing_label", "color_var", "x", "y", ".group") %in% colnames(density1$data)))
@@ -129,9 +126,8 @@ test_that("plotCohortTiming, density", {
 
   density2 <- plotCohortTiming(timing1,
                                plotType = "density",
-                               colorVars = "group_level",
-                               facetVarX = "cdm_name",
-                               # timingLabel = "{cdm_name}; {cohort_name_reference}; {cohort_name_comparator}",
+                               colour = "group_level",
+                               facet = "cdm_name",
                                uniqueCombinations = FALSE)
   # expect_true(all(c("plot_id", "timing_label", "x", "y", ".group") %in% colnames(density2$data)))
   expect_true(all(c("gg", "ggplot") %in% class(density2)))
@@ -142,8 +138,7 @@ test_that("plotCohortTiming, density", {
                                    density = TRUE)
   density4 <- plotCohortTiming(timing2,
                                plotType = "density",
-                               facetVarX = NULL,
-                               # timingLabel = "{cohort_name_reference}; {cohort_name_comparator}",
+                               facet = NULL,
                                uniqueCombinations = TRUE)
   expect_true(all(c("gg", "ggplot") %in% class(density4)))
   # expect_true(all(is.na(density4$data$q50)))
@@ -161,11 +156,8 @@ test_that("plotCohortTiming, density", {
 
   density3 <- plotCohortTiming(timing3,
                                plotType = "density",
-                               colorVars = "strata_name",
-                               facetVarY = "group_level",
-                               facetVarX = "strata_level",
-
-                               # timingLabel = "{cdm_name}; {cohort_name_reference}; {cohort_name_comparator}",
+                               colour = "strata_name",
+                               facet = c("group_level", "strata_level"),
                                uniqueCombinations = FALSE)
   # expect_true(all(c("plot_id", "timing_label", "color_var", "x", "y", ".group") %in% colnames(density3$data)))
   expect_true(all(c("gg", "ggplot") %in% class(density3)))
@@ -222,7 +214,7 @@ test_that("plotCohortOverlap", {
 
   gg2 <- plotCohortOverlap(overlap |> dplyr::filter(.data$variable_name == "number_subjects",
                                                     .data$estimate_name == "percentage"),
-                           facetVarX = "cdm_name",
+                           facet = "cdm_name",
                            uniqueCombinations = TRUE)
   expect_true("ggplot" %in% class(gg2))
   expect_true(gg2$data |> dplyr::filter(variable_name == "number subjects") |> nrow() == 0)
@@ -239,9 +231,7 @@ test_that("plotCohortOverlap", {
   overlap2 <- summariseCohortOverlap(cdm$table,
                                      strata = list("age_group", c("age_group", "sex")))
   gg3 <- plotCohortOverlap(overlap2 |> dplyr::filter(.data$variable_name == "number_subjects"),
-                           facetVarX = c("strata_name"),
-                           facetVarY = "strata_level",
-                           # overlapLabel = "{cohort_name_reference}_{cohort_name_comparator}",
+                           facet = c("strata_name", "strata_level"),
                            uniqueCombinations = TRUE)
   expect_true("ggplot" %in% class(gg3))
 
@@ -253,8 +243,10 @@ test_that("plotCohortOverlap", {
         dplyr::filter(.data$group_level != "cohort_2 &&& cohort_4")) |>
     dplyr::filter(.data$variable_name == "number_subjects")
   gg4 <- plotCohortOverlap(overlap3,
-                           facetVarX = "cdm_name",
-                           uniqueCombinations = FALSE)
+                           facet = "cdm_name",
+                           uniqueCombinations = FALSE,
+                           .options = list(facetNcols = 2,
+                                           facetScales = "fixed"))
   # expect_true(nrow(gg4$data |> dplyr::distinct(comparison_name, y_pos)) == 12)
 
   CDMConnector::cdm_disconnect(cdm)

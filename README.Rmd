@@ -25,8 +25,13 @@ CohortCharacteristics contains functions for summarising characteristics of coho
 
 ## Package installation
 
-You can install the latest version of CohortCharacteristics like so:
+You can install the latest version of CohortCharacteristics from CRAN:
 
+```{r, eval=FALSE}
+install.packages("CohortCharacteristics")
+```
+
+Or from github:
 ```{r, eval=FALSE}
 install.packages("remotes")
 remotes::install_github("darwin-eu-dev/CohortCharacteristics")
@@ -38,12 +43,12 @@ The CohortCharacteristics package is designed to work with data in the OMOP CDM 
 
 ```{r, message=FALSE}
 library(CDMConnector)
-library(PatientProfiles)
+library(CohortCharacteristics)
 library(dplyr)
 ```
 
 ```{r}
-cdm <- mockPatientProfiles(patient_size = 1000, drug_exposure_size = 1000)
+cdm <- mockCohortCharacteristics(patient_size = 1000, drug_exposure_size = 1000)
 cdm
 ```
 
@@ -62,12 +67,7 @@ cohort1_characteristics |>
 
 And with another line we can create a table of these results.
 ```{r, message=FALSE}
-tableCharacteristics(cohort1_characteristics)
+tableCharacteristics(cohort1_characteristics, type = "tibble")
 ```
 
-With one more we can create a plot. For example here we create a set of box-plots.
-```{r, message=FALSE}
-plotCharacteristics(cohort1_characteristics, plotStyle = "boxplot")
-```
-
-CohortCharacteristics provides a number of other functions to help summarise cohort tables. These include summaries of cohort overlaps and timings between cohort entries, intersections with other cohort tables or tables containing clinical data, as well as a broader large scale characterisation of all data held on the individuals across the different tables of the OMOP CDM. These additional functionalities are summarised in the package vignettes.  
+CohortCharacteristics provides a number of other functions to help summarise cohort tables and present the results in publication-ready tables and figures. See the vignettes for more details.

@@ -22,11 +22,12 @@
 #' @param plotType Type of desired formatted table, possibilities are "boxplot" and
 #' "density".
 #' @param timeScale Time scale to plot results. Can be days or years.
-#' @param facetVarX column in data to facet by on horizontal axis
-#' @param facetVarY column in data to facet by on vertical axis
-#' @param colorVars Column names to distinct by colors. default set to group_level
+#' @param facet variables to facet by
+#' @param colour Variables to use for colours
+#' @param colourName Colour legend name
 #' @param uniqueCombinations If TRUE, only unique combinations of reference and
 #' comparator plots will be plotted.
+#' @param .options Additional plotting options
 #'
 #' @return A ggplot.
 #' @export
@@ -43,17 +44,18 @@
 plotCohortTiming <- function(result,
                              plotType = "boxplot",
                              timeScale = "days",
-                             facetVarX = "variable_name",
-                             facetVarY = "group_level",
-                             colorVars = "group_level",
-                             uniqueCombinations = TRUE) {
+                             facet = NULL,
+                             colour = NULL,
+                             colourName = NULL,
+                             uniqueCombinations = TRUE,
+                             .options = list()) {
   # initial checks
   result <- omopgenerics::newSummarisedResult(result)
   checkmate::assertChoice(plotType, c("boxplot", "density"))
   checkmate::assertChoice(timeScale, c("days", "years"))
-  checkmate::assertCharacter(facetVarX, null.ok = TRUE)
-  checkmate::assertCharacter(facetVarY, null.ok = TRUE)
-  checkmate::assertCharacter(colorVars, null.ok = TRUE)
+  checkmate::assertCharacter(facet, null.ok = TRUE)
+  checkmate::assertCharacter(colour, null.ok = TRUE)
+  checkmate::assertCharacter(colourName, null.ok = TRUE, len = 1)
   checkmate::assertLogical(uniqueCombinations)
   if (plotType == "boxplot") {
     result <- result |>
@@ -64,6 +66,17 @@ plotCohortTiming <- function(result,
     if (nrow(result) == 0) {
       cli::cli_abort("Please provide a cohort timing summarised result with density estimates (use `density = TRUE` in summariseCohortTiming).")
     }
+  }
+
+  colorVars <- colour
+  facetVarX <- NULL
+  facetVarY <- NULL
+
+  if(is.null(.options[["facetNcols"]])){
+    .options[["facetNcols"]] <- 1
+  }
+  if(is.null(.options[["facetScales"]])){
+    .options[["facetScales"]] <- "free_y"
   }
 
   # split table
@@ -98,42 +111,54 @@ plotCohortTiming <- function(result,
       dplyr::mutate(estimate_value =  .data$estimate_value/ 365.25)
     if (plotType == "boxplot") {
       data_to_plot <- data_to_plot |>
-      dplyr::mutate(variable_name = "years_between_cohort_entries")
+        dplyr::mutate(variable_name = "years_between_cohort_entries")
     }
-    xLab <- "Years"
+    xLab <- "Years between cohort entries"
   } else {
-    xLab <- "Days"
+    xLab <- "Days between cohort entries"
   }
 
   if (plotType == "boxplot") {
-      gg <- plotCharacteristics(data_to_plot,
-                                xAxis = "estimate_value",
-                                yAxis = "group_level",
-                                facetVarX = facetVarX,
-                                facetVarY = facetVarY,
-                                colorVars = colorVars,
-                                plotStyle = "boxplot")
+    gg <- plotfunction(data_to_plot,
+                       xAxis = "estimate_value",
+                       yAxis = "group_level",
+                       facetVarX = facetVarX,
+                       facetVarY = facetVarY,
+                       colorVars = colorVars,
+                       plotStyle = "boxplot",
+                       facet = facet,
+                       .options = .options)
   } else if (plotType == "density") {
     data_to_plot <- data_to_plot |>
       dplyr::filter(.data$variable_name == "density")
-    gg <- plotCharacteristics(data_to_plot,
-                              xAxis = "estimate_value",
-                              yAxis = "group_level",
-                              facetVarX = facetVarX,
-                              facetVarY = facetVarY,
-                              colorVars = colorVars,
-                              vertical_x = TRUE,
-                              plotStyle = "density")
+    facet <- unique(c("group_level", facet))
+    gg <- plotfunction(data_to_plot,
+                       xAxis = "estimate_value",
+                       yAxis = "group_level",
+                       facetVarX = facetVarX,
+                       facetVarY = facetVarY,
+                       colorVars = colorVars,
+                       vertical_x = TRUE,
+                       plotStyle = "density",
+                       facet = facet,
+                       .options = .options)
   }
 
   gg <- gg +
     ggplot2::theme_bw() +
-    ggplot2::theme(legend.position = "none") +
     ggplot2::labs(
       title = ggplot2::element_blank(),
       x = ggplot2::element_blank(),
       y = xLab
     )
+
+  if(!is.null(colourName)){
+    gg <- gg +
+      ggplot2::labs(color = colourName)
+  } else{
+    gg <- gg +
+      ggplot2::labs(color = "")
+  }
 
   return(gg)
 }
