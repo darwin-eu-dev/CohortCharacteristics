@@ -168,33 +168,46 @@ summariseCohortOverlap <- function(cohort,
     omopgenerics::settings() |>
     dplyr::filter(.data$cohort_definition_id %in% .env$cohortId) |>
     dplyr::pull(.data$cohort_name)
-  cohortCombinations <- tidyr::expand_grid(
+  combinations <- tidyr::expand_grid(
     cohort_name_reference = names,
     cohort_name_comparator = names
   ) |>
     dplyr::filter(.data$cohort_name_reference != .data$cohort_name_comparator) |>
-    visOmopResults::uniteGroup(cols = c("cohort_name_reference", "cohort_name_comparator"))
+    visOmopResults::uniteGroup(cols = c("cohort_name_reference", "cohort_name_comparator")) |>
+    dplyr::mutate(strata_name = "overall", strata_level = "overall")
 
-  noOverlap <- cohortCombinations |>
+  if (length(strata) > 0) {
+    combinations <- lapply(strata, function(strataCols, data = overlapStrataData) {
+      data |>
+        dplyr::select(dplyr::all_of(strataCols)) |>
+        dplyr::distinct() |>
+        dplyr::collect() |>
+        visOmopResults::uniteStrata(cols = strataCols)
+    }) |>
+      dplyr::bind_rows() |>
+      dplyr::cross_join(
+        combinations |> dplyr::select(-"strata_name", -"strata_level")
+      ) |>
+      dplyr::bind_rows(combinations)
+  }
+
+  noOverlap <- combinations |>
     dplyr::anti_join(
       overlap |>
-        dplyr::distinct(.data$group_name, .data$group_level),
-      by = c("group_name", "group_level")
+        dplyr::distinct(.data$group_name, .data$group_level, .data$strata_name, .data$strata_level),
+      by = c("group_name", "group_level", "strata_name", "strata_level")
     )
 
   if (nrow(noOverlap) > 0) {
     overlap <- overlap |>
       dplyr::union(
-        noOverlap |>
+          noOverlap |>
           dplyr::cross_join(
-            overlap |>
-              dplyr::distinct(.data$strata_name, .data$strata_level)
-          ) |>
-          dplyr::cross_join(
-            tidyr::expand_grid(variable_name = "number_subjects",
-                               variable_level = c("reference", "comparator", "overlap"),
-                               estimate_name = c("count", "percentage"),
-                               estimate_value = "0"
+            tidyr::expand_grid(
+              variable_name = "number_subjects",
+              variable_level = c("reference", "comparator", "overlap"),
+              estimate_name = c("count", "percentage"),
+              estimate_value = "0"
             ) |>
               dplyr::mutate(estimate_type = dplyr::if_else(.data$estimate_name == "count", "integer", "percentage"))
           )

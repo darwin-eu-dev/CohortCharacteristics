@@ -73,11 +73,17 @@ tableCharacteristics <- function(result,
                                  .options = list()) {
 
   # check input
+  intersects <- tidyr::expand_grid(
+    "type" = c("cohort", "concept", "table"),
+    "value" = c("flag", "count", "date", "days")
+  ) |>
+    dplyr::mutate("x" = paste0(
+      "summarised_", .data$type, "_intersect_", .data$value
+    )) |>
+    dplyr::pull("x")
   result <- omopgenerics::newSummarisedResult(result) |>
     visOmopResults::filterSettings(.data$result_type %in% c(
-      "summarised_characteristics", "summarised_demographics",
-      "summarised_cohort_intersect", "summarised_concept_intersect",
-      "summarised_table_intersect"
+      "summarised_characteristics", "summarised_demographics", intersects
     ))
   checkmate::assertList(.options)
 
