@@ -50,16 +50,22 @@ plotCohortTiming <- function(result,
                              uniqueCombinations = TRUE,
                              .options = list()) {
   # initial checks
-  result <- omopgenerics::newSummarisedResult(result) |>
-    dplyr::filter(.data$result_type == "cohort_timing")
+  result <- omopgenerics::newSummarisedResult(result)
   checkmate::assertChoice(plotType, c("boxplot", "density"))
   checkmate::assertChoice(timeScale, c("days", "years"))
   checkmate::assertCharacter(facet, null.ok = TRUE)
   checkmate::assertCharacter(colour, null.ok = TRUE)
   checkmate::assertCharacter(colourName, null.ok = TRUE, len = 1)
   checkmate::assertLogical(uniqueCombinations)
-  if (plotType == "density" & !"density"%in% result$variable_name) {
-    cli::cli_abort("Please provide a cohort timing summarised result with density estimates (use `density = TRUE` in summariseCohortTiming).")
+  if (plotType == "boxplot") {
+    result <- result |>
+      visOmopResults::filterSettings(.data$result_type == "cohort_timing")
+  } else if (plotType == "density") {
+    result <- result |>
+      visOmopResults::filterSettings(.data$result_type == "cohort_timing_density")
+    if (nrow(result) == 0) {
+      cli::cli_abort("Please provide a cohort timing summarised result with density estimates (use `density = TRUE` in summariseCohortTiming).")
+    }
   }
 
   colorVars <- colour
