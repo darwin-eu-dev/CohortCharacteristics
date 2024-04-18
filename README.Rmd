@@ -43,12 +43,12 @@ The CohortCharacteristics package is designed to work with data in the OMOP CDM 
 
 ```{r, message=FALSE}
 library(CDMConnector)
-library(PatientProfiles)
+library(CohortCharacteristics)
 library(dplyr)
 ```
 
 ```{r}
-cdm <- mockPatientProfiles(patient_size = 1000, drug_exposure_size = 1000)
+cdm <- mockCohortCharacteristics(patient_size = 1000, drug_exposure_size = 1000)
 cdm
 ```
 
