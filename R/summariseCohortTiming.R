@@ -105,14 +105,20 @@ summariseCohortTiming <- function(cohort,
       by = c("subject_id", unique(strataCols))) |>
     dplyr::filter(.data$cohort_name_reference != .data$cohort_name_comparator) %>% # to be removed
     dplyr::mutate(days_between_cohort_entries = !!CDMConnector::datediff("cohort_start_date",
-                                                       "cohort_start_date_comparator",
-                                                       interval = "day")) |>
+                                                                         "cohort_start_date_comparator",
+                                                                         interval = "day")) |>
     dplyr::collect()
 
-  timingsResult <- omopgenerics::emptySummarisedResult()
+  if (nrow(cohort_timings) == 0 | (length(timing) == 0 & !density)) {
+    return(omopgenerics::emptySummarisedResult())
+  }
 
-  if (nrow(cohort_timings) > 0 & length(timing) > 0) {
-    timingsResult <- cohort_timings |>
+  timingsResult <- list()
+  rId <- integer()
+  rT <- character()
+
+  if (length(timing) > 0) {
+    timingsResult$estimates <- cohort_timings |>
       PatientProfiles::summariseResult(
         group = c("cohort_name_reference", "cohort_name_comparator"),
         includeOverallGroup = FALSE,
@@ -121,11 +127,12 @@ summariseCohortTiming <- function(cohort,
         variables = "days_between_cohort_entries",
         estimates = timing
       ) |>
-      dplyr::mutate(result_type = "cohort_timing",
-                    cdm_name = CDMConnector::cdmName(cdm))
+      dplyr::mutate(cdm_name = CDMConnector::cdmName(cdm))
+    rId <- c(rId, 1L)
+    rT <- c(rT, "cohort_timing")
   }
 
-  if (density & nrow(cohort_timings) > 0) {
+  if (density) {
     forDensity <- cohort_timings |>
       visOmopResults::uniteGroup(cols = c("cohort_name_reference", "cohort_name_comparator"))
     forDensity <- lapply(c(list(character(0)), strata), function(levels, data = forDensity) {
@@ -161,51 +168,30 @@ summariseCohortTiming <- function(cohort,
       }
     }
 
-      timingsResult <- timingsResult |>
-        dplyr::union_all(
-          timingDensity |>
-            dplyr::bind_rows() |>
-            dplyr::mutate(
-              result_id = as.integer(1),
-              cdm_name = CDMConnector::cdmName(cdm),
-              result_type = "cohort_timing",
-              package_name = "CohortCharacteristics",
-              package_version = as.character(utils::packageVersion("CohortCharacteristics")),
-              group_name = "cohort_name_reference &&& cohort_name_comparator",
-              variable_name = "density",
-              estimate_type = "numeric",
-              additional_name ="overall",
-              additional_level = "overall"
-            )
-        ) |>
-        dplyr::select(dplyr::all_of(omopgenerics::resultColumns("summarised_result")))
+    timingsResult$density <- timingDensity |>
+      dplyr::bind_rows() |>
+      dplyr::mutate(
+        result_id = as.integer(2),
+        cdm_name = CDMConnector::cdmName(cdm),
+        group_name = "cohort_name_reference &&& cohort_name_comparator",
+        variable_name = "density",
+        estimate_type = "numeric",
+        additional_name ="overall",
+        additional_level = "overall"
+      )
+    rId <- c(rId, 2L)
+    rT <- c(rT, "cohort_timing_density")
   }
 
-  # add settings
-  if (nrow(timingsResult) > 0) {
-    timingsResult <- timingsResult |>
-      dplyr::union_all(
-        dplyr::tibble(
-          result_id = as.integer(1),
-          "cdm_name" = omopgenerics::cdmName(cdm),
-          "result_type" = "cohort_timing",
-          "package_name" = "CohortCharacteristics",
-          "package_version" = as.character(utils::packageVersion("CohortCharacteristics")),
-          "group_name" = "overall",
-          "group_level" = "overall",
-          "strata_name" = "overall",
-          "strata_level" = "overall",
-          "variable_name" = "settings",
-          "variable_level" = NA_character_,
-          "estimate_name" = "restrict_to_first_entry",
-          "estimate_type" = "logical",
-          "estimate_value" = as.character(restrictToFirstEntry),
-          "additional_name" = "overall",
-          "additional_level" = "overall"
-        )
-      ) |>
-      omopgenerics::newSummarisedResult()
-  }
+  timingsResult <- timingsResult |>
+    dplyr::bind_rows() |>
+    omopgenerics::newSummarisedResult(settings = dplyr::tibble(
+      "result_id" = rId,
+      "package_name" = "CohortCharacteristics",
+      "package_version" = as.character(utils::packageVersion("CohortCharacteristics")),
+      "result_type" = rT,
+      "restrict_to_first_entry" = restrictToFirstEntry
+    ))
 
   return(timingsResult)
 }

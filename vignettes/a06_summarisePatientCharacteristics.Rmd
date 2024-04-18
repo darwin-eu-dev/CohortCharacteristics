@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-library(PatientProfiles)
+library(CohortCharacteristics)
 ```
 
 
@@ -71,7 +71,7 @@ emptyCohort <- dplyr::tibble(
   cohort_start_date = as.Date(character()),
   cohort_end_date = as.Date(character())
 )
-cdm <- mockPatientProfiles(
+cdm <- mockCohortCharacteristics(
   dus_cohort = dus_cohort, cohort1 = emptyCohort,
   cohort2 = emptyCohort, observation_period = observation_period,
   comorbidities = comorbidities, medication = medication

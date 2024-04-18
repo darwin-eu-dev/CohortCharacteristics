@@ -85,8 +85,7 @@ test_that("tableCharacteristics", {
   )
 
 
-  expect_no_error(gt1 <- tableCharacteristics(result1, excludeColumns = c("result_id", "result_type",
-                                                         "package_name", "package_version",
+  expect_no_error(gt1 <- tableCharacteristics(result1, excludeColumns = c("result_id",
                                                          "estimate_type", "additional_name",
                                                          "additional_level", "cdm_name")))
   expect_true("gt_tbl" %in% class(gt1))
@@ -161,11 +160,11 @@ test_that("tableCohortOverlap", {
                                   type = "flextable",
                                   split = character(),
                                   header = "group",
-                                  excludeColumns = c("result_id", "result_type",
-                                                     "package_name", "package_version",
-                                                     "estimate_type", "strata_name",
-                                                     "strata_level", "additional_name",
-                                                     "additional_level"))
+                                  excludeColumns = c(
+                                    "result_id", "estimate_type", "strata_name",
+                                    "strata_level", "additional_name",
+                                    "additional_level"
+                                  ))
   expect_true("flextable" %in% class(fxResult1))
   expect_true(all(c("CDM name",
                     "Estimate name",

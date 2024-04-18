@@ -66,10 +66,10 @@ tableCharacteristics <- function(result,
                                  split = c("group", "strata"),
                                  groupColumn = NULL,
                                  minCellCount = 5,
-                                 excludeColumns = c("result_id", "result_type",
-                                                    "package_name", "package_version",
-                                                    "estimate_type", "additional_name",
-                                                    "additional_level"),
+                                 excludeColumns = c(
+                                   "result_id", "estimate_type",
+                                   "additional_name", "additional_level"
+                                 ),
                                  .options = list()) {
 
   # check input
@@ -82,7 +82,7 @@ tableCharacteristics <- function(result,
     )) |>
     dplyr::pull("x")
   result <- omopgenerics::newSummarisedResult(result) |>
-    dplyr::filter(.data$result_type %in% c(
+    visOmopResults::filterSettings(.data$result_type %in% c(
       "summarised_characteristics", "summarised_demographics", intersects
     ))
   checkmate::assertList(.options)

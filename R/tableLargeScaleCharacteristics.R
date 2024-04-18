@@ -68,7 +68,9 @@ tableLargeScaleCharacteristics <- function(result,
   }
   assertChoice(header, choices = c("cdm name", "cohort name", "strata", "window name"))
   result <- result |>
-    dplyr::filter(.data$result_type == "summarised_large_scale_characteristics")
+    visOmopResults::filterSettings(
+      .data$result_type == "summarised_large_scale_characteristics"
+    )
   if (nrow(result) == 0) {
     cli::cli_abort(
       "No summarised_large_scale_characteristics records where found in this result object"
@@ -90,7 +92,7 @@ tableLargeScaleCharacteristics <- function(result,
     visOmopResults::splitAdditional() |>
     dplyr::inner_join(sets, by = "result_id") |>
     dplyr::rename("window_name" = "variable_level") |>
-    dplyr::select(!c("package_name", "package_version", "result_id", "result_type"))
+    dplyr::select(!"result_id")
   if (splitStrata) {
     res <- res |> visOmopResults::splitStrata()
     strataColumns <- visOmopResults::strataColumns(result)

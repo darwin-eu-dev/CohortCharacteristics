@@ -387,8 +387,7 @@ summariseCharacteristics <- function(cohort,
         estimates = functions[names(variables)],
         counts = counts
       ) |>
-      PatientProfiles::addCdmName(cdm = cdm) |>
-      dplyr::select(!"result_type")
+      PatientProfiles::addCdmName(cdm = cdm)
   )
 
   # rename variables
@@ -423,7 +422,18 @@ summariseCharacteristics <- function(cohort,
       ~ stringr::str_to_sentence(gsub("_", " ", .x))
     )) |>
     visOmopResults::uniteAdditional(cols = c("table", "window", "value")) |>
-    dplyr::as_tibble() |>
+    dplyr::as_tibble()
+
+  results <- results |>
+    dplyr::group_by(.data$result_type) |>
+    dplyr::mutate(
+      "result_id" = dplyr::cur_group_id(),
+      "package_name" = "CohortCharacteristics",
+      "package_version" = as.character(utils::packageVersion(
+        "CohortCharacteristics"
+      ))
+    ) |>
+    dplyr::ungroup() |>
     omopgenerics::newSummarisedResult()
 
   cli::cli_alert_success("summariseCharacteristics finished!")

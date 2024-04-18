@@ -12,18 +12,11 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-
+  
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
-)
-```
-
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
+  comment = "#>", message = FALSE, warning = FALSE
 )
 
 library(CDMConnector)
@@ -31,7 +24,7 @@ if (Sys.getenv("EUNOMIA_DATA_FOLDER") == "") Sys.setenv("EUNOMIA_DATA_FOLDER" = 
 if (!dir.exists(Sys.getenv("EUNOMIA_DATA_FOLDER"))) dir.create(Sys.getenv("EUNOMIA_DATA_FOLDER"))
 if (!eunomia_is_available()) downloadEunomiaData()
 ```
-
+  
 When creating multiple cohorts we might be interested in the overlap between them. That is, how many individuals appear in multiple cohorts. CohortCharacteristics provides functions to generate such estimates and then summarise these estimates in tables and plots.
 
 To see how this works let's create a few medication cohorts with the Eunomia synthetic dataset.
@@ -104,6 +97,6 @@ tableCohortOverlap(meds_overlap)
 
 ```{r}
 plotCohortOverlap(meds_overlap,
-                 facetVarY = "strata_level")
+                  facet = "strata_level")
 ```
 
