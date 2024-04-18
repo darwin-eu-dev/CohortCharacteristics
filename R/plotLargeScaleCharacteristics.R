@@ -103,7 +103,7 @@ checkSettings <- function(data){
     stop(sprintf("Settings table is not present in the data. Please, when filtering the large scale characterisation table, include the following argument: filter( ... | variable_name == 'settings')"))
   }
 
-  settings_table <- CDMConnector::settings(data)
+  settings_table <- visOmopResults::settings(data)
   data           <- data |> dplyr::filter(.data$group_name != "overall")
 
   return(list("data" = data, "settings_table" = settings_table))

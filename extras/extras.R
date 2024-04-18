@@ -48,6 +48,8 @@ facet       = strata ~ table_name
 splitStrata = FALSE
 colorVars   = NULL
 missings    = 0
+position    = "horizontal"
+
 
 plotComparedLargeScaleCharacteristics(data = data,
                                       referenceGroupLevel    = referenceGroupLevel,
