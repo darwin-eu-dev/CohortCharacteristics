@@ -63,7 +63,7 @@ Imports:
     cli,
     stringr,
     omopgenerics (>= 0.2.0),
-    visOmopResults (>= 0.3.0),
+    visOmopResults,
     PatientProfiles (>= 0.8.0),
     ggpubr,
     magrittr
