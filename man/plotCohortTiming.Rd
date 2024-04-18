@@ -8,10 +8,11 @@ plotCohortTiming(
   result,
   plotType = "boxplot",
   timeScale = "days",
-  facetVarX = "variable_name",
-  facetVarY = "group_level",
-  colorVars = "group_level",
-  uniqueCombinations = TRUE
+  facet = NULL,
+  colour = NULL,
+  colourName = NULL,
+  uniqueCombinations = TRUE,
+  .options = list()
 )
 }
 \arguments{
@@ -22,14 +23,16 @@ plotCohortTiming(
 
 \item{timeScale}{Time scale to plot results. Can be days or years.}
 
-\item{facetVarX}{column in data to facet by on horizontal axis}
+\item{facet}{variables to facet by}
 
-\item{facetVarY}{column in data to facet by on vertical axis}
+\item{colour}{Variables to use for colours}
 
-\item{colorVars}{Column names to distinct by colors. default set to group_level}
+\item{colourName}{Colour legend name}
 
 \item{uniqueCombinations}{If TRUE, only unique combinations of reference and
 comparator plots will be plotted.}
+
+\item{.options}{Additional plotting options}
 }
 \value{
 A ggplot.

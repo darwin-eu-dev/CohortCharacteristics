@@ -21,7 +21,9 @@ plotfunction <- function(data,
                          facetVarX = "variable_name",
                          facetVarY = c("group_level", "strata_level"),
                          colorVars = "variable_level",
-                         vertical_x = FALSE) {
+                         vertical_x = FALSE,
+                         facet = NULL,
+                         .options = list()) {
   errorMessage <- checkmate::makeAssertCollection()
   checkmate::assertTRUE(inherits(data, "summarised_result"))
   all_vars <- c(xAxis, yAxis, facetVarX, facetVarY, colorVars)
@@ -73,13 +75,11 @@ plotfunction <- function(data,
     dplyr::mutate(color_combined = construct_color_variable(data, colorVars))
 
   if (is.null(facetVarX)) {
-    warning("facetVarX put as NULL, plot overall")
     data$overall <- "overall"
     facetVarX <- "overall"
   }
 
   if (is.null(facetVarY)) {
-    warning("facetVarY put as NULL, plot overall")
     data$overall <- "overall"
     facetVarY <- "overall"
   }
@@ -89,6 +89,14 @@ plotfunction <- function(data,
       facet_combined_x = construct_variable(data, facetVarX),
       facet_combined_y = construct_variable(data, facetVarY)
     )
+
+  if (!is.null(facet)) {
+    data <- data |>
+      tidyr::unite("facet_var",
+                   c(dplyr::all_of(.env$facet)),
+                   remove = FALSE, sep = "; "
+      )
+  }
 
   # if (!is.null(facetOrder)) {
   #   if (!is.null(facetVars)) {
@@ -379,13 +387,7 @@ plotfunction <- function(data,
     if (nrow(df_non_dates) > 0) {
       xcol <- ifelse(xAxis == "estimate_value", yAxis, xAxis)
       p_non_dates <- df_non_dates_wide |> ggplot2::ggplot(
-        ggplot2::aes(x = .data[[xcol]])) + ggplot2::labs(
-          title = "Non-Date Data",
-          x = "Variable and Group Level",
-          y = "Quantile Values"
-        )
-      # +
-      # ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1))
+        ggplot2::aes(x = .data[[xcol]]))
 
       if ("color_combined" %in% names(df_non_dates_wide)) {
         if (!all(is.na(df_non_dates_wide$color_combined))) {
@@ -406,11 +408,7 @@ plotfunction <- function(data,
           ymax = .data$max
         ),
         stat = "identity"
-      ) +
-        ggplot2::labs(
-          title = "Non-Date Data", x = "Variable and Group Level",
-          y = "Quantile Values"
-        )
+      )
 
       # Determine if the plot should be horizontal or vertical based on 'estimate_value'
       if (xAxis == "estimate_value") {
@@ -784,6 +782,21 @@ plotfunction <- function(data,
   #     p <- p + option
   #   }
   # }
+
+  if(!is.null(facet)){
+    facetNcols <- NULL
+    if ("facetNcols" %in% names(.options)) {
+      facetNcols <- .options[["facetNcols"]]
+    }
+    facetScales <- "fixed"
+    if ("facetScales" %in% names(.options)) {
+      facetScales <- .options[["facetScales"]]
+    }
+    p <- p +
+      ggplot2::facet_wrap(ggplot2::vars(.data$facet_var),
+                          ncol = facetNcols,
+                          scales = facetScales)
+  }
 
   return(p)
 }
