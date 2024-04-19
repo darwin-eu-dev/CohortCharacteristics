@@ -66,9 +66,9 @@ tableCharacteristics(chars)
 chars |> 
   filter(variable_name  == "Age") |> 
   plotCharacteristics(plotStyle = "boxplot", 
-                      colorVars = "group_level", 
-                      xAxis = "group_level", yAxis = "estimate_value", 
-                      facet = c("cdm_name"), vertical_x = FALSE)
+                      colour = "group_level", 
+                      x = "group_level", 
+                      facet = c("cdm_name"))
 ```
 
 We can also generate summaries that are stratified by some variable of interest. In this case we add an age group variable to our cohort table and then stratify our results by age group.
@@ -89,10 +89,10 @@ tableCharacteristics(chars,
 chars |> 
   filter(variable_name  == "Prior observation") |> 
   plotCharacteristics(plotStyle = "boxplot", 
-                      colorVars = "group_level", 
-                      yAxis = "group_level", 
-                      xAxis = "estimate_value", 
-                      facet = c("strata_level"))
+                      colour = "group_level", 
+                      x = "group_level", 
+                      facet = c("strata_level")) +
+  coord_flip()
 ```
 
 # Presence in other cohorts
@@ -133,9 +133,10 @@ chars |>
   filter(variable_name  == "Medications prior to index date",
          estimate_name == "percentage") |> 
   plotCharacteristics(plotStyle = "barplot", 
-                      colorVars = "variable_level", 
-                      yAxis = "variable_level", 
-                      xAxis = "estimate_value", 
+                      colour = "variable_level", 
+                      colourName = "Medication",
+                      x = "variable_level", 
                       facet = c("cdm_name",
-                                "group_level"))
+                                "group_level")) +
+  coord_flip() 
 ```

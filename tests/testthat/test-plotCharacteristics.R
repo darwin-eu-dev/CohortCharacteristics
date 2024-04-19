@@ -90,11 +90,10 @@ test_that("test plot", {
     data =  test_data |>
       dplyr::filter(variable_name == "Medications",
                     estimate_type == "percentage"),
-    xAxis = "estimate_value",
-    yAxis = "variable_name",
+    x = "variable_name",
     plotStyle = "barplot",
     facet = c("group_level"),
-    colorVars = c("variable_name", "variable_level")
+    colour = c("variable_name", "variable_level")
   )
 
   expect_true(ggplot2::is.ggplot(plot))
@@ -103,11 +102,10 @@ test_that("test plot", {
   plot2 <- plotCharacteristics(
     data =  test_data |>
       dplyr::filter(variable_name == "Age"),
-    xAxis = "variable_name",
-    yAxis = "estimate_value",
+    x = "variable_name",
     plotStyle = "boxplot",
     facet = "variable_name",
-    colorVars = c("group_level")
+    colour = c("group_level")
   )
 
   expect_true(ggplot2::is.ggplot(plot2))
@@ -115,8 +113,7 @@ test_that("test plot", {
   expect_no_error(plotCharacteristics(
     data =  test_data |>
       dplyr::filter(variable_name == "Age"),
-    xAxis = "variable_name",
-    yAxis = "estimate_value",
+    x = "variable_name",
     plotStyle = "boxplot"
   ))
 
@@ -124,8 +121,7 @@ test_that("test plot", {
   expect_no_error(plotCharacteristics(
     data =  test_data |>
       dplyr::filter(variable_name == "Age"),
-    xAxis = "variable_name",
-    yAxis = "estimate_value",
+    x = "variable_name",
     plotStyle = "barplot"
   ))
 
@@ -133,8 +129,7 @@ test_that("test plot", {
   expect_no_error(plotCharacteristics(
     data =  test_data |>
       dplyr::filter(variable_name == "Age"),
-    xAxis = "estimate_value",
-    yAxis = "variable_name",
+    x = "estimate_value",
     plotStyle = "barplot"
   ))
 
