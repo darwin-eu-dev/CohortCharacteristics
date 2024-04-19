@@ -30,6 +30,7 @@
 #' @examples
 #' \donttest{
 #' library(CohortCharacteristics)
+#' library(dplyr)
 #'
 #' cdm <- mockCohortCharacteristics()
 #'
