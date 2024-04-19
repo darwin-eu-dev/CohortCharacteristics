@@ -142,11 +142,7 @@ facetFunction <- function(facet, splitStrata, data){
 
   # Add table_name column
   data <- data |>
-<<<<<<< Updated upstream
-    dplyr::left_join(settings_table, by = c("result_id")) |>
-=======
     visOmopResults::addSettings() |>
->>>>>>> Stashed changes
     dplyr::filter(.data$estimate_type == "percentage",
                   .data$result_type   == "summarised_large_scale_characteristics")
   return(list("facetVarX" = facetVarX, "facetVarY" = facetVarY, "data" = data))
