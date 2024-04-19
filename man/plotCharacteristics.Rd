@@ -57,7 +57,16 @@ results <- summariseCharacteristics(
   )
 )
 
-plotCharacteristics(results)
+results |>
+ filter(variable_name  == "Cohort2 flag -365 to -1",
+         estimate_name == "percentage") |>
+  plotCharacteristics(plotStyle = "barplot",
+                      colorVars = "variable_level",
+                      yAxis = "variable_level",
+                      xAxis = "estimate_value",
+                      facet = c("cdm_name",
+                                "group_level",
+                                "strata_level"))
 
 CDMConnector::cdmDisconnect(cdm = cdm)
 }
