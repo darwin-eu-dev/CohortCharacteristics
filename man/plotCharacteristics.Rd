@@ -10,10 +10,10 @@ plotCharacteristics(
   xAxis = "variable_name",
   yAxis = "estimate_value",
   plotStyle = "barplot",
-  facetVarX = NULL,
-  facetVarY = NULL,
+  facet = NULL,
   colorVars = NULL,
-  vertical_x = FALSE
+  vertical_x = FALSE,
+  .options = list()
 )
 }
 \arguments{
@@ -25,13 +25,13 @@ plotCharacteristics(
 
 \item{plotStyle}{Now allows boxplot or barplot only.}
 
-\item{facetVarX}{column in data to facet by on horizontal axis}
-
-\item{facetVarY}{column in data to facet by on vertical axis}
+\item{facet}{Variables to facet by}
 
 \item{colorVars}{column in data to color by.}
 
 \item{vertical_x}{whether to display x axis string vertically.}
+
+\item{.options}{Additional plotting options.}
 }
 \value{
 A ggplot.
@@ -43,6 +43,7 @@ Create a ggplot from the output of summariseCharacteristics.
 \examples{
 \donttest{
 library(CohortCharacteristics)
+library(dplyr)
 
 cdm <- mockCohortCharacteristics()
 
@@ -57,7 +58,16 @@ results <- summariseCharacteristics(
   )
 )
 
-plotCharacteristics(results)
+results |>
+ filter(variable_name  == "Cohort2 flag -365 to -1",
+         estimate_name == "percentage") |>
+  plotCharacteristics(plotStyle = "barplot",
+                      colorVars = "variable_level",
+                      yAxis = "variable_level",
+                      xAxis = "estimate_value",
+                      facet = c("cdm_name",
+                                "group_level",
+                                "strata_level"))
 
 CDMConnector::cdmDisconnect(cdm = cdm)
 }
