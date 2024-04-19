@@ -65,9 +65,7 @@ plotComparedLargeScaleCharacteristics <- function(data,
                                                  colorVars   = NULL,
                                                  missings    = 0){
 
-  x <- checkSettings(data)
-  data           <- x$data
-  settings_table <- x$settings_table
+  checkSettings(data)
 
   referenceGroupLevel    <- checkReference(referenceGroupLevel, data, type = "group_level",    argument = "referenceGroupLevel")
   referenceStrataLevel   <- checkReference(referenceStrataLevel, data, type = "strata_level",   argument = "referenceStrataLevel")
@@ -76,7 +74,7 @@ plotComparedLargeScaleCharacteristics <- function(data,
   splitStrata <- checkSplitStrata(data, splitStrata)
 
   # Extract facet names
-  x <- facetFunction(facet, splitStrata, data, settings_table)
+  x <- facetFunction(facet, splitStrata, data)
   facetVarX <- x$facetVarX
   facetVarY <- x$facetVarY
   data      <- x$data
