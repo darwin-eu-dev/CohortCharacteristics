@@ -7,143 +7,135 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+  
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>", message = FALSE, warning = FALSE, 
+  fig.width = 7
 )
+
+library(CDMConnector)
+if (Sys.getenv("EUNOMIA_DATA_FOLDER") == "") Sys.setenv("EUNOMIA_DATA_FOLDER" = tempdir())
+if (!dir.exists(Sys.getenv("EUNOMIA_DATA_FOLDER"))) dir.create(Sys.getenv("EUNOMIA_DATA_FOLDER"))
+if (!eunomia_is_available()) downloadEunomiaData()
 ```
 
-```{r setup}
+In this example we're going to summarise the characteristics of individuals with ankle sprain, ankle fracture, forearm fracture, or hip fracture using the Eunomia synthetic data. 
+
+We'll begin by creating our study cohorts.
+
+```{r}
+library(CDMConnector)
+library(CodelistGenerator)
 library(CohortCharacteristics)
-```
+library(dplyr)
+library(ggplot2)
 
+con <- DBI::dbConnect(duckdb::duckdb(),
+                       dbdir = CDMConnector::eunomia_dir())
+cdm <- CDMConnector::cdm_from_con(con,
+                                  cdm_schem = "main",
+                                  write_schema = "main", 
+                                  cdm_name = "Eunomia")
 
-## Characteristics plots
-
-`plotCharacteristics` can plot the summariseCharacteristics results, with boxplot or barplot. First we create a mock data.
-
-```{r, eval=TRUE}
-observation_period <- dplyr::tibble(
-  observation_period_id = c(1, 2, 3),
-  person_id = c(1, 2, 3),
-  observation_period_start_date = as.Date(c(
-    "1985-01-01", "1989-04-29", "1974-12-03"
-  )),
-  observation_period_end_date = as.Date(c(
-    "2011-03-04", "2022-03-14", "2023-07-10"
-  )),
-  period_type_concept_id = 0
-)
-dus_cohort <- dplyr::tibble(
-  cohort_definition_id = c(1, 1, 1, 2),
-  subject_id = c(1, 1, 2, 3),
-  cohort_start_date = as.Date(c(
-    "1990-04-19", "1991-04-19", "2010-11-14", "2000-05-25"
-  )),
-  cohort_end_date = as.Date(c(
-    "1990-04-19", "1991-04-19", "2010-11-14", "2000-05-25"
-  ))
-)
-comorbidities <- dplyr::tibble(
-  cohort_definition_id = c(1, 2, 2, 1),
-  subject_id = c(1, 1, 3, 3),
-  cohort_start_date = as.Date(c(
-    "1990-01-01", "1990-06-01", "2000-01-01", "2000-06-01"
-  )),
-  cohort_end_date = as.Date(c(
-    "1990-01-01", "1990-06-01", "2000-01-01", "2000-06-01"
-  ))
-)
-medication <- dplyr::tibble(
-  cohort_definition_id = c(1, 1, 2, 1),
-  subject_id = c(1, 1, 2, 3),
-  cohort_start_date = as.Date(c(
-    "1990-02-01", "1990-08-01", "2009-01-01", "1995-06-01"
-  )),
-  cohort_end_date = as.Date(c(
-    "1990-02-01", "1990-08-01", "2009-01-01", "1995-06-01"
-  ))
-)
-emptyCohort <- dplyr::tibble(
-  cohort_definition_id = numeric(),
-  subject_id = numeric(),
-  cohort_start_date = as.Date(character()),
-  cohort_end_date = as.Date(character())
-)
-cdm <- mockCohortCharacteristics(
-  dus_cohort = dus_cohort, cohort1 = emptyCohort,
-  cohort2 = emptyCohort, observation_period = observation_period,
-  comorbidities = comorbidities, medication = medication
-)
-
-cdm$dus_cohort <- omopgenerics::newCohortTable(
-  table = cdm$dus_cohort, cohortSetRef = dplyr::tibble(
-    cohort_definition_id = c(1, 2), cohort_name = c("exposed", "unexposed")
-  )
-)
-cdm$comorbidities <- omopgenerics::newCohortTable(
-  table = cdm$comorbidities, cohortSetRef = dplyr::tibble(
-    cohort_definition_id = c(1, 2), cohort_name = c("covid", "headache")
-  )
-)
-cdm$medication <- omopgenerics::newCohortTable(
-  table = cdm$medication,
-  cohortSetRef = dplyr::tibble(
-    cohort_definition_id = c(1, 2, 3),
-    cohort_name = c("acetaminophen", "ibuprophen", "naloxone")
-  ),
-  cohortAttritionRef = NULL
-)
-characteristicsResult <- summariseCharacteristics(
-  cdm$dus_cohort,
-  cohortIntersectFlag = list(
-    "Medications" = list(
-      targetCohortTable = "medication", window = c(-365, 0)
-    ), 
-    "Comorbidities" = list(
-      targetCohortTable = "comorbidities", window = c(-Inf, 0)
-    )
-  )
+cdm <- generateConceptCohortSet(
+  cdm = cdm,
+  name = "injuries",
+  conceptSet = list("ankle_sprain" = 81151,
+                    "ankle_fracture" = 4059173,
+                    "forearm_fracture" = 4278672,
+                    "hip_fracture" = 4230399),
+  end = "event_end_date",
+  limit = "all"
 )
 ```
 
-Now we show barplot example by setting plotStyle = "barplot" in `plotCharacteristics`. Similar to previous function, user can define axes, facetVars and colorVars. Barplot shows both percentage and count, user can filter to only percentage, or plot both.
+Now we've created our cohorts, we can quickly create a table with an overall summary of the people in each cohort.
 
-```{r, eval=TRUE}
-plotCharacteristics(
-    data =  characteristicsResult %>% dplyr::filter(estimate_type == "percentage"),
-    xAxis = "estimate_value",
-    yAxis = "variable_name",
-    plotStyle = "barplot",
-    facetVarX = "group_level",
-    facetVarY = NULL,
-    colorVars = c("variable_level")
-  )
-
-plotCharacteristics(
-    data =  characteristicsResult,
-    xAxis = "estimate_value",
-    yAxis = "variable_name",
-    plotStyle = "barplot",
-    facetVarX = "group_level",
-    facetVarY = "estimate_type",
-    colorVars = c("variable_level"),
-    vertical_x = TRUE
-  )
-
+```{r}
+chars <- cdm$injuries |> 
+  summariseCharacteristics()
 ```
 
-User can plot boxplot based on q25 q75 median min max in data, using `plotCharacteristics` and set plotStyle = "boxplot". Boxplot will be horizontal if the xAxis is set to  estimate_value, and vertical if yAxis is set to estimate_value. But for all the plots, at least one of the xAxis or yAxis has to be estimate_value.
+```{r}
+tableCharacteristics(chars)
+```
 
-```{r,eval=TRUE}
-plotCharacteristics(
-    data =  characteristicsResult,
-    xAxis = "estimate_value",
-    yAxis = "variable_name",
-    plotStyle = "boxplot",
-    facetVarX = "variable_name",
-    colorVars = c("group_level"),
-    vertical_x = TRUE
-  )
+```{r}
+chars |> 
+  filter(variable_name  == "Age") |> 
+  plotCharacteristics(plotStyle = "boxplot", 
+                      colorVars = "group_level", 
+                      xAxis = "group_level", yAxis = "estimate_value", 
+                      facet = c("cdm_name"), vertical_x = FALSE)
+```
+
+We can also generate summaries that are stratified by some variable of interest. In this case we add an age group variable to our cohort table and then stratify our results by age group.
+
+```{r}
+chars <- cdm$injuries |>
+  PatientProfiles::addAge(ageGroup = list(c(0,49),
+                                          c(50, Inf))) |> 
+  summariseCharacteristics(strata = list("age_group"))
+```
+
+```{r}
+tableCharacteristics(chars,
+                     groupColumn = "age_group")
+```
+
+```{r}
+chars |> 
+  filter(variable_name  == "Prior observation") |> 
+  plotCharacteristics(plotStyle = "boxplot", 
+                      colorVars = "group_level", 
+                      yAxis = "group_level", 
+                      xAxis = "estimate_value", 
+                      facet = c("strata_level"))
+```
+
+# Presence in other cohorts
+
+```{r}
+meds_cs <- getDrugIngredientCodes(cdm = cdm, 
+                                  name = c("acetaminophen",
+                                           "morphine",
+                                           "warfarin"))
+cdm <- generateConceptCohortSet(
+  cdm = cdm,
+  name = "meds",
+  conceptSet = meds_cs,
+  end = "event_end_date",
+  limit = "all",
+  overwrite = TRUE
+)
+```
+
+```{r}
+chars <- cdm$injuries |> 
+  summariseCharacteristics(cohortIntersectFlag =  list(
+    "Medications prior to index date" = list(targetCohortTable = "meds", 
+                         window = c(-Inf, -1)
+                             )))
+```
+
+These results will automatically be included when we create our table with patient characteristics.
+
+```{r}
+tableCharacteristics(chars)
+```
+
+We can now also plot our results for these medication cohorts of interset. 
+
+```{r}
+chars |> 
+  filter(variable_name  == "Medications prior to index date",
+         estimate_name == "percentage") |> 
+  plotCharacteristics(plotStyle = "barplot", 
+                      colorVars = "variable_level", 
+                      yAxis = "variable_level", 
+                      xAxis = "estimate_value", 
+                      facet = c("cdm_name",
+                                "group_level"))
 ```

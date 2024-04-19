@@ -24,6 +24,7 @@
 #' @param facet Variables to facet by
 #' @param colorVars column in data to color by.
 #' @param vertical_x whether to display x axis string vertically.
+#' @param .options Additional plotting options.
 #' @return A ggplot.
 #' @export
 #' @examples
@@ -118,8 +119,8 @@ plotCharacteristics <- function(data,
     }
     if(yAxis == "estimate_value"){
       gg <- gg +
-        ggplot2::xlab(var) +
-        ggplot2::ylab("")
+        ggplot2::ylab(var) +
+        ggplot2::xlab("")
     }
   }
 
@@ -136,6 +137,11 @@ plotCharacteristics <- function(data,
         ggplot2::xlab("")
     }
   }
+
+  gg <-  gg +
+    ggplot2::theme_bw() +
+    ggplot2::theme(legend.position = "top",
+                   legend.title = ggplot2::element_blank())
 
   gg
 }

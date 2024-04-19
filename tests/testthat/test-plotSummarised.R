@@ -293,10 +293,16 @@ test_that("plotCharacteristics", {
     ageGroup = list(c(0, 40), c(41, 150))
   )
 
-  gg1 <- plotCharacteristics(result1)
+  gg1 <- plotCharacteristics(result1 |>
+                               dplyr::filter(variable_name ==
+                                               "Prior observation"))
   expect_true(ggplot2::is.ggplot(gg1))
 
-  gg2 <- plotCharacteristics(result1, plotStyle = "boxplot", colorVars = "variable_name")
+  gg2 <- plotCharacteristics(result1 |>
+                               dplyr::filter(variable_name ==
+                                               "Age"),
+                             plotStyle = "boxplot",
+                             colorVars = "variable_name")
   expect_true(ggplot2::is.ggplot(gg2))
 
   CDMConnector::cdm_disconnect(cdm)
