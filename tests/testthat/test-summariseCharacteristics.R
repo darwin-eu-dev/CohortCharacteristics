@@ -308,21 +308,39 @@ test_that("test empty cohort", {
       summariseCharacteristics(cohortIntersectFlag = list(
         "Medications" = list(
           targetCohortTable = "cohort2", window = c(-365, 0)
-        ), "Comorbidities" = list(
+        ),
+        "Comorbidities" = list(
           targetCohortTable = "cohort2", window = c(-Inf, 0)
         )
       ))
   )
+
   expect_no_error(
-    cdm$cohort1 |>
+    res <- cdm$cohort1 |>
       summariseCharacteristics(cohortIntersectFlag = list(
         "Medications" = list(
           targetCohortTable = "cohort2", window = c(-365, 0), targetCohortId = 1
-        ), "Comorbidities" = list(
+        ),
+        "Comorbidities" = list(
           targetCohortTable = "cohort2", window = c(-Inf, 0)
         )
       ))
   )
+
+  expect_true(
+    res |>
+      dplyr::filter(variable_name == "Medications") |>
+      dplyr::pull("variable_level") |>
+      unique() == "Cohort 1"
+  )
+  expect_true(all(
+    res |>
+      dplyr::filter(variable_name == "Comorbidities") |>
+      dplyr::pull("variable_level") |>
+      unique() |>
+      sort() == c("Cohort 1", "Cohort 2")
+  ))
+
   expect_no_error(
     x1 <- cdm$cohort1 |>
       summariseCharacteristics(tableIntersectFlag = list("Visits" = list(

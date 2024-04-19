@@ -335,6 +335,10 @@ summariseCharacteristics <- function(cohort,
 
       cohort <- do.call(eval(parse(text = funName)), val)
 
+      if (type == "cohort") {
+        attr(cdm[[cohortInterest]], "cohort_set") <- set
+      }
+
     }
 
   }
