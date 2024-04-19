@@ -79,8 +79,8 @@ plotCharacteristics <- function(data,
     dplyr::distinct() |>
     dplyr::pull())
   if(nVariableNames != 1){
-    cli::cli_abort("Only one variable name can be plotted at a time.
-                   Please filter variable_name column in results before passing to plotCharacteristics()")
+    emptyPlot("Only one variable name can be plotted at a time.",
+              "Please filter variable_name column in results before passing to plotCharacteristics()")
   }
 
   nEstimateTypes <- length(data |>
@@ -88,8 +88,8 @@ plotCharacteristics <- function(data,
                              dplyr::distinct() |>
                              dplyr::pull())
   if(nEstimateTypes != 1){
-    cli::cli_abort("Only one estimate type can be plotted at a time.
-                   Please filter estimate_type column in results before passing to plotCharacteristics()")
+    emptyPlot("Only one estimate type can be plotted at a time.",
+              "Please filter estimate_type column in results before passing to plotCharacteristics()")
   }
 
   estimateType <- data |>
@@ -98,7 +98,7 @@ plotCharacteristics <- function(data,
     dplyr::pull()
 
   if(!estimateType %in% c("numeric", "percentage")){
-    cli::cli_abort("{estimateType} not currently supported by plotCharacteristics()")
+    emptyPlot(paste0(estimateType, " not currently supported by plotCharacteristics()"))
   }
 
     gg <- plotfunction(
