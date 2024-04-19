@@ -149,10 +149,7 @@ facetFunction <- function(facet, splitStrata, data, settings_table){
 
   # Add table_name column
   data <- data |>
-    dplyr::left_join(
-      settings_table,
-      by = c("result_id", "result_type", "cdm_name")
-    ) |>
+    dplyr::left_join(settings_table, by = c("result_id")) |>
     dplyr::filter(.data$estimate_type == "percentage",
                   .data$result_type   == "summarised_large_scale_characteristics")
   return(list("facetVarX" = facetVarX, "facetVarY" = facetVarY, "data" = data))
