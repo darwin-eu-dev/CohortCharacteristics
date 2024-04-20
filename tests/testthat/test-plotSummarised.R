@@ -302,7 +302,7 @@ test_that("plotCharacteristics", {
                                dplyr::filter(variable_name ==
                                                "Age"),
                              plotStyle = "boxplot",
-                             colorVars = "variable_name")
+                             colour = "variable_name")
   expect_true(ggplot2::is.ggplot(gg2))
 
   CDMConnector::cdm_disconnect(cdm)

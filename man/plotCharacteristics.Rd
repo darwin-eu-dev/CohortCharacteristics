@@ -7,29 +7,26 @@
 \usage{
 plotCharacteristics(
   data,
-  xAxis = "variable_name",
-  yAxis = "estimate_value",
+  x = "variable_name",
   plotStyle = "barplot",
   facet = NULL,
-  colorVars = NULL,
-  vertical_x = FALSE,
+  colour = NULL,
+  colourName = NULL,
   .options = list()
 )
 }
 \arguments{
 \item{data}{output of summariseCharacteristics.}
 
-\item{xAxis}{what to plot on x axis, default as variable_name column. Has to be a column in data.}
-
-\item{yAxis}{what to plot on y axis, default as estimate_value column. Has to be a column in data. One of the xAxis or yAxis has to be estimate_value.}
+\item{x}{what to plot on x axis, default as variable_name column. Has to be a column in data.}
 
 \item{plotStyle}{Now allows boxplot or barplot only.}
 
 \item{facet}{Variables to facet by}
 
-\item{colorVars}{column in data to color by.}
+\item{colour}{column in data to color by.}
 
-\item{vertical_x}{whether to display x axis string vertically.}
+\item{colourName}{Colour legend name}
 
 \item{.options}{Additional plotting options.}
 }
@@ -62,9 +59,8 @@ results |>
  filter(variable_name  == "Cohort2 flag -365 to -1",
          estimate_name == "percentage") |>
   plotCharacteristics(plotStyle = "barplot",
-                      colorVars = "variable_level",
-                      yAxis = "variable_level",
-                      xAxis = "estimate_value",
+                      colour  = "variable_level",
+                      x = "variable_level",
                       facet = c("cdm_name",
                                 "group_level",
                                 "strata_level"))
