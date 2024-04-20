@@ -59,44 +59,72 @@
 #' }
 
 plotCohortAttrition <- function(x) {
+  status <- checkAttritionTable(x)
 
-  checkAttritionTable <- function(x){
-    y <- c("cohort_definition_id","number_records","number_subjects",
-           "reason_id","reason","excluded_records","excluded_subjects") %in% colnames(x)
+  if(status){
+    if(length(x$cohort_definition_id) != 0){
+      # Turn everything as a character
+      x <- x |> dplyr::mutate_all(~as.character(.))
 
-    if(FALSE %in% y){
-      cli::cli_abort(paste0("column '", colnames(x)[!y], "' must be present in the attrition table."))
+      # Create table to be used in the graph
+      xn <- createLabels(x)
+
+      y <- selectLabels(xn)
+      xn  <- y$xn
+      att <- y$att
+
+      # Create graph
+      n  <- nrow(x)
+      xg <- DiagrammeR::create_graph()
+
+      att <- validateReason(att)
+      h2  <- getHeightMiddleBox(att)
+
+      w1 <- getWidthMainBox(xn)
+      p1 <- getPositionMainBox(xn,n,h2)
+
+      w2 <- getWidthMiddleBox(att)
+      p2 <- getPositionMiddleBox(p1)
+
+      xg <- getNodes(xn,att,n,xg,h2,w1,p1,w2,p2)
+    }else{
+      xg <- emptyTable("No attrition table to plot. Please, provide an attrition table.")
     }
+  }else{
+    xg <- emptyTable(c("Attrition table does not contain all the columns required.\nPlease, ensure that the provided contains the following\ncolumns: cohort_definition_id, number_records, number_subjects,\nreason_id, reason, excluded_records, and excluded_subjects"))
   }
-
-  # Turn everything as a character
-  x <- x |> dplyr::mutate_all(~as.character(.))
-
-  # Create table to be used in the graph
-  xn <- createLabels(x)
-
-  y <- selectLabels(xn)
-  xn  <- y$xn
-  att <- y$att
-
-  # Create graph
-  n  <- nrow(x)
-  xg <- DiagrammeR::create_graph()
-
-  att <- validateReason(att)
-  h2  <- getHeightMiddleBox(att)
-
-  w1 <- getWidthMainBox(xn)
-  p1 <- getPositionMainBox(xn,n,h2)
-
-  w2 <- getWidthMiddleBox(att)
-  p2 <- getPositionMiddleBox(p1)
-
-  xg <- getNodes(xn,att,n,xg,h2,w1,p1,w2,p2)
 
   return(xg)
 }
 
+checkAttritionTable <- function(x){
+  y <- c("cohort_definition_id","number_records","number_subjects",
+         "reason_id","reason","excluded_records","excluded_subjects") %in% colnames(x)
+
+  if(FALSE %in% y){
+    status = FALSE
+  }else{
+    status = TRUE
+  }
+
+  return("status" = status)
+}
+
+emptyTable <- function(message){
+  xg <- DiagrammeR::create_graph()
+  xg <- xg |>
+    DiagrammeR::add_node(
+      label = message,
+      node_aes = DiagrammeR::node_aes(
+        shape = "box",
+        fontcolor = "red",
+        fillcolor = "white",
+        fontname = "Calibri",
+        fontsize = 10,
+        x = 1, y = 1,
+        width = 4,penwidth = 0)
+    )
+}
 
 formatNum <- function(col) {
   dplyr::if_else(
