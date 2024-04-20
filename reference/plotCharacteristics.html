@@ -62,12 +62,11 @@
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plotCharacteristics</span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
-<span>  xAxis <span class="op">=</span> <span class="st">"variable_name"</span>,</span>
-<span>  yAxis <span class="op">=</span> <span class="st">"estimate_value"</span>,</span>
+<span>  x <span class="op">=</span> <span class="st">"variable_name"</span>,</span>
 <span>  plotStyle <span class="op">=</span> <span class="st">"barplot"</span>,</span>
 <span>  facet <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  colorVars <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  vertical_x <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  colour <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  colourName <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  .options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -78,12 +77,8 @@
 <dd><p>output of summariseCharacteristics.</p></dd>
 
 
-<dt>xAxis</dt>
+<dt>x</dt>
 <dd><p>what to plot on x axis, default as variable_name column. Has to be a column in data.</p></dd>
-
-
-<dt>yAxis</dt>
-<dd><p>what to plot on y axis, default as estimate_value column. Has to be a column in data. One of the xAxis or yAxis has to be estimate_value.</p></dd>
 
 
 <dt>plotStyle</dt>
@@ -94,12 +89,12 @@
 <dd><p>Variables to facet by</p></dd>
 
 
-<dt>colorVars</dt>
+<dt>colour</dt>
 <dd><p>column in data to color by.</p></dd>
 
 
-<dt>vertical_x</dt>
-<dd><p>whether to display x axis string vertically.</p></dd>
+<dt>colourName</dt>
+<dd><p>Colour legend name</p></dd>
 
 
 <dt>.options</dt>
@@ -150,9 +145,8 @@
 <span class="r-in"><span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">variable_name</span>  <span class="op">==</span> <span class="st">"Cohort2 flag -365 to -1"</span>,</span></span>
 <span class="r-in"><span>         <span class="va">estimate_name</span> <span class="op">==</span> <span class="st">"percentage"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">plotCharacteristics</span><span class="op">(</span>plotStyle <span class="op">=</span> <span class="st">"barplot"</span>,</span></span>
-<span class="r-in"><span>                      colorVars <span class="op">=</span> <span class="st">"variable_level"</span>,</span></span>
-<span class="r-in"><span>                      yAxis <span class="op">=</span> <span class="st">"variable_level"</span>,</span></span>
-<span class="r-in"><span>                      xAxis <span class="op">=</span> <span class="st">"estimate_value"</span>,</span></span>
+<span class="r-in"><span>                      colour  <span class="op">=</span> <span class="st">"variable_level"</span>,</span></span>
+<span class="r-in"><span>                      x <span class="op">=</span> <span class="st">"variable_level"</span>,</span></span>
 <span class="r-in"><span>                      facet <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cdm_name"</span>,</span></span>
 <span class="r-in"><span>                                <span class="st">"group_level"</span>,</span></span>
 <span class="r-in"><span>                                <span class="st">"strata_level"</span><span class="op">)</span><span class="op">)</span></span></span>

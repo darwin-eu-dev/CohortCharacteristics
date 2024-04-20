@@ -819,9 +819,9 @@ overall summary of the people in each cohort.</p>
 <code class="sourceCode R"><span><span class="va">chars</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">variable_name</span>  <span class="op">==</span> <span class="st">"Age"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="../reference/plotCharacteristics.html">plotCharacteristics</a></span><span class="op">(</span>plotStyle <span class="op">=</span> <span class="st">"boxplot"</span>, </span>
-<span>                      colorVars <span class="op">=</span> <span class="st">"group_level"</span>, </span>
-<span>                      xAxis <span class="op">=</span> <span class="st">"group_level"</span>, yAxis <span class="op">=</span> <span class="st">"estimate_value"</span>, </span>
-<span>                      facet <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cdm_name"</span><span class="op">)</span>, vertical_x <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<span>                      colour <span class="op">=</span> <span class="st">"group_level"</span>, </span>
+<span>                      x <span class="op">=</span> <span class="st">"group_level"</span>, </span>
+<span>                      facet <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cdm_name"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="a06_summarisePatientCharacteristics_files/figure-html/unnamed-chunk-5-1.png" width="672"></p>
 <p>We can also generate summaries that are stratified by some variable
 of interest. In this case we add an age group variable to our cohort
@@ -2023,10 +2023,10 @@ table and then stratify our results by age group.</p>
 <code class="sourceCode R"><span><span class="va">chars</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">variable_name</span>  <span class="op">==</span> <span class="st">"Prior observation"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="../reference/plotCharacteristics.html">plotCharacteristics</a></span><span class="op">(</span>plotStyle <span class="op">=</span> <span class="st">"boxplot"</span>, </span>
-<span>                      colorVars <span class="op">=</span> <span class="st">"group_level"</span>, </span>
-<span>                      yAxis <span class="op">=</span> <span class="st">"group_level"</span>, </span>
-<span>                      xAxis <span class="op">=</span> <span class="st">"estimate_value"</span>, </span>
-<span>                      facet <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"strata_level"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>                      colour <span class="op">=</span> <span class="st">"group_level"</span>, </span>
+<span>                      x <span class="op">=</span> <span class="st">"group_level"</span>, </span>
+<span>                      facet <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"strata_level"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="a06_summarisePatientCharacteristics_files/figure-html/unnamed-chunk-8-1.png" width="672"></p>
 <div class="section level2">
 <h2 id="presence-in-other-cohorts">Presence in other cohorts<a class="anchor" aria-label="anchor" href="#presence-in-other-cohorts"></a>
@@ -2754,6 +2754,20 @@ with patient characteristics.</p>
 <tr>
 <td headers="CDM name" class="gt_row gt_left" style="text-align: left; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000;"></td>
 <td headers="Variable name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">Medications prior to index date</td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">Morphine</td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">N (%)</td>
+<td headers="[header]Cohort name
+[header_level]Ankle sprain" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">15 (0.8%)</td>
+<td headers="[header]Cohort name
+[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">&lt;5 (&lt;5%)</td>
+<td headers="[header]Cohort name
+[header_level]Forearm fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">&lt;5 (&lt;5%)</td>
+<td headers="[header]Cohort name
+[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right;">&lt;5 (&lt;5%)</td>
+</tr>
+<tr>
+<td headers="CDM name" class="gt_row gt_left" style="text-align: left; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000;"></td>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;"></td>
 <td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">Acetaminophen</td>
 <td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">N (%)</td>
 <td headers="[header]Cohort name
@@ -2779,20 +2793,6 @@ with patient characteristics.</p>
 <td headers="[header]Cohort name
 [header_level]Hip fracture" class="gt_row gt_left" style="text-align: right;">&lt;5 (&lt;5%)</td>
 </tr>
-<tr>
-<td headers="CDM name" class="gt_row gt_left" style="text-align: left; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000;"></td>
-<td headers="Variable name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;"></td>
-<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">Morphine</td>
-<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">N (%)</td>
-<td headers="[header]Cohort name
-[header_level]Ankle sprain" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">15 (0.8%)</td>
-<td headers="[header]Cohort name
-[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">&lt;5 (&lt;5%)</td>
-<td headers="[header]Cohort name
-[header_level]Forearm fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">&lt;5 (&lt;5%)</td>
-<td headers="[header]Cohort name
-[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right;">&lt;5 (&lt;5%)</td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -2803,11 +2803,12 @@ interset.</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">variable_name</span>  <span class="op">==</span> <span class="st">"Medications prior to index date"</span>,</span>
 <span>         <span class="va">estimate_name</span> <span class="op">==</span> <span class="st">"percentage"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="../reference/plotCharacteristics.html">plotCharacteristics</a></span><span class="op">(</span>plotStyle <span class="op">=</span> <span class="st">"barplot"</span>, </span>
-<span>                      colorVars <span class="op">=</span> <span class="st">"variable_level"</span>, </span>
-<span>                      yAxis <span class="op">=</span> <span class="st">"variable_level"</span>, </span>
-<span>                      xAxis <span class="op">=</span> <span class="st">"estimate_value"</span>, </span>
+<span>                      colour <span class="op">=</span> <span class="st">"variable_level"</span>, </span>
+<span>                      colourName <span class="op">=</span> <span class="st">"Medication"</span>,</span>
+<span>                      x <span class="op">=</span> <span class="st">"variable_level"</span>, </span>
 <span>                      facet <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cdm_name"</span>,</span>
-<span>                                <span class="st">"group_level"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>                                <span class="st">"group_level"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span> </span></code></pre></div>
 <p><img src="a06_summarisePatientCharacteristics_files/figure-html/unnamed-chunk-12-1.png" width="672"></p>
 </div>
   </main>
