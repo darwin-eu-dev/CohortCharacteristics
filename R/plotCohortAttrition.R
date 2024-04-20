@@ -29,6 +29,7 @@
 #' library(CDMConnector)
 #' library(CodelistGenerator)
 #' library(dplyr)
+#' library(DiagrammeR)
 #' con <- DBI::dbConnect(duckdb::duckdb(),
 #' dbdir = CDMConnector::eunomia_dir())
 #' cdm <- CDMConnector::cdm_from_con(con,
@@ -58,6 +59,16 @@
 #' }
 
 plotCohortAttrition <- function(x) {
+
+  checkAttritionTable <- function(x){
+    y <- c("cohort_definition_id","number_records","number_subjects",
+           "reason_id","reason","excluded_records","excluded_subjects") %in% colnames(x)
+
+    if(FALSE %in% y){
+      cli::cli_abort(paste0("column '", colnames(x)[!y], "' must be present in the attrition table."))
+    }
+  }
+
   # Turn everything as a character
   x <- x |> dplyr::mutate_all(~as.character(.))
 
@@ -70,7 +81,7 @@ plotCohortAttrition <- function(x) {
 
   # Create graph
   n  <- nrow(x)
-  xg <- create_graph()
+  xg <- DiagrammeR::create_graph()
 
   att <- validateReason(att)
   h2  <- getHeightMiddleBox(att)
@@ -97,13 +108,13 @@ formatNum <- function(col) {
 
 createLabels <- function(x){
   x <- x |>
-    dplyr::arrange(reason_id) |>
+    dplyr::arrange(.data$reason_id) |>
     dplyr::mutate(
-      number_subjects = formatNum(number_subjects),
-      number_records  = formatNum(number_records),
-      excluded_subjects = formatNum(excluded_subjects),
+      number_subjects = formatNum(.data$number_subjects),
+      number_records  = formatNum(.data$number_records),
+      excluded_subjects = formatNum(.data$excluded_subjects),
       label = paste0(
-        "N subjects = ", number_subjects, "\nN records = ", number_records
+        "N subjects = ", .data$number_subjects, "\nN records = ", .data$number_records
       )
     )
   return(x)
@@ -112,32 +123,34 @@ createLabels <- function(x){
 selectLabels <- function(xn){
   if(nrow(xn) == 1){
     xn <- xn |>
-      dplyr::mutate(label = paste0("Qualifying events", "\n", label)) |>
-      dplyr::select(label)
+      dplyr::mutate(label = paste0("Qualifying events", "\n", .data$label)) |>
+      dplyr::select("label")
 
     att <- NULL
   }else{
     att <- xn |>
-      dplyr::filter(reason_id > min(reason_id)) |>
+      dplyr::filter(.data$reason_id > min(.data$reason_id)) |>
       dplyr::mutate(label = paste0(
-        "N subjects = ", excluded_subjects, "\nN records = ", excluded_records
+        "N subjects = ", .data$excluded_subjects, "\nN records = ", .data$excluded_records
       )
       ) |>
-      dplyr::select(reason, label)
+      dplyr::select("reason", "label")
 
     xn <- xn |>
       dplyr::mutate(
         label = dplyr::if_else(
-          reason_id == min(reason_id),
-          paste0("𝗜𝗻𝗶𝘁𝗶𝗮𝗹 𝗲𝘃𝗲𝗻𝘁𝘀", "\n", label),
+          .data$reason_id == min(.data$reason_id),
+          # paste0("𝗜𝗻𝗶𝘁𝗶𝗮𝗹 𝗲𝘃𝗲𝗻𝘁𝘀", "\n", label),
+          paste0("Initial events", "\n", .data$label),
           dplyr::if_else(
-            reason_id == max(reason_id),
-            paste0("𝗙𝗶𝗻𝗮𝗹 𝗲𝘃𝗲𝗻𝘁𝘀", "\n", label),
-            label
+            .data$reason_id == max(.data$reason_id),
+            # paste0("𝗙𝗶𝗻𝗮𝗹 𝗲𝘃𝗲𝗻𝘁𝘀", "\n", label),
+            paste0("Final events", "\n", .data$label),
+            .data$label
           )
         )
       ) |>
-      dplyr::select(label)
+      dplyr::select("label")
   }
   return(list("xn" = xn, "att" = att))
 }
@@ -194,9 +207,9 @@ getWidthMiddleBox <- function(att){
 getNodes <- function(xn,att,n,xg,h2,w1,p1,w2,p2){
   for (k in seq_len(n)) {
     xg <- xg %>%
-      add_node(
+      DiagrammeR::add_node(
         label = xn$label[k],
-        node_aes = node_aes(
+        node_aes = DiagrammeR::node_aes(
           shape = "box",
           x = 1,
           width = w1,
@@ -211,16 +224,16 @@ getNodes <- function(xn,att,n,xg,h2,w1,p1,w2,p2){
       )
     if (k > 1) {
       xg <- xg %>%
-        add_edge(from = k - 1, to = k, edge_aes = edge_aes(color = "black"))
+        DiagrammeR::add_edge(from = k - 1, to = k, edge_aes = DiagrammeR::edge_aes(color = "black"))
     }
   }
 
   if (n > 1) {
     for (k in seq_len(nrow(att))) {
       xg <- xg %>%
-        add_node(
+        DiagrammeR::add_node(
           label = att$label[k],
-          node_aes = node_aes(
+          node_aes = DiagrameR::node_aes(
             shape = "box",
             x = 3,
             width = 1.2,
@@ -233,9 +246,9 @@ getNodes <- function(xn,att,n,xg,h2,w1,p1,w2,p2){
             fontname = "Calibri"
           )
         ) %>%
-        add_node(
+        DiagrammeR::add_node(
           label = att$reason[k],
-          node_aes = node_aes(
+          node_aes = DiagrammeR::node_aes(
             shape = "box",
             x = 1,
             width = w2,
@@ -248,8 +261,8 @@ getNodes <- function(xn,att,n,xg,h2,w1,p1,w2,p2){
             fontsize = 10
           )
         ) %>%
-        add_edge(
-          from = 2*k + n, to = 2*k + n -1, edge_aes = edge_aes(color = "black")
+        DiagrammeR::add_edge(
+          from = 2*k + n, to = 2*k + n -1, edge_aes = DiagrammeR::edge_aes(color = "black")
         )
     }
   }

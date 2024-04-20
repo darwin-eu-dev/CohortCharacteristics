@@ -107,14 +107,7 @@ plotComparedLargeScaleCharacteristics <- function(data,
     y <- editPlot(data = data, facetVarX = facetVarX, facetVarY = facetVarY,
                   colorVars = colorVars, vertical_x = FALSE)
   }else{
-    y <- plotfunction(data  = data,
-                      xAxis,
-                      yAxis,
-                      plotStyle = "scatterplot",
-                      facetVarX,
-                      facetVarY,
-                      colorVars,
-                      vertical_x)
+    y <- plotfunction(data  = data)
 
   }
   return(y)
