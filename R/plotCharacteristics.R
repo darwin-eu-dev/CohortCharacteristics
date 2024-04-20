@@ -18,12 +18,11 @@
 #' `r lifecycle::badge("experimental")`
 #'
 #' @param data output of summariseCharacteristics.
-#' @param xAxis what to plot on x axis, default as variable_name column. Has to be a column in data.
-#' @param yAxis what to plot on y axis, default as estimate_value column. Has to be a column in data. One of the xAxis or yAxis has to be estimate_value.
+#' @param x what to plot on x axis, default as variable_name column. Has to be a column in data.
 #' @param plotStyle Now allows boxplot or barplot only.
 #' @param facet Variables to facet by
-#' @param colorVars column in data to color by.
-#' @param vertical_x whether to display x axis string vertically.
+#' @param colour  column in data to color by.
+#' @param colourName Colour legend name
 #' @param .options Additional plotting options.
 #' @return A ggplot.
 #' @export
@@ -49,9 +48,8 @@
 #'  filter(variable_name  == "Cohort2 flag -365 to -1",
 #'          estimate_name == "percentage") |>
 #'   plotCharacteristics(plotStyle = "barplot",
-#'                       colorVars = "variable_level",
-#'                       yAxis = "variable_level",
-#'                       xAxis = "estimate_value",
+#'                       colour  = "variable_level",
+#'                       x = "variable_level",
 #'                       facet = c("cdm_name",
 #'                                 "group_level",
 #'                                 "strata_level"))
@@ -59,12 +57,11 @@
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
 plotCharacteristics <- function(data,
-                                xAxis = "variable_name",
-                                yAxis = "estimate_value",
+                                x = "variable_name",
                                 plotStyle = "barplot",
                                 facet = NULL,
-                                colorVars = NULL,
-                                vertical_x = FALSE,
+                                colour  = NULL,
+                                colourName = NULL,
                                 .options = list()) {
 
   errorMessage <- checkmate::makeAssertCollection()
@@ -72,6 +69,10 @@ plotCharacteristics <- function(data,
   checkmate::assertTRUE(plotStyle %in% c("boxplot", "barplot", "density"), add = errorMessage)
 
   checkmate::reportAssertions(collection = errorMessage)
+
+  xAxis <- x
+  yAxis <- "estimate_value"
+  vertical_x <- FALSE
 
   # only allow one variable name to be used
   nVariableNames <- length(data |>
@@ -108,7 +109,7 @@ plotCharacteristics <- function(data,
       plotStyle = plotStyle,
       facetVarX = NULL,
       facetVarY = NULL,
-      colorVars,
+      colorVars = colour,
       vertical_x,
       facet = facet,
       .options = .options
@@ -150,8 +151,18 @@ plotCharacteristics <- function(data,
 
   gg <-  gg +
     ggplot2::theme_bw() +
-    ggplot2::theme(legend.position = "top",
-                   legend.title = ggplot2::element_blank())
+    ggplot2::theme(legend.position = "top")
+
+  if(!is.null(colourName)){
+    gg <- gg +
+       ggplot2::labs(color = colourName,
+                     fill = colourName)
+  } else{
+    gg <- gg +
+      ggplot2::labs(color = "",
+                    fill = "")
+  }
+
 
   gg
 }
