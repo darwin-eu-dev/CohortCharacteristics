@@ -3,7 +3,7 @@ library(CodelistGenerator)
 library(PatientProfiles)
 library(dplyr)
 library(ggplot2)
-
+library(DiagrammeR)
 con <- DBI::dbConnect(duckdb::duckdb(),
                       dbdir = CDMConnector::eunomia_dir())
 cdm <- CDMConnector::cdm_from_con(con,
@@ -22,51 +22,18 @@ cdm <- generateConceptCohortSet(
   overwrite = TRUE
 )
 
-lsc <- cdm$meds %>%
-  addAge(ageGroup = list("<40" = c(0,39), ">=40" = c(40,Inf))) |>
-  addSex() |>
-  summariseLargeScaleCharacteristics(
-    window = list("-Inf to 0" = c(-Inf,0),  "0 to Inf" = c(0,Inf)),
-    strata = list("age_group","sex"),
-    eventInWindow ="condition_occurrence",
-    episodeInWindow = "drug_exposure",
-    minimumFrequency = 0.05
-  )
+cdm[["meds"]] <- cdm[["meds"]] |>
+  filter(year(cohort_start_date) <= 1949) |>
+  recordCohortAttrition("t here would") |>
+  filter(year(cohort_start_date) >= 1920) |>
+  recordCohortAttrition("end if I try it here would should I do aaa I do not know e would should I do aaa I do not know") |>
+  filter(year(cohort_start_date) >= 1930) |>
+  recordCohortAttrition("nd ") |>
+  compute(temporary = FALSE, name = "meds")
 
-lsc1 <- lsc |>
-  filter((group_level == "morphine") | variable_name == "settings")
+ca <- attrition(cdm[["meds"]]) |>
+  filter(cohort_definition_id == 2) |>
+  mutate(number_records = 161137831)
 
-lsc1 <- lsc |> filter((group_level == "morphine") |
-                        variable_name == "settings")
-
-data = lsc1
-referenceGroupLevel  = NULL
-referenceStrataLevel = "Male"
-referenceVariableLevel = NULL
-referenceCdmName       = NULL
-facet       = strata ~ table_name
-splitStrata = FALSE
-colorVars   = NULL
-missings    = 0
-position    = "horizontal"
-
-
-plotComparedLargeScaleCharacteristics(data = data,
-                                      referenceGroupLevel    = referenceGroupLevel,
-                                      referenceStrataLevel   = referenceStrataLevel ,
-                                      referenceVariableLevel = referenceVariableLevel,
-                                      referenceCdmName       = referenceCdmName,
-                                      facet       = facet,
-                                      splitStrata =  splitStrata ,
-                                      colorVars   = colorVars ,
-                                      missings    = missings )
-
-plotLargeScaleCharacteristics(data = lsc,
-                              position = "horizontal",
-                              facet     = . ~ strata_level,
-                              splitStrata = FALSE,
-                              colorVars   = NULL)
-
-
-
+render_graph(plotCohortAttrition(ca))
 

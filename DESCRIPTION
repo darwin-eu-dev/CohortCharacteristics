@@ -68,7 +68,8 @@ Imports:
     PatientProfiles (>= 0.8.0),
     ggpubr,
     magrittr,
-    snakecase
+    snakecase,
+    DiagrammeR
 URL: https://darwin-eu-dev.github.io/CohortCharacteristics/
 BugReports: https://github.com/darwin-eu-dev/CohortCharacteristics/issues
 Language: en-US
