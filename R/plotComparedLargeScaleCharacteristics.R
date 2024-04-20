@@ -56,55 +56,67 @@
 #' }
 
 plotComparedLargeScaleCharacteristics <- function(data,
-                                                 referenceGroupLevel    = NULL,
-                                                 referenceStrataLevel   = NULL,
-                                                 referenceVariableLevel = NULL,
-                                                 referenceCdmName       = NULL,
-                                                 splitStrata = FALSE,
-                                                 facet       = NULL,
-                                                 colorVars   = NULL,
-                                                 missings    = 0){
+                                                  referenceGroupLevel    = NULL,
+                                                  referenceStrataLevel   = NULL,
+                                                  referenceVariableLevel = NULL,
+                                                  referenceCdmName       = NULL,
+                                                  splitStrata = FALSE,
+                                                  facet       = NULL,
+                                                  colorVars   = NULL,
+                                                  missings    = 0){
 
-  checkSettings(data)
+  if(length(data$result_id) != 0){
+    checkSettings(data)
 
-  referenceGroupLevel    <- checkReference(referenceGroupLevel, data, type = "group_level",    argument = "referenceGroupLevel")
-  referenceStrataLevel   <- checkReference(referenceStrataLevel, data, type = "strata_level",   argument = "referenceStrataLevel")
-  referenceVariableLevel <- checkReference(referenceVariableLevel, data, type = "variable_level", argument = "referenceVariableLevel")
-  referenceCdmName       <- checkReference(referenceCdmName, data, type = "cdm_name",       argument = "referenceCdmName")
-  splitStrata <- checkSplitStrata(data, splitStrata)
+    referenceGroupLevel    <- checkReference(referenceGroupLevel, data, type = "group_level",    argument = "referenceGroupLevel")
+    referenceStrataLevel   <- checkReference(referenceStrataLevel, data, type = "strata_level",   argument = "referenceStrataLevel")
+    referenceVariableLevel <- checkReference(referenceVariableLevel, data, type = "variable_level", argument = "referenceVariableLevel")
+    referenceCdmName       <- checkReference(referenceCdmName, data, type = "cdm_name",       argument = "referenceCdmName")
+    splitStrata <- checkSplitStrata(data, splitStrata)
 
-  # Extract facet names
-  x <- facetFunction(facet, splitStrata, data)
-  facetVarX <- x$facetVarX
-  facetVarY <- x$facetVarY
-  data      <- x$data
+    # Extract facet names
+    x <- facetFunction(facet, splitStrata, data)
+    facetVarX <- x$facetVarX
+    facetVarY <- x$facetVarY
+    data      <- x$data
 
-  # Color of the plot
-  checkName(colorVars, splitStrata, data, type = "colorVars")
+    # Color of the plot
+    checkName(colorVars, splitStrata, data, type = "colorVars")
 
-  # All that is not a facet variable will be a color variable if colorVar = NULL
-  colorVars <- colorVarsIfNull(data, vars = c(facetVarX, facetVarY, referenceGroupLevel, referenceStrataLevel, referenceVariableLevel, referenceCdmName), splitStrata, colorVars)
+    # All that is not a facet variable will be a color variable if colorVar = NULL
+    colorVars <- colorVarsIfNull(data, vars = c(facetVarX, facetVarY, referenceGroupLevel, referenceStrataLevel, referenceVariableLevel, referenceCdmName), splitStrata, colorVars)
 
-  # Split strata
-  if(splitStrata == TRUE){
-    strata_levels <- data$strata_name |> unique()
-    strata_levels <- strata_levels[strata_levels != "overall"]
-    data <- data |> visOmopResults::splitStrata()
+    # Split strata
+    if(splitStrata == TRUE){
+      strata_levels <- data$strata_name |> unique()
+      strata_levels <- strata_levels[strata_levels != "overall"]
+      data <- data |> visOmopResults::splitStrata()
+    }
+
+    # Tidying dataset
+    data <- tidyData(data, referenceGroupLevel, referenceVariableLevel, referenceCdmName, referenceStrataLevel, missings, splitStrata, strata_levels)
+
+    # Change facet names
+    facetVarX <- changeNames(facetVarX, type = "facet")
+    facetVarY <- changeNames(facetVarY, type = "facet")
+
+    # Change colorVars names
+    colorVars <- changeNames(colorVars, type = "colorVars")
+
+    # Edit plot
+    y <- editPlot(data = data, facetVarX = facetVarX, facetVarY = facetVarY,
+                  colorVars = colorVars, vertical_x = FALSE)
+  }else{
+    y <- plotfunction(data  = data,
+                      xAxis,
+                      yAxis,
+                      plotStyle = "scatterplot",
+                      facetVarX,
+                      facetVarY,
+                      colorVars,
+                      vertical_x)
+
   }
-
-  # Tidying dataset
-  data <- tidyData(data, referenceGroupLevel, referenceVariableLevel, referenceCdmName, referenceStrataLevel, missings, splitStrata, strata_levels)
-
-  # Change facet names
-  facetVarX <- changeNames(facetVarX, type = "facet")
-  facetVarY <- changeNames(facetVarY, type = "facet")
-
-  # Change colorVars names
-  colorVars <- changeNames(colorVars, type = "colorVars")
-
-  # Edit plot
-  y <- editPlot(data = data, facetVarX = facetVarX, facetVarY = facetVarY,
-                colorVars = colorVars, vertical_x = FALSE)
   return(y)
 }
 
@@ -148,9 +160,9 @@ tidyData <- function(data, referenceGroupLevel, referenceVariableLevel, referenc
   if(splitStrata){
     table_reference <- data |>
       dplyr::filter(dplyr::if_any(strata_levels, ~. == .env$referenceStrataLevel)) |>
-        dplyr::filter(.data$group_level == .env$referenceGroupLevel) |>
-        dplyr::filter(.data$variable_level == .env$referenceVariableLevel) |>
-        dplyr::filter(.data$cdm_name == .env$referenceCdmName)
+      dplyr::filter(.data$group_level == .env$referenceGroupLevel) |>
+      dplyr::filter(.data$variable_level == .env$referenceVariableLevel) |>
+      dplyr::filter(.data$cdm_name == .env$referenceCdmName)
   }else{
     table_reference <- data |>
       dplyr::filter(.data$group_level == .env$referenceGroupLevel) |>
@@ -176,7 +188,7 @@ tidyData <- function(data, referenceGroupLevel, referenceVariableLevel, referenc
   # Rename tables
   table_reference <- table_reference |>
     dplyr::rename_at(dplyr::vars(-c("variable_name", "result_id", "result_type", "package_name", "package_version",
-                              "estimate_name", "estimate_type", "table_name", "type", "analysis", "additional_name", "additional_level")), ~paste0(.,"_reference"))
+                                    "estimate_name", "estimate_type", "table_name", "type", "analysis", "additional_name", "additional_level")), ~paste0(.,"_reference"))
   table_comparator <- table_comparator |>
     dplyr::rename_at(dplyr::vars(-c("variable_name", "result_id", "result_type", "package_name", "package_version",
                                     "estimate_name", "estimate_type", "table_name", "type", "analysis", "additional_name", "additional_level")), ~paste0(.,"_comparator"))
@@ -264,24 +276,26 @@ replaceComparatorMissings <- function(data, table_comparator, referenceCdmName, 
 
 changeNames <- function(var, type){
   if(!is.null(var)){
-      var <- paste0(var,"_comparator")
-      var <- gsub("table_name_comparator","table_name",var)
+    var <- paste0(var,"_comparator")
+    var <- gsub("table_name_comparator","table_name",var)
   }
 
   return(var)
 }
 
 editPlot <- function(data, facetVarX = NULL, facetVarY = NULL, colorVars = NULL, vertical_x = FALSE){
-    x <- plotfunction(data  = data,
-                 xAxis = "estimate_value",
-                 yAxis = "estimate_value_comparator",
-                 plotStyle = "scatterplot",
-                 facetVarX,
-                 facetVarY,
-                 colorVars,
-                 vertical_x) +
-      ggplot2::scale_x_continuous(limits = c(0, 1), labels = scales::percent) +
-      ggplot2::scale_y_continuous(limits = c(0, 1), labels = scales::percent) +
-      ggplot2::geom_abline(slope = 1, colour = "black", linetype = 2, size = 0.5) +
-      ggplot2::labs(x = "Reference", y = "Comparator")
+  x <- plotfunction(data  = data,
+                    xAxis = "estimate_value",
+                    yAxis = "estimate_value_comparator",
+                    plotStyle = "scatterplot",
+                    facetVarX,
+                    facetVarY,
+                    colorVars,
+                    vertical_x) +
+    ggplot2::scale_x_continuous(limits = c(0, 1), labels = scales::percent) +
+    ggplot2::scale_y_continuous(limits = c(0, 1), labels = scales::percent) +
+    ggplot2::geom_abline(slope = 1, colour = "black", linetype = 2, size = 0.5) +
+    ggplot2::labs(x = "Reference", y = "Comparator")
 }
+
+

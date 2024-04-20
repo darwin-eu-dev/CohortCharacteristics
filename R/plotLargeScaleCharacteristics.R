@@ -56,42 +56,53 @@ plotLargeScaleCharacteristics <- function(data,
                                           facet       = NULL,
                                           colorVars   = "variable_level") {
 
-  checkSettings(data)
+  if(length(data$result_id) != 0){
+    checkSettings(data)
 
-  # Position of the plot
-  x <- positionFunction(position)
-  xAxis <- x$xAxis
-  yAxis <- x$yAxis
-  verticalX <- x$verticalX
+    # Position of the plot
+    x <- positionFunction(position)
+    xAxis <- x$xAxis
+    yAxis <- x$yAxis
+    verticalX <- x$verticalX
 
-  # Facet of the plot
-  x <- facetFunction(facet, splitStrata, data)
-  facetVarX <- x$facetVarX
-  facetVarY <- x$facetVarY
-  data      <- x$data
+    # Facet of the plot
+    x <- facetFunction(facet, splitStrata, data)
+    facetVarX <- x$facetVarX
+    facetVarY <- x$facetVarY
+    data      <- x$data
 
-  # Color of the plot
-  checkName(colorVars, splitStrata, data, type = "colorVars")
+    # Color of the plot
+    checkName(colorVars, splitStrata, data, type = "colorVars")
 
-  # All that is not a facet variable will be a color variable if colorVar = NULL
-  colorVars <- colorVarsIfNull(data, vars = c(facetVarX, facetVarY), splitStrata, colorVars)
+    # All that is not a facet variable will be a color variable if colorVar = NULL
+    colorVars <- colorVarsIfNull(data, vars = c(facetVarX, facetVarY), splitStrata, colorVars)
 
-  # Split strata
-  if(splitStrata == TRUE){
-    data <- data |> visOmopResults::splitStrata()
+    # Split strata
+    if(splitStrata == TRUE){
+      data <- data |> visOmopResults::splitStrata()
+    }
+
+    y <- plotfunction(data,
+                      xAxis,
+                      yAxis,
+                      plotStyle = "scatterplot",
+                      facetVarX,
+                      facetVarY,
+                      colorVars,
+                      vertical_x = verticalX)
+
+    y <- addAxis(y,position)
+  }else{
+    y <- plotfunction(data,
+                      xAxis,
+                      yAxis,
+                      plotStyle = "scatterplot",
+                      facetVarX,
+                      facetVarY,
+                      colorVars,
+                      vertical_x = verticalX)
+
   }
-
-  y <- plotfunction(data,
-                    xAxis,
-                    yAxis,
-                    plotStyle = "scatterplot",
-                    facetVarX,
-                    facetVarY,
-                    colorVars,
-                    vertical_x = verticalX)
-
-  y <- addAxis(y,position)
-
   return(y)
 }
 
