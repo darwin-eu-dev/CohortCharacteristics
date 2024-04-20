@@ -37,3 +37,4 @@ ca <- attrition(cdm[["meds"]]) |>
 
 render_graph(plotCohortAttrition(ca))
 
+

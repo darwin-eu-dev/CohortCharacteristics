@@ -233,7 +233,7 @@ getNodes <- function(xn,att,n,xg,h2,w1,p1,w2,p2){
       xg <- xg %>%
         DiagrammeR::add_node(
           label = att$label[k],
-          node_aes = DiagrameR::node_aes(
+          node_aes = DiagrammeR::node_aes(
             shape = "box",
             x = 3,
             width = 1.2,
