@@ -27,33 +27,22 @@
 #' @examples
 #' \donttest{
 #' library(CDMConnector)
-#' library(CodelistGenerator)
+#' library(DrugUtilisation)
 #' library(dplyr)
 #' library(DiagrammeR)
-#' con <- DBI::dbConnect(duckdb::duckdb(),
-#' dbdir = CDMConnector::eunomia_dir())
-#' cdm <- CDMConnector::cdm_from_con(con,
-#' cdm_schem = "main",
-#' write_schema = "main")
-#' meds_cs <- getDrugIngredientCodes(cdm = cdm, name = c("acetaminophen",
-#' "morphine"))
-#' cdm <- generateConceptCohortSet(
-#' cdm = cdm,
-#' name = "meds",
-#' conceptSet = meds_cs,
-#' end = "event_end_date",
-#' limit = "all",
-#' overwrite = TRUE)
+#' library(PatientProfiles)
 #'
-#' cdm[["meds"]] <- cdm[["meds"]] |>
-#' filter(year(cohort_end_date) <= 1949) |>
-#' recordCohortAttrition("Restrict to cohort_start_date <= 1949") |>
-#' filter(year(cohort_start_date) >= 1920) |>
-#' recordCohortAttrition("Restrict to cohort_end_date >= 1920") |>
-#' compute(temporary = FALSE, name = "meds")
+#' cdm <- mockDrugUtilisation(n = 1000)
 #'
-#' ca <- attrition(cdm[["meds"]]) |> filter(cohort_definition_id == 2) |>
-#' mutate(number_records = 161137831)
+#' cdm[["cohort1"]] <- cdm[["cohort1"]] |>
+#'  filter(year(cohort_start_date) >= 2000) |>
+#'   recordCohortAttrition("Restrict to cohort_start_date >= 2000") |>
+#'   filter(year(cohort_end_date) < 2020) |>
+#'   recordCohortAttrition("Restrict to cohort_end_date < 2020") |>
+#'   compute(temporary = FALSE, name = "cohort1")
+#'
+#' ca <- attrition(cdm[["cohort1"]]) |>
+#'   filter(cohort_definition_id == 2)
 #'
 #' render_graph(plotCohortAttrition(ca))
 #' }
