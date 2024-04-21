@@ -57,6 +57,7 @@ plotLargeScaleCharacteristics <- function(data,
                                           colorVars   = NULL) {
 
   checkSummarisedResult(data)
+  checkEstimateValue(data)
 
   if(length(data$result_id) != 0){
       # checkSettings(data)
@@ -110,6 +111,12 @@ plotLargeScaleCharacteristics <- function(data,
 checkSummarisedResult <- function(data){
   if(!inherits(lsc,"summarised_result")){
     stop(sprintf("data must be a summarised result."))
+  }
+}
+
+checkEstimateValue <- function(data){
+  if("estimate_value" %in% colnames(data)){
+    stop(sprintf("estimate_value column must be present in data"))
   }
 }
 
