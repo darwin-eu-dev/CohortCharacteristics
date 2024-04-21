@@ -66,7 +66,7 @@ plotComparedLargeScaleCharacteristics <- function(data,
                                                   missings    = 0){
 
   if(length(data$result_id) != 0){
-    checkSettings(data)
+    # checkSettings(data)
 
     referenceGroupLevel    <- checkReference(referenceGroupLevel, data, type = "group_level",    argument = "referenceGroupLevel")
     referenceStrataLevel   <- checkReference(referenceStrataLevel, data, type = "strata_level",   argument = "referenceStrataLevel")
