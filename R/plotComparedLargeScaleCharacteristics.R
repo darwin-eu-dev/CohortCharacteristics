@@ -107,7 +107,7 @@ plotComparedLargeScaleCharacteristics <- function(data,
     y <- editPlot(data = data, facetVarX = facetVarX, facetVarY = facetVarY,
                   colorVars = colorVars, vertical_x = FALSE)
   }else{
-    y <- plotfunction(data  = data)
+    y <- emptyPlot("No result to plot.")
 
   }
   return(y)

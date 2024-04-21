@@ -93,15 +93,7 @@ plotLargeScaleCharacteristics <- function(data,
 
     y <- addAxis(y,position)
   }else{
-    y <- plotfunction(data,
-                      xAxis,
-                      yAxis,
-                      plotStyle = "scatterplot",
-                      facetVarX,
-                      facetVarY,
-                      colorVars,
-                      vertical_x = verticalX)
-
+    y <- plotfunction(data)
   }
   return(y)
 }

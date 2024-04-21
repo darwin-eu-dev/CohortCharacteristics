@@ -106,7 +106,7 @@ emptyTable <- function(message){
       label = message,
       node_aes = DiagrammeR::node_aes(
         shape = "box",
-        fontcolor = "red",
+        fontcolor = "black",
         fillcolor = "white",
         fontname = "Calibri",
         fontsize = 10,
