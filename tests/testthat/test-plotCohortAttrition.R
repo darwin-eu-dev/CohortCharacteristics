@@ -17,7 +17,7 @@ test_that("multiplication works", {
   ca <- attrition(cdm[["cohort1"]]) |>
     filter(cohort_definition_id == 2)
 
-  x <- render_graph(plotCohortAttrition(ca))
+  x <- render_graph(plotCohortAttrition(ca, cohortId = 2))
 
   expect_true(inherits(x,c("grViz","htmlwidget")))
 

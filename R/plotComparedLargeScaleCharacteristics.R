@@ -108,7 +108,6 @@ plotComparedLargeScaleCharacteristics <- function(data,
                   colorVars = colorVars, vertical_x = FALSE)
   }else{
     y <- plotfunction(data  = data)
-
   }
   return(y)
 }

@@ -19,6 +19,7 @@
 #' `r lifecycle::badge("experimental")`
 #'
 #' @param x attrition table
+#' @param cohortId target cohort_definition_id
 #'
 #' @return A dgr_graph
 #'
@@ -41,19 +42,25 @@
 #'   recordCohortAttrition("Restrict to cohort_end_date < 2020") |>
 #'   compute(temporary = FALSE, name = "cohort1")
 #'
-#' ca <- attrition(cdm[["cohort1"]]) |>
-#'   filter(cohort_definition_id == 2)
-#'
-#' render_graph(plotCohortAttrition(ca))
+#' render_graph(plotCohortAttrition(attrition(cdm[["cohort1"]]), cohortId = 2))
 #' }
 
-plotCohortAttrition <- function(x) {
-  status <- checkAttritionTable(x)
+plotCohortAttrition <- function(x, cohortId) {
+
+  y <- checkAttritionTable(x)
+  status  <- y$status
+  message <- y$message
 
   if(status){
     if(length(x$cohort_definition_id) != 0){
+      y <- validateCohortId(x, cohortId)
+      status  <- y$status
+      message <- y$message
+      if(status){
       # Turn everything as a character
-      x <- x |> dplyr::mutate_all(~as.character(.))
+      x <- x |>
+        dplyr::filter(.data$cohort_definition_id == .env$cohortId) |>
+        dplyr::mutate_all(~as.character(.))
 
       # Create table to be used in the graph
       xn <- createLabels(x)
@@ -76,15 +83,35 @@ plotCohortAttrition <- function(x) {
       p2 <- getPositionMiddleBox(p1)
 
       xg <- getNodes(xn,att,n,xg,h2,w1,p1,w2,p2)
+      }else{
+        xg <- emptyTable(message)
+      }
     }else{
       xg <- emptyTable("No attrition table to plot. Please, provide an attrition table.")
     }
   }else{
-    xg <- emptyTable(c("Attrition table does not contain all the columns required.\nPlease, ensure that the provided contains the following\ncolumns: cohort_definition_id, number_records, number_subjects,\nreason_id, reason, excluded_records, and excluded_subjects"))
+    xg <- emptyTable(message)
   }
 
   return(xg)
 }
+
+validateCohortId <- function(x, cohortId){
+  if(length(cohortId) > 1){
+    status <- FALSE
+    message <- "Please, select only one cohort_definition_id value."
+  }else{
+    if(!cohortId %in% x$cohort_definition_id){
+      status  <- FALSE
+      message <- "cohort_definition_id selected is not valid"
+    }else{
+      status <- TRUE
+      message <- ""
+    }
+  }
+  return(list("status" = status, "message" = message))
+}
+
 
 checkAttritionTable <- function(x){
   y <- c("cohort_definition_id","number_records","number_subjects",
@@ -92,11 +119,13 @@ checkAttritionTable <- function(x){
 
   if(FALSE %in% y){
     status = FALSE
+    message = "Attrition table does not contain all the columns required.\nPlease, ensure that the provided contains the following\ncolumns: cohort_definition_id, number_records, number_subjects,\nreason_id, reason, excluded_records, and excluded_subjects"
   }else{
     status = TRUE
+    message = ""
   }
 
-  return("status" = status)
+  return(list("status" = status, "message" = message))
 }
 
 emptyTable <- function(message){
@@ -106,7 +135,7 @@ emptyTable <- function(message){
       label = message,
       node_aes = DiagrammeR::node_aes(
         shape = "box",
-        fontcolor = "red",
+        fontcolor = "black",
         fillcolor = "white",
         fontname = "Calibri",
         fontsize = 10,

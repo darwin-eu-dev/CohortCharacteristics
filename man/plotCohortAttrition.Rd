@@ -4,10 +4,12 @@
 \alias{plotCohortAttrition}
 \title{create a ggplot from the output of summariseLargeScaleCharacteristics.}
 \usage{
-plotCohortAttrition(x)
+plotCohortAttrition(x, cohortId)
 }
 \arguments{
 \item{x}{attrition table}
+
+\item{cohortId}{target cohort_definition_id}
 }
 \value{
 A dgr_graph
@@ -32,9 +34,6 @@ cdm[["cohort1"]] <- cdm[["cohort1"]] |>
   recordCohortAttrition("Restrict to cohort_end_date < 2020") |>
   compute(temporary = FALSE, name = "cohort1")
 
-ca <- attrition(cdm[["cohort1"]]) |>
-  filter(cohort_definition_id == 2)
-
-render_graph(plotCohortAttrition(ca))
+render_graph(plotCohortAttrition(attrition(cdm[["cohort1"]]), cohortId = 2))
 }
 }
