@@ -21,7 +21,8 @@ if (!dir.exists(Sys.getenv("EUNOMIA_DATA_FOLDER"))) dir.create(Sys.getenv("EUNOM
 if (!eunomia_is_available()) downloadEunomiaData()
 ```
 
-In this example we're going to summarise the characteristics of individuals with ankle sprain, ankle fracture, forearm fracture, or hip fracture using the Eunomia synthetic data. 
+## Introduction
+In this example we're going to summarise the characteristics of individuals with an ankle sprain, ankle fracture, forearm fracture, or a hip fracture using the Eunomia synthetic data. 
 
 We'll begin by creating our study cohorts.
 
@@ -49,15 +50,22 @@ cdm <- generateConceptCohortSet(
   end = "event_end_date",
   limit = "all"
 )
+settings(cdm$injuries)
+cohortCount(cdm$injuries)
 ```
 
-Now we've created our cohorts, we can quickly create a table with an overall summary of the people in each cohort.
+## Summarising study cohorts
+
+Now we've created our cohorts, we can obtain a summary of the characteristics in the patients included in these cohorts. 
 
 ```{r}
 chars <- cdm$injuries |> 
-  summariseCharacteristics()
+  summariseCharacteristics(ageGroup = list(c(0,49), c(50, Inf)))
+chars |> 
+  glimpse()
 ```
 
+Now we have these results, we can create a table with an overall summary of the people in each cohort.
 ```{r}
 tableCharacteristics(chars)
 ```
@@ -70,6 +78,8 @@ chars |>
                       x = "group_level", 
                       facet = c("cdm_name"))
 ```
+
+## Stratified summaries
 
 We can also generate summaries that are stratified by some variable of interest. In this case we add an age group variable to our cohort table and then stratify our results by age group.
 
@@ -95,7 +105,7 @@ chars |>
   coord_flip()
 ```
 
-# Presence in other cohorts
+## Summaries including presence in other cohorts
 
 ```{r}
 meds_cs <- getDrugIngredientCodes(cdm = cdm, 
@@ -116,8 +126,10 @@ cdm <- generateConceptCohortSet(
 chars <- cdm$injuries |> 
   summariseCharacteristics(cohortIntersectFlag =  list(
     "Medications prior to index date" = list(targetCohortTable = "meds", 
-                         window = c(-Inf, -1)
-                             )))
+                         window = c(-Inf, -1)),
+    "Medications on index date" = list(targetCohortTable = "meds", 
+                         window = c(0, 0))
+    ))
 ```
 
 These results will automatically be included when we create our table with patient characteristics.
@@ -126,17 +138,73 @@ These results will automatically be included when we create our table with patie
 tableCharacteristics(chars)
 ```
 
-We can now also plot our results for these medication cohorts of interset. 
+We can now also plot our results for these medication cohorts of interest. 
 
 ```{r}
-chars |> 
+plot_data <- chars |> 
   filter(variable_name  == "Medications prior to index date",
-         estimate_name == "percentage") |> 
-  plotCharacteristics(plotStyle = "barplot", 
+         estimate_name == "percentage") 
+
+plot_data |> 
+plotCharacteristics(plotStyle = "barplot", 
                       colour = "variable_level", 
-                      colourName = "Medication",
                       x = "variable_level", 
                       facet = c("cdm_name",
                                 "group_level")) +
-  coord_flip() 
+  scale_x_discrete(limits = rev(sort(unique(plot_data$variable_level)))) +
+  coord_flip() +
+  ggtitle("Medication use prior to index date")
 ```
+
+## Summaries using concept sets
+Instead of creating cohorts, we could have directly used our concept sets for medications when characterising our study cohorts.
+
+```{r}
+chars <- cdm$injuries |> 
+  summariseCharacteristics(conceptIntersectFlag  =  list(
+    "Medications prior to index date" = list(conceptSet = meds_cs, 
+                         window = c(-Inf, -1)),
+    "Medications on index date" = list(conceptSet = meds_cs, 
+                         window = c(0, 0))
+    ))
+```
+
+Although, like here, concept sets can lead to the same result as using cohorts it is important to note this will not always be the case. This is because the creation of cohorts will have involved the collapsing of overlapping records as well as imposing certain requirements, such as only including records that were observed during an an ongoing observation period. Meanwhile, when working with concept sets we will instead be working directly with record-level data.
+
+```{r}
+tableCharacteristics(chars)
+```
+
+
+## Summaries using clinical tables 
+
+More generally, we can also include summaries of the patients' presence in other clinical tables of the OMOP CDM. For example, here we add a count of visit occurrences
+
+```{r}
+chars <- cdm$injuries |>
+  summariseCharacteristics(
+    tableIntersectCount = list(
+      "Visits in the year prior" = list(
+        tableName = "visit_occurrence",
+        window = c(-365, -1)
+      )
+    ),
+    tableIntersectFlag = list(
+      "Any drug exposure in the year prior" = list(
+        tableName = "drug_exposure",
+        window = c(-365, -1)
+      ),
+      "Any procedure in the year prior" = list(
+        tableName = "procedure_occurrence",
+        window = c(-365, -1)
+      )
+    )
+  )
+```
+
+```{r}
+tableCharacteristics(chars)
+```
+
+## Summaries including additional variables 
+TO ADD

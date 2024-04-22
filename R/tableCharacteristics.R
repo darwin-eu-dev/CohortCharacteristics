@@ -90,6 +90,35 @@ tableCharacteristics <- function(result,
   # add default options
   .options <- defaultCharacteristicsOptions(.options)
 
+  # ensure results are nicely ordered
+  defaultVariableNames <- c("Number records", "Number subjects",
+                            "Cohort start date", "Cohort end date",
+                            "Sex",
+                            "Age",  "Age group",
+                            "Prior observation",
+                            "Future observation")
+  variableNames <- result |>
+    dplyr::select("variable_name") |>
+    dplyr::filter(!.data$variable_name %in% .env$defaultVariableNames) |>
+    dplyr::distinct() |>
+    dplyr::pull(variable_name)
+
+  variableLevels <- sort(result |>
+    dplyr::select("variable_level") |>
+    dplyr::filter(!is.na(.data$variable_level)) |>
+    dplyr::distinct() |>
+    dplyr::pull(variable_level))
+
+  result <- result |>
+    dplyr::mutate(variable_name = factor(.data$variable_name,
+                                         levels = c(defaultVariableNames,
+                                                    variableNames))) |>
+    dplyr::mutate(variable_level = factor(.data$variable_level,
+                                         levels = variableLevels)) |>
+    dplyr::arrange(.data$variable_name, .data$variable_level) |>
+    dplyr::mutate(variable_name = as.character(.data$variable_name)) |>
+    dplyr::mutate(variable_level = as.character(.data$variable_level))
+
   # format table
   result <- visOmopResults::formatTable(
     result = result,
