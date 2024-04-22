@@ -57,9 +57,11 @@ tableLargeScaleCharacteristics <- function(result,
                                            type = "gt",
                                            formatEstimateName = c("N (%)" = "<count> (<percentage>%)"),
                                            splitStrata = TRUE,
-                                           header = c("cdm name", "cohort name", "strata", "window name"),
-                                           topConcepts = 10,
+                                           header = c("cdm name", "cohort name",
+                                                      "strata", "window name"),
+                                           topConcepts = NULL,
                                            minCellCount = 5) {
+
   assertClass(result, "summarised_result")
   assertLogical(splitStrata, length = 1)
   if (is.character(header)) {
@@ -76,17 +78,12 @@ tableLargeScaleCharacteristics <- function(result,
       "No summarised_large_scale_characteristics records where found in this result object"
     )
   }
-  sets <- result |>
-    dplyr::filter(.data$variable_name == "settings") |>
-    dplyr::select("result_id", "estimate_name", "estimate_value") |>
-    tidyr::pivot_wider(names_from = "estimate_name", values_from = "estimate_value") |>
+  sets <- settings(result) |>
     dplyr::mutate("group" = paste0(
-      "Table: ", .data$table_name, "; Type: ", .data$type, "; Analysis: ",
-      .data$analysis
+      "Table: ", .data$table_name, " (", .data$type, " in window)"
     )) |>
     dplyr::select("result_id", "group")
   res <- result |>
-    dplyr::filter(.data$variable_name != "settings") |>
     omopgenerics::suppress(minCellCount = minCellCount) |>
     visOmopResults::splitGroup() |>
     visOmopResults::splitAdditional() |>
@@ -109,21 +106,27 @@ tableLargeScaleCharacteristics <- function(result,
     dplyr::distinct() |>
     dplyr::group_by(.data$group) |>
     dplyr::mutate("order_id" = dplyr::row_number()) |>
-    dplyr::ungroup() |>
-    dplyr::filter(.data$order_id <= .env$topConcepts) |>
-    dplyr::select(-"group")
+    dplyr::ungroup()
+  if(!is.null(topConcepts)){
+    top <- top |>
+    dplyr::filter(.data$order_id <= .env$topConcepts)
+  }
   res <- res |>
-    dplyr::inner_join(top, by = "concept_id") |>
+    dplyr::inner_join(top |>
+                        dplyr::select(-"group"),
+                      by = "concept_id")
+  res <- res |>
     visOmopResults::formatEstimateValue() |>
     visOmopResults::formatEstimateName(estimateNameFormat = formatEstimateName) |>
     orderWindow() |>
-    dplyr::arrange(!!!rlang::syms(c(
-      "cdm_name", "cohort_name", strataColumns, "group", "window_id",
-      "order_id"
-    ))) |>
     dplyr::mutate(
       "Concept" = paste0(.data$variable_name, " (", .data$concept_id, ")")
     ) |>
+    dplyr::arrange(!!!rlang::syms(c(
+      "cdm_name", "cohort_name", "Concept",
+      strataColumns, "group", "window_id",
+      "order_id"
+    ))) |>
     dplyr::select(dplyr::all_of(c(
       "group", "CDM name" = "cdm_name", "Cohort name" =  "cohort_name",
       strataColumns, "Concept", "Window" = "window_name", "estimate_value"

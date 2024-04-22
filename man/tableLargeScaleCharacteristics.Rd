@@ -10,7 +10,7 @@ tableLargeScaleCharacteristics(
   formatEstimateName = c(`N (\%)` = "<count> (<percentage>\%)"),
   splitStrata = TRUE,
   header = c("cdm name", "cohort name", "strata", "window name"),
-  topConcepts = 10,
+  topConcepts = NULL,
   minCellCount = 5
 )
 }
