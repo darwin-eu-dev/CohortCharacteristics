@@ -56,7 +56,7 @@ inst/doc
 .DS_Store
 .quarto
 
-extras/extra.R
+/extras/extras.R
 
 
 
