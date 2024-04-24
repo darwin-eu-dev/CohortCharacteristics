@@ -42,7 +42,7 @@
 #'   recordCohortAttrition("Restrict to cohort_end_date < 2020") |>
 #'   compute(temporary = FALSE, name = "cohort1")
 #'
-#' render_graph(plotCohortAttrition(attrition(cdm[["cohort1"]]), cohortId = 2))
+#' plotCohortAttrition(attrition(cdm[["cohort1"]]), cohortId = 2)
 #' }
 
 plotCohortAttrition <- function(x, cohortId) {
@@ -76,7 +76,7 @@ plotCohortAttrition <- function(x, cohortId) {
         w1 <- getWidthMainBox(xn)
 
         if(nrow(x) == 1){
-         xg <-  getSingleNode(xn)
+         xg <-  getSingleNode(xn,w1)
         }else{
           att <- validateReason(att)
 
@@ -211,7 +211,7 @@ getWidthMainBox <- function(xn){
   return(0.08*max(nchar(strsplit(xn$label[1], split = "\n")[[1]])))
 }
 
-getSingleNode <- function(xn){
+getSingleNode <- function(xn,w1){
   k <- 1
   xn$label[k] <- gsub("Qualifying events", "Initial events", xn$label[k])
   xg <- xg %>%
