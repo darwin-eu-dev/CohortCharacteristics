@@ -62,27 +62,49 @@ plotCohortAttrition <- function(x, cohortId) {
         dplyr::filter(.data$cohort_definition_id == .env$cohortId) |>
         dplyr::mutate_all(~as.character(.))
 
-      # Create table to be used in the graph
-      xn <- createLabels(x)
+        # Create table to be used in the graph
+        xn <- createLabels(x)
 
-      y <- selectLabels(xn)
-      xn  <- y$xn
-      att <- y$att
+        y <- selectLabels(xn)
+        xn  <- y$xn
+        att <- y$att
 
-      # Create graph
-      n  <- nrow(x)
-      xg <- DiagrammeR::create_graph()
+        # Create graph
+        n  <- nrow(x)
+        xg <- DiagrammeR::create_graph()
 
-      att <- validateReason(att)
-      h2  <- getHeightMiddleBox(att)
+        w1 <- getWidthMainBox(xn)
 
-      w1 <- getWidthMainBox(xn)
-      p1 <- getPositionMainBox(xn,n,h2)
+        if(nrow(x) == 1){
+          k <- 1
+          xn$label[k] <- gsub("Qualifying events", "Initial events", xn$label)
+          xg <- xg %>%
+            DiagrammeR::add_node(
+              label = xn$label[k],
+              node_aes = DiagrammeR::node_aes(
+                shape = "box",
+                x = 1,
+                width = w1,
+                y = 1,
+                height = ifelse(k == 1 | k == n, 0.6, 0.4),
+                fontsize = 11, fontcolor = "black",
+                fontname = "Calibri",
+                penwidth = ifelse(k == 1 | k == n, 2, 1),
+                color = "black",
+                fillcolor = "#F0F8FF"
+              )
+            )
+        }else{
+          att <- validateReason(att)
+          h2  <- getHeightMiddleBox(att)
 
-      w2 <- getWidthMiddleBox(att)
-      p2 <- getPositionMiddleBox(p1)
+          p1 <- getPositionMainBox(xn,n,h2)
 
-      xg <- getNodes(xn,att,n,xg,h2,w1,p1,w2,p2)
+          w2 <- getWidthMiddleBox(att)
+          p2 <- getPositionMiddleBox(p1)
+
+          xg <- getNodes(xn,att,n,xg,h2,w1,p1,w2,p2)
+        }
       }else{
         xg <- emptyTable(message)
       }
@@ -111,7 +133,6 @@ validateCohortId <- function(x, cohortId){
   }
   return(list("status" = status, "message" = message))
 }
-
 
 checkAttritionTable <- function(x){
   y <- c("cohort_definition_id","number_records","number_subjects",
