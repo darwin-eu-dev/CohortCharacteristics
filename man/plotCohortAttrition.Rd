@@ -34,6 +34,6 @@ cdm[["cohort1"]] <- cdm[["cohort1"]] |>
   recordCohortAttrition("Restrict to cohort_end_date < 2020") |>
   compute(temporary = FALSE, name = "cohort1")
 
-render_graph(plotCohortAttrition(attrition(cdm[["cohort1"]]), cohortId = 2))
+plotCohortAttrition(attrition(cdm[["cohort1"]]), cohortId = 2)
 }
 }
