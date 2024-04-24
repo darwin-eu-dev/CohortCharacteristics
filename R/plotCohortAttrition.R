@@ -76,31 +76,16 @@ plotCohortAttrition <- function(x, cohortId) {
         w1 <- getWidthMainBox(xn)
 
         if(nrow(x) == 1){
-          k <- 1
-          xn$label[k] <- gsub("Qualifying events", "Initial events", xn$label)
-          xg <- xg %>%
-            DiagrammeR::add_node(
-              label = xn$label[k],
-              node_aes = DiagrammeR::node_aes(
-                shape = "box",
-                x = 1,
-                width = w1,
-                y = 1,
-                height = ifelse(k == 1 | k == n, 0.6, 0.4),
-                fontsize = 11, fontcolor = "black",
-                fontname = "Calibri",
-                penwidth = ifelse(k == 1 | k == n, 2, 1),
-                color = "black",
-                fillcolor = "#F0F8FF"
-              )
-            )
+         xg <-  getSingleNode(xn)
         }else{
           att <- validateReason(att)
+
           h2  <- getHeightMiddleBox(att)
 
           p1 <- getPositionMainBox(xn,n,h2)
 
           w2 <- getWidthMiddleBox(att)
+
           p2 <- getPositionMiddleBox(p1)
 
           xg <- getNodes(xn,att,n,xg,h2,w1,p1,w2,p2)
@@ -115,7 +100,22 @@ plotCohortAttrition <- function(x, cohortId) {
     xg <- emptyTable(message)
   }
 
-  return(xg)
+  return(DiagrammeR::render_graph(xg))
+}
+
+checkAttritionTable <- function(x){
+  y <- c("cohort_definition_id","number_records","number_subjects",
+         "reason_id","reason","excluded_records","excluded_subjects") %in% colnames(x)
+
+  if(FALSE %in% y){
+    status = FALSE
+    message = "Attrition table does not contain all the columns required.\nPlease, ensure that the provided contains the following\ncolumns: cohort_definition_id, number_records, number_subjects,\nreason_id, reason, excluded_records, and excluded_subjects"
+  }else{
+    status = TRUE
+    message = ""
+  }
+
+  return(list("status" = status, "message" = message))
 }
 
 validateCohortId <- function(x, cohortId){
@@ -131,21 +131,6 @@ validateCohortId <- function(x, cohortId){
       message <- ""
     }
   }
-  return(list("status" = status, "message" = message))
-}
-
-checkAttritionTable <- function(x){
-  y <- c("cohort_definition_id","number_records","number_subjects",
-         "reason_id","reason","excluded_records","excluded_subjects") %in% colnames(x)
-
-  if(FALSE %in% y){
-    status = FALSE
-    message = "Attrition table does not contain all the columns required.\nPlease, ensure that the provided contains the following\ncolumns: cohort_definition_id, number_records, number_subjects,\nreason_id, reason, excluded_records, and excluded_subjects"
-  }else{
-    status = TRUE
-    message = ""
-  }
-
   return(list("status" = status, "message" = message))
 }
 
@@ -224,6 +209,27 @@ selectLabels <- function(xn){
 
 getWidthMainBox <- function(xn){
   return(0.08*max(nchar(strsplit(xn$label[1], split = "\n")[[1]])))
+}
+
+getSingleNode <- function(xn){
+  k <- 1
+  xn$label[k] <- gsub("Qualifying events", "Initial events", xn$label[k])
+  xg <- xg %>%
+    DiagrammeR::add_node(
+      label = xn$label[k],
+      node_aes = DiagrammeR::node_aes(
+        shape = "box",
+        x = 1,
+        width = w1,
+        y = 1,
+        height = 0.6,
+        fontsize = 11, fontcolor = "black",
+        fontname = "Calibri",
+        penwidth = 2,
+        color = "black",
+        fillcolor = "#F0F8FF"
+      )
+    )
 }
 
 getPositionMainBox <- function(xn,n,h2){
