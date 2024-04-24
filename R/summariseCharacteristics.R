@@ -48,6 +48,8 @@
 #' PatientProfiles::addConceptIntersectDays() to add variables to summarise.
 #' @param otherVariables Other variables contained in cohort that you want to be
 #' summarised.
+#' @param otherVariablesEstimates Name of the estimates for the otherVariables
+#' columns.
 #'
 #' @return A summary of the characteristics of the individuals.
 #'
@@ -95,7 +97,8 @@ summariseCharacteristics <- function(cohort,
                                      conceptIntersectCount = list(),
                                      conceptIntersectDate = list(),
                                      conceptIntersectDays = list(),
-                                     otherVariables = character()) {
+                                     otherVariables = character(),
+                                     otherVariablesEstimates = c("min", "q25", "median", "q75", "max", "count", "percentage")) {
   # check initial tables
   cdm <- omopgenerics::cdmReference(cohort)
   checkX(cohort)
@@ -347,37 +350,14 @@ summariseCharacteristics <- function(cohort,
   cohort <- cohort |> PatientProfiles::addCohortName()
 
   # detect other variables
-  x <- PatientProfiles::variableTypes(
-    cohort |> dplyr::select(dplyr::all_of(otherVariables))
-  )
-  datesVariables <- x |>
-    dplyr::filter(.data$variable_type == "date") |>
-    dplyr::pull("variable_name")
-  numericVariables <- x |>
-    dplyr::filter(.data$variable_type %in% c("numeric", "integer")) |>
-    dplyr::pull("variable_name")
-  binaryVariables <- numericVariables[
-    lapply(numericVariables, function(x) {
-      cohort |>
-        dplyr::select(dplyr::all_of(x)) |>
-        dplyr::distinct() |>
-        dplyr::pull() |>
-        binaryVariable()
-    }) |>
-      unlist()
-  ]
-  numericVariables  <- numericVariables[!numericVariables %in% binaryVariables]
-  categoricalVariables <- x |>
-    dplyr::filter(.data$variable_type == "categorical") |>
-    dplyr::pull("variable_name")
-  variables <- variables |>
-    updateVariables(
-      date = datesVariables,
-      numeric = numericVariables,
-      binary = binaryVariables,
-      categorical = categoricalVariables
-    )
   variables <- variables[lengths(variables) > 0]
+  estimates <- functions[names(variables)]
+  if (!is.list(otherVariables)) {
+    otherVariables <- list(otherVariables)
+  }
+  if (!is.list(otherVariablesEstimates)) {
+    otherVariablesEstimates <- list(otherVariablesEstimates)
+  }
 
   cli::cli_alert_info("summarising data")
   # summarise results
@@ -387,8 +367,8 @@ summariseCharacteristics <- function(cohort,
       PatientProfiles::summariseResult(
         group = list("cohort_name"),
         strata = strata,
-        variables = variables,
-        estimates = functions[names(variables)],
+        variables = c(variables, otherVariables),
+        estimates = c(estimates, otherVariablesEstimates),
         counts = counts
       ) |>
       PatientProfiles::addCdmName(cdm = cdm)
