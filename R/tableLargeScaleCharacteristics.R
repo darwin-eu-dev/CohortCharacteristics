@@ -117,6 +117,7 @@ tableLargeScaleCharacteristics <- function(result,
                       by = "concept_id")
   res <- res |>
     visOmopResults::formatEstimateValue() |>
+    dplyr::as_tibble() |>
     visOmopResults::formatEstimateName(estimateNameFormat = formatEstimateName) |>
     orderWindow() |>
     dplyr::mutate(

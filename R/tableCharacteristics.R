@@ -101,13 +101,13 @@ tableCharacteristics <- function(result,
     dplyr::select("variable_name") |>
     dplyr::filter(!.data$variable_name %in% .env$defaultVariableNames) |>
     dplyr::distinct() |>
-    dplyr::pull(variable_name)
+    dplyr::pull("variable_name")
 
   variableLevels <- sort(result |>
     dplyr::select("variable_level") |>
     dplyr::filter(!is.na(.data$variable_level)) |>
     dplyr::distinct() |>
-    dplyr::pull(variable_level))
+    dplyr::pull("variable_level"))
 
   result <- result |>
     dplyr::mutate(variable_name = factor(.data$variable_name,
