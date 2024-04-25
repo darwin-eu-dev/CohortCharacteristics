@@ -75,6 +75,7 @@ test_that("plotCohortTiming, boxplot", {
 
   CDMConnector::cdm_disconnect(cdm)
 })
+
 test_that("plotCohortTiming, density", {
   skip_on_cran()
   person <- dplyr::tibble(
@@ -167,6 +168,7 @@ test_that("plotCohortTiming, density", {
   #not sure why 41 to 150 does not have density
   CDMConnector::cdm_disconnect(cdm)
 })
+
 test_that("plotCohortOverlap", {
   skip_on_cran()
   person <- dplyr::tibble(
@@ -211,8 +213,7 @@ test_that("plotCohortOverlap", {
   expect_true("ggplot" %in% class(gg1))
   # expect_false("cohort_4" %in% gg1$data$cohort_name_reference)
 
-
-  gg2 <- plotCohortOverlap(overlap |> dplyr::filter(.data$variable_name == "number_subjects",
+  gg2 <- plotCohortOverlap(overlap |> dplyr::filter(.data$variable_level == "number_subjects",
                                                     .data$estimate_name == "percentage"),
                            facet = "cdm_name",
                            uniqueCombinations = TRUE)
@@ -230,7 +231,8 @@ test_that("plotCohortOverlap", {
 
   overlap2 <- summariseCohortOverlap(cdm$table,
                                      strata = list("age_group", c("age_group", "sex")))
-  gg3 <- plotCohortOverlap(overlap2 |> dplyr::filter(.data$variable_name == "number_subjects"),
+  
+  gg3 <- plotCohortOverlap(overlap2 |> dplyr::filter(.data$variable_level == "number_subjects"),
                            facet = c("strata_name", "strata_level"),
                            uniqueCombinations = TRUE)
   expect_true("ggplot" %in% class(gg3))
@@ -241,7 +243,7 @@ test_that("plotCohortOverlap", {
       overlap |>
         dplyr::mutate(cdm_name = "cdm2") |>
         dplyr::filter(.data$group_level != "cohort_2 &&& cohort_4")) |>
-    dplyr::filter(.data$variable_name == "number_subjects")
+    dplyr::filter(.data$variable_level == "number_subjects")
   gg4 <- plotCohortOverlap(overlap3,
                            facet = "cdm_name",
                            uniqueCombinations = FALSE,
@@ -251,6 +253,7 @@ test_that("plotCohortOverlap", {
 
   CDMConnector::cdm_disconnect(cdm)
 })
+
 test_that("plotCharacteristics", {
   skip_on_cran()
   person <- dplyr::tibble(
