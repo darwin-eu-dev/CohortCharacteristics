@@ -14,16 +14,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#' Summarise cohort counts of a cohort_table
+#' Summarise counts for cohorts in a cohort table
 #'
-#' @param cohort A cohort_table object.
-#' @param cohortId A cohort_definition_id to restrict, if NULL, all cohorts are
-#' used.
+#' @param cohort A cohort table in the cdm.
+#' @param cohortId A cohort definition id to restrict by. If NULL, all cohorts
+#' will be included.
 #'
 #' @export
 #'
-#' @return A summarised_result_object with the cohort counts summarised.
+#' @return  A summary of counts of the cohorts in the cohort table.
 #'
+#' @examples
+#' \donttest{
+#' library(CohortCharacteristics)
+#' cdm <- mockCohortCharacteristics()
+#' summariseCohortCount(cohort = cdm$cohort1) |> dplyr::glimpse()
+#' CDMConnector::cdmDisconnect(cdm = cdm)
+#' }
 summariseCohortCount <- function(cohort,
                                  cohortId = NULL) {
   assertClass(cohort, "cohort_table")

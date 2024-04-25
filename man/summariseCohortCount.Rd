@@ -2,19 +2,27 @@
 % Please edit documentation in R/summariseCohortCount.R
 \name{summariseCohortCount}
 \alias{summariseCohortCount}
-\title{Summarise cohort counts of a cohort_table}
+\title{Summarise counts for cohorts in a cohort table}
 \usage{
 summariseCohortCount(cohort, cohortId = NULL)
 }
 \arguments{
-\item{cohort}{A cohort_table object.}
+\item{cohort}{A cohort table in the cdm.}
 
-\item{cohortId}{A cohort_definition_id to restrict, if NULL, all cohorts are
-used.}
+\item{cohortId}{A cohort definition id to restrict by. If NULL, all cohorts
+will be included.}
 }
 \value{
-A summarised_result_object with the cohort counts summarised.
+A summary of counts of the cohorts in the cohort table.
 }
 \description{
-Summarise cohort counts of a cohort_table
+Summarise counts for cohorts in a cohort table
+}
+\examples{
+\donttest{
+library(CohortCharacteristics)
+cdm <- mockCohortCharacteristics()
+summariseCohortCount(cohort = cdm$cohort1) |> dplyr::glimpse()
+CDMConnector::cdmDisconnect(cdm = cdm)
+}
 }

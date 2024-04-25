@@ -2,19 +2,27 @@
 % Please edit documentation in R/summariseCohortAttrition.R
 \name{summariseCohortAttrition}
 \alias{summariseCohortAttrition}
-\title{Summarise attrition of a cohort_table}
+\title{Summarise attrition associated with cohorts in a cohort table}
 \usage{
 summariseCohortAttrition(cohort, cohortId = NULL)
 }
 \arguments{
-\item{cohort}{A cohort_table object.}
+\item{cohort}{A cohort table in the cdm.}
 
-\item{cohortId}{A cohort_definition_id to restrict, if NULL, all cohorts are
-used.}
+\item{cohortId}{A cohort definition id to restrict by. If NULL, all cohorts
+will be included.}
 }
 \value{
-A summarised_result_object with the attrition summarised.
+A summary of the attrition for the cohorts in the cohort table.
 }
 \description{
-Summarise attrition of a cohort_table
+Summarise attrition associated with cohorts in a cohort table
+}
+\examples{
+\donttest{
+library(CohortCharacteristics)
+cdm <- mockCohortCharacteristics()
+summariseCohortAttrition(cohort = cdm$cohort1) |> dplyr::glimpse()
+CDMConnector::cdmDisconnect(cdm = cdm)
+}
 }

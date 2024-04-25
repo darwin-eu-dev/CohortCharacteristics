@@ -2,7 +2,7 @@
 % Please edit documentation in R/summariseCohortTiming.R
 \name{summariseCohortTiming}
 \alias{summariseCohortTiming}
-\title{Summarise cohort timing}
+\title{Summarise timing between entries into cohorts in a cohort table}
 \usage{
 summariseCohortTiming(
   cohort,
@@ -16,31 +16,32 @@ summariseCohortTiming(
 \arguments{
 \item{cohort}{A cohort table in a cdm reference.}
 
-\item{cohortId}{Vector of cohort definition ids to include, if NULL, all
-cohort definition ids will be used.}
+\item{cohortId}{A cohort definition id to restrict by. If NULL, all cohorts
+will be included.}
 
-\item{strata}{List of the stratifications within each group to be considered.
-Must be column names in the cohort table provided.}
+\item{strata}{A list of variables to stratify results. These variables
+must have been added as additional columns in the cohort table.}
 
 \item{restrictToFirstEntry}{If TRUE only an individual's first entry per
 cohort will be considered. If FALSE all entries per individual will be
 considered.}
 
-\item{estimates}{Summary statistics for timing.}
+\item{estimates}{Summary statistics to use when summarising timing.}
 
-\item{density}{Get data for density plot.}
+\item{density}{TRUE or FALSE. If TRUE, estimates for a density plot will
+also be computed.}
 }
 \value{
-A summarised result.
+A summary of timing between entries into cohorts in the cohort table.
 }
 \description{
-Summarise cohort timing
+Summarise timing between entries into cohorts in a cohort table
 }
 \examples{
 \donttest{
 library(CohortCharacteristics)
 cdm <- CohortCharacteristics::mockCohortCharacteristics()
-results <- summariseCohortTiming(cdm$cohort2)
+summariseCohortTiming(cdm$cohort2) |> dplyr::glimpse()
 CDMConnector::cdmDisconnect(cdm = cdm)
 }
 

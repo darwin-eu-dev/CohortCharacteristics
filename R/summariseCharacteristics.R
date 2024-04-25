@@ -14,14 +14,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#' Summarise characteristics of individuals
+#' Summarise characteristics of cohorts in a cohort table
 #'
-#' @param cohort A cohort in the cdm.
-#' @param strata Stratification list.
+#' @param cohort A cohort table in the cdm.
+#' @param strata A list of variables to stratify results. These variables
+#' must have been added as additional columns in the cohort table.
 #' @param counts TRUE or FALSE. If TRUE, record and person counts will
 #' be produced.
-#' @param demographics Whether to summarise demographics data.
-#' @param ageGroup A list of age groups.
+#' @param demographics TRUE or FALSE. If TRUE, patient demographics (cohort
+#' start date, cohort end date, age, sex, prior observation, and future
+#' observation will be summarised).
+#' @param ageGroup A list of age groups to stratify results by.
 #' @param tableIntersectFlag A list of arguments that uses
 #' PatientProfiles::addTableIntersectFlag() to add variables to summarise.
 #' @param tableIntersectCount A list of arguments that uses
@@ -49,7 +52,7 @@
 #' @param otherVariables Other variables contained in cohort that you want to be
 #' summarised.
 #'
-#' @return A summary of the characteristics of the individuals.
+#' @return A summary of the characteristics of the cohorts in the cohort table.
 #'
 #' @export
 #'

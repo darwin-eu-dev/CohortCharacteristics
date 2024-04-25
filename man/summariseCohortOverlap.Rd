@@ -2,30 +2,30 @@
 % Please edit documentation in R/summariseCohortOverlap.R
 \name{summariseCohortOverlap}
 \alias{summariseCohortOverlap}
-\title{Summarise cohort overlap}
+\title{Summarise overalp between cohorts in a cohort table}
 \usage{
 summariseCohortOverlap(cohort, cohortId = NULL, strata = list())
 }
 \arguments{
-\item{cohort}{A cohort table in a cdm reference.}
+\item{cohort}{A cohort table in the cdm.}
 
-\item{cohortId}{Vector of cohort definition ids to include, if NULL, all
-cohort definition ids will be used.}
+\item{cohortId}{A cohort definition id to restrict by. If NULL, all cohorts
+will be included.}
 
-\item{strata}{List of the stratifications within each group to be considered.
-Must be column names in the cohort table provided.}
+\item{strata}{A list of variables to stratify results. These variables
+must have been added as additional columns in the cohort table.}
 }
 \value{
-A summarised result.
+A summary of overlap between cohorts in the cohort table.
 }
 \description{
-Summarise cohort overlap
+Summarise overalp between cohorts in a cohort table
 }
 \examples{
 \donttest{
 library(CohortCharacteristics)
 cdm <- CohortCharacteristics::mockCohortCharacteristics()
-results <- summariseCohortOverlap(cdm$cohort2)
+summariseCohortOverlap(cdm$cohort2) |> dplyr::glimpse()
 CDMConnector::cdmDisconnect(cdm = cdm)
 }
 }

@@ -14,22 +14,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#' Summarise cohort overlap
+#' Summarise overalp between cohorts in a cohort table
 #'
-#' @param cohort  A cohort table in a cdm reference.
-#' @param cohortId  Vector of cohort definition ids to include, if NULL, all
-#' cohort definition ids will be used.
-#' @param strata List of the stratifications within each group to be considered.
-#' Must be column names in the cohort table provided.
+#' @param cohort A cohort table in the cdm.
+#' @param cohortId A cohort definition id to restrict by. If NULL, all cohorts
+#' will be included.
+#' @param strata A list of variables to stratify results. These variables
+#' must have been added as additional columns in the cohort table.
 #'
-#' @return A summarised result.
+#' @return  A summary of overlap between cohorts in the cohort table.
+#'
 #' @export
 #'
 #' @examples
 #' \donttest{
 #' library(CohortCharacteristics)
 #' cdm <- CohortCharacteristics::mockCohortCharacteristics()
-#' results <- summariseCohortOverlap(cdm$cohort2)
+#' summariseCohortOverlap(cdm$cohort2) |> dplyr::glimpse()
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
 summariseCohortOverlap <- function(cohort,
