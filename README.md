@@ -1,5 +1,5 @@
 
-# CohortCharacteristics
+# CohortCharacteristics <img src="man/figures/logo.png" align="right" height="200"/>
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/CohortCharacteristics)](https://CRAN.R-project.org/package=CohortCharacteristics)
@@ -39,12 +39,12 @@ example Eunomia dataset.
 
 ``` r
 library(CDMConnector)
-library(PatientProfiles)
+library(CohortCharacteristics)
 library(dplyr)
 ```
 
 ``` r
-cdm <- mockPatientProfiles(patient_size = 1000, drug_exposure_size = 1000)
+cdm <- mockCohortCharacteristics(patient_size = 1000, drug_exposure_size = 1000)
 cdm
 ```
 
@@ -54,7 +54,7 @@ cohort1.
 ``` r
 cdm$cohort1
 #> # Source:   table<main.cohort1> [4 x 4]
-#> # Database: DuckDB v0.9.2 [eburn@Windows 10 x64:R 4.2.1/:memory:]
+#> # Database: DuckDB v0.10.0 [martics@Windows 10 x64:R 4.2.1/:memory:]
 #>   cohort_definition_id subject_id cohort_start_date cohort_end_date
 #>                  <dbl>      <dbl> <date>            <date>         
 #> 1                    1          1 2020-01-01        2020-04-01     
@@ -70,20 +70,17 @@ statistics on this cohort.
 cohort1_characteristics <- summariseCharacteristics(cdm$cohort1)
 cohort1_characteristics |> 
   glimpse()
-#> Rows: 90
-#> Columns: 16
+#> Rows: 70
+#> Columns: 13
 #> $ result_id        <int> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,…
 #> $ cdm_name         <chr> "PP_MOCK", "PP_MOCK", "PP_MOCK", "PP_MOCK", "PP_MOCK"…
-#> $ result_type      <chr> "summarised_characteristics", "summarised_characteris…
-#> $ package_name     <chr> "PatientProfiles", "PatientProfiles", "PatientProfile…
-#> $ package_version  <chr> "0.8.0", "0.8.0", "0.8.0", "0.8.0", "0.8.0", "0.8.0",…
 #> $ group_name       <chr> "cohort_name", "cohort_name", "cohort_name", "cohort_…
 #> $ group_level      <chr> "cohort_1", "cohort_2", "cohort_1", "cohort_2", "coho…
 #> $ strata_name      <chr> "overall", "overall", "overall", "overall", "overall"…
 #> $ strata_level     <chr> "overall", "overall", "overall", "overall", "overall"…
 #> $ variable_name    <chr> "Number records", "Number records", "Number subjects"…
 #> $ variable_level   <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
-#> $ estimate_name    <chr> "count", "count", "count", "count", "min", "min", "q0…
+#> $ estimate_name    <chr> "count", "count", "count", "count", "min", "min", "q2…
 #> $ estimate_type    <chr> "integer", "integer", "integer", "integer", "date", "…
 #> $ estimate_value   <chr> "3", "1", "2", "1", "2020-01-01", "2020-01-01", "2020…
 #> $ additional_name  <chr> "overall", "overall", "overall", "overall", "overall"…
@@ -94,20 +91,26 @@ And with another line we can create a table of these results.
 
 ``` r
 tableCharacteristics(cohort1_characteristics, type = "tibble")
-#> # A tibble: 22 × 6
-#>    `CDM name` `Variable name`   `Variable level` `Estimate name`   
-#>    <chr>      <chr>             <chr>            <chr>             
-#>  1 PP_MOCK    Number records    <NA>             N                 
-#>  2 PP_MOCK    Number subjects   <NA>             N                 
-#>  3 PP_MOCK    Cohort start date <NA>             Median [Q25 - Q75]
-#>  4 PP_MOCK    Cohort start date <NA>             [Q05 - Q95]       
-#>  5 PP_MOCK    Cohort start date <NA>             Range             
-#>  6 PP_MOCK    Cohort end date   <NA>             Median [Q25 - Q75]
-#>  7 PP_MOCK    Cohort end date   <NA>             [Q05 - Q95]       
-#>  8 PP_MOCK    Cohort end date   <NA>             Range             
-#>  9 PP_MOCK    Age               <NA>             Median [Q25 - Q75]
-#> 10 PP_MOCK    Age               <NA>             [Q05 - Q95]       
-#> # ℹ 12 more rows
+#> # A tibble: 17 × 6
+#>    `CDM name` `Variable name`    `Variable level` `Estimate name`   
+#>    <chr>      <chr>              <chr>            <chr>             
+#>  1 PP_MOCK    Number records     <NA>             N                 
+#>  2 PP_MOCK    Number subjects    <NA>             N                 
+#>  3 PP_MOCK    Cohort start date  <NA>             Median [Q25 - Q75]
+#>  4 PP_MOCK    Cohort start date  <NA>             Range             
+#>  5 PP_MOCK    Cohort end date    <NA>             Median [Q25 - Q75]
+#>  6 PP_MOCK    Cohort end date    <NA>             Range             
+#>  7 PP_MOCK    Sex                Female           N (%)             
+#>  8 PP_MOCK    Sex                Male             N (%)             
+#>  9 PP_MOCK    Age                <NA>             Median [Q25 - Q75]
+#> 10 PP_MOCK    Age                <NA>             Mean (SD)         
+#> 11 PP_MOCK    Age                <NA>             Range             
+#> 12 PP_MOCK    Prior observation  <NA>             Median [Q25 - Q75]
+#> 13 PP_MOCK    Prior observation  <NA>             Mean (SD)         
+#> 14 PP_MOCK    Prior observation  <NA>             Range             
+#> 15 PP_MOCK    Future observation <NA>             Median [Q25 - Q75]
+#> 16 PP_MOCK    Future observation <NA>             Mean (SD)         
+#> 17 PP_MOCK    Future observation <NA>             Range             
 #> # ℹ 2 more variables: `[header]Cohort name\n[header_level]Cohort 1` <chr>,
 #> #   `[header]Cohort name\n[header_level]Cohort 2` <chr>
 ```
