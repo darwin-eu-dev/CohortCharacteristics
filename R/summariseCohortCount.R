@@ -25,7 +25,7 @@
 #' @return A summarised_result_object with the cohort counts summarised.
 #'
 summariseCohortCount <- function(cohort,
-                                cohortId = NULL) {
+                                 cohortId = NULL) {
   assertClass(cohort, "cohort_table")
   assertNumeric(cohortId, integerish = TRUE, min = 1, null = TRUE)
 
@@ -38,11 +38,9 @@ summaryInternal <- function(cohort, cohortId, resultType) {
     res <- res |>
       visOmopResults::filterSettings(.data$cohort_definition_id %in% .env$cohortId)
   }
-  if (!is.null(resultType)) {
-    res <- res |>
-      visOmopResults::filterSettings(.data$result_type %in% .env$resultType) |>
-      updateId()
-  }
+  res <- res |>
+    visOmopResults::filterSettings(.data$result_type %in% .env$resultType) |>
+    updateId()
   return(res)
 }
 updateId <- function(res) {
