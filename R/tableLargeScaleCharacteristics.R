@@ -26,7 +26,6 @@
 #' columns.
 #' @param header Specify the headers of the table.
 #' @param topConcepts Number of concepts to restrict the table.
-#' @param minCellCount Minimum number of counts to display.
 #'
 #' @export
 #'
@@ -59,8 +58,7 @@ tableLargeScaleCharacteristics <- function(result,
                                            splitStrata = TRUE,
                                            header = c("cdm name", "cohort name",
                                                       "strata", "window name"),
-                                           topConcepts = NULL,
-                                           minCellCount = 5) {
+                                           topConcepts = NULL) {
 
   assertClass(result, "summarised_result")
   assertLogical(splitStrata, length = 1)
@@ -84,7 +82,6 @@ tableLargeScaleCharacteristics <- function(result,
     )) |>
     dplyr::select("result_id", "group")
   res <- result |>
-    omopgenerics::suppress(minCellCount = minCellCount) |>
     visOmopResults::splitGroup() |>
     visOmopResults::splitAdditional() |>
     dplyr::inner_join(sets, by = "result_id") |>

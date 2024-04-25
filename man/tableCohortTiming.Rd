@@ -13,7 +13,6 @@ tableCohortTiming(
   header = c("strata"),
   split = c("group", "strata", "additional"),
   groupColumn = NULL,
-  minCellCount = 5,
   excludeColumns = c("result_id", "estimate_type", "variable_level"),
   .options = list()
 )
@@ -37,8 +36,6 @@ in order. Allowed are: `cdm_name`, `group`, `strata`, `additional`,
 "strata", "additional"), or an empty character vector to not split.}
 
 \item{groupColumn}{Column to use as group labels.}
-
-\item{minCellCount}{Counts below which results will be clouded.}
 
 \item{excludeColumns}{Columns to drop from the output table.}
 

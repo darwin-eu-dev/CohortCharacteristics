@@ -29,7 +29,6 @@
 #' @param split A vector containing the name-level groups to split ("group",
 #' "strata", "additional"), or an empty character vector to not split.
 #' @param groupColumn Column to use as group labels.
-#' @param minCellCount Counts below which results will be clouded.
 #' @param excludeColumns Columns to drop from the output table.
 #' @param .options Named list with additional formatting options.
 #' CohortCharacteristics::optionsTableCharacteristics() shows allowed arguments and
@@ -65,7 +64,6 @@ tableCharacteristics <- function(result,
                                  header = c("group"),
                                  split = c("group", "strata"),
                                  groupColumn = NULL,
-                                 minCellCount = 5,
                                  excludeColumns = c(
                                    "result_id", "estimate_type",
                                    "additional_name", "additional_level"
@@ -127,7 +125,6 @@ tableCharacteristics <- function(result,
     groupColumn = groupColumn,
     split = split,
     type = type,
-    minCellCount = minCellCount,
     excludeColumns = excludeColumns,
     .options = .options)
 

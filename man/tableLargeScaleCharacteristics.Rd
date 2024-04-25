@@ -10,8 +10,7 @@ tableLargeScaleCharacteristics(
   formatEstimateName = c(`N (\%)` = "<count> (<percentage>\%)"),
   splitStrata = TRUE,
   header = c("cdm name", "cohort name", "strata", "window name"),
-  topConcepts = NULL,
-  minCellCount = 5
+  topConcepts = NULL
 )
 }
 \arguments{
@@ -28,8 +27,6 @@ columns.}
 \item{header}{Specify the headers of the table.}
 
 \item{topConcepts}{Number of concepts to restrict the table.}
-
-\item{minCellCount}{Minimum number of counts to display.}
 }
 \value{
 A formatted table.
