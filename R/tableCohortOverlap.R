@@ -67,10 +67,10 @@ tableCohortOverlap  <- function(result,
 
   result <- result %>%
     dplyr::mutate(
-      variable_level = dplyr::case_when(
-        variable_level == "overlap" ~ "in_both_cohorts",
-        variable_level == "only_in_comparator" ~ "only_in_comparator_cohort",
-        variable_level == "only_in_reference" ~ "only_in_reference_cohort"
+      variable_name = dplyr::case_when(
+        variable_name == "overlap" ~ "in_both_cohorts",
+        variable_name == "comparator" ~ "only_in_comparator_cohort",
+        variable_name == "reference" ~ "only_in_reference_cohort"
       )
     )
 
@@ -80,25 +80,31 @@ tableCohortOverlap  <- function(result,
       visOmopResults::splitGroup()
     x <- x |>
       getUniqueCombinations(order = sort(unique(x$cohort_name_reference))) |>
-      dplyr::mutate(variable_level = factor(.data$variable_level,
+      dplyr::mutate(variable_name = factor(.data$variable_name,
                                             levels = c("only_in_reference_cohort",
                                                        "in_both_cohorts",
                                                        "only_in_comparator_cohort"))) |>
       dplyr::arrange(dplyr::across(dplyr::all_of(
         c("result_id", "cdm_name", "cohort_name_reference", "cohort_name_comparator", "strata_name", "strata_level", "variable_name", "variable_level")
       ))) |>
-      dplyr::mutate(variable_level = as.character(.data$variable_level)) |>
+      dplyr::mutate(
+        variable_name = as.character(.data$variable_name),
+        variable_level = NA_character_
+      ) |>
       visOmopResults::uniteGroup(cols = c("cohort_name_reference", "cohort_name_comparator"))
   } else {
     x <- result |>
-      dplyr::mutate(variable_level = factor(.data$variable_level,
+      dplyr::mutate(variable_name = factor(.data$variable_name,
                                             levels = c("only_in_reference_cohort",
                                                        "in_both_cohorts",
                                                        "only_in_comparator_cohort"))) |>
       dplyr::arrange(dplyr::across(dplyr::all_of(
         c("result_id", "cdm_name", "group_name", "group_level", "strata_name", "strata_level", "variable_name", "variable_level")
       ))) |>
-      dplyr::mutate(variable_level = as.character(.data$variable_level))
+      dplyr::mutate(
+        variable_name = as.character(.data$variable_name),
+        variable_level = NA_character_
+      )
   }
 
   # format table
