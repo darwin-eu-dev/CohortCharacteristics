@@ -4,7 +4,7 @@
 \alias{plotCohortAttrition}
 \title{create a ggplot from the output of summariseLargeScaleCharacteristics.}
 \usage{
-plotCohortAttrition(x, cohortId)
+plotCohortAttrition(x, cohortId = NULL)
 }
 \arguments{
 \item{x}{attrition table}

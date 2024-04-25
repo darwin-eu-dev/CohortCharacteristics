@@ -45,7 +45,7 @@
 #' plotCohortAttrition(attrition(cdm[["cohort1"]]), cohortId = 2)
 #' }
 
-plotCohortAttrition <- function(x, cohortId) {
+plotCohortAttrition <- function(x, cohortId = NULL) {
 
   y <- checkAttritionTable(x)
   status  <- y$status
@@ -57,7 +57,9 @@ plotCohortAttrition <- function(x, cohortId) {
       status  <- y$status
       message <- y$message
       if(status){
-      # Turn everything as a character
+        cohortId <- getCohortId(x,cohortId)
+
+        # Turn everything as a character
       x <- x |>
         dplyr::filter(.data$cohort_definition_id == .env$cohortId) |>
         dplyr::mutate_all(~as.character(.))
@@ -76,7 +78,7 @@ plotCohortAttrition <- function(x, cohortId) {
         w1 <- getWidthMainBox(xn)
 
         if(nrow(x) == 1){
-         xg <-  getSingleNode(xn,w1)
+         xg <-  getSingleNode(xg,xn,w1)
         }else{
           att <- validateReason(att)
 
@@ -119,6 +121,9 @@ checkAttritionTable <- function(x){
 }
 
 validateCohortId <- function(x, cohortId){
+  if(is.null(cohortId)){
+    cohortId <- x$cohort_definition_id |> unique()
+  }
   if(length(cohortId) > 1){
     status <- FALSE
     message <- "Please, select only one cohort_definition_id value."
@@ -132,6 +137,13 @@ validateCohortId <- function(x, cohortId){
     }
   }
   return(list("status" = status, "message" = message))
+}
+
+getCohortId <- function(x, cohortId){
+  if(is.null(cohortId)){
+    cohortId <- x$cohort_definition_id |> unique()
+  }
+  return(cohortId)
 }
 
 emptyTable <- function(message){
@@ -211,7 +223,7 @@ getWidthMainBox <- function(xn){
   return(0.08*max(nchar(strsplit(xn$label[1], split = "\n")[[1]])))
 }
 
-getSingleNode <- function(xn,w1){
+getSingleNode <- function(xg, xn,w1){
   k <- 1
   xn$label[k] <- gsub("Qualifying events", "Initial events", xn$label[k])
   xg <- xg %>%
