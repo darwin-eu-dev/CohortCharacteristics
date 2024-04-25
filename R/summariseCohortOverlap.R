@@ -228,6 +228,7 @@ summariseCohortOverlap <- function(cohort,
         paste0("only_in_", .data$variable_level), .data$variable_level
       )
     ) |>
+    dplyr::mutate("variable_name" = "num subjects") |>
     omopgenerics::newSummarisedResult()
 
   return(overlap)
