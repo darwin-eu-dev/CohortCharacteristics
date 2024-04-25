@@ -46,12 +46,9 @@ plotCohortOverlap <- function(result,
   checkmate::assertLogical(uniqueCombinations)
 
   overlapLabel <- "{cohort_name_reference} &&& {cohort_name_comparator}"
-  colorVars <- "variable_level"
+  colorVars <- "variable_name"
   facetVarX <- NULL
   facetVarY <- NULL
-
-  overlapLabel <- "{cohort_name_reference} &&& {cohort_name_comparator}"
-  colorVars <- "variable_level"
 
   if(is.null(.options[["facetNcols"]])){
     .options[["facetNcols"]] <- 1
@@ -84,19 +81,19 @@ plotCohortOverlap <- function(result,
 
   data_to_plot <- data_to_plot |>
     dplyr::mutate(
-      variable_level = dplyr::case_when(
-        .data$variable_level == "overlap" ~ "in_both_cohorts",
-        .data$variable_level == "only_in_comparator" ~ "only_in_comparator_cohort",
-        .data$variable_level == "only_in_reference" ~ "only_in_reference_cohort"
+      variable_name = dplyr::case_when(
+        .data$variable_name == "overlap" ~ "in_both_cohorts",
+        .data$variable_name == "comparator" ~ "only_in_comparator_cohort",
+        .data$variable_name == "reference" ~ "only_in_reference_cohort"
       )
     ) |>
-    dplyr::mutate(variable_level = stringr::str_replace_all(.data$variable_level,
+    dplyr::mutate(variable_name = stringr::str_replace_all(.data$variable_name,
                                                             pattern = "_",
                                                             replacement = " "
     )) |>
-    dplyr::mutate(variable_level =
-                    stringr::str_to_sentence(.data$variable_level)) |>
-    dplyr::mutate(variable_level = factor(.data$variable_level,
+    dplyr::mutate(variable_name =
+                    stringr::str_to_sentence(.data$variable_name)) |>
+    dplyr::mutate(variable_name = factor(.data$variable_name,
                                              levels = c(
                                                "Only in comparator cohort",
                                                "In both cohorts",
