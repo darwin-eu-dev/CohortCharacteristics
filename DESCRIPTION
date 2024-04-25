@@ -80,4 +80,5 @@ Config/testthat/parallel: true
 VignetteBuilder: knitr
 Remotes:
     oxford-pharmacoepi/visOmopResults,
-    darwin-eu-dev/omopgenerics
+    darwin-eu-dev/omopgenerics,
+    darwin-eu-dev/CDMConnector
