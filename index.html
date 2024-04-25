@@ -7,12 +7,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="Summarise and visualise the characteristics of patients in data mapped to the Observational Medical Outcomes Partnership (OMOP) common data model (CDM).">
 <title>Summarise and Visualise Characteristics of Patients in the OMOP CDM • CohortCharacteristics</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="apple-touch-icon-120x120.png">
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="apple-touch-icon-76x76.png">
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="apple-touch-icon-60x60.png">
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js" integrity="sha512-7O5pXpc0oCRrxk8RUfDYFgn0nO1t+jLuIOQdOMRp4APB7uZ4vSjspzp5y6YDtDs4VzUSTbWzBFZ/LKJhnyFOKw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Summarise and Visualise Characteristics of Patients in the OMOP CDM">
 <meta property="og:description" content="Summarise and visualise the characteristics of patients in data mapped to the Observational Medical Outcomes Partnership (OMOP) common data model (CDM).">
+<meta property="og:image" content="https://darwin-eu-dev.github.io/CohortCharacteristics/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -67,8 +74,11 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="cohortcharacteristics">CohortCharacteristics<a class="anchor" aria-label="anchor" href="#cohortcharacteristics"></a>
-</h1></div>
+<div class="page-header">
+<img src="logo.png" class="logo" alt=""><h1 id="cohortcharacteristics-">CohortCharacteristics 
+<a class="anchor" aria-label="anchor" href="#cohortcharacteristics-"></a>
+</h1>
+</div>
 <p><a href="https://CRAN.R-project.org/package=CohortCharacteristics" class="external-link"><img src="https://www.r-pkg.org/badges/version/CohortCharacteristics" alt="CRAN status"></a> <a href="https://app.codecov.io/github/darwin-eu-dev/CohortCharacteristics?branch=main" class="external-link"><img src="https://codecov.io/github/darwin-eu-dev/CohortCharacteristics/coverage.svg?branch=main" alt="codecov.io"></a> <a href="https://github.com/darwin-eu-dev/CohortCharacteristics/actions" class="external-link"><img src="https://github.com/darwin-eu-dev/CohortCharacteristics/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a> <a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/Lifecycle-Experimental-339999" alt="Lifecycle:Experimental"></a></p>
 <div class="section level2">
 <h2 id="package-overview">Package overview<a class="anchor" aria-label="anchor" href="#package-overview"></a>
@@ -92,16 +102,16 @@
 <p>The CohortCharacteristics package is designed to work with data in the OMOP CDM format, so our first step is to create a reference to the data using the CDMConnector package. For this example we will work with the example Eunomia dataset.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://darwin-eu.github.io/CDMConnector/" class="external-link">CDMConnector</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://darwin-eu-dev.github.io/PatientProfiles/" class="external-link">PatientProfiles</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://darwin-eu-dev.github.io/CohortCharacteristics/">CohortCharacteristics</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">cdm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://darwin-eu-dev.github.io/PatientProfiles/reference/mockPatientProfiles.html" class="external-link">mockPatientProfiles</a></span><span class="op">(</span>patient_size <span class="op">=</span> <span class="fl">1000</span>, drug_exposure_size <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">cdm</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mockCohortCharacteristics.html">mockCohortCharacteristics</a></span><span class="op">(</span>patient_size <span class="op">=</span> <span class="fl">1000</span>, drug_exposure_size <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span>
 <span><span class="va">cdm</span></span></code></pre></div>
 <p>We can see that in this example data we have a cohort table called cohort1.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cdm</span><span class="op">$</span><span class="va">cohort1</span></span>
 <span><span class="co">#&gt; # Source:   table&lt;main.cohort1&gt; [4 x 4]</span></span>
-<span><span class="co">#&gt; # Database: DuckDB v0.9.2 [eburn@Windows 10 x64:R 4.2.1/:memory:]</span></span>
+<span><span class="co">#&gt; # Database: DuckDB v0.10.0 [martics@Windows 10 x64:R 4.2.1/:memory:]</span></span>
 <span><span class="co">#&gt;   cohort_definition_id subject_id cohort_start_date cohort_end_date</span></span>
 <span><span class="co">#&gt;                  &lt;dbl&gt;      &lt;dbl&gt; &lt;date&gt;            &lt;date&gt;         </span></span>
 <span><span class="co">#&gt; 1                    1          1 2020-01-01        2020-04-01     </span></span>
@@ -113,20 +123,17 @@
 <code class="sourceCode R"><span><span class="va">cohort1_characteristics</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/summariseCharacteristics.html">summariseCharacteristics</a></span><span class="op">(</span><span class="va">cdm</span><span class="op">$</span><span class="va">cohort1</span><span class="op">)</span></span>
 <span><span class="va">cohort1_characteristics</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Rows: 90</span></span>
-<span><span class="co">#&gt; Columns: 16</span></span>
+<span><span class="co">#&gt; Rows: 70</span></span>
+<span><span class="co">#&gt; Columns: 13</span></span>
 <span><span class="co">#&gt; $ result_id        &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,…</span></span>
 <span><span class="co">#&gt; $ cdm_name         &lt;chr&gt; "PP_MOCK", "PP_MOCK", "PP_MOCK", "PP_MOCK", "PP_MOCK"…</span></span>
-<span><span class="co">#&gt; $ result_type      &lt;chr&gt; "summarised_characteristics", "summarised_characteris…</span></span>
-<span><span class="co">#&gt; $ package_name     &lt;chr&gt; "PatientProfiles", "PatientProfiles", "PatientProfile…</span></span>
-<span><span class="co">#&gt; $ package_version  &lt;chr&gt; "0.8.0", "0.8.0", "0.8.0", "0.8.0", "0.8.0", "0.8.0",…</span></span>
 <span><span class="co">#&gt; $ group_name       &lt;chr&gt; "cohort_name", "cohort_name", "cohort_name", "cohort_…</span></span>
 <span><span class="co">#&gt; $ group_level      &lt;chr&gt; "cohort_1", "cohort_2", "cohort_1", "cohort_2", "coho…</span></span>
 <span><span class="co">#&gt; $ strata_name      &lt;chr&gt; "overall", "overall", "overall", "overall", "overall"…</span></span>
 <span><span class="co">#&gt; $ strata_level     &lt;chr&gt; "overall", "overall", "overall", "overall", "overall"…</span></span>
 <span><span class="co">#&gt; $ variable_name    &lt;chr&gt; "Number records", "Number records", "Number subjects"…</span></span>
 <span><span class="co">#&gt; $ variable_level   &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…</span></span>
-<span><span class="co">#&gt; $ estimate_name    &lt;chr&gt; "count", "count", "count", "count", "min", "min", "q0…</span></span>
+<span><span class="co">#&gt; $ estimate_name    &lt;chr&gt; "count", "count", "count", "count", "min", "min", "q2…</span></span>
 <span><span class="co">#&gt; $ estimate_type    &lt;chr&gt; "integer", "integer", "integer", "integer", "date", "…</span></span>
 <span><span class="co">#&gt; $ estimate_value   &lt;chr&gt; "3", "1", "2", "1", "2020-01-01", "2020-01-01", "2020…</span></span>
 <span><span class="co">#&gt; $ additional_name  &lt;chr&gt; "overall", "overall", "overall", "overall", "overall"…</span></span>
@@ -134,20 +141,26 @@
 <p>And with another line we can create a table of these results.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/tableCharacteristics.html">tableCharacteristics</a></span><span class="op">(</span><span class="va">cohort1_characteristics</span>, type <span class="op">=</span> <span class="st">"tibble"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 22 × 6</span></span>
-<span><span class="co">#&gt;    `CDM name` `Variable name`   `Variable level` `Estimate name`   </span></span>
-<span><span class="co">#&gt;    &lt;chr&gt;      &lt;chr&gt;             &lt;chr&gt;            &lt;chr&gt;             </span></span>
-<span><span class="co">#&gt;  1 PP_MOCK    Number records    &lt;NA&gt;             N                 </span></span>
-<span><span class="co">#&gt;  2 PP_MOCK    Number subjects   &lt;NA&gt;             N                 </span></span>
-<span><span class="co">#&gt;  3 PP_MOCK    Cohort start date &lt;NA&gt;             Median [Q25 - Q75]</span></span>
-<span><span class="co">#&gt;  4 PP_MOCK    Cohort start date &lt;NA&gt;             [Q05 - Q95]       </span></span>
-<span><span class="co">#&gt;  5 PP_MOCK    Cohort start date &lt;NA&gt;             Range             </span></span>
-<span><span class="co">#&gt;  6 PP_MOCK    Cohort end date   &lt;NA&gt;             Median [Q25 - Q75]</span></span>
-<span><span class="co">#&gt;  7 PP_MOCK    Cohort end date   &lt;NA&gt;             [Q05 - Q95]       </span></span>
-<span><span class="co">#&gt;  8 PP_MOCK    Cohort end date   &lt;NA&gt;             Range             </span></span>
-<span><span class="co">#&gt;  9 PP_MOCK    Age               &lt;NA&gt;             Median [Q25 - Q75]</span></span>
-<span><span class="co">#&gt; 10 PP_MOCK    Age               &lt;NA&gt;             [Q05 - Q95]       </span></span>
-<span><span class="co">#&gt; # ℹ 12 more rows</span></span>
+<span><span class="co">#&gt; # A tibble: 17 × 6</span></span>
+<span><span class="co">#&gt;    `CDM name` `Variable name`    `Variable level` `Estimate name`   </span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;      &lt;chr&gt;              &lt;chr&gt;            &lt;chr&gt;             </span></span>
+<span><span class="co">#&gt;  1 PP_MOCK    Number records     &lt;NA&gt;             N                 </span></span>
+<span><span class="co">#&gt;  2 PP_MOCK    Number subjects    &lt;NA&gt;             N                 </span></span>
+<span><span class="co">#&gt;  3 PP_MOCK    Cohort start date  &lt;NA&gt;             Median [Q25 - Q75]</span></span>
+<span><span class="co">#&gt;  4 PP_MOCK    Cohort start date  &lt;NA&gt;             Range             </span></span>
+<span><span class="co">#&gt;  5 PP_MOCK    Cohort end date    &lt;NA&gt;             Median [Q25 - Q75]</span></span>
+<span><span class="co">#&gt;  6 PP_MOCK    Cohort end date    &lt;NA&gt;             Range             </span></span>
+<span><span class="co">#&gt;  7 PP_MOCK    Sex                Female           N (%)             </span></span>
+<span><span class="co">#&gt;  8 PP_MOCK    Sex                Male             N (%)             </span></span>
+<span><span class="co">#&gt;  9 PP_MOCK    Age                &lt;NA&gt;             Median [Q25 - Q75]</span></span>
+<span><span class="co">#&gt; 10 PP_MOCK    Age                &lt;NA&gt;             Mean (SD)         </span></span>
+<span><span class="co">#&gt; 11 PP_MOCK    Age                &lt;NA&gt;             Range             </span></span>
+<span><span class="co">#&gt; 12 PP_MOCK    Prior observation  &lt;NA&gt;             Median [Q25 - Q75]</span></span>
+<span><span class="co">#&gt; 13 PP_MOCK    Prior observation  &lt;NA&gt;             Mean (SD)         </span></span>
+<span><span class="co">#&gt; 14 PP_MOCK    Prior observation  &lt;NA&gt;             Range             </span></span>
+<span><span class="co">#&gt; 15 PP_MOCK    Future observation &lt;NA&gt;             Median [Q25 - Q75]</span></span>
+<span><span class="co">#&gt; 16 PP_MOCK    Future observation &lt;NA&gt;             Mean (SD)         </span></span>
+<span><span class="co">#&gt; 17 PP_MOCK    Future observation &lt;NA&gt;             Range             </span></span>
 <span><span class="co">#&gt; # ℹ 2 more variables: `[header]Cohort name\n[header_level]Cohort 1` &lt;chr&gt;,</span></span>
 <span><span class="co">#&gt; #   `[header]Cohort name\n[header_level]Cohort 2` &lt;chr&gt;</span></span></code></pre></div>
 <p>CohortCharacteristics provides a number of other functions to help summarise cohort tables and present the results in publication-ready tables and figures. See the vignettes for more details.</p>
