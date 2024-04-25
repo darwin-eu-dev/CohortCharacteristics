@@ -79,7 +79,10 @@
     <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/summariseCharacteristics.html</loc>
   </url>
   <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/summariseCohortCounts.html</loc>
+    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/summariseCohortAttrition.html</loc>
+  </url>
+  <url>
+    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/summariseCohortCount.html</loc>
   </url>
   <url>
     <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/summariseCohortOverlap.html</loc>
