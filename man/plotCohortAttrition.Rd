@@ -19,21 +19,22 @@ A dgr_graph
 }
 \examples{
 \donttest{
-library(CDMConnector)
+library(omopgenerics)
 library(DrugUtilisation)
 library(dplyr)
 library(DiagrammeR)
-library(PatientProfiles)
 
 cdm <- mockDrugUtilisation(n = 1000)
 
 cdm[["cohort1"]] <- cdm[["cohort1"]] |>
- filter(year(cohort_start_date) >= 2000) |>
+  filter(year(cohort_start_date) >= 2000) |>
   recordCohortAttrition("Restrict to cohort_start_date >= 2000") |>
   filter(year(cohort_end_date) < 2020) |>
   recordCohortAttrition("Restrict to cohort_end_date < 2020") |>
   compute(temporary = FALSE, name = "cohort1")
 
-plotCohortAttrition(attrition(cdm[["cohort1"]]), cohortId = 2)
+cdm$cohort1 |>
+  summariseCohortAttrition() |>
+  plotCohortAttrition(cohortId = 2)
 }
 }
