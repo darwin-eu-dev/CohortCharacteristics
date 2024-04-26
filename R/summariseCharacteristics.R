@@ -17,6 +17,8 @@
 #' Summarise characteristics of cohorts in a cohort table
 #'
 #' @param cohort A cohort table in the cdm.
+#' @param cohortId Vector of cohort definition ids to include. If NULL all
+#' cohort will be selected.
 #' @param strata A list of variables to stratify results. These variables
 #' must have been added as additional columns in the cohort table.
 #' @param counts TRUE or FALSE. If TRUE, record and person counts will
@@ -82,6 +84,7 @@
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
 summariseCharacteristics <- function(cohort,
+                                     cohortId = NULL,
                                      strata = list(),
                                      counts = TRUE,
                                      demographics = TRUE,
@@ -122,6 +125,21 @@ summariseCharacteristics <- function(cohort,
   conceptIntersectCount <- assertIntersect(conceptIntersectCount)
   conceptIntersectDate <- assertIntersect(conceptIntersectDate)
   conceptIntersectDays <- assertIntersect(conceptIntersectDays)
+  assertNumeric(cohortId, integerish = TRUE, null = TRUE)
+  ids <- omopgenerics::settings(cohort)$cohort_definition_id
+  if (is.null(cohortId)) {
+    cohortId <- ids
+  } else {
+    indNot <- !cohortId %in% ids
+    if (sum(indNot)>0) {
+      if (sum(indNot) == length(cohortId)) {
+        cli::cli_abort("No valid cohort ids supplied.")
+      } else {
+        cli::cli_warn("{paste0(cohortId[indNot], collapse = ', ')} {?is/are} not in the cohort table and won't be used.")
+        cohortId <- cohortId[!indNot]
+      }
+    }
+  }
 
   # return empty result if no analyses chosen
   if (length(strata) == 0 &
@@ -156,6 +174,7 @@ summariseCharacteristics <- function(cohort,
 
   # select necessary variables
   cohort <- cohort |>
+    dplyr::filter(.data$cohort_definition_id %in% .env$cohortId) %>%
     dplyr::select(
       "cohort_definition_id", "subject_id", "cohort_start_date",
       "cohort_end_date", dplyr::all_of(unique(unlist(strata))),

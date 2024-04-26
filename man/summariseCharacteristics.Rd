@@ -6,6 +6,7 @@
 \usage{
 summariseCharacteristics(
   cohort,
+  cohortId = NULL,
   strata = list(),
   counts = TRUE,
   demographics = TRUE,
@@ -27,6 +28,9 @@ summariseCharacteristics(
 }
 \arguments{
 \item{cohort}{A cohort table in the cdm.}
+
+\item{cohortId}{Vector of cohort definition ids to include. If NULL all
+cohort will be selected.}
 
 \item{strata}{A list of variables to stratify results. These variables
 must have been added as additional columns in the cohort table.}
