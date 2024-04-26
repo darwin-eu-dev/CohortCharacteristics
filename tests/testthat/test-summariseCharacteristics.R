@@ -453,8 +453,10 @@ test_that("test cohort id", {
   expect_true(unique(result$group_level) == "exposed")
   expect_identical(
     resultAll |>
-      dplyr::filter(group_level == "exposed"),
-    result
+      dplyr::filter(group_level == "exposed") |>
+      dplyr::arrange(.data$variable_name, .data$estimate_name, .data$estimate_value),
+    result |>
+      dplyr::arrange(.data$variable_name, .data$estimate_name, .data$estimate_value)
   )
 
   expect_warning(
