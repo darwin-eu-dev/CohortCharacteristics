@@ -53,8 +53,7 @@ Suggests:
     tictoc,
     withr,
     scales,
-    DrugUtilisation,
-    CohortCharacteristics
+    DrugUtilisation
 Imports: 
     CDMConnector,
     dplyr,
@@ -82,5 +81,4 @@ VignetteBuilder: knitr
 Remotes:
     darwin-eu/visOmopResults,
     darwin-eu-dev/omopgenerics,
-    darwin-eu/CDMConnector,
-    darwin-eu-dev/CohortCharacteristics
+    darwin-eu/CDMConnector
