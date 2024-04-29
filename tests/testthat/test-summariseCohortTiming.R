@@ -1,5 +1,4 @@
 test_that("summariseCohortTiming", {
-  skip_on_cran()
   person <- dplyr::tibble(
     person_id = 1:20,
     gender_concept_id = 8532,
@@ -9,6 +8,7 @@ test_that("summariseCohortTiming", {
     race_concept_id= 0,
     ethnicity_concept_id = 0
   )
+
 
   table <- dplyr::tibble(
     cohort_definition_id = c(rep(1, 15), rep(2, 10), rep(3, 15), rep(4, 5)),
