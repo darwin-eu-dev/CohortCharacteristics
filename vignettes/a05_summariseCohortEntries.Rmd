@@ -53,6 +53,13 @@ cdm <- generateConceptCohortSet(
 )
 ```
 
+## Summarising cohort counts
+
+```{r}
+cohort_counts <- summariseCohortCount(cdm[["ankle_sprain"]])
+tableCohortCount(cohort_counts) 
+```
+
 ## Summarising cohort attrition
 Say we specify two inclusion criteria. First, we keep only cohort entries after the year 2000. Second, we keep only cohort entries for those aged 18 or older. We can easily create plots summarising our cohort attrition.
 
@@ -62,7 +69,9 @@ cdm[["ankle_sprain"]] <- cdm[["ankle_sprain"]] |>
   recordCohortAttrition("Restrict to cohort_start_date >= 2000") |>
   compute(temporary = FALSE, name = "ankle_sprain")
 
-plotCohortAttrition(attrition(cdm[["ankle_sprain"]]), cohortId = 1)
+attrition_summary <- summariseCohortCount(cdm[["ankle_sprain"]])
+
+plotCohortAttrition(attrition_summary, cohortId = 1)  
 ```
 
 ```{r}
@@ -72,7 +81,9 @@ cdm[["ankle_sprain"]] <- cdm[["ankle_sprain"]] |>
   compute(temporary = FALSE, name = "ankle_sprain") |> 
   recordCohortAttrition("Restrict to age >= 18")
 
-plotCohortAttrition(attrition(cdm[["ankle_sprain"]]), cohortId = 1)  
+attrition_summary <- summariseCohortAttrition(cdm[["ankle_sprain"]])
+
+plotCohortAttrition(attrition_summary, cohortId = 1)  
 ```
 
 We could, of course, have applied these requirements the other way around.
@@ -97,6 +108,13 @@ cdm[["ankle_sprain"]] <- cdm[["ankle_sprain"]] |>
   recordCohortAttrition("Restrict to cohort_start_date >= 2000") |>
   compute(temporary = FALSE, name = "ankle_sprain")
 
-plotCohortAttrition(attrition(cdm[["ankle_sprain"]]), cohortId = 1)  
+
+attrition_summary <- summariseCohortAttrition(cdm[["ankle_sprain"]])
+
+plotCohortAttrition(attrition_summary, cohortId = 1)
 ```
 
+As well as plotting cohort attrition, we can also create a table of our results.
+```{r}
+tableCohortAttrition(attrition_summary)
+```
