@@ -29,7 +29,9 @@
 #' @param split A vector containing the name-level groups to split ("group",
 #' "strata", "additional"), or an empty character vector to not split.
 #' @param groupColumn Column to use as group labels.
-#' @param minCellCount Counts below which results will be clouded.
+#' @param minCellCount `r lifecycle::badge("deprecated")` Suppression of
+#' estimates when counts < minCellCount should be done before with
+#' `ompogenerics::suppress()`.
 #' @param excludeColumns Columns to drop from the output table.
 #' @param .options Named list with additional formatting options.
 #' CohortCharacteristics::optionsTableCohortOverlap() shows allowed arguments and
@@ -54,9 +56,14 @@ tableCohortOverlap  <- function(result,
                                 header = c("strata"),
                                 split = c("group", "strata", "additional"),
                                 groupColumn = NULL,
-                                minCellCount = 5,
+                                minCellCount = lifecycle::deprecated(),
                                 excludeColumns = c("result_id", "estimate_type"),
                                 .options = list()) {
+
+  if (lifecycle::is_present(minCellCount)) {
+    lifecycle::deprecate_warn("0.2.0", "tableCohortOverlap(minCellCount)")
+  }
+
   # initial checks
   result <- omopgenerics::newSummarisedResult(result) |>
     visOmopResults::filterSettings(.data$result_type == "cohort_overlap")
@@ -114,7 +121,6 @@ tableCohortOverlap  <- function(result,
                                         groupColumn = groupColumn,
                                         split = split,
                                         type = type,
-                                        minCellCount = minCellCount,
                                         excludeColumns = excludeColumns,
                                         .options = .options)
 
@@ -132,8 +138,7 @@ defaultOverlapOptions <- function(userOptions) {
     title = NULL,
     subtitle = NULL,
     caption = NULL,
-    groupNameCol = NULL,
-    groupNameAsColumn = FALSE,
+    groupAsColumn = FALSE,
     groupOrder = NULL,
     colsToMergeRows = "all_columns"
   )

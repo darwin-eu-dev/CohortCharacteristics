@@ -11,7 +11,7 @@ tableLargeScaleCharacteristics(
   splitStrata = TRUE,
   header = c("cdm name", "cohort name", "strata", "window name"),
   topConcepts = NULL,
-  minCellCount = 5
+  minCellCount = lifecycle::deprecated()
 )
 }
 \arguments{
@@ -29,7 +29,9 @@ columns.}
 
 \item{topConcepts}{Number of concepts to restrict the table.}
 
-\item{minCellCount}{Minimum number of counts to display.}
+\item{minCellCount}{`r lifecycle::badge("deprecated")` Suppression of
+estimates when counts < minCellCount should be done before with
+`ompogenerics::suppress()`.}
 }
 \value{
 A formatted table.
