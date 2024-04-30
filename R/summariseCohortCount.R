@@ -19,6 +19,8 @@
 #' @param cohort A cohort table in the cdm.
 #' @param cohortId A cohort definition id to restrict by. If NULL, all cohorts
 #' will be included.
+#' @param strata A list of variables to stratify results. These variables
+#' must have been added as additional columns in the cohort table.
 #'
 #' @export
 #'
@@ -32,11 +34,17 @@
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
 summariseCohortCount <- function(cohort,
-                                 cohortId = NULL) {
-  assertClass(cohort, "cohort_table")
-  assertNumeric(cohortId, integerish = TRUE, min = 1, null = TRUE)
+                                 cohortId = NULL,
+                                 strata = list()) {
 
-  cohort |> summaryInternal(cohortId = cohortId, resultType = "cohort_count")
+  summariseCharacteristics(
+    cohort,
+    cohortId = cohortId,
+    strata = strata,
+    counts = TRUE,
+    demographics = FALSE
+  )
+
 }
 
 summaryInternal <- function(cohort, cohortId, resultType) {
