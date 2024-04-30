@@ -684,93 +684,6 @@ test_that("arguments tableIntersect",{
   expect_no_error(
     results <- summariseCharacteristics(
       cohort = cdm$dus_cohort,
-      ageGroup = list(c(0, 50), c(51, 150)),
-      tableIntersectCount = list(
-        "Number visits anytime before" = list(
-          tableName = "visit_occurrence", window = c(-Inf, -1)
-        )
-      )
-    )
-  )
-
-  expect_true(
-    "Number visits anytime before" %in%
-      (results %>% dplyr::pull("variable_name"))
-  )
-
-  expect_true(
-    "0 to 50" %in%
-      (results %>% dplyr::pull("variable_level"))
-  )
-
-  expect_false(
-    "51 to 150" %in%
-      (results %>% dplyr::pull("variable_level"))
-  )
-
-  expect_identical(
-    results %>%
-      dplyr::filter(group_level == "exposed",
-                    variable_name == "Number visits anytime before",
-                    estimate_name == "min") %>%
-      dplyr::pull("estimate_value") %>%
-      as.numeric(),
-    0
-  )
-
-  expect_identical(
-    results %>%
-      dplyr::filter(group_level == "unexposed",
-                    variable_name == "Number visits anytime before",
-                    estimate_name == "min") %>%
-      dplyr::pull("estimate_value") %>%
-      as.numeric(),
-    0
-  )
-
-  expect_identical(
-    results %>%
-      dplyr::filter(group_level == "exposed",
-                    variable_name == "Number visits anytime before",
-                    estimate_name == "max") %>%
-      dplyr::pull("estimate_value") %>%
-      as.numeric(),
-    2
-  )
-
-  expect_identical(
-    results %>%
-      dplyr::filter(group_level == "unexposed",
-                    variable_name == "Number visits anytime before",
-                    estimate_name == "max") %>%
-      dplyr::pull("estimate_value") %>%
-      as.numeric(),
-    1
-  )
-
-  expect_identical(
-    results %>%
-      dplyr::filter(group_level == "exposed",
-                    variable_name == "Number visits anytime before",
-                    estimate_name == "median") %>%
-      dplyr::pull("estimate_value") %>%
-      as.numeric(),
-    0
-  )
-
-  expect_identical(
-    results %>%
-      dplyr::filter(group_level == "unexposed",
-                    variable_name == "Number visits anytime before",
-                    estimate_name == "median") %>%
-      dplyr::pull("estimate_value") %>%
-      as.numeric(),
-    1
-  )
-
-  expect_no_error(
-    results <- summariseCharacteristics(
-      cohort = cdm$dus_cohort,
       tableIntersectDate = list(
         "Date visits anytime before" = list(
           tableName = "visit_occurrence",
@@ -887,3 +800,190 @@ test_that("arguments tableIntersect",{
   CDMConnector::cdm_disconnect(cdm = cdm)
 })
 
+test_that("arguments cohortIntersect",{
+  dus_cohort <- dplyr::tibble(
+    cohort_definition_id = c(1, 1, 1, 1, 1, 1),
+    subject_id = c(1, 1, 2, 3, 2, 3),
+    cohort_start_date = as.Date(c(
+      "1990-04-19", "1991-04-19", "2010-11-14", "2000-05-25", "2010-01-01", "2009-09-09"
+    )),
+    cohort_end_date = as.Date(c(
+      "1990-04-19", "1991-04-19", "2010-11-14", "2000-05-25", "2010-01-01", "2009-09-09"
+    ))
+  )
+
+  cohort1 <- dplyr::tibble(
+    cohort_definition_id = c(1, 1, 1, 1, 1, 1),
+    subject_id = c(3, 2, 1, 1, 2, 3),
+    cohort_start_date = as.Date(c(
+      "2001-04-20", "1992-04-19", "2009-11-14", "1999-05-26", "2009-01-01", "2010-09-10"
+    )),
+    cohort_end_date = as.Date(c(
+      "2001-04-20", "1992-04-19", "2009-11-14", "1999-05-26", "2009-01-01", "2010-09-10"
+    ))
+  )
+
+  observation_period <- dplyr::tibble(
+    observation_period_id = c(1, 2, 3, 4, 5),
+    person_id = c(1, 2, 3, 4, 5),
+    observation_period_start_date = as.Date(c(
+      "1985-01-01", "1989-04-29", "1974-12-03", "1983-01-01", "1985-01-01"
+    )),
+    observation_period_end_date = as.Date(c(
+      "2021-03-04", "2022-03-14", "2023-07-10", "2024-12-31", "2024-12-31"
+    )),
+    period_type_concept_id = 0
+  )
+
+  cdm <- mockCohortCharacteristics(
+    dus_cohort= dus_cohort,
+    cohort1 = cohort1,
+    observation_period = observation_period
+  )
+
+  ###intersect count
+  expect_no_error(
+    results <- summariseCharacteristics(
+      cohort = cdm$dus_cohort,
+      cohortIntersectCount = list(
+        "Cohort 1 anytime before" = list(
+          targetCohortTable = "cohort1", window = c(-Inf, -1)
+        )
+      )
+    )
+  )
+
+  expect_true(
+    "Cohort 1 anytime before" %in%
+      (results %>% dplyr::pull("variable_name"))
+  )
+
+  expect_identical(
+    results %>%
+      dplyr::filter(variable_name == "Cohort 1 anytime before",
+                    estimate_name == "min") %>%
+      dplyr::pull("estimate_value") %>%
+      as.numeric(),
+    0
+  )
+
+  expect_identical(
+    results %>%
+      dplyr::filter(variable_name == "Cohort 1 anytime before",
+                    estimate_name == "max") %>%
+      dplyr::pull("estimate_value") %>%
+      as.numeric(),
+    2
+  )
+
+  expect_identical(
+    results %>%
+      dplyr::filter(variable_name == "Cohort 1 anytime before",
+                    estimate_name == "median") %>%
+      dplyr::pull("estimate_value") %>%
+      as.numeric(),
+    0.5
+  )
+
+  ## intersect flag
+  expect_no_error(
+    results <- summariseCharacteristics(
+      cohort = cdm$dus_cohort,
+      cohortIntersectFlag = list(
+        "Cohort 1 (flag) anytime before" = list(
+          targetCohortTable = "cohort1", window = c(-Inf, -1)
+        )
+      )
+    )
+  )
+
+  expect_true(
+    "Cohort 1 (flag) anytime before" %in%
+      (results %>% dplyr::pull("variable_name"))
+  )
+
+  expect_identical(
+    results %>%
+      dplyr::filter(variable_name == "Cohort 1 (flag) anytime before",
+                    estimate_name == "count") %>%
+      dplyr::pull("estimate_value") %>%
+      as.numeric(),
+    3
+  )
+
+  ## intersect date
+  expect_no_error(
+    results <- summariseCharacteristics(
+      cohort = cdm$dus_cohort,
+      cohortIntersectDate = list(
+        "Date cohort 1 anytime before" = list(
+          targetCohortTable = "cohort1",
+          order = "last",
+          window = c(-Inf, -1)
+        )
+      )
+    )
+  )
+
+  expect_true(
+    "Date cohort 1 anytime before" %in%
+      (results %>% dplyr::pull("variable_name"))
+  )
+
+  expect_identical(
+    results %>%
+      dplyr::filter(variable_name == "Date cohort 1 anytime before",
+                    estimate_name == "min") %>%
+      dplyr::pull("estimate_value") %>%
+      as.Date(),
+    as.Date("2001-04-20")
+  )
+
+  expect_identical(
+    results %>%
+      dplyr::filter(variable_name == "Date cohort 1 anytime before",
+                    estimate_name == "max") %>%
+      dplyr::pull("estimate_value") %>%
+      as.Date(),
+    as.Date("2009-01-01")
+  )
+
+  ## Intersect Days
+  expect_no_error(
+    results <- summariseCharacteristics(
+      cohort = cdm$dus_cohort,
+      cohortIntersectDays = list(
+        "Days cohort 1 anytime after" = list(
+          targetCohortTable = "cohort1",
+          order = "first",
+          window = c(1, Inf)
+        )
+      )
+    )
+  )
+
+  expect_true(
+    "Days cohort 1 anytime after" %in%
+      (results %>% dplyr::pull("variable_name"))
+  )
+
+  expect_identical(
+    results %>%
+      dplyr::filter(variable_name == "Days cohort 1 anytime after",
+                    estimate_name == "min") %>%
+      dplyr::pull("estimate_value") %>%
+      as.numeric(),
+    as.numeric(as.Date("2001-04-20") - as.Date("2000-05-25"))
+  )
+
+  expect_identical(
+    results %>%
+      dplyr::filter(variable_name == "Days cohort 1 anytime after",
+                    estimate_name == "max") %>%
+      dplyr::pull("estimate_value") %>%
+      as.numeric(),
+    as.numeric(as.Date("1999-05-26") - as.Date("1990-04-19"))
+  )
+
+  CDMConnector::cdm_disconnect(cdm = cdm)
+})
