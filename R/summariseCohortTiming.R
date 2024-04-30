@@ -14,27 +14,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#' Summarise cohort timing
+#' Summarise timing between entries into cohorts in a cohort table
 #'
 #' @param cohort  A cohort table in a cdm reference.
-#' @param cohortId  Vector of cohort definition ids to include, if NULL, all
-#' cohort definition ids will be used.
-#' @param strata List of the stratifications within each group to be considered.
-#' Must be column names in the cohort table provided.
+#' @param cohortId A cohort definition id to restrict by. If NULL, all cohorts
+#' will be included.
+#' @param strata A list of variables to stratify results. These variables
+#' must have been added as additional columns in the cohort table.
 #' @param restrictToFirstEntry If TRUE only an individual's first entry per
 #' cohort will be considered. If FALSE all entries per individual will be
 #' considered.
-#' @param estimates Summary statistics for timing.
-#' @param density Get data for density plot.
+#' @param estimates Summary statistics to use when summarising timing.
+#' @param density TRUE or FALSE. If TRUE, estimates for a density plot will
+#' also be computed.
 #'
-#' @return A summarised result.
+#' @return A summary of timing between entries into cohorts in the cohort table.
+#'
 #' @export
 #'
 #' @examples
 #' \donttest{
 #' library(CohortCharacteristics)
 #' cdm <- CohortCharacteristics::mockCohortCharacteristics()
-#' results <- summariseCohortTiming(cdm$cohort2)
+#' summariseCohortTiming(cdm$cohort2) |> dplyr::glimpse()
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
 #'

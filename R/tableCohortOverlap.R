@@ -106,7 +106,7 @@ tableCohortOverlap  <- function(result,
   }
 
   # format table
-  result <- visOmopResults::formatTable(result = x,
+  result <- visOmopResults::visOmopTable(result = x,
                                         formatEstimateName = formatEstimateName,
                                         header = c(header, "variable"),
                                         groupColumn = groupColumn,

@@ -101,7 +101,7 @@ tableCohortTiming <- function(result,
   }
 
   # format table
-  result <- visOmopResults::formatTable(result = x,
+  result <- visOmopResults::visOmopTable(result = x,
                                         formatEstimateName = formatEstimateName,
                                         header = header,
                                         groupColumn = groupColumn,

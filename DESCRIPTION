@@ -1,7 +1,7 @@
 Package: CohortCharacteristics
 Type: Package
 Title: Summarise and Visualise Characteristics of Patients in the OMOP CDM
-Version: 0.1.0
+Version: 0.1.0.9000
 Authors@R: c(
     person("Marti", "Catala", , "marti.catalasabate@ndorms.ox.ac.uk", 
     role = c("aut", "cre"), comment = c(ORCID = "0000-0003-3308-9905")),
@@ -79,6 +79,6 @@ Config/testthat/edition: 3
 Config/testthat/parallel: true
 VignetteBuilder: knitr
 Remotes:
-    oxford-pharmacoepi/visOmopResults,
+    darwin-eu/visOmopResults,
     darwin-eu-dev/omopgenerics,
     darwin-eu/CDMConnector

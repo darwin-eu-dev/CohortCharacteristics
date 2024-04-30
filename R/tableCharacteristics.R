@@ -118,7 +118,7 @@ tableCharacteristics <- function(result,
     dplyr::mutate(variable_level = as.character(.data$variable_level))
 
   # format table
-  result <- visOmopResults::formatTable(
+  result <- visOmopResults::visOmopTable(
     result = result,
     formatEstimateName = formatEstimateName,
     header = header,

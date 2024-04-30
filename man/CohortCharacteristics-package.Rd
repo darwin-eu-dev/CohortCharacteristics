@@ -6,6 +6,8 @@
 \alias{CohortCharacteristics-package}
 \title{CohortCharacteristics: Summarise and Visualise Characteristics of Patients in the OMOP CDM}
 \description{
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
 Summarise and visualise the characteristics of patients in data mapped to the Observational Medical Outcomes Partnership (OMOP) common data model (CDM).
 }
 \seealso{
