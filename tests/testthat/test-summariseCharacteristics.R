@@ -987,3 +987,201 @@ test_that("arguments cohortIntersect",{
 
   CDMConnector::cdm_disconnect(cdm = cdm)
 })
+
+test_that("arguments conceptIntersect",{
+  con <- DBI::dbConnect(duckdb::duckdb(), CDMConnector::eunomia_dir())
+  cdm <- CDMConnector::cdmFromCon(con = con, cdmSchema = "main", writeSchema = "main")
+
+  # create a cohort
+  cdm <- CDMConnector::generateConceptCohortSet(
+    cdm = cdm, conceptSet = list("sinusitis" = c(4294548, 40481087, 257012)),
+    name = "my_cohort"
+  )
+
+  codelist <- list(
+    "statin" = cdm$concept |>
+      dplyr::filter(grepl("statin", concept_name, ignore.case = T)) |>
+      dplyr::pull("concept_id"),
+    "serum_measurement" = cdm$concept |>
+      dplyr::filter(grepl("serum", concept_name, ignore.case = T)) |>
+      dplyr::pull("concept_id"),
+    "allergy" = cdm$concept |>
+      dplyr::filter(grepl("allergy", concept_name, ignore.case = T)) |>
+      dplyr::pull("concept_id"),
+    "bypass" = cdm$concept |>
+      dplyr::filter(grepl("bypass", concept_name, ignore.case = T)) |>
+      dplyr::pull("concept_id"),
+    "laceration" = cdm$concept |>
+      dplyr::filter(grepl("laceration", concept_name, ignore.case = T)) |>
+      dplyr::pull("concept_id")
+  )
+
+  cdm <- CDMConnector::generateConceptCohortSet(
+    cdm = cdm, conceptSet = list("sinusitis" = c(4294548, 40481087, 257012)),
+    name = "sinusitis"
+  )
+
+  ###intersect count
+  expect_no_error(
+    results <- summariseCharacteristics(
+      cohort = cdm$sinusitis,
+      conceptIntersectCount = list(
+        "Codelist count anytime before" = list(
+          conceptSet = codelist, window = c(-Inf, -1)
+        )
+      )
+    )
+  )
+
+  expect_true(
+    "Codelist count anytime before" %in%
+      (results %>% dplyr::pull("variable_name"))
+  )
+
+  expect_identical(
+    results %>%
+      dplyr::filter(variable_name == "Codelist count anytime before",
+                    estimate_name == "min",
+                    variable_level == "Allergy") %>%
+      dplyr::pull("estimate_value") %>%
+      as.numeric(),
+    0
+  )
+
+  expect_identical(
+    results %>%
+      dplyr::filter(variable_name == "Codelist count anytime before",
+                    estimate_name == "max",
+                    variable_level == "Serum measurement") %>%
+      dplyr::pull("estimate_value") %>%
+      as.numeric(),
+    59
+  )
+
+  ## intersect flag
+  expect_no_error(
+    results <- summariseCharacteristics(
+      cohort = cdm$sinusitis,
+      conceptIntersectFlag = list(
+        "Codelist flag anytime before" = list(
+          conceptSet = codelist, window = c(-Inf, -1)
+        )
+      )
+    )
+  )
+
+  expect_true(
+    "Codelist flag anytime before" %in%
+      (results %>% dplyr::pull("variable_name"))
+  )
+
+  expect_identical(
+    results %>%
+      dplyr::filter(variable_name == "Codelist flag anytime before",
+                    estimate_name == "count") %>%
+      dplyr::filter(estimate_value > 0) %>%
+      dplyr::tally() %>%
+      dplyr::pull("n") %>%
+      as.numeric(),
+    4
+  )
+
+  ## intersect date
+  expect_warning(
+    expect_warning(
+  expect_no_error(
+    results <- summariseCharacteristics(
+      cohort = cdm$sinusitis,
+      conceptIntersectDate = list(
+        "Codelist date anytime before" = list(
+          conceptSet = codelist,
+          order = "last",
+          window = c(-Inf, -1)
+        )
+      )
+    )
+  )
+))
+
+  expect_true(
+    "Codelist date anytime before" %in%
+      (results %>% dplyr::pull("variable_name"))
+  )
+
+  expect_identical(
+    results %>%
+      dplyr::filter(variable_name == "Codelist date anytime before",
+                    estimate_name == "min") %>%
+      dplyr::pull("estimate_value") %>%
+      as.Date() %>%
+      na.omit() |>
+      length() %>%
+      as.numeric(),
+    4
+  )
+
+  expect_identical(
+    results %>%
+      dplyr::filter(variable_name == "Codelist date anytime before",
+                    estimate_name == "max") %>%
+      dplyr::pull("estimate_value") %>%
+      as.Date() %>%
+      na.omit() |>
+      length() %>%
+      as.numeric(),
+    4
+  )
+
+  ## Intersect Days
+expect_warning(
+  expect_warning(
+  expect_no_error(
+    results <- summariseCharacteristics(
+      cohort = cdm$sinusitis,
+      conceptIntersectDays = list(
+        "Codelist days anytime before" = list(
+          conceptSet = codelist,
+          order = "last",
+          window = c(-Inf, -1)
+        )
+      )
+    )
+  )))
+
+  expect_true(
+    "Codelist days anytime before" %in%
+      (results %>% dplyr::pull("variable_name"))
+  )
+
+
+expect_warning(
+  expect_true(all(
+    results %>%
+      dplyr::filter(variable_name == "Codelist days anytime before",
+                    estimate_name == "min") %>%
+      dplyr::select("estimate_value") %>%
+      dplyr::mutate(estimate_value = as.integer(estimate_value)) %>%
+      dplyr::pull("estimate_value") |>
+      na.omit() %>%
+      as.numeric() < 0
+    )
+  )
+)
+
+expect_warning(
+  expect_true(all(
+    results %>%
+      dplyr::filter(variable_name == "Codelist days anytime before",
+                    estimate_name == "max") %>%
+      dplyr::select("estimate_value") %>%
+      dplyr::mutate(estimate_value = as.integer(estimate_value)) %>%
+      dplyr::pull("estimate_value") |>
+      na.omit() %>%
+      as.numeric() < 0
+  )
+  )
+)
+
+  CDMConnector::cdm_disconnect(cdm = cdm)
+})
+
