@@ -4,13 +4,16 @@
 \alias{summariseCohortCount}
 \title{Summarise counts for cohorts in a cohort table}
 \usage{
-summariseCohortCount(cohort, cohortId = NULL)
+summariseCohortCount(cohort, cohortId = NULL, strata = list())
 }
 \arguments{
 \item{cohort}{A cohort table in the cdm.}
 
 \item{cohortId}{A cohort definition id to restrict by. If NULL, all cohorts
 will be included.}
+
+\item{strata}{A list of variables to stratify results. These variables
+must have been added as additional columns in the cohort table.}
 }
 \value{
 A summary of counts of the cohorts in the cohort table.
