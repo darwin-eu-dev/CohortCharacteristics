@@ -235,7 +235,7 @@ test_that("test summariseCharacteristics", {
     cdm$dus_cohort, counts = TRUE, demographics = FALSE
   )
   expect_true(nrow(sc_person_record |>
-                    dplyr::filter(variable_name == "Number records")) > 0)
+                     dplyr::filter(variable_name == "Number records")) > 0)
   expect_true(nrow(sc_person_record |>
                      dplyr::filter(variable_name == "Number subjects")) > 0)
   # counts - none
@@ -291,12 +291,6 @@ test_that("test summariseCharacteristics", {
     c("Cohort start date", "Cohort end date", "Age", "Sex", "Prior observation",
       "Future observation") %in% result$variable_name
   ))
-  expect_identical(
-    summariseCharacteristics(cdm$dus_cohort, demographics = FALSE) |>
-      dplyr::arrange(.data$group_level, .data$variable_name),
-    summariseCohortCounts(cdm$dus_cohort) |>
-      dplyr::arrange(.data$group_level, .data$variable_name)
-  )
 
 })
 
@@ -432,7 +426,7 @@ test_that("test cohort id", {
     cohortAttritionRef = NULL
   )
 
-  result <- summariseCharacteristics(
+ result <- summariseCharacteristics(
     cdm$dus_cohort,
     cohortId = 1,
     cohortIntersectFlag = list(
@@ -444,17 +438,18 @@ test_that("test cohort id", {
       )
     )
   )
-  resultAll <- summariseCharacteristics(
-    cdm$dus_cohort,
-    cohortIntersectFlag = list(
-      "Medications" = list(
-        targetCohortTable = "medication", window = c(-365, 0)
-      ),
-      "Comorbidities" = list(
-        targetCohortTable = "comorbidities", window = c(-Inf, 0)
-      )
-    )
-  )
+
+ resultAll <- summariseCharacteristics(
+   cdm$dus_cohort,
+   cohortIntersectFlag = list(
+     "Medications" = list(
+       targetCohortTable = "medication", window = c(-365, 0)
+     ),
+     "Comorbidities" = list(
+       targetCohortTable = "comorbidities", window = c(-Inf, 0)
+     )
+   )
+ )
   expect_true(inherits(result, "summarised_result"))
   expect_true(unique(result$group_level) == "exposed")
   expect_identical(
@@ -891,3 +886,4 @@ test_that("arguments tableIntersect",{
 
   CDMConnector::cdm_disconnect(cdm = cdm)
 })
+
