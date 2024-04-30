@@ -58,7 +58,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">summariseCohortCount</span><span class="op">(</span><span class="va">cohort</span>, cohortId <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">summariseCohortCount</span><span class="op">(</span><span class="va">cohort</span>, cohortId <span class="op">=</span> <span class="cn">NULL</span>, strata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -70,6 +70,11 @@
 <dt>cohortId</dt>
 <dd><p>A cohort definition id to restrict by. If NULL, all cohorts
 will be included.</p></dd>
+
+
+<dt>strata</dt>
+<dd><p>A list of variables to stratify results. These variables
+must have been added as additional columns in the cohort table.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -85,6 +90,9 @@ will be included.</p></dd>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://darwin-eu-dev.github.io/CohortCharacteristics/">CohortCharacteristics</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">cdm</span> <span class="op">&lt;-</span> <span class="fu"><a href="mockCohortCharacteristics.html">mockCohortCharacteristics</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">summariseCohortCount</span><span class="op">(</span>cohort <span class="op">=</span> <span class="va">cdm</span><span class="op">$</span><span class="va">cohort1</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising data</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> The following variables: result_type, package_name, package_version; were added to `settings`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> summariseCharacteristics finished!</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Rows: 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Columns: 13</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ result_id        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 1, 1</span>
@@ -93,7 +101,7 @@ will be included.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ group_level      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "cohort_1", "cohort_1"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ strata_name      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "overall", "overall"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ strata_level     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "overall", "overall"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ variable_name    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "number_records", "number_subjects"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ variable_name    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "Number records", "Number subjects"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ variable_level   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> NA, NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ estimate_name    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "count", "count"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ estimate_type    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "integer", "integer"</span>
