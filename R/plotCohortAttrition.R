@@ -27,110 +27,92 @@
 #'
 #' @examples
 #' \donttest{
-#' library(CDMConnector)
+#' library(omopgenerics)
 #' library(DrugUtilisation)
 #' library(dplyr)
 #' library(DiagrammeR)
-#' library(PatientProfiles)
 #'
 #' cdm <- mockDrugUtilisation(n = 1000)
 #'
 #' cdm[["cohort1"]] <- cdm[["cohort1"]] |>
-#'  filter(year(cohort_start_date) >= 2000) |>
+#'   filter(year(cohort_start_date) >= 2000) |>
 #'   recordCohortAttrition("Restrict to cohort_start_date >= 2000") |>
 #'   filter(year(cohort_end_date) < 2020) |>
 #'   recordCohortAttrition("Restrict to cohort_end_date < 2020") |>
 #'   compute(temporary = FALSE, name = "cohort1")
 #'
-#' render_graph(plotCohortAttrition(attrition(cdm[["cohort1"]]), cohortId = 2))
+#' cdm$cohort1 |>
+#'   summariseCohortAttrition() |>
+#'   plotCohortAttrition(cohortId = 2)
 #' }
 
-plotCohortAttrition <- function(x, cohortId) {
-
-  y <- checkAttritionTable(x)
-  status  <- y$status
-  message <- y$message
-
-  if(status){
-    if(length(x$cohort_definition_id) != 0){
-      y <- validateCohortId(x, cohortId)
-      status  <- y$status
-      message <- y$message
-      if(status){
-      # Turn everything as a character
-      x <- x |>
-        dplyr::filter(.data$cohort_definition_id == .env$cohortId) |>
-        dplyr::mutate_all(~as.character(.))
-
-      # Create table to be used in the graph
-      xn <- createLabels(x)
-
-      y <- selectLabels(xn)
-      xn  <- y$xn
-      att <- y$att
-
-      # Create graph
-      n  <- nrow(x)
-      xg <- DiagrammeR::create_graph()
-
-      att <- validateReason(att)
-      h2  <- getHeightMiddleBox(att)
-
-      w1 <- getWidthMainBox(xn)
-      p1 <- getPositionMainBox(xn,n,h2)
-
-      w2 <- getWidthMiddleBox(att)
-      p2 <- getPositionMiddleBox(p1)
-
-      xg <- getNodes(xn,att,n,xg,h2,w1,p1,w2,p2)
-      }else{
-        xg <- emptyTable(message)
-      }
-    }else{
-      xg <- emptyTable("No attrition table to plot. Please, provide an attrition table.")
-    }
-  }else{
-    xg <- emptyTable(message)
+plotCohortAttrition <- function(x, cohortId = NULL) {
+  if (!inherits(x, "summarised_result")) {
+    cli::cli_abort("x must be the output of summariseCohortAttrition()")
+  }
+  x <- x |>
+    visOmopResults::filterSettings(.data$result_type == "cohort_attrition")
+  if (nrow(x) == 0) {
+    return(emptyTable("No attrition found in the result object."))
+  }
+  if (!is.null(cohortId)) {
+    x <- x |>
+      visOmopResults::filterSettings(
+        .data$cohort_definition_id == .env$cohortId
+      )
+  }
+  if (x$result_id |> unique() |> length() > 1) {
+    return(
+      emptyTable("More than one cohort found, please select only one cohort to show attrition.")
+    )
   }
 
-  return(xg)
-}
+  x <- x |>
+    visOmopResults::splitAll() |>
+    visOmopResults::pivotEstimates(
+      pivotEstimatesBy = c("variable_name", "estimate_name"),
+      nameStyle = "{variable_name}"
+    ) |>
+    dplyr::select(
+      "reason_id", "reason", "number_records", "number_subjects",
+      "excluded_records", "excluded_subjects"
+    ) |>
+    dplyr::arrange(.data$reason_id) |>
+    dplyr::mutate(dplyr::across(dplyr::everything(), as.character))
 
-validateCohortId <- function(x, cohortId){
-  if(length(cohortId) > 1){
-    status <- FALSE
-    message <- "Please, select only one cohort_definition_id value."
+  # Create table to be used in the graph
+  xn <- createLabels(x)
+
+  y <- selectLabels(xn)
+  xn  <- y$xn
+  att <- y$att
+
+  # Create graph
+  n  <- nrow(x)
+  xg <- DiagrammeR::create_graph()
+
+  w1 <- getWidthMainBox(xn)
+
+  if(nrow(x) == 1){
+    xg <-  getSingleNode(xg,xn,w1)
   }else{
-    if(!cohortId %in% x$cohort_definition_id){
-      status  <- FALSE
-      message <- "cohort_definition_id selected is not valid"
-    }else{
-      status <- TRUE
-      message <- ""
-    }
+    att <- validateReason(att)
+
+    h2  <- getHeightMiddleBox(att)
+
+    p1 <- getPositionMainBox(xn,n,h2)
+
+    w2 <- getWidthMiddleBox(att)
+
+    p2 <- getPositionMiddleBox(p1)
+
+    xg <- getNodes(xn,att,n,xg,h2,w1,p1,w2,p2)
   }
-  return(list("status" = status, "message" = message))
-}
-
-
-checkAttritionTable <- function(x){
-  y <- c("cohort_definition_id","number_records","number_subjects",
-         "reason_id","reason","excluded_records","excluded_subjects") %in% colnames(x)
-
-  if(FALSE %in% y){
-    status = FALSE
-    message = "Attrition table does not contain all the columns required.\nPlease, ensure that the provided contains the following\ncolumns: cohort_definition_id, number_records, number_subjects,\nreason_id, reason, excluded_records, and excluded_subjects"
-  }else{
-    status = TRUE
-    message = ""
-  }
-
-  return(list("status" = status, "message" = message))
+  return(DiagrammeR::render_graph(xg))
 }
 
 emptyTable <- function(message){
-  xg <- DiagrammeR::create_graph()
-  xg <- xg |>
+  DiagrammeR::create_graph() |>
     DiagrammeR::add_node(
       label = message,
       node_aes = DiagrammeR::node_aes(
@@ -141,7 +123,8 @@ emptyTable <- function(message){
         fontsize = 10,
         x = 1, y = 1,
         width = 4,penwidth = 0)
-    )
+    ) |>
+    DiagrammeR::render_graph()
 }
 
 formatNum <- function(col) {
@@ -203,6 +186,27 @@ selectLabels <- function(xn){
 
 getWidthMainBox <- function(xn){
   return(0.08*max(nchar(strsplit(xn$label[1], split = "\n")[[1]])))
+}
+
+getSingleNode <- function(xg, xn,w1){
+  k <- 1
+  xn$label[k] <- gsub("Qualifying events", "Initial events", xn$label[k])
+  xg <- xg %>%
+    DiagrammeR::add_node(
+      label = xn$label[k],
+      node_aes = DiagrammeR::node_aes(
+        shape = "box",
+        x = 1,
+        width = w1,
+        y = 1,
+        height = 0.6,
+        fontsize = 11, fontcolor = "black",
+        fontname = "Calibri",
+        penwidth = 2,
+        color = "black",
+        fillcolor = "#F0F8FF"
+      )
+    )
 }
 
 getPositionMainBox <- function(xn,n,h2){

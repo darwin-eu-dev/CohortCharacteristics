@@ -2,10 +2,11 @@
 % Please edit documentation in R/summariseCharacteristics.R
 \name{summariseCharacteristics}
 \alias{summariseCharacteristics}
-\title{Summarise characteristics of individuals}
+\title{Summarise characteristics of cohorts in a cohort table}
 \usage{
 summariseCharacteristics(
   cohort,
+  cohortId = NULL,
   strata = list(),
   counts = TRUE,
   demographics = TRUE,
@@ -28,16 +29,22 @@ summariseCharacteristics(
 )
 }
 \arguments{
-\item{cohort}{A cohort in the cdm.}
+\item{cohort}{A cohort table in the cdm.}
 
-\item{strata}{Stratification list.}
+\item{cohortId}{Vector of cohort definition ids to include. If NULL all
+cohort will be selected.}
+
+\item{strata}{A list of variables to stratify results. These variables
+must have been added as additional columns in the cohort table.}
 
 \item{counts}{TRUE or FALSE. If TRUE, record and person counts will
 be produced.}
 
-\item{demographics}{Whether to summarise demographics data.}
+\item{demographics}{TRUE or FALSE. If TRUE, patient demographics (cohort
+start date, cohort end date, age, sex, prior observation, and future
+observation will be summarised).}
 
-\item{ageGroup}{A list of age groups.}
+\item{ageGroup}{A list of age groups to stratify results by.}
 
 \item{tableIntersectFlag}{A list of arguments that uses
 PatientProfiles::addTableIntersectFlag() to add variables to summarise.}
@@ -82,10 +89,10 @@ summarised.}
 columns.}
 }
 \value{
-A summary of the characteristics of the individuals.
+A summary of the characteristics of the cohorts in the cohort table.
 }
 \description{
-Summarise characteristics of individuals
+Summarise characteristics of cohorts in a cohort table
 }
 \examples{
 \donttest{

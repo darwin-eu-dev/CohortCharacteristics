@@ -14,14 +14,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#' Summarise characteristics of individuals
+#' Summarise characteristics of cohorts in a cohort table
 #'
-#' @param cohort A cohort in the cdm.
-#' @param strata Stratification list.
+#' @param cohort A cohort table in the cdm.
+#' @param cohortId Vector of cohort definition ids to include. If NULL all
+#' cohort will be selected.
+#' @param strata A list of variables to stratify results. These variables
+#' must have been added as additional columns in the cohort table.
 #' @param counts TRUE or FALSE. If TRUE, record and person counts will
 #' be produced.
-#' @param demographics Whether to summarise demographics data.
-#' @param ageGroup A list of age groups.
+#' @param demographics TRUE or FALSE. If TRUE, patient demographics (cohort
+#' start date, cohort end date, age, sex, prior observation, and future
+#' observation will be summarised).
+#' @param ageGroup A list of age groups to stratify results by.
 #' @param tableIntersectFlag A list of arguments that uses
 #' PatientProfiles::addTableIntersectFlag() to add variables to summarise.
 #' @param tableIntersectCount A list of arguments that uses
@@ -51,7 +56,7 @@
 #' @param otherVariablesEstimates Name of the estimates for the otherVariables
 #' columns.
 #'
-#' @return A summary of the characteristics of the individuals.
+#' @return A summary of the characteristics of the cohorts in the cohort table.
 #'
 #' @export
 #'
@@ -81,6 +86,7 @@
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
 summariseCharacteristics <- function(cohort,
+                                     cohortId = NULL,
                                      strata = list(),
                                      counts = TRUE,
                                      demographics = TRUE,
@@ -124,6 +130,21 @@ summariseCharacteristics <- function(cohort,
   conceptIntersectDays <- assertIntersect(conceptIntersectDays)
   otherVariables <- checkOtherVariables(otherVariables, cohort)
   otherVariablesEstimates <- checkOtherVariablesEstimates(otherVariablesEstimates, otherVariables)
+  assertNumeric(cohortId, integerish = TRUE, null = TRUE)
+  ids <- omopgenerics::settings(cohort)$cohort_definition_id
+  if (is.null(cohortId)) {
+    cohortId <- ids
+  } else {
+    indNot <- !cohortId %in% ids
+    if (sum(indNot)>0) {
+      if (sum(indNot) == length(cohortId)) {
+        cli::cli_abort("No valid cohort ids supplied.")
+      } else {
+        cli::cli_warn("{paste0(cohortId[indNot], collapse = ', ')} {?is/are} not in the cohort table and won't be used.")
+        cohortId <- cohortId[!indNot]
+      }
+    }
+  }
 
   # return empty result if no analyses chosen
   if (length(strata) == 0 &
@@ -158,6 +179,7 @@ summariseCharacteristics <- function(cohort,
 
   # select necessary variables
   cohort <- cohort |>
+    dplyr::filter(.data$cohort_definition_id %in% .env$cohortId) %>%
     dplyr::select(
       "cohort_definition_id", "subject_id", "cohort_start_date",
       "cohort_end_date", dplyr::all_of(unique(unlist(strata))),

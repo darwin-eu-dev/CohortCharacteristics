@@ -14,22 +14,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#' Summarise cohort overlap
+#' Summarise overalp between cohorts in a cohort table
 #'
-#' @param cohort  A cohort table in a cdm reference.
-#' @param cohortId  Vector of cohort definition ids to include, if NULL, all
-#' cohort definition ids will be used.
-#' @param strata List of the stratifications within each group to be considered.
-#' Must be column names in the cohort table provided.
+#' @param cohort A cohort table in the cdm.
+#' @param cohortId A cohort definition id to restrict by. If NULL, all cohorts
+#' will be included.
+#' @param strata A list of variables to stratify results. These variables
+#' must have been added as additional columns in the cohort table.
 #'
-#' @return A summarised result.
+#' @return  A summary of overlap between cohorts in the cohort table.
+#'
 #' @export
 #'
 #' @examples
 #' \donttest{
 #' library(CohortCharacteristics)
 #' cdm <- CohortCharacteristics::mockCohortCharacteristics()
-#' results <- summariseCohortOverlap(cdm$cohort2)
+#' summariseCohortOverlap(cdm$cohort2) |> dplyr::glimpse()
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
 summariseCohortOverlap <- function(cohort,
@@ -204,8 +205,8 @@ summariseCohortOverlap <- function(cohort,
           noOverlap |>
           dplyr::cross_join(
             tidyr::expand_grid(
-              variable_name = "number_subjects",
-              variable_level = c("reference", "comparator", "overlap"),
+              variable_name = c("reference", "comparator", "overlap"),
+              variable_level = "number_subjects",
               estimate_name = c("count", "percentage"),
               estimate_value = "0"
             ) |>
@@ -218,9 +219,6 @@ summariseCohortOverlap <- function(cohort,
     dplyr::mutate(
       result_id = as.integer(1),
       cdm_name = CDMConnector::cdmName(cdm),
-      result_type = "cohort_overlap",
-      package_name = "CohortCharacteristics",
-      package_version = as.character(utils::packageVersion("CohortCharacteristics")),
       additional_name ="overall",
       additional_level = "overall",
       variable_level = dplyr::if_else(
@@ -228,7 +226,14 @@ summariseCohortOverlap <- function(cohort,
         paste0("only_in_", .data$variable_level), .data$variable_level
       )
     ) |>
-    omopgenerics::newSummarisedResult()
+    omopgenerics::newSummarisedResult(
+      settings = dplyr::tibble(
+        result_id = 1L,
+        result_type = "cohort_overlap",
+        package_name = "CohortCharacteristics",
+        package_version = as.character(utils::packageVersion("CohortCharacteristics"))
+      )
+    )
 
   return(overlap)
 }
@@ -242,8 +247,8 @@ getOverlapEstimates <- function(x) {
     ) |>
     tidyr::pivot_longer(cols = dplyr::starts_with("number"), names_to = "variable_name", values_to = "estimate_value") |>
     dplyr::mutate(
-      variable_level = gsub("number_subjects_", "", .data$variable_name),
-      variable_name = gsub("_overlap|_reference|_comparator", "", .data$variable_name),
+      variable_level = gsub("_overlap|_reference|_comparator", "", .data$variable_name),
+      variable_name = gsub("number_subjects_", "", .data$variable_name),
       estimate_name = "count",
       estimate_type = "integer",
       estimate_value = as.character(.data$estimate_value)
@@ -259,8 +264,8 @@ getOverlapEstimates <- function(x) {
         dplyr::select(!dplyr::all_of(c("total_subjects"))) |>
         tidyr::pivot_longer(cols = dplyr::starts_with("number"), names_to = "variable_name", values_to = "estimate_value") |>
         dplyr::mutate(
-          variable_level = gsub("number_subjects_", "", .data$variable_name),
-          variable_name = gsub("_overlap|_reference|_comparator", "", .data$variable_name),
+          variable_level = gsub("_overlap|_reference|_comparator", "", .data$variable_name),
+          variable_name = gsub("number_subjects_", "", .data$variable_name),
           estimate_name = "percentage",
           estimate_type = "percentage",
           estimate_value = as.character(.data$estimate_value)
