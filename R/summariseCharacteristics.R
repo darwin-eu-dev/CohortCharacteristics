@@ -53,6 +53,8 @@
 #' PatientProfiles::addConceptIntersectDays() to add variables to summarise.
 #' @param otherVariables Other variables contained in cohort that you want to be
 #' summarised.
+#' @param otherVariablesEstimates Name of the estimates for the otherVariables
+#' columns.
 #'
 #' @return A summary of the characteristics of the cohorts in the cohort table.
 #'
@@ -101,7 +103,8 @@ summariseCharacteristics <- function(cohort,
                                      conceptIntersectCount = list(),
                                      conceptIntersectDate = list(),
                                      conceptIntersectDays = list(),
-                                     otherVariables = character()) {
+                                     otherVariables = character(),
+                                     otherVariablesEstimates = c("min", "q25", "median", "q75", "max", "count", "percentage")) {
   # check initial tables
   cdm <- omopgenerics::cdmReference(cohort)
   checkX(cohort)
@@ -125,6 +128,8 @@ summariseCharacteristics <- function(cohort,
   conceptIntersectCount <- assertIntersect(conceptIntersectCount)
   conceptIntersectDate <- assertIntersect(conceptIntersectDate)
   conceptIntersectDays <- assertIntersect(conceptIntersectDays)
+  otherVariables <- checkOtherVariables(otherVariables, cohort)
+  otherVariablesEstimates <- checkOtherVariablesEstimates(otherVariablesEstimates, otherVariables)
   assertNumeric(cohortId, integerish = TRUE, null = TRUE)
   ids <- omopgenerics::settings(cohort)$cohort_definition_id
   if (is.null(cohortId)) {
@@ -140,6 +145,15 @@ summariseCharacteristics <- function(cohort,
       }
     }
   }
+
+  srSet <- dplyr::tibble(
+    "result_id" = 1L,
+    "package_name" = "CohortCharacteristics",
+    "package_version" = as.character(utils::packageVersion(
+      "CohortCharacteristics"
+    )),
+    "result_type" = "summarised_characteristics"
+  )
 
   # return empty result if no analyses chosen
   if (length(strata) == 0 &
@@ -158,8 +172,11 @@ summariseCharacteristics <- function(cohort,
     length(conceptIntersectCount) == 0 &
     length(conceptIntersectDate) == 0 &
     length(conceptIntersectDays) == 0 &
-    length(otherVariables) == 0) {
-    return(omopgenerics::emptySummarisedResult())
+    all(lengths(otherVariables) == 0)) {
+    return(
+      omopgenerics::emptySummarisedResult() |>
+        omopgenerics::newSummarisedResult(settings = srSet)
+    )
   }
 
   # functions
@@ -178,7 +195,7 @@ summariseCharacteristics <- function(cohort,
     dplyr::select(
       "cohort_definition_id", "subject_id", "cohort_start_date",
       "cohort_end_date", dplyr::all_of(unique(unlist(strata))),
-      dplyr::all_of(otherVariables)
+      dplyr::all_of(unique(unlist(otherVariables)))
     )
 
   if (cohort |> dplyr::tally() |> dplyr::pull() == 0) {
@@ -190,9 +207,6 @@ summariseCharacteristics <- function(cohort,
     result <- dplyr::tibble(
       "result_id" = as.integer(1),
       "cdm_name" = CDMConnector::cdmName(cdm),
-      "result_type" = "summarised_characteristics",
-      "package_name" = "CohortCharacteristics",
-      "package_version" = as.character(utils::packageVersion("CohortCharacteristics")),
       "group_name" = "overall",
       "group_level" = "overall",
       "strata_name" = "overall",
@@ -205,14 +219,14 @@ summariseCharacteristics <- function(cohort,
       "additional_name" = "overall",
       "additional_level" = "overall"
     ) |>
-      omopgenerics::newSummarisedResult()
+      omopgenerics::newSummarisedResult(settings = srSet)
     return(result)
   }
 
   dic <- dplyr::tibble(
     short_name = character(), new_variable_name = character(),
     new_variable_level = character(), table = character(), window = character(),
-    value = character(), result_type = character()
+    value = character()
   )
   variables <- list()
 
@@ -239,8 +253,7 @@ summariseCharacteristics <- function(cohort,
           new_variable_level = as.character(NA),
           table = as.character(NA),
           window = as.character(NA),
-          value = as.character(NA),
-          result_type = "summarised_demographics"
+          value = as.character(NA)
         ))
       names(ageGroup) <- newNames
       demographicsCategorical <- c(demographicsCategorical, newNames)
@@ -254,8 +267,7 @@ summariseCharacteristics <- function(cohort,
         new_variable_level = as.character(NA),
         table = as.character(NA),
         window = as.character(NA),
-        value = as.character(NA),
-        result_type = "summarised_demographics"
+        value = as.character(NA)
       ))
 
     # add demographics
@@ -340,8 +352,7 @@ summariseCharacteristics <- function(cohort,
               "short_name" = shortNames,
               "new_variable_name" = names(values)[k],
               "window" = names(val$window),
-              "value" = value,
-              "result_type" = getSummaryName(intersect)
+              "value" = value
             )
         )
 
@@ -369,37 +380,14 @@ summariseCharacteristics <- function(cohort,
   cohort <- cohort |> PatientProfiles::addCohortName()
 
   # detect other variables
-  x <- PatientProfiles::variableTypes(
-    cohort |> dplyr::select(dplyr::all_of(otherVariables))
-  )
-  datesVariables <- x |>
-    dplyr::filter(.data$variable_type == "date") |>
-    dplyr::pull("variable_name")
-  numericVariables <- x |>
-    dplyr::filter(.data$variable_type %in% c("numeric", "integer")) |>
-    dplyr::pull("variable_name")
-  binaryVariables <- numericVariables[
-    lapply(numericVariables, function(x) {
-      cohort |>
-        dplyr::select(dplyr::all_of(x)) |>
-        dplyr::distinct() |>
-        dplyr::pull() |>
-        binaryVariable()
-    }) |>
-      unlist()
-  ]
-  numericVariables  <- numericVariables[!numericVariables %in% binaryVariables]
-  categoricalVariables <- x |>
-    dplyr::filter(.data$variable_type == "categorical") |>
-    dplyr::pull("variable_name")
-  variables <- variables |>
-    updateVariables(
-      date = datesVariables,
-      numeric = numericVariables,
-      binary = binaryVariables,
-      categorical = categoricalVariables
-    )
   variables <- variables[lengths(variables) > 0]
+  estimates <- functions[names(variables)]
+
+  otherVariables <- otherVariables[lengths(otherVariables) > 0]
+  otherVariablesEstimates <- otherVariablesEstimates[names(otherVariables)]
+
+  variables <- c(variables, otherVariables)
+  estimates <- c(estimates, otherVariablesEstimates)
 
   cli::cli_alert_info("summarising data")
   # summarise results
@@ -410,7 +398,7 @@ summariseCharacteristics <- function(cohort,
         group = list("cohort_name"),
         strata = strata,
         variables = variables,
-        estimates = functions[names(variables)],
+        estimates = estimates,
         counts = counts
       ) |>
       PatientProfiles::addCdmName(cdm = cdm)
@@ -432,11 +420,6 @@ summariseCharacteristics <- function(cohort,
         is.na(.data$new_variable_level),
         .data$variable_level,
         .data$new_variable_level
-      ),
-      "result_type" = dplyr::if_else(
-        is.na(.data$result_type),
-        "summarised_characteristics",
-        .data$result_type
       )
     ) |>
     dplyr::select(-c(
@@ -451,16 +434,8 @@ summariseCharacteristics <- function(cohort,
     dplyr::as_tibble()
 
   results <- results |>
-    dplyr::group_by(.data$result_type) |>
-    dplyr::mutate(
-      "result_id" = dplyr::cur_group_id(),
-      "package_name" = "CohortCharacteristics",
-      "package_version" = as.character(utils::packageVersion(
-        "CohortCharacteristics"
-      ))
-    ) |>
-    dplyr::ungroup() |>
-    omopgenerics::newSummarisedResult()
+    dplyr::mutate("result_id" = 1L) |>
+    omopgenerics::newSummarisedResult(settings = srSet)
 
   cli::cli_alert_success("summariseCharacteristics finished!")
 

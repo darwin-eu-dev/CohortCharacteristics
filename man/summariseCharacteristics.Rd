@@ -23,7 +23,9 @@ summariseCharacteristics(
   conceptIntersectCount = list(),
   conceptIntersectDate = list(),
   conceptIntersectDays = list(),
-  otherVariables = character()
+  otherVariables = character(),
+  otherVariablesEstimates = c("min", "q25", "median", "q75", "max", "count",
+    "percentage")
 )
 }
 \arguments{
@@ -82,6 +84,9 @@ PatientProfiles::addConceptIntersectDays() to add variables to summarise.}
 
 \item{otherVariables}{Other variables contained in cohort that you want to be
 summarised.}
+
+\item{otherVariablesEstimates}{Name of the estimates for the otherVariables
+columns.}
 }
 \value{
 A summary of the characteristics of the cohorts in the cohort table.
