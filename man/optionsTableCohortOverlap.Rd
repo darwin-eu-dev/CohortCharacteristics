@@ -15,7 +15,7 @@ tableCohortOverlap and their given default value.
 }
 \examples{
 {
-optionsTableCohortOverlap()
+  optionsTableCohortOverlap()
 }
 
 }

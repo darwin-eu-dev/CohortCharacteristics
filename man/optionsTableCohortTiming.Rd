@@ -15,8 +15,7 @@ tableCohortTiming and their given default value.
 }
 \examples{
 {
-optionsTableCohortTiming()
+  optionsTableCohortTiming()
 }
-
 
 }

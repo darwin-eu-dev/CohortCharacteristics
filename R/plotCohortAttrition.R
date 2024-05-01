@@ -169,11 +169,9 @@ selectLabels <- function(xn) {
       dplyr::mutate(
         label = dplyr::if_else(
           .data$reason_id == min(.data$reason_id),
-          # paste0("𝗜𝗻𝗶𝘁𝗶𝗮𝗹 𝗲𝘃𝗲𝗻𝘁𝘀", "\n", label),
           paste0("Initial events", "\n", .data$label),
           dplyr::if_else(
             .data$reason_id == max(.data$reason_id),
-            # paste0("𝗙𝗶𝗻𝗮𝗹 𝗲𝘃𝗲𝗻𝘁𝘀", "\n", label),
             paste0("Final events", "\n", .data$label),
             .data$label
           )
