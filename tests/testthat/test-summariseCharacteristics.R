@@ -14,7 +14,9 @@ test_that("test summariseCharacteristics", {
     )),
     cohort_end_date = as.Date(c(
       "1990-04-19", "1991-04-19", "2010-11-14", "2000-05-25"
-    ))
+    )),
+    blood_type = c("a", "a", "0", "0"),
+    number_visits = c(0, 1, 5, 12)
   )
   comorbidities <- dplyr::tibble(
     cohort_definition_id = c(1, 2, 2, 1),
@@ -297,6 +299,62 @@ test_that("test summariseCharacteristics", {
     summariseCohortCounts(cdm$dus_cohort) |>
       dplyr::arrange(.data$group_level, .data$variable_name)
   )
+
+  # test other variables
+  expect_no_error(
+    result <- summariseCharacteristics(
+      cdm$dus_cohort,
+      cohortIntersectFlag = list(
+        "Medications short" = list(
+          targetCohortTable = "medication", window = list("short" = c(-30, 0))
+        )
+      ),
+      otherVariables = c("blood_type", "number_visits"),
+      otherVariablesEstimates = c("mean", "count")
+    )
+  )
+
+  expect_true(all(
+    c("Blood type", "Number visits") %in% result$variable_name |> unique()
+  ))
+  expect_true("mean" == unique(result$estimate_name[result$variable_name == "Number visits"]))
+  expect_true("count" == unique(result$estimate_name[result$variable_name == "Blood type"]))
+
+  expect_no_error(
+    result <- summariseCharacteristics(
+      cdm$dus_cohort,
+      cohortIntersectFlag = list(
+        "Medications short" = list(
+          targetCohortTable = "medication", window = list("short" = c(-30, 0))
+        )
+      ),
+      otherVariables = c("blood_type", "number_visits"),
+      otherVariablesEstimates = c("mean")
+    )
+  )
+
+  expect_false("Blood type" %in% result$variable_name |> unique())
+  expect_true("Number visits" %in% result$variable_name |> unique())
+  expect_true("mean" == unique(result$estimate_name[result$variable_name == "Number visits"]))
+
+  expect_no_error(
+    result <- summariseCharacteristics(
+      cdm$dus_cohort,
+      cohortIntersectFlag = list(
+        "Medications short" = list(
+          targetCohortTable = "medication", window = list("short" = c(-30, 0))
+        )
+      ),
+      otherVariables = list("blood_type", "number_visits"),
+      otherVariablesEstimates = list("mean", "count")
+    )
+  )
+
+  expect_true(all(
+    c("Blood type", "Number visits") %in% result$variable_name |> unique()
+  ))
+  expect_true("mean" == unique(result$estimate_name[result$variable_name == "Number visits"]))
+  expect_true("count" == unique(result$estimate_name[result$variable_name == "Blood type"]))
 
 })
 

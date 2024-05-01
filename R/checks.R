@@ -464,14 +464,44 @@ checkCensorDate <- function(x, censorDate) {
 
 #' @noRd
 checkOtherVariables <- function(otherVariables, cohort, call = rlang::env_parent()) {
-  errorMessage <- "otherVariables must point to columns in cohort."
-  if (!is.character(otherVariables)) {
-    cli::cli_abort(errorMessage, call = call)
+  if (!is.list(otherVariables)) {
+    otherVariables <- list(otherVariables)
   }
-  if (!all(otherVariables %in% colnames(cohort))) {
-    cli::cli_abort(errorMessage, call = call)
+  assertList(otherVariables, class = "character", call = call)
+  if (!all(unlist(otherVariables) %in% colnames(cohort))) {
+    cli::cli_abort("otherVariables must point to columns in cohort.", call = call)
   }
-  invisible(otherVariables)
+  if (is.null(names(otherVariables))) {
+    names(otherVariables) <- paste0("other_", seq_along(otherVariables))
+  }
+  return(invisible(otherVariables))
+}
+
+#' @noRd
+checkOtherVariablesEstimates <- function(otherVariablesEstimates, otherVariables, call = rlang::env_parent()) {
+  if (!is.list(otherVariablesEstimates)) {
+    otherVariablesEstimates <- list(otherVariablesEstimates)
+  }
+  assertList(otherVariablesEstimates, class = "character", call = call)
+  allEstimates <- PatientProfiles::availableEstimates(fullQuantiles = TRUE) |>
+    dplyr::pull("estimate_name") |>
+    unique()
+  notEstimate <- unique(unlist(otherVariablesEstimates))
+  notEstimate <- notEstimate[!notEstimate %in% allEstimates]
+  if (length(notEstimate) > 0) {
+    cli::cli_abort(
+      "Not valid estimates found in otherVariablesEstimates: {notEstimate}.
+      Please see valid estimates in: PatientProfiles::availableEstimates()",
+      call = call
+    )
+  }
+  if (length(otherVariablesEstimates) == 1 & length(otherVariables) > 1) {
+    otherVariablesEstimates <- rep(otherVariablesEstimates, length(otherVariables))
+  }
+  if (is.null(names(otherVariablesEstimates))) {
+    names(otherVariablesEstimates) <- paste0("other_", seq_along(otherVariablesEstimates))
+  }
+  return(invisible(otherVariablesEstimates))
 }
 
 assertClass <- function(x,
@@ -999,4 +1029,3 @@ assertIntersect <- function(intersect) {
 getWindowName <- function(win) {
   paste0(win[[1]][1], " to ", win[[1]][2])
 }
-

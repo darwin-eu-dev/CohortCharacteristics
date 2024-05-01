@@ -122,6 +122,8 @@ summariseCharacteristics <- function(cohort,
   conceptIntersectCount <- assertIntersect(conceptIntersectCount)
   conceptIntersectDate <- assertIntersect(conceptIntersectDate)
   conceptIntersectDays <- assertIntersect(conceptIntersectDays)
+  otherVariables <- checkOtherVariables(otherVariables, cohort)
+  otherVariablesEstimates <- checkOtherVariablesEstimates(otherVariablesEstimates, otherVariables)
 
   # return empty result if no analyses chosen
   if (length(strata) == 0 &
@@ -159,7 +161,7 @@ summariseCharacteristics <- function(cohort,
     dplyr::select(
       "cohort_definition_id", "subject_id", "cohort_start_date",
       "cohort_end_date", dplyr::all_of(unique(unlist(strata))),
-      dplyr::all_of(otherVariables)
+      dplyr::all_of(unique(unlist(otherVariables)))
     )
 
   if (cohort |> dplyr::tally() |> dplyr::pull() == 0) {
@@ -352,12 +354,6 @@ summariseCharacteristics <- function(cohort,
   # detect other variables
   variables <- variables[lengths(variables) > 0]
   estimates <- functions[names(variables)]
-  if (!is.list(otherVariables)) {
-    otherVariables <- list(otherVariables)
-  }
-  if (!is.list(otherVariablesEstimates)) {
-    otherVariablesEstimates <- list(otherVariablesEstimates)
-  }
 
   cli::cli_alert_info("summarising data")
   # summarise results
