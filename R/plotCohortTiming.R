@@ -72,16 +72,17 @@ plotCohortTiming <- function(result,
   facetVarX <- NULL
   facetVarY <- NULL
 
-  if(is.null(.options[["facetNcols"]])){
+  if (is.null(.options[["facetNcols"]])) {
     .options[["facetNcols"]] <- 1
   }
-  if(is.null(.options[["facetScales"]])){
+  if (is.null(.options[["facetScales"]])) {
     .options[["facetScales"]] <- "free_y"
   }
 
   # split table
   timingLabel <- "{cohort_name_reference} &&& {cohort_name_comparator}"
-  x <- result |> visOmopResults::tidy(splitStrata = FALSE) |>
+  x <- result |>
+    visOmopResults::tidy(splitStrata = FALSE) |>
     dplyr::mutate(group_level = glue::glue(.env$timingLabel))
 
 
@@ -92,8 +93,8 @@ plotCohortTiming <- function(result,
   }
 
   suppressMessages(data_to_plot <- result |>
-                     dplyr::inner_join(x) |>
-                     dplyr::select(names(result)))
+    dplyr::inner_join(x) |>
+    dplyr::select(names(result)))
 
 
 
@@ -102,13 +103,13 @@ plotCohortTiming <- function(result,
     dplyr::filter(.data$estimate_type == "numeric") |>
     dplyr::mutate(estimate_value = as.numeric(.data$estimate_value)) |>
     dplyr::mutate(group_level = stringr::str_replace_all(.data$group_level,
-                                                         pattern = "&&&",
-                                                         replacement = "to"
+      pattern = "&&&",
+      replacement = "to"
     ))
 
-  if(timeScale == "years"){
+  if (timeScale == "years") {
     data_to_plot <- data_to_plot |>
-      dplyr::mutate(estimate_value =  .data$estimate_value/ 365.25)
+      dplyr::mutate(estimate_value = .data$estimate_value / 365.25)
     if (plotType == "boxplot") {
       data_to_plot <- data_to_plot |>
         dplyr::mutate(variable_name = "years_between_cohort_entries")
@@ -120,28 +121,30 @@ plotCohortTiming <- function(result,
 
   if (plotType == "boxplot") {
     gg <- plotfunction(data_to_plot,
-                       xAxis = "estimate_value",
-                       yAxis = "group_level",
-                       facetVarX = facetVarX,
-                       facetVarY = facetVarY,
-                       colorVars = colorVars,
-                       plotStyle = "boxplot",
-                       facet = facet,
-                       .options = .options)
+      xAxis = "estimate_value",
+      yAxis = "group_level",
+      facetVarX = facetVarX,
+      facetVarY = facetVarY,
+      colorVars = colorVars,
+      plotStyle = "boxplot",
+      facet = facet,
+      .options = .options
+    )
   } else if (plotType == "density") {
     data_to_plot <- data_to_plot |>
       dplyr::filter(.data$variable_name == "density")
     facet <- unique(c("group_level", facet))
     gg <- plotfunction(data_to_plot,
-                       xAxis = "estimate_value",
-                       yAxis = "group_level",
-                       facetVarX = facetVarX,
-                       facetVarY = facetVarY,
-                       colorVars = colorVars,
-                       vertical_x = TRUE,
-                       plotStyle = "density",
-                       facet = facet,
-                       .options = .options)
+      xAxis = "estimate_value",
+      yAxis = "group_level",
+      facetVarX = facetVarX,
+      facetVarY = facetVarY,
+      colorVars = colorVars,
+      vertical_x = TRUE,
+      plotStyle = "density",
+      facet = facet,
+      .options = .options
+    )
   }
 
   gg <- gg +
@@ -152,10 +155,10 @@ plotCohortTiming <- function(result,
       y = xLab
     )
 
-  if(!is.null(colourName)){
+  if (!is.null(colourName)) {
     gg <- gg +
       ggplot2::labs(color = colourName)
-  } else{
+  } else {
     gg <- gg +
       ggplot2::labs(color = "")
   }

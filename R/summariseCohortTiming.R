@@ -45,8 +45,8 @@ summariseCohortTiming <- function(cohort,
                                   cohortId = NULL,
                                   strata = list(),
                                   restrictToFirstEntry = TRUE,
-                                  estimates = c("min", "q25", "median","q75", "max"),
-                                  density = FALSE){
+                                  estimates = c("min", "q25", "median", "q75", "max"),
+                                  density = FALSE) {
   # validate inputs
   assertClass(cohort, "cohort_table")
   checkmate::assertNumeric(cohortId, any.missing = FALSE, null.ok = TRUE)
@@ -72,19 +72,19 @@ summariseCohortTiming <- function(cohort,
     cohortId <- ids
   } else {
     indNot <- which(!cohortId %in% ids)
-    if (length(indNot)>0) {
+    if (length(indNot) > 0) {
       cli::cli_warn("{paste0(cohortId[indNot], collapse = ', ')} {?is/are} not in the cohort table.")
     }
   }
   cdm[[name]] <- PatientProfiles::addCohortName(cdm[[name]]) |>
     dplyr::filter(.data$cohort_definition_id %in% .env$cohortId)
 
-  if(isTRUE(restrictToFirstEntry)){
+  if (isTRUE(restrictToFirstEntry)) {
     # to use cohortConstructor once released
     # cdm[[name]] <- cdm[[name]] |>
     #   restrictToFirstEntry()
-    cdm[[name]] <- cdm[[name]]  |>
-      dplyr::group_by(.data$subject_id,.data$cohort_definition_id) |>
+    cdm[[name]] <- cdm[[name]] |>
+      dplyr::group_by(.data$subject_id, .data$cohort_definition_id) |>
       dplyr::filter(.data$cohort_start_date == min(.data$cohort_start_date, na.rm = TRUE)) |>
       dplyr::ungroup()
   }
@@ -93,25 +93,34 @@ summariseCohortTiming <- function(cohort,
   # should we use addCohortIntersectDate instead to avoid potentially large number of rows?
   cohort_timings <- cdm[[name]] |>
     dplyr::rename("cohort_name_reference" = "cohort_name") |>
-    dplyr::select(dplyr::all_of(c(strataCols, "cohort_name_reference",
-                                  "cohort_start_date", "cohort_end_date",
-                                  "subject_id"))) |>
+    dplyr::select(dplyr::all_of(c(
+      strataCols, "cohort_name_reference",
+      "cohort_start_date", "cohort_end_date",
+      "subject_id"
+    ))) |>
     dplyr::inner_join(
       cdm[[name]] |>
         dplyr::rename_with(~ paste0(.x, "_comparator"),
-                           .cols = c("cohort_definition_id", "cohort_start_date",
-                                     "cohort_end_date", "cohort_name")) |>
-        dplyr::select(dplyr::all_of(c(strataCols, "cohort_name_comparator",
-                                      "cohort_start_date_comparator", "cohort_end_date_comparator",
-                                      "subject_id"))),
-      by = c("subject_id", unique(strataCols))) |>
+          .cols = c(
+            "cohort_definition_id", "cohort_start_date",
+            "cohort_end_date", "cohort_name"
+          )
+        ) |>
+        dplyr::select(dplyr::all_of(c(
+          strataCols, "cohort_name_comparator",
+          "cohort_start_date_comparator", "cohort_end_date_comparator",
+          "subject_id"
+        ))),
+      by = c("subject_id", unique(strataCols))
+    ) |>
     dplyr::filter(.data$cohort_name_reference != .data$cohort_name_comparator) %>% # to be removed
     dplyr::mutate(days_between_cohort_entries = !!CDMConnector::datediff("cohort_start_date",
-                                                                         "cohort_start_date_comparator",
-                                                                         interval = "day")) |>
+      "cohort_start_date_comparator",
+      interval = "day"
+    )) |>
     dplyr::collect()
 
-  if (nrow(cohort_timings) == 0 | (length(timing) == 0 & !density)) {
+  if (nrow(cohort_timings) == 0 || (length(timing) == 0 && !density)) {
     return(omopgenerics::emptySummarisedResult())
   }
 
@@ -178,7 +187,7 @@ summariseCohortTiming <- function(cohort,
         group_name = "cohort_name_reference &&& cohort_name_comparator",
         variable_name = "density",
         estimate_type = "numeric",
-        additional_name ="overall",
+        additional_name = "overall",
         additional_level = "overall"
       )
     rId <- c(rId, 2L)

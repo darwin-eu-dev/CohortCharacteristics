@@ -61,11 +61,13 @@ test_that("test summariseCharacteristics", {
   cdm$dus_cohort <- omopgenerics::newCohortTable(
     table = cdm$dus_cohort, cohortSetRef = dplyr::tibble(
       cohort_definition_id = c(1, 2), cohort_name = c("exposed", "unexposed")
-    ))
+    )
+  )
   cdm$comorbidities <- omopgenerics::newCohortTable(
     table = cdm$comorbidities, cohortSetRef = dplyr::tibble(
       cohort_definition_id = c(1, 2), cohort_name = c("covid", "headache")
-    ))
+    )
+  )
   cdm$medication <- omopgenerics::newCohortTable(
     table = cdm$medication,
     cohortSetRef = dplyr::tibble(
@@ -192,7 +194,7 @@ test_that("test summariseCharacteristics", {
         targetCohortTable = "comorbidities", window = c(-Inf, 0)
       )
     )
-  )|>
+  ) |>
     suppress(minCellCount = 1))
   expect_true(inherits(result, "summarised_result"))
   expect_true(
@@ -228,33 +230,37 @@ test_that("test summariseCharacteristics", {
       omopgenerics::settings(cdm$comorbidities) |> nrow() * 4 # 2 group_level 4 estimate type
   )
 
-  result_notables <- summariseCharacteristics(cdm$dus_cohort)|>
+  result_notables <- summariseCharacteristics(cdm$dus_cohort) |>
     suppress(minCellCount = 1)
   expect_true(inherits(result, "summarised_result"))
 
   # counts - both records and persons
   sc_person_record <- summariseCharacteristics(
-    cdm$dus_cohort, counts = TRUE, demographics = FALSE
+    cdm$dus_cohort,
+    counts = TRUE, demographics = FALSE
   )
   expect_true(nrow(sc_person_record |>
-                     dplyr::filter(variable_name == "Number records")) > 0)
+    dplyr::filter(variable_name == "Number records")) > 0)
   expect_true(nrow(sc_person_record |>
-                     dplyr::filter(variable_name == "Number subjects")) > 0)
+    dplyr::filter(variable_name == "Number subjects")) > 0)
   # counts - none
   sc_no_counts <- summariseCharacteristics(
-    cdm$dus_cohort, counts = FALSE, demographics = TRUE
+    cdm$dus_cohort,
+    counts = FALSE, demographics = TRUE
   )
   expect_true(nrow(sc_no_counts |>
-                     dplyr::filter(variable_name == "Number records")) == 0)
+    dplyr::filter(variable_name == "Number records")) == 0)
   expect_true(nrow(sc_no_counts |>
-                     dplyr::filter(variable_name == "Number subjects")) == 0)
+    dplyr::filter(variable_name == "Number subjects")) == 0)
   expect_error(summariseCharacteristics(
-    cdm$dus_cohort, counts = "not an option", demographics = FALSE
+    cdm$dus_cohort,
+    counts = "not an option", demographics = FALSE
   ))
 
   # no options chosen
   expect_no_error(empty <- summariseCharacteristics(
-    cdm$dus_cohort, counts = FALSE, demographics = FALSE
+    cdm$dus_cohort,
+    counts = FALSE, demographics = FALSE
   ))
   expect_equal(
     empty,
@@ -280,16 +286,20 @@ test_that("test summariseCharacteristics", {
     )
   ))
   expect_true(all(
-    c("Cohort start date", "Cohort end date", "Age", "Sex", "Prior observation",
-      "Future observation") %in% result$variable_name
+    c(
+      "Cohort start date", "Cohort end date", "Age", "Sex", "Prior observation",
+      "Future observation"
+    ) %in% result$variable_name
   ))
   expect_no_error(result <- summariseCharacteristics(
     cdm$dus_cohort,
     demographics = TRUE
   ))
   expect_true(all(
-    c("Cohort start date", "Cohort end date", "Age", "Sex", "Prior observation",
-      "Future observation") %in% result$variable_name
+    c(
+      "Cohort start date", "Cohort end date", "Age", "Sex", "Prior observation",
+      "Future observation"
+    ) %in% result$variable_name
   ))
   expect_no_error(result <- summariseCharacteristics(
     cdm$dus_cohort,
@@ -301,8 +311,10 @@ test_that("test summariseCharacteristics", {
     )
   ))
   expect_false(any(
-    c("Cohort start date", "Cohort end date", "Age", "Sex", "Prior observation",
-      "Future observation") %in% result$variable_name
+    c(
+      "Cohort start date", "Cohort end date", "Age", "Sex", "Prior observation",
+      "Future observation"
+    ) %in% result$variable_name
   ))
 
   # test other variables
@@ -360,7 +372,6 @@ test_that("test summariseCharacteristics", {
   ))
   expect_true("mean" == unique(result$estimate_name[result$variable_name == "Number visits"]))
   expect_true("count" == unique(result$estimate_name[result$variable_name == "Blood type"]))
-
 })
 
 test_that("test empty cohort", {
@@ -481,11 +492,13 @@ test_that("test cohort id", {
   cdm$dus_cohort <- omopgenerics::newCohortTable(
     table = cdm$dus_cohort, cohortSetRef = dplyr::tibble(
       cohort_definition_id = c(1, 2), cohort_name = c("exposed", "unexposed")
-    ))
+    )
+  )
   cdm$comorbidities <- omopgenerics::newCohortTable(
     table = cdm$comorbidities, cohortSetRef = dplyr::tibble(
       cohort_definition_id = c(1, 2), cohort_name = c("covid", "headache")
-    ))
+    )
+  )
   cdm$medication <- omopgenerics::newCohortTable(
     table = cdm$medication,
     cohortSetRef = dplyr::tibble(
@@ -495,7 +508,7 @@ test_that("test cohort id", {
     cohortAttritionRef = NULL
   )
 
- result <- summariseCharacteristics(
+  result <- summariseCharacteristics(
     cdm$dus_cohort,
     cohortId = 1,
     cohortIntersectFlag = list(
@@ -508,17 +521,17 @@ test_that("test cohort id", {
     )
   )
 
- resultAll <- summariseCharacteristics(
-   cdm$dus_cohort,
-   cohortIntersectFlag = list(
-     "Medications" = list(
-       targetCohortTable = "medication", window = c(-365, 0)
-     ),
-     "Comorbidities" = list(
-       targetCohortTable = "comorbidities", window = c(-Inf, 0)
-     )
-   )
- )
+  resultAll <- summariseCharacteristics(
+    cdm$dus_cohort,
+    cohortIntersectFlag = list(
+      "Medications" = list(
+        targetCohortTable = "medication", window = c(-365, 0)
+      ),
+      "Comorbidities" = list(
+        targetCohortTable = "comorbidities", window = c(-Inf, 0)
+      )
+    )
+  )
   expect_true(inherits(result, "summarised_result"))
   expect_true(unique(result$group_level) == "exposed")
   expect_identical(
@@ -532,7 +545,7 @@ test_that("test cohort id", {
   expect_warning(
     summariseCharacteristics(
       cdm$dus_cohort,
-      cohortId = c(1,5),
+      cohortId = c(1, 5),
       cohortIntersectFlag = list(
         "Medications" = list(
           targetCohortTable = "medication", window = c(-365, 0)
@@ -558,10 +571,9 @@ test_that("test cohort id", {
       )
     )
   )
-
 })
 
-test_that("arguments tableIntersect",{
+test_that("arguments tableIntersect", {
   person <- dplyr::tibble(
     person_id = c(1, 2, 3, 4, 5), gender_concept_id = c(8507, 8532, 8532, 8507, 8507),
     year_of_birth = c(1985, 2000, 1962, 1999, 1979), month_of_birth = c(10, 5, 9, 2, 4),
@@ -614,7 +626,8 @@ test_that("arguments tableIntersect",{
   cdm$dus_cohort <- omopgenerics::newCohortTable(
     table = cdm$dus_cohort, cohortSetRef = dplyr::tibble(
       cohort_definition_id = c(1, 2), cohort_name = c("exposed", "unexposed")
-    ))
+    )
+  )
 
   expect_no_error(
     results <- summariseCharacteristics(
@@ -645,9 +658,11 @@ test_that("arguments tableIntersect",{
 
   expect_identical(
     results %>%
-      dplyr::filter(group_level == "exposed",
-                    variable_name == "Number visits anytime before",
-                    estimate_name == "min") %>%
+      dplyr::filter(
+        group_level == "exposed",
+        variable_name == "Number visits anytime before",
+        estimate_name == "min"
+      ) %>%
       dplyr::pull("estimate_value") %>%
       as.numeric(),
     0
@@ -655,9 +670,11 @@ test_that("arguments tableIntersect",{
 
   expect_identical(
     results %>%
-      dplyr::filter(group_level == "unexposed",
-                    variable_name == "Number visits anytime before",
-                    estimate_name == "min") %>%
+      dplyr::filter(
+        group_level == "unexposed",
+        variable_name == "Number visits anytime before",
+        estimate_name == "min"
+      ) %>%
       dplyr::pull("estimate_value") %>%
       as.numeric(),
     0
@@ -665,9 +682,11 @@ test_that("arguments tableIntersect",{
 
   expect_identical(
     results %>%
-      dplyr::filter(group_level == "exposed",
-                    variable_name == "Number visits anytime before",
-                    estimate_name == "max") %>%
+      dplyr::filter(
+        group_level == "exposed",
+        variable_name == "Number visits anytime before",
+        estimate_name == "max"
+      ) %>%
       dplyr::pull("estimate_value") %>%
       as.numeric(),
     2
@@ -675,9 +694,11 @@ test_that("arguments tableIntersect",{
 
   expect_identical(
     results %>%
-      dplyr::filter(group_level == "unexposed",
-                    variable_name == "Number visits anytime before",
-                    estimate_name == "max") %>%
+      dplyr::filter(
+        group_level == "unexposed",
+        variable_name == "Number visits anytime before",
+        estimate_name == "max"
+      ) %>%
       dplyr::pull("estimate_value") %>%
       as.numeric(),
     1
@@ -685,9 +706,11 @@ test_that("arguments tableIntersect",{
 
   expect_identical(
     results %>%
-      dplyr::filter(group_level == "exposed",
-                    variable_name == "Number visits anytime before",
-                    estimate_name == "median") %>%
+      dplyr::filter(
+        group_level == "exposed",
+        variable_name == "Number visits anytime before",
+        estimate_name == "median"
+      ) %>%
       dplyr::pull("estimate_value") %>%
       as.numeric(),
     0
@@ -695,9 +718,11 @@ test_that("arguments tableIntersect",{
 
   expect_identical(
     results %>%
-      dplyr::filter(group_level == "unexposed",
-                    variable_name == "Number visits anytime before",
-                    estimate_name == "median") %>%
+      dplyr::filter(
+        group_level == "unexposed",
+        variable_name == "Number visits anytime before",
+        estimate_name == "median"
+      ) %>%
       dplyr::pull("estimate_value") %>%
       as.numeric(),
     1
@@ -732,9 +757,11 @@ test_that("arguments tableIntersect",{
 
   expect_identical(
     results %>%
-      dplyr::filter(group_level == "exposed",
-                    variable_name == "Flag visits anytime before",
-                    estimate_name == "count") %>%
+      dplyr::filter(
+        group_level == "exposed",
+        variable_name == "Flag visits anytime before",
+        estimate_name == "count"
+      ) %>%
       dplyr::pull("estimate_value") %>%
       as.numeric(),
     1
@@ -742,9 +769,11 @@ test_that("arguments tableIntersect",{
 
   expect_identical(
     results %>%
-      dplyr::filter(group_level == "unexposed",
-                    variable_name == "Flag visits anytime before",
-                    estimate_name == "count") %>%
+      dplyr::filter(
+        group_level == "unexposed",
+        variable_name == "Flag visits anytime before",
+        estimate_name == "count"
+      ) %>%
       dplyr::pull("estimate_value") %>%
       as.numeric(),
     2
@@ -770,9 +799,11 @@ test_that("arguments tableIntersect",{
 
   expect_identical(
     results %>%
-      dplyr::filter(group_level == "exposed",
-                    variable_name == "Date visits anytime before",
-                    estimate_name == "min") %>%
+      dplyr::filter(
+        group_level == "exposed",
+        variable_name == "Date visits anytime before",
+        estimate_name == "min"
+      ) %>%
       dplyr::pull("estimate_value") %>%
       as.Date(),
     as.Date("2009-09-09")
@@ -780,9 +811,11 @@ test_that("arguments tableIntersect",{
 
   expect_identical(
     results %>%
-      dplyr::filter(group_level == "unexposed",
-                    variable_name == "Date visits anytime before",
-                    estimate_name == "min") %>%
+      dplyr::filter(
+        group_level == "unexposed",
+        variable_name == "Date visits anytime before",
+        estimate_name == "min"
+      ) %>%
       dplyr::pull("estimate_value") %>%
       as.Date(),
     as.Date("2005-01-01")
@@ -790,9 +823,11 @@ test_that("arguments tableIntersect",{
 
   expect_identical(
     results %>%
-      dplyr::filter(group_level == "exposed",
-                    variable_name == "Date visits anytime before",
-                    estimate_name == "max") %>%
+      dplyr::filter(
+        group_level == "exposed",
+        variable_name == "Date visits anytime before",
+        estimate_name == "max"
+      ) %>%
       dplyr::pull("estimate_value") %>%
       as.Date(),
     as.Date("2009-09-09")
@@ -800,9 +835,11 @@ test_that("arguments tableIntersect",{
 
   expect_identical(
     results %>%
-      dplyr::filter(group_level == "unexposed",
-                    variable_name == "Date visits anytime before",
-                    estimate_name == "max") %>%
+      dplyr::filter(
+        group_level == "unexposed",
+        variable_name == "Date visits anytime before",
+        estimate_name == "max"
+      ) %>%
       dplyr::pull("estimate_value") %>%
       as.Date(),
     as.Date("2008-09-01")
@@ -828,9 +865,11 @@ test_that("arguments tableIntersect",{
 
   expect_identical(
     results %>%
-      dplyr::filter(group_level == "exposed",
-                    variable_name == "Days visits anytime after",
-                    estimate_name == "min") %>%
+      dplyr::filter(
+        group_level == "exposed",
+        variable_name == "Days visits anytime after",
+        estimate_name == "min"
+      ) %>%
       dplyr::pull("estimate_value") %>%
       as.numeric(),
     as.numeric(as.Date("1994-12-03") - as.Date("1991-04-19"))
@@ -838,9 +877,11 @@ test_that("arguments tableIntersect",{
 
   expect_identical(
     results %>%
-      dplyr::filter(group_level == "unexposed",
-                    variable_name == "Days visits anytime after",
-                    estimate_name == "min") %>%
+      dplyr::filter(
+        group_level == "unexposed",
+        variable_name == "Days visits anytime after",
+        estimate_name == "min"
+      ) %>%
       dplyr::pull("estimate_value") %>%
       as.numeric(),
     as.numeric(as.Date("2010-10-10") - as.Date("2010-01-01"))
@@ -848,9 +889,11 @@ test_that("arguments tableIntersect",{
 
   expect_identical(
     results %>%
-      dplyr::filter(group_level == "exposed",
-                    variable_name == "Days visits anytime after",
-                    estimate_name == "max") %>%
+      dplyr::filter(
+        group_level == "exposed",
+        variable_name == "Days visits anytime after",
+        estimate_name == "max"
+      ) %>%
       dplyr::pull("estimate_value") %>%
       as.numeric(),
     as.numeric(as.Date("1994-12-03") - as.Date("1990-04-19"))
@@ -858,9 +901,11 @@ test_that("arguments tableIntersect",{
 
   expect_identical(
     results %>%
-      dplyr::filter(group_level == "unexposed",
-                    variable_name == "Days visits anytime after",
-                    estimate_name == "max") %>%
+      dplyr::filter(
+        group_level == "unexposed",
+        variable_name == "Days visits anytime after",
+        estimate_name == "max"
+      ) %>%
       dplyr::pull("estimate_value") %>%
       as.numeric(),
     as.numeric(as.Date("2011-11-11") - as.Date("2009-09-09"))
@@ -869,7 +914,7 @@ test_that("arguments tableIntersect",{
   CDMConnector::cdm_disconnect(cdm = cdm)
 })
 
-test_that("arguments cohortIntersect",{
+test_that("arguments cohortIntersect", {
   dus_cohort <- dplyr::tibble(
     cohort_definition_id = c(1, 1, 1, 1, 1, 1),
     subject_id = c(1, 1, 2, 3, 2, 3),
@@ -905,12 +950,12 @@ test_that("arguments cohortIntersect",{
   )
 
   cdm <- mockCohortCharacteristics(
-    dus_cohort= dus_cohort,
+    dus_cohort = dus_cohort,
     cohort1 = cohort1,
     observation_period = observation_period
   )
 
-  ###intersect count
+  ### intersect count
   expect_no_error(
     results <- summariseCharacteristics(
       cohort = cdm$dus_cohort,
@@ -929,8 +974,10 @@ test_that("arguments cohortIntersect",{
 
   expect_identical(
     results %>%
-      dplyr::filter(variable_name == "Cohort 1 anytime before",
-                    estimate_name == "min") %>%
+      dplyr::filter(
+        variable_name == "Cohort 1 anytime before",
+        estimate_name == "min"
+      ) %>%
       dplyr::pull("estimate_value") %>%
       as.numeric(),
     0
@@ -938,8 +985,10 @@ test_that("arguments cohortIntersect",{
 
   expect_identical(
     results %>%
-      dplyr::filter(variable_name == "Cohort 1 anytime before",
-                    estimate_name == "max") %>%
+      dplyr::filter(
+        variable_name == "Cohort 1 anytime before",
+        estimate_name == "max"
+      ) %>%
       dplyr::pull("estimate_value") %>%
       as.numeric(),
     2
@@ -947,8 +996,10 @@ test_that("arguments cohortIntersect",{
 
   expect_identical(
     results %>%
-      dplyr::filter(variable_name == "Cohort 1 anytime before",
-                    estimate_name == "median") %>%
+      dplyr::filter(
+        variable_name == "Cohort 1 anytime before",
+        estimate_name == "median"
+      ) %>%
       dplyr::pull("estimate_value") %>%
       as.numeric(),
     0.5
@@ -973,8 +1024,10 @@ test_that("arguments cohortIntersect",{
 
   expect_identical(
     results %>%
-      dplyr::filter(variable_name == "Cohort 1 (flag) anytime before",
-                    estimate_name == "count") %>%
+      dplyr::filter(
+        variable_name == "Cohort 1 (flag) anytime before",
+        estimate_name == "count"
+      ) %>%
       dplyr::pull("estimate_value") %>%
       as.numeric(),
     3
@@ -1001,8 +1054,10 @@ test_that("arguments cohortIntersect",{
 
   expect_identical(
     results %>%
-      dplyr::filter(variable_name == "Date cohort 1 anytime before",
-                    estimate_name == "min") %>%
+      dplyr::filter(
+        variable_name == "Date cohort 1 anytime before",
+        estimate_name == "min"
+      ) %>%
       dplyr::pull("estimate_value") %>%
       as.Date(),
     as.Date("2001-04-20")
@@ -1010,8 +1065,10 @@ test_that("arguments cohortIntersect",{
 
   expect_identical(
     results %>%
-      dplyr::filter(variable_name == "Date cohort 1 anytime before",
-                    estimate_name == "max") %>%
+      dplyr::filter(
+        variable_name == "Date cohort 1 anytime before",
+        estimate_name == "max"
+      ) %>%
       dplyr::pull("estimate_value") %>%
       as.Date(),
     as.Date("2009-01-01")
@@ -1038,8 +1095,10 @@ test_that("arguments cohortIntersect",{
 
   expect_identical(
     results %>%
-      dplyr::filter(variable_name == "Days cohort 1 anytime after",
-                    estimate_name == "min") %>%
+      dplyr::filter(
+        variable_name == "Days cohort 1 anytime after",
+        estimate_name == "min"
+      ) %>%
       dplyr::pull("estimate_value") %>%
       as.numeric(),
     as.numeric(as.Date("2001-04-20") - as.Date("2000-05-25"))
@@ -1047,8 +1106,10 @@ test_that("arguments cohortIntersect",{
 
   expect_identical(
     results %>%
-      dplyr::filter(variable_name == "Days cohort 1 anytime after",
-                    estimate_name == "max") %>%
+      dplyr::filter(
+        variable_name == "Days cohort 1 anytime after",
+        estimate_name == "max"
+      ) %>%
       dplyr::pull("estimate_value") %>%
       as.numeric(),
     as.numeric(as.Date("1999-05-26") - as.Date("1990-04-19"))
@@ -1057,7 +1118,7 @@ test_that("arguments cohortIntersect",{
   CDMConnector::cdm_disconnect(cdm = cdm)
 })
 
-test_that("arguments conceptIntersect",{
+test_that("arguments conceptIntersect", {
   con <- DBI::dbConnect(duckdb::duckdb(), CDMConnector::eunomia_dir())
   cdm <- CDMConnector::cdmFromCon(con = con, cdmSchema = "main", writeSchema = "main")
 
@@ -1069,19 +1130,19 @@ test_that("arguments conceptIntersect",{
 
   codelist <- list(
     "statin" = cdm$concept |>
-      dplyr::filter(grepl("statin", concept_name, ignore.case = T)) |>
+      dplyr::filter(grepl("statin", concept_name, ignore.case = TRUE)) |>
       dplyr::pull("concept_id"),
     "serum_measurement" = cdm$concept |>
-      dplyr::filter(grepl("serum", concept_name, ignore.case = T)) |>
+      dplyr::filter(grepl("serum", concept_name, ignore.case = TRUE)) |>
       dplyr::pull("concept_id"),
     "allergy" = cdm$concept |>
-      dplyr::filter(grepl("allergy", concept_name, ignore.case = T)) |>
+      dplyr::filter(grepl("allergy", concept_name, ignore.case = TRUE)) |>
       dplyr::pull("concept_id"),
     "bypass" = cdm$concept |>
-      dplyr::filter(grepl("bypass", concept_name, ignore.case = T)) |>
+      dplyr::filter(grepl("bypass", concept_name, ignore.case = TRUE)) |>
       dplyr::pull("concept_id"),
     "laceration" = cdm$concept |>
-      dplyr::filter(grepl("laceration", concept_name, ignore.case = T)) |>
+      dplyr::filter(grepl("laceration", concept_name, ignore.case = TRUE)) |>
       dplyr::pull("concept_id")
   )
 
@@ -1090,7 +1151,7 @@ test_that("arguments conceptIntersect",{
     name = "sinusitis"
   )
 
-  ###intersect count
+  ### intersect count
   expect_no_error(
     results <- summariseCharacteristics(
       cohort = cdm$sinusitis,
@@ -1109,9 +1170,11 @@ test_that("arguments conceptIntersect",{
 
   expect_identical(
     results %>%
-      dplyr::filter(variable_name == "Codelist count anytime before",
-                    estimate_name == "min",
-                    variable_level == "Allergy") %>%
+      dplyr::filter(
+        variable_name == "Codelist count anytime before",
+        estimate_name == "min",
+        variable_level == "Allergy"
+      ) %>%
       dplyr::pull("estimate_value") %>%
       as.numeric(),
     0
@@ -1119,9 +1182,11 @@ test_that("arguments conceptIntersect",{
 
   expect_identical(
     results %>%
-      dplyr::filter(variable_name == "Codelist count anytime before",
-                    estimate_name == "max",
-                    variable_level == "Serum measurement") %>%
+      dplyr::filter(
+        variable_name == "Codelist count anytime before",
+        estimate_name == "max",
+        variable_level == "Serum measurement"
+      ) %>%
       dplyr::pull("estimate_value") %>%
       as.numeric(),
     59
@@ -1146,8 +1211,10 @@ test_that("arguments conceptIntersect",{
 
   expect_identical(
     results %>%
-      dplyr::filter(variable_name == "Codelist flag anytime before",
-                    estimate_name == "count") %>%
+      dplyr::filter(
+        variable_name == "Codelist flag anytime before",
+        estimate_name == "count"
+      ) %>%
       dplyr::filter(estimate_value > 0) %>%
       dplyr::tally() %>%
       dplyr::pull("n") %>%
@@ -1158,19 +1225,20 @@ test_that("arguments conceptIntersect",{
   ## intersect date
   expect_warning(
     expect_warning(
-  expect_no_error(
-    results <- summariseCharacteristics(
-      cohort = cdm$sinusitis,
-      conceptIntersectDate = list(
-        "Codelist date anytime before" = list(
-          conceptSet = codelist,
-          order = "last",
-          window = c(-Inf, -1)
+      expect_no_error(
+        results <- summariseCharacteristics(
+          cohort = cdm$sinusitis,
+          conceptIntersectDate = list(
+            "Codelist date anytime before" = list(
+              conceptSet = codelist,
+              order = "last",
+              window = c(-Inf, -1)
+            )
+          )
         )
       )
     )
   )
-))
 
   expect_true(
     "Codelist date anytime before" %in%
@@ -1179,8 +1247,10 @@ test_that("arguments conceptIntersect",{
 
   expect_identical(
     results %>%
-      dplyr::filter(variable_name == "Codelist date anytime before",
-                    estimate_name == "min") %>%
+      dplyr::filter(
+        variable_name == "Codelist date anytime before",
+        estimate_name == "min"
+      ) %>%
       dplyr::pull("estimate_value") %>%
       as.Date() %>%
       na.omit() |>
@@ -1191,8 +1261,10 @@ test_that("arguments conceptIntersect",{
 
   expect_identical(
     results %>%
-      dplyr::filter(variable_name == "Codelist date anytime before",
-                    estimate_name == "max") %>%
+      dplyr::filter(
+        variable_name == "Codelist date anytime before",
+        estimate_name == "max"
+      ) %>%
       dplyr::pull("estimate_value") %>%
       as.Date() %>%
       na.omit() |>
@@ -1202,20 +1274,22 @@ test_that("arguments conceptIntersect",{
   )
 
   ## Intersect Days
-expect_warning(
   expect_warning(
-  expect_no_error(
-    results <- summariseCharacteristics(
-      cohort = cdm$sinusitis,
-      conceptIntersectDays = list(
-        "Codelist days anytime before" = list(
-          conceptSet = codelist,
-          order = "last",
-          window = c(-Inf, -1)
+    expect_warning(
+      expect_no_error(
+        results <- summariseCharacteristics(
+          cohort = cdm$sinusitis,
+          conceptIntersectDays = list(
+            "Codelist days anytime before" = list(
+              conceptSet = codelist,
+              order = "last",
+              window = c(-Inf, -1)
+            )
+          )
         )
       )
     )
-  )))
+  )
 
   expect_true(
     "Codelist days anytime before" %in%
@@ -1223,34 +1297,35 @@ expect_warning(
   )
 
 
-expect_warning(
-  expect_true(all(
-    results %>%
-      dplyr::filter(variable_name == "Codelist days anytime before",
-                    estimate_name == "min") %>%
-      dplyr::select("estimate_value") %>%
-      dplyr::mutate(estimate_value = as.integer(estimate_value)) %>%
-      dplyr::pull("estimate_value") |>
-      na.omit() %>%
-      as.numeric() < 0
-    )
+  expect_warning(
+    expect_true(all(
+      results %>%
+        dplyr::filter(
+          variable_name == "Codelist days anytime before",
+          estimate_name == "min"
+        ) %>%
+        dplyr::select("estimate_value") %>%
+        dplyr::mutate(estimate_value = as.integer(estimate_value)) %>%
+        dplyr::pull("estimate_value") |>
+        na.omit() %>%
+        as.numeric() < 0
+    ))
   )
-)
 
-expect_warning(
-  expect_true(all(
-    results %>%
-      dplyr::filter(variable_name == "Codelist days anytime before",
-                    estimate_name == "max") %>%
-      dplyr::select("estimate_value") %>%
-      dplyr::mutate(estimate_value = as.integer(estimate_value)) %>%
-      dplyr::pull("estimate_value") |>
-      na.omit() %>%
-      as.numeric() < 0
+  expect_warning(
+    expect_true(all(
+      results %>%
+        dplyr::filter(
+          variable_name == "Codelist days anytime before",
+          estimate_name == "max"
+        ) %>%
+        dplyr::select("estimate_value") %>%
+        dplyr::mutate(estimate_value = as.integer(estimate_value)) %>%
+        dplyr::pull("estimate_value") |>
+        na.omit() %>%
+        as.numeric() < 0
+    ))
   )
-  )
-)
 
   CDMConnector::cdm_disconnect(cdm = cdm)
 })
-

@@ -36,7 +36,6 @@
 summariseCohortCount <- function(cohort,
                                  cohortId = NULL,
                                  strata = list()) {
-
   summariseCharacteristics(
     cohort,
     cohortId = cohortId,
@@ -44,7 +43,6 @@ summariseCohortCount <- function(cohort,
     counts = TRUE,
     demographics = FALSE
   )
-
 }
 
 summaryInternal <- function(cohort, cohortId, resultType) {

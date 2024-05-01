@@ -67,7 +67,6 @@ tableCohortTiming <- function(result,
                                 "result_id", "estimate_type", "variable_level"
                               ),
                               .options = list()) {
-
   if (lifecycle::is_present(minCellCount)) {
     lifecycle::deprecate_warn("0.2.0", "tableCohortTiming(minCellCount)")
   }
@@ -96,28 +95,31 @@ tableCohortTiming <- function(result,
 
 
 
-  if(timeScale == "years"){
+  if (timeScale == "years") {
     x <- dplyr::bind_rows(
       x |>
         dplyr::filter(.data$variable_name != "days_between_cohort_entries"),
       x |>
         dplyr::filter(.data$variable_name == "days_between_cohort_entries") |>
-        dplyr::mutate(estimate_value =
-                        as.character(as.numeric(.data$estimate_value)/365.25)) |>
+        dplyr::mutate(
+          estimate_value =
+            as.character(as.numeric(.data$estimate_value) / 365.25)
+        ) |>
         dplyr::mutate(variable_name = "years_between_cohort_entries")
-          )
-
+    )
   }
 
   # format table
-  result <- visOmopResults::visOmopTable(result = x,
-                                        formatEstimateName = formatEstimateName,
-                                        header = header,
-                                        groupColumn = groupColumn,
-                                        split = split,
-                                        type = type,
-                                        excludeColumns = excludeColumns,
-                                        .options = .options)
+  result <- visOmopResults::visOmopTable(
+    result = x,
+    formatEstimateName = formatEstimateName,
+    header = header,
+    groupColumn = groupColumn,
+    split = split,
+    type = type,
+    excludeColumns = excludeColumns,
+    .options = .options
+  )
 
   return(result)
 }
@@ -164,9 +166,8 @@ defaultTimingOptions <- function(userOptions) {
 #'
 #' @examples
 #' {
-#' optionsTableCohortTiming()
+#'   optionsTableCohortTiming()
 #' }
-#'
 #'
 optionsTableCohortTiming <- function() {
   return(defaultTimingOptions(NULL))

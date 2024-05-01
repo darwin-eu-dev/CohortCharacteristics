@@ -60,11 +60,13 @@ test_that("test plot", {
   cdm$dus_cohort <- omopgenerics::newCohortTable(
     table = cdm$dus_cohort, cohortSetRef = dplyr::tibble(
       cohort_definition_id = c(1, 2), cohort_name = c("exposed", "unexposed")
-    ))
+    )
+  )
   cdm$comorbidities <- omopgenerics::newCohortTable(
     table = cdm$comorbidities, cohortSetRef = dplyr::tibble(
       cohort_definition_id = c(1, 2), cohort_name = c("covid", "headache")
-    ))
+    )
+  )
   cdm$medication <- omopgenerics::newCohortTable(
     table = cdm$medication,
     cohortSetRef = dplyr::tibble(
@@ -85,11 +87,13 @@ test_that("test plot", {
     )
   )
 
-  #barplot
+  # barplot
   plot <- plotCharacteristics(
-    data =  test_data |>
-      dplyr::filter(variable_name == "Medications",
-                    estimate_type == "percentage"),
+    data = test_data |>
+      dplyr::filter(
+        variable_name == "Medications",
+        estimate_type == "percentage"
+      ),
     x = "variable_name",
     plotStyle = "barplot",
     facet = c("group_level"),
@@ -98,9 +102,9 @@ test_that("test plot", {
 
   expect_true(ggplot2::is.ggplot(plot))
 
-  #boxplot
+  # boxplot
   plot2 <- plotCharacteristics(
-    data =  test_data |>
+    data = test_data |>
       dplyr::filter(variable_name == "Age"),
     x = "variable_name",
     plotStyle = "boxplot",
@@ -111,7 +115,7 @@ test_that("test plot", {
   expect_true(ggplot2::is.ggplot(plot2))
 
   expect_no_error(plotCharacteristics(
-    data =  test_data |>
+    data = test_data |>
       dplyr::filter(variable_name == "Age"),
     x = "variable_name",
     plotStyle = "boxplot"
@@ -119,7 +123,7 @@ test_that("test plot", {
 
 
   expect_no_error(plotCharacteristics(
-    data =  test_data |>
+    data = test_data |>
       dplyr::filter(variable_name == "Age"),
     x = "variable_name",
     plotStyle = "barplot"
@@ -127,11 +131,9 @@ test_that("test plot", {
 
 
   expect_no_error(plotCharacteristics(
-    data =  test_data |>
+    data = test_data |>
       dplyr::filter(variable_name == "Age"),
     x = "estimate_value",
     plotStyle = "barplot"
   ))
-
-
 })

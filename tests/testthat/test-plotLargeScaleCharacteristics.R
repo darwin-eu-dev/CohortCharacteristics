@@ -107,33 +107,33 @@ test_that("Function returns a ggplot object", {
   # levels_ordered <- c("-inf to -366.cohort_1", "-inf to -366.cohort_2",
   #                     "-365 to -31.cohort_1", "-365 to -31.cohort_2")
   plot_multiple <- plotLargeScaleCharacteristics(
-    data =  test_data |> dplyr::filter((group_level  %in% c("cohort_1", "cohort_2")) | variable_name == 'settings'),
+    data = test_data |> dplyr::filter((group_level %in% c("cohort_1", "cohort_2")) | variable_name == "settings"),
     position = "horizontal",
     splitStrata = FALSE,
-    facet = c("variable_level",  "group_level"),
+    facet = c("variable_level", "group_level"),
     colorVars = c("strata_level")
   )
 
   expect_true(ggplot2::is.ggplot(plot_multiple))
 
-  #do not throw error even if they do not specify color or facet or position
+  # do not throw error even if they do not specify color or facet or position
   expect_no_error(plotLargeScaleCharacteristics(
-    data =  test_data))
+    data = test_data
+  ))
 
 
-  plot_multiple <-  plotComparedLargeScaleCharacteristics(
-    data = test_data |> dplyr::filter((group_level  %in% c("cohort_1", "cohort_2")) | variable_name == 'settings'),
-    referenceGroupLevel    = "cohort_1",
-    referenceStrataLevel   = "overall",
-    referenceVariableLevel = '-inf to -366',
-    referenceCdmName       = NULL,
-    facet       = NULL,
+  plot_multiple <- plotComparedLargeScaleCharacteristics(
+    data = test_data |> dplyr::filter((group_level %in% c("cohort_1", "cohort_2")) | variable_name == "settings"),
+    referenceGroupLevel = "cohort_1",
+    referenceStrataLevel = "overall",
+    referenceVariableLevel = "-inf to -366",
+    referenceCdmName = NULL,
+    facet = NULL,
     splitStrata = FALSE,
-    colorVars   = NULL,
-    missings    = 0
+    colorVars = NULL,
+    missings = 0
   )
 
-  #do not throw error even if they do not specify color or facet or position
+  # do not throw error even if they do not specify color or facet or position
   expect_true(ggplot2::is.ggplot(plot_multiple))
-
 })

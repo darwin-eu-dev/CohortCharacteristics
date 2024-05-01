@@ -59,11 +59,12 @@ tableLargeScaleCharacteristics <- function(result,
                                            type = "gt",
                                            formatEstimateName = c("N (%)" = "<count> (<percentage>%)"),
                                            splitStrata = TRUE,
-                                           header = c("cdm name", "cohort name",
-                                                      "strata", "window name"),
+                                           header = c(
+                                             "cdm name", "cohort name",
+                                             "strata", "window name"
+                                           ),
                                            topConcepts = NULL,
                                            minCellCount = lifecycle::deprecated()) {
-
   if (lifecycle::is_present(minCellCount)) {
     lifecycle::deprecate_warn("0.2.0", "tableLargeScaleCharacteristics(minCellCount)")
   }
@@ -94,7 +95,7 @@ tableLargeScaleCharacteristics <- function(result,
         settings |>
           dplyr::select("result_id", "min_cell_count"),
         by = "result_id"
-      )  |>
+      ) |>
       dplyr::mutate(estimate_value = dplyr::if_else(
         is.na(.data$estimate_value), paste0("<", .data$min_cell_count), .data$estimate_value
       )) |>
@@ -131,14 +132,16 @@ tableLargeScaleCharacteristics <- function(result,
     dplyr::group_by(.data$group) |>
     dplyr::mutate("order_id" = dplyr::row_number()) |>
     dplyr::ungroup()
-  if(!is.null(topConcepts)){
+  if (!is.null(topConcepts)) {
     top <- top |>
       dplyr::filter(.data$order_id <= .env$topConcepts)
   }
   res <- res |>
-    dplyr::inner_join(top |>
-                        dplyr::select(-"group"),
-                      by = "concept_id")
+    dplyr::inner_join(
+      top |>
+        dplyr::select(-"group"),
+      by = "concept_id"
+    )
 
   res <- res |>
     visOmopResults::formatEstimateValue() |>
@@ -154,7 +157,8 @@ tableLargeScaleCharacteristics <- function(result,
       "order_id"
     ))) |>
     dplyr::select(dplyr::all_of(c(
-      "group", "CDM name" = "cdm_name", "Cohort name" =  "cohort_name",
+      "group",
+      "CDM name" = "cdm_name", "Cohort name" = "cohort_name",
       strataColumns, "Concept", "Window" = "window_name", "estimate_value"
     )))
 
@@ -174,7 +178,7 @@ cleanHeader <- function(header, strata) {
   header[header == "window name"] <- "Window"
   if ("strata" %in% header) {
     id <- which(header == "strata")
-    header <- append(header, strata, after=id)
+    header <- append(header, strata, after = id)
     header <- header[header != "strata"]
   }
 }

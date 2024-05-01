@@ -73,7 +73,6 @@ tableCharacteristics <- function(result,
                                    "additional_name", "additional_level"
                                  ),
                                  .options = list()) {
-
   if (lifecycle::is_present(minCellCount)) {
     lifecycle::deprecate_warn("0.2.0", "tableCharacteristics(minCellCount)")
   }
@@ -97,12 +96,14 @@ tableCharacteristics <- function(result,
   .options <- defaultCharacteristicsOptions(.options)
 
   # ensure results are nicely ordered
-  defaultVariableNames <- c("Number records", "Number subjects",
-                            "Cohort start date", "Cohort end date",
-                            "Sex",
-                            "Age",  "Age group",
-                            "Prior observation",
-                            "Future observation")
+  defaultVariableNames <- c(
+    "Number records", "Number subjects",
+    "Cohort start date", "Cohort end date",
+    "Sex",
+    "Age", "Age group",
+    "Prior observation",
+    "Future observation"
+  )
   variableNames <- result |>
     dplyr::select("variable_name") |>
     dplyr::filter(!.data$variable_name %in% .env$defaultVariableNames) |>
@@ -117,10 +118,14 @@ tableCharacteristics <- function(result,
 
   result <- result |>
     dplyr::mutate(variable_name = factor(.data$variable_name,
-                                         levels = c(defaultVariableNames,
-                                                    variableNames))) |>
+      levels = c(
+        defaultVariableNames,
+        variableNames
+      )
+    )) |>
     dplyr::mutate(variable_level = factor(.data$variable_level,
-                                         levels = variableLevels)) |>
+      levels = variableLevels
+    )) |>
     dplyr::arrange(.data$variable_name, .data$variable_level) |>
     dplyr::mutate(variable_name = as.character(.data$variable_name)) |>
     dplyr::mutate(variable_level = as.character(.data$variable_level))
@@ -134,7 +139,8 @@ tableCharacteristics <- function(result,
     split = split,
     type = type,
     excludeColumns = excludeColumns,
-    .options = .options)
+    .options = .options
+  )
 
   return(result)
 }
@@ -176,13 +182,9 @@ defaultCharacteristicsOptions <- function(.options) {
 #'
 #' @examples
 #' {
-#' optionsTableCharacteristics()
+#'   optionsTableCharacteristics()
 #' }
 #'
 optionsTableCharacteristics <- function() {
   return(defaultCharacteristicsOptions(NULL))
 }
-
-
-
-

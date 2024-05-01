@@ -16,7 +16,7 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>", message = FALSE, warning = FALSE, 
+  comment = "#>", message = FALSE, warning = FALSE,
   fig.width = 7
 )
 
@@ -38,19 +38,23 @@ library(dplyr)
 library(ggplot2)
 
 con <- DBI::dbConnect(duckdb::duckdb(),
-                       dbdir = CDMConnector::eunomia_dir())
+  dbdir = CDMConnector::eunomia_dir()
+)
 cdm <- CDMConnector::cdm_from_con(con,
-                                  cdm_schem = "main",
-                                  write_schema = "main", 
-                                  cdm_name = "Eunomia")
+  cdm_schem = "main",
+  write_schema = "main",
+  cdm_name = "Eunomia"
+)
 
 cdm <- generateConceptCohortSet(
   cdm = cdm,
   name = "injuries",
-  conceptSet = list("ankle_sprain" = 81151,
-                    "ankle_fracture" = 4059173,
-                    "forearm_fracture" = 4278672,
-                    "hip_fracture" = 4230399),
+  conceptSet = list(
+    "ankle_sprain" = 81151,
+    "ankle_fracture" = 4059173,
+    "forearm_fracture" = 4278672,
+    "hip_fracture" = 4230399
+  ),
   end = "event_end_date",
   limit = "all"
 )
@@ -61,26 +65,28 @@ cdm <- generateConceptCohortSet(
 We can first quickly summarise and present the overall counts of our cohorts.
 ```{r}
 cohort_counts <- summariseCohortCount(cdm[["injuries"]])
-tableCohortCount(cohort_counts) 
+tableCohortCount(cohort_counts)
 ```
 
 Moreover, we can also easily stratify these counts. For example, here we add age groups and then stratify our counts by t
 We can summarise the overall counts of our cohorts.
 ```{r}
-cdm[["injuries"]] <- cdm[["injuries"]] |> 
-  PatientProfiles::addAge(ageGroup = list(c(0, 3),
-                                          c(4, 17),
-                                           c(18, Inf))) |>
+cdm[["injuries"]] <- cdm[["injuries"]] |>
+  PatientProfiles::addAge(ageGroup = list(
+    c(0, 3),
+    c(4, 17),
+    c(18, Inf)
+  )) |>
   compute(temporary = FALSE, name = "injuries")
 
 cohort_counts <- summariseCohortCount(cdm[["injuries"]], strata = "age_group")
-tableCohortCount(cohort_counts) 
+tableCohortCount(cohort_counts)
 ```
 
 We can also apply minimum cell count suppression to our cohort counts. In this case we will obscure any counts below 10.
 ```{r}
 cohort_counts <- suppress(cohort_counts, minCellCount = 10)
-tableCohortCount(cohort_counts) 
+tableCohortCount(cohort_counts)
 ```
 
 ## Summarising cohort attrition
@@ -102,19 +108,19 @@ cdm[["ankle_sprain"]] <- cdm[["ankle_sprain"]] |>
 
 attrition_summary <- summariseCohortAttrition(cdm[["ankle_sprain"]])
 
-plotCohortAttrition(attrition_summary)  
+plotCohortAttrition(attrition_summary)
 ```
 
 ```{r}
 cdm[["ankle_sprain"]] <- cdm[["ankle_sprain"]] |>
-  PatientProfiles::addAge() |> 
+  PatientProfiles::addAge() |>
   filter(age >= 18) |>
-  compute(temporary = FALSE, name = "ankle_sprain") |> 
+  compute(temporary = FALSE, name = "ankle_sprain") |>
   recordCohortAttrition("Restrict to age >= 18")
 
 attrition_summary <- summariseCohortAttrition(cdm[["ankle_sprain"]])
 
-plotCohortAttrition(attrition_summary, cohortId = 1)  
+plotCohortAttrition(attrition_summary, cohortId = 1)
 ```
 
 We could, of course, have applied these requirements the other way around.
@@ -129,9 +135,9 @@ cdm <- generateConceptCohortSet(
 )
 
 cdm[["ankle_sprain"]] <- cdm[["ankle_sprain"]] |>
-  PatientProfiles::addAge() |> 
+  PatientProfiles::addAge() |>
   filter(age >= 18) |>
-  compute(temporary = FALSE, name = "ankle_sprain") |> 
+  compute(temporary = FALSE, name = "ankle_sprain") |>
   recordCohortAttrition("Restrict to age >= 18")
 
 cdm[["ankle_sprain"]] <- cdm[["ankle_sprain"]] |>

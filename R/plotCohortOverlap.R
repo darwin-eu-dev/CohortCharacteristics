@@ -50,10 +50,10 @@ plotCohortOverlap <- function(result,
   facetVarX <- NULL
   facetVarY <- NULL
 
-  if(is.null(.options[["facetNcols"]])){
+  if (is.null(.options[["facetNcols"]])) {
     .options[["facetNcols"]] <- 1
   }
-  if(is.null(.options[["facetScales"]])){
+  if (is.null(.options[["facetScales"]])) {
     .options[["facetScales"]] <- "free_y"
   }
 
@@ -68,15 +68,15 @@ plotCohortOverlap <- function(result,
   }
 
   suppressMessages(data_to_plot <- result |>
-                     dplyr::inner_join(x) |>
-                     dplyr::filter(.data$estimate_type == "percentage") |>
-                     dplyr::select(names(result)))
+    dplyr::inner_join(x) |>
+    dplyr::filter(.data$estimate_type == "percentage") |>
+    dplyr::select(names(result)))
 
   data_to_plot <- data_to_plot |>
     dplyr::mutate(estimate_value = as.numeric(.data$estimate_value)) |>
     dplyr::mutate(group_level = stringr::str_replace_all(.data$group_level,
-                                                         pattern = "&&&",
-                                                         replacement = "and"
+      pattern = "&&&",
+      replacement = "and"
     ))
 
   data_to_plot <- data_to_plot |>
@@ -88,45 +88,52 @@ plotCohortOverlap <- function(result,
       )
     ) |>
     dplyr::mutate(variable_name = stringr::str_replace_all(.data$variable_name,
-                                                            pattern = "_",
-                                                            replacement = " "
+      pattern = "_",
+      replacement = " "
     )) |>
-    dplyr::mutate(variable_name =
-                    stringr::str_to_sentence(.data$variable_name)) |>
+    dplyr::mutate(
+      variable_name =
+        stringr::str_to_sentence(.data$variable_name)
+    ) |>
     dplyr::mutate(variable_name = factor(.data$variable_name,
-                                             levels = c(
-                                               "Only in comparator cohort",
-                                               "In both cohorts",
-                                               "Only in reference cohort"
-                                             )))
+      levels = c(
+        "Only in comparator cohort",
+        "In both cohorts",
+        "Only in reference cohort"
+      )
+    ))
 
 
   lev <- rev(sort(unique(data_to_plot$group_level)))
   data_to_plot <- data_to_plot |>
     dplyr::mutate(group_level = factor(.data$group_level,
-                                       levels = lev))
+      levels = lev
+    ))
 
   gg <- plotfunction(data_to_plot,
-                        xAxis = "estimate_value",
-                        yAxis = "group_level",
-                        facetVarX = facetVarX,
-                        facetVarY = facetVarY,
-                        colorVars = colorVars,
-                        plotStyle = "barplot",
-                     facet = facet,
-                     .options = .options)
+    xAxis = "estimate_value",
+    yAxis = "group_level",
+    facetVarX = facetVarX,
+    facetVarY = facetVarY,
+    colorVars = colorVars,
+    plotStyle = "barplot",
+    facet = facet,
+    .options = .options
+  )
 
-  gg <-    gg +
-      ggplot2::theme_bw() +
-      ggplot2::theme(legend.position = "top",
-                     legend.title = ggplot2::element_blank()) +
-      ggplot2::labs(
-        title = ggplot2::element_blank(),
-        xlab = "Percentage"
-      ) +
+  gg <- gg +
+    ggplot2::theme_bw() +
+    ggplot2::theme(
+      legend.position = "top",
+      legend.title = ggplot2::element_blank()
+    ) +
+    ggplot2::labs(
+      title = ggplot2::element_blank(),
+      xlab = "Percentage"
+    ) +
     ggplot2::xlab("Percentage") +
-    ggplot2::ylab("")+
-    ggplot2::scale_fill_discrete(guide = ggplot2::guide_legend(reverse = TRUE) )
+    ggplot2::ylab("") +
+    ggplot2::scale_fill_discrete(guide = ggplot2::guide_legend(reverse = TRUE))
 
 
   gg

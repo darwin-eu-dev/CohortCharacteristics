@@ -28,7 +28,7 @@ plotfunction <- function(data,
   checkmate::assertTRUE(inherits(data, "summarised_result"))
   all_vars <- c(xAxis, yAxis, facetVarX, facetVarY, colorVars)
   checkmate::assertTRUE(all(all_vars[!is.null(all_vars)] %in% colnames(data)))
-  if (plotStyle == "density" & xAxis != "estimate_value") {
+  if (plotStyle == "density" && xAxis != "estimate_value") {
     stop(sprintf("If plotStyle is set to 'density', xAxis must be 'estimate_value'."))
   }
 
@@ -39,8 +39,8 @@ plotfunction <- function(data,
 
   if (nrow(data) == 0) {
     return(ggplot2::ggplot() +
-             ggplot2::theme_void() +
-             ggplot2::labs(title = "Empty Data Provided", subtitle = "No data available for plotting."))
+      ggplot2::theme_void() +
+      ggplot2::labs(title = "Empty Data Provided", subtitle = "No data available for plotting."))
   }
 
 
@@ -93,8 +93,8 @@ plotfunction <- function(data,
   if (!is.null(facet)) {
     data <- data |>
       tidyr::unite("facet_var",
-                   c(dplyr::all_of(.env$facet)),
-                   remove = FALSE, sep = "; "
+        c(dplyr::all_of(.env$facet)),
+        remove = FALSE, sep = "; "
       )
   }
 
@@ -127,8 +127,8 @@ plotfunction <- function(data,
         dplyr::mutate(
           estimate_value =
             dplyr::if_else(.data$estimate_name == "percentage",
-                           .data$estimate_value / 100,
-                           .data$estimate_value
+              .data$estimate_value / 100,
+              .data$estimate_value
             )
         )
     }
@@ -254,7 +254,7 @@ plotfunction <- function(data,
             names()
 
           data$group_identifier <- interaction(data |>
-                                                 dplyr::select(dplyr::all_of(group_columns)))
+            dplyr::select(dplyr::all_of(group_columns)))
 
           density_data_wide <- data |>
             dplyr::mutate(estimate_value = as.list(.data$estimate_value)) |>
@@ -296,16 +296,16 @@ plotfunction <- function(data,
         # Create plots
         p_percent <- if (nrow(df_percent) > 0) {
           create_bar_plot(df_percent,
-                          plotStyle = "barplot",
-                          is_percent = TRUE
+            plotStyle = "barplot",
+            is_percent = TRUE
           )
         } else {
           NULL
         }
         p_non_percent <- if (nrow(df_non_percent) > 0) {
           create_bar_plot(df_non_percent,
-                          plotStyle = "barplot",
-                          is_percent = FALSE
+            plotStyle = "barplot",
+            is_percent = FALSE
           )
         } else {
           NULL
@@ -314,8 +314,8 @@ plotfunction <- function(data,
         p_percent <- NULL
         p_non_percent <- if (nrow(df_non_percent) > 0) {
           create_bar_plot(df_non_percent,
-                          is_percent = FALSE,
-                          plotStyle = "density"
+            is_percent = FALSE,
+            plotStyle = "density"
           )
         }
       }
@@ -350,11 +350,12 @@ plotfunction <- function(data,
         )
 
 
-      if(length(non_numeric_cols) > 0){
+      if (length(non_numeric_cols) > 0) {
         df_non_dates_wide$group_identifier <- interaction(df_non_dates_wide |>
-                                                            dplyr::select(dplyr::all_of(non_numeric_cols)))} else{
-                                                              df_non_dates_wide$group_identifier <- "overall"
-                                                            }
+          dplyr::select(dplyr::all_of(non_numeric_cols)))
+      } else {
+        df_non_dates_wide$group_identifier <- "overall"
+      }
     }
 
     if (nrow(df_dates) > 0) {
@@ -365,19 +366,20 @@ plotfunction <- function(data,
       df_dates_wide <- df_dates |>
         tidyr::pivot_wider(
           id_cols = dplyr::all_of(colnames(df_dates |>
-                                             dplyr::select(-c(
-                                               "estimate_name",
-                                               "estimate_value"
-                                             )))),
+            dplyr::select(-c(
+              "estimate_name",
+              "estimate_value"
+            )))),
           names_from = "estimate_name", values_from = "estimate_value"
         )
-      if(length(non_numeric_cols) > 0){
+      if (length(non_numeric_cols) > 0) {
         df_dates_wide$group_identifier <- interaction(df_dates_wide |>
-                                                        dplyr::select(
-                                                          dplyr::all_of(non_numeric_cols)
-                                                        ))} else {
-                                                          df_dates_wide$group_identifier <- "overall"
-                                                        }
+          dplyr::select(
+            dplyr::all_of(non_numeric_cols)
+          ))
+      } else {
+        df_dates_wide$group_identifier <- "overall"
+      }
     }
 
 
@@ -387,13 +389,13 @@ plotfunction <- function(data,
     if (nrow(df_non_dates) > 0) {
       xcol <- ifelse(xAxis == "estimate_value", yAxis, xAxis)
       p_non_dates <- df_non_dates_wide |> ggplot2::ggplot(
-        ggplot2::aes(x = .data[[xcol]]))
+        ggplot2::aes(x = .data[[xcol]])
+      )
 
       if ("color_combined" %in% names(df_non_dates_wide)) {
         if (!all(is.na(df_non_dates_wide$color_combined))) {
           p_non_dates <- p_non_dates + ggplot2::aes(color = .data$color_combined) +
             ggplot2::labs(color = "Color")
-
         }
       }
 
@@ -426,7 +428,8 @@ plotfunction <- function(data,
       xcol <- ifelse(xAxis == "estimate_value", yAxis, xAxis)
 
       p_dates <- df_dates_wide |> ggplot2::ggplot(
-        ggplot2::aes(x = .data[[xcol]])) +
+        ggplot2::aes(x = .data[[xcol]])
+      ) +
         ggplot2::labs(
           title = "Date Data",
           x = "Variable and Group Level",
@@ -783,7 +786,7 @@ plotfunction <- function(data,
   #   }
   # }
 
-  if(!is.null(facet)){
+  if (!is.null(facet)) {
     facetNcols <- NULL
     if ("facetNcols" %in% names(.options)) {
       facetNcols <- .options[["facetNcols"]]
@@ -794,8 +797,9 @@ plotfunction <- function(data,
     }
     p <- p +
       ggplot2::facet_wrap(ggplot2::vars(.data$facet_var),
-                          ncol = facetNcols,
-                          scales = facetScales)
+        ncol = facetNcols,
+        scales = facetScales
+      )
   }
 
   return(p)
@@ -959,9 +963,11 @@ assertDensityEstimates <- function(x) {
 }
 
 emptyPlot <- function(title = "No result to plot",
-                      subtitle = ""){
-    ggplot2::ggplot() +
-             ggplot2::theme_void() +
-             ggplot2::labs(title = title,
-                           subtitle = subtitle)
+                      subtitle = "") {
+  ggplot2::ggplot() +
+    ggplot2::theme_void() +
+    ggplot2::labs(
+      title = title,
+      subtitle = subtitle
+    )
 }
