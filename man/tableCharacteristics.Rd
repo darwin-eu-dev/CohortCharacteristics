@@ -13,7 +13,7 @@ tableCharacteristics(
   header = c("group"),
   split = c("group", "strata"),
   groupColumn = NULL,
-  minCellCount = 5,
+  minCellCount = lifecycle::deprecated(),
   excludeColumns = c("result_id", "estimate_type", "additional_name", "additional_level"),
   .options = list()
 )
@@ -36,7 +36,9 @@ in order. Allowed are: `cdm_name`, `group`, `strata`, `additional`,
 
 \item{groupColumn}{Column to use as group labels.}
 
-\item{minCellCount}{Counts below which results will be clouded.}
+\item{minCellCount}{`r lifecycle::badge("deprecated")` Suppression of
+estimates when counts < minCellCount should be done before with
+`ompogenerics::suppress()`.}
 
 \item{excludeColumns}{Columns to drop from the output table.}
 

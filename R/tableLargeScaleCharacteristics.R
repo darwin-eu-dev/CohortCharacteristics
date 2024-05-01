@@ -26,7 +26,9 @@
 #' columns.
 #' @param header Specify the headers of the table.
 #' @param topConcepts Number of concepts to restrict the table.
-#' @param minCellCount Minimum number of counts to display.
+#' @param minCellCount `r lifecycle::badge("deprecated")` Suppression of
+#' estimates when counts < minCellCount should be done before with
+#' `ompogenerics::suppress()`.
 #'
 #' @export
 #'
@@ -60,7 +62,11 @@ tableLargeScaleCharacteristics <- function(result,
                                            header = c("cdm name", "cohort name",
                                                       "strata", "window name"),
                                            topConcepts = NULL,
-                                           minCellCount = 5) {
+                                           minCellCount = lifecycle::deprecated()) {
+
+  if (lifecycle::is_present(minCellCount)) {
+    lifecycle::deprecate_warn("0.2.0", "tableLargeScaleCharacteristics(minCellCount)")
+  }
 
   assertClass(result, "summarised_result")
   assertLogical(splitStrata, length = 1)
@@ -78,13 +84,31 @@ tableLargeScaleCharacteristics <- function(result,
       "No summarised_large_scale_characteristics records where found in this result object"
     )
   }
+
+  # min cell count
+  settings <- omopgenerics::settings(result) |>
+    dplyr::filter(.data$result_type == "summarised_large_scale_characteristics")
+  if ("min_cell_count" %in% colnames(settings)) {
+    result <- result |>
+      dplyr::left_join(
+        settings |>
+          dplyr::select("result_id", "min_cell_count"),
+        by = "result_id"
+      )  |>
+      dplyr::mutate(estimate_value = dplyr::if_else(
+        is.na(.data$estimate_value), paste0("<", .data$min_cell_count), .data$estimate_value
+      )) |>
+      dplyr::select(!"min_cell_count")
+  } else {
+    cli::cli_inform(c("!" = "Results have not been suppressed."))
+  }
+
   sets <- settings(result) |>
     dplyr::mutate("group" = paste0(
       "Table: ", .data$table_name, " (", .data$type, " in window)"
     )) |>
     dplyr::select("result_id", "group")
   res <- result |>
-    omopgenerics::suppress(minCellCount = minCellCount) |>
     visOmopResults::splitGroup() |>
     visOmopResults::splitAdditional() |>
     dplyr::inner_join(sets, by = "result_id") |>
@@ -109,12 +133,13 @@ tableLargeScaleCharacteristics <- function(result,
     dplyr::ungroup()
   if(!is.null(topConcepts)){
     top <- top |>
-    dplyr::filter(.data$order_id <= .env$topConcepts)
+      dplyr::filter(.data$order_id <= .env$topConcepts)
   }
   res <- res |>
     dplyr::inner_join(top |>
                         dplyr::select(-"group"),
                       by = "concept_id")
+
   res <- res |>
     visOmopResults::formatEstimateValue() |>
     dplyr::as_tibble() |>
@@ -136,9 +161,9 @@ tableLargeScaleCharacteristics <- function(result,
   header <- cleanHeader(header, strataColumns)
   tab <- visOmopResults::formatHeader(result = res, header = header)
   if (type == "gt") {
-    res <- visOmopResults::gtTable(tab, groupNameCol = "group")
+    res <- visOmopResults::gtTable(tab, groupColumn = "group")
   } else {
-    res <- visOmopResults::fxTable(tab, groupNameCol = "group")
+    res <- visOmopResults::fxTable(tab, groupColumn = "group")
   }
 
   return(res)

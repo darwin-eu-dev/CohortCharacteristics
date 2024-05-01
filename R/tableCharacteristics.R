@@ -29,7 +29,9 @@
 #' @param split A vector containing the name-level groups to split ("group",
 #' "strata", "additional"), or an empty character vector to not split.
 #' @param groupColumn Column to use as group labels.
-#' @param minCellCount Counts below which results will be clouded.
+#' @param minCellCount `r lifecycle::badge("deprecated")` Suppression of
+#' estimates when counts < minCellCount should be done before with
+#' `ompogenerics::suppress()`.
 #' @param excludeColumns Columns to drop from the output table.
 #' @param .options Named list with additional formatting options.
 #' CohortCharacteristics::optionsTableCharacteristics() shows allowed arguments and
@@ -65,12 +67,16 @@ tableCharacteristics <- function(result,
                                  header = c("group"),
                                  split = c("group", "strata"),
                                  groupColumn = NULL,
-                                 minCellCount = 5,
+                                 minCellCount = lifecycle::deprecated(),
                                  excludeColumns = c(
                                    "result_id", "estimate_type",
                                    "additional_name", "additional_level"
                                  ),
                                  .options = list()) {
+
+  if (lifecycle::is_present(minCellCount)) {
+    lifecycle::deprecate_warn("0.2.0", "tableCharacteristics(minCellCount)")
+  }
 
   # check input
   intersects <- tidyr::expand_grid(
@@ -127,7 +133,6 @@ tableCharacteristics <- function(result,
     groupColumn = groupColumn,
     split = split,
     type = type,
-    minCellCount = minCellCount,
     excludeColumns = excludeColumns,
     .options = .options)
 
@@ -147,7 +152,7 @@ defaultCharacteristicsOptions <- function(.options) {
     "title" = NULL,
     "subtitle" = NULL,
     "caption" = NULL,
-    "groupNameAsColumn" = FALSE,
+    "groupAsColumn" = FALSE,
     "groupOrder" = NULL,
     "colsToMergeRows" = "all_columns"
   )

@@ -69,7 +69,8 @@ Imports:
     ggpubr,
     magrittr,
     snakecase,
-    DiagrammeR
+    DiagrammeR,
+    lifecycle
 URL: https://darwin-eu-dev.github.io/CohortCharacteristics/
 BugReports: https://github.com/darwin-eu-dev/CohortCharacteristics/issues
 Language: en-US
