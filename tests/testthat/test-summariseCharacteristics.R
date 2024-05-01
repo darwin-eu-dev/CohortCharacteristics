@@ -256,7 +256,18 @@ test_that("test summariseCharacteristics", {
   expect_no_error(empty <- summariseCharacteristics(
     cdm$dus_cohort, counts = FALSE, demographics = FALSE
   ))
-  expect_equal(empty, omopgenerics::emptySummarisedResult())
+  expect_equal(
+    empty,
+    omopgenerics::emptySummarisedResult() |>
+      omopgenerics::newSummarisedResult(settings = dplyr::tibble(
+        "result_id" = 1L,
+        "package_name" = "CohortCharacteristics",
+        "package_version" = as.character(utils::packageVersion(
+          "CohortCharacteristics"
+        )),
+        "result_type" = "summarised_characteristics"
+      ))
+  )
 
   # demographics
   expect_no_error(result <- summariseCharacteristics(
@@ -340,7 +351,7 @@ test_that("test summariseCharacteristics", {
         )
       ),
       otherVariables = list("blood_type", "number_visits"),
-      otherVariablesEstimates = list("mean", "count")
+      otherVariablesEstimates = list("count", "mean")
     )
   )
 
