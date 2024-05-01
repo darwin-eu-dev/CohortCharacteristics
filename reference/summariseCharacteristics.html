@@ -77,7 +77,9 @@
 <span>  conceptIntersectCount <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  conceptIntersectDate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  conceptIntersectDays <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  otherVariables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  otherVariables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  otherVariablesEstimates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"min"</span>, <span class="st">"q25"</span>, <span class="st">"median"</span>, <span class="st">"q75"</span>, <span class="st">"max"</span>, <span class="st">"count"</span>,</span>
+<span>    <span class="st">"percentage"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -175,6 +177,11 @@ PatientProfiles::addConceptIntersectDays() to add variables to summarise.</p></d
 <dt>otherVariables</dt>
 <dd><p>Other variables contained in cohort that you want to be
 summarised.</p></dd>
+
+
+<dt>otherVariablesEstimates</dt>
+<dd><p>Name of the estimates for the otherVariables
+columns.</p></dd>
 
 </dl></div>
     <div class="section level2">
