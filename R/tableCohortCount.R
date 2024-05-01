@@ -105,6 +105,7 @@ tableCohortCount <- function(result,
                            dplyr::distinct() |>
                            dplyr::pull("variable_level"))
 
+  # create table
   result <- result |>
     dplyr::mutate(variable_name = factor(.data$variable_name,
                                          levels = c(defaultVariableNames,
@@ -123,7 +124,6 @@ tableCohortCount <- function(result,
     groupColumn = groupColumn,
     split = split,
     type = type,
-    minCellCount = minCellCount,
     excludeColumns = excludeColumns,
     .options = .options)
 

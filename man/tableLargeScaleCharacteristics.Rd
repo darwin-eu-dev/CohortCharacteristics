@@ -10,7 +10,8 @@ tableLargeScaleCharacteristics(
   formatEstimateName = c(`N (\%)` = "<count> (<percentage>\%)"),
   splitStrata = TRUE,
   header = c("cdm name", "cohort name", "strata", "window name"),
-  topConcepts = NULL
+  topConcepts = NULL,
+  minCellCount = lifecycle::deprecated()
 )
 }
 \arguments{
@@ -27,6 +28,10 @@ columns.}
 \item{header}{Specify the headers of the table.}
 
 \item{topConcepts}{Number of concepts to restrict the table.}
+
+\item{minCellCount}{`r lifecycle::badge("deprecated")` Suppression of
+estimates when counts < minCellCount should be done before with
+`ompogenerics::suppress()`.}
 }
 \value{
 A formatted table.

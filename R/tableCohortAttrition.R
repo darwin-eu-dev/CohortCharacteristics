@@ -50,6 +50,24 @@ tableCohortAttrition <- function(result,
   header <- correct(header)
   groupColumn <- correct(groupColumn)
 
+  # showMinCellCount
+  settings <- omopgenerics::settings(result) |>
+    dplyr::filter(.data$result_type == "cohort_attrition")
+  if ("min_cell_count" %in% colnames(settings)) {
+    res <- res |>
+      dplyr::left_join(
+        settings |>
+          dplyr::select("result_id", "min_cell_count"),
+        by = "result_id"
+      )  |>
+      dplyr::mutate(estimate_value = dplyr::if_else(
+        is.na(.data$estimate_value), paste0("<", .data$min_cell_count), .data$estimate_value
+      )) |>
+      dplyr::select(!"min_cell_count")
+  } else {
+    cli::cli_inform(c("!" = "Results have not been suppressed."))
+  }
+
   # create table
   result <- result |>
     visOmopResults::filterSettings(.data$result_type == "cohort_attrition") |>
@@ -69,10 +87,10 @@ tableCohortAttrition <- function(result,
 
   if (type == "gt") {
     result <- result |>
-      visOmopResults::gtTable(groupNameCol = groupColumn)
+      visOmopResults::gtTable(groupColumn = groupColumn)
   } else if (type == "flextable") {
     result <- result |>
-      visOmopResults::fxTable(groupNameCol = groupColumn)
+      visOmopResults::fxTable(groupColumn = groupColumn)
   }
 
   return(result)

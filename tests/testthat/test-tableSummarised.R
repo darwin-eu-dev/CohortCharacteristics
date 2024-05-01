@@ -86,8 +86,8 @@ test_that("tableCharacteristics", {
 
 
   expect_no_error(gt1 <- tableCharacteristics(result1, excludeColumns = c("result_id",
-                                                         "estimate_type", "additional_name",
-                                                         "additional_level", "cdm_name")))
+                                                                          "estimate_type", "additional_name",
+                                                                          "additional_level", "cdm_name")))
   expect_true("gt_tbl" %in% class(gt1))
   expect_true(all(c("Variable name", "Variable level", "Estimate name") %in%
                     colnames(gt1$`_data`)))
@@ -166,27 +166,27 @@ test_that("tableCohortOverlap", {
                                     "additional_level"
                                   ))
   expect_true("flextable" %in% class(fxResult1))
-  # expect_true(all(c("CDM name",
-  #                   "Estimate name",
-  #                   "Cohort name reference and cohort name comparator\nCohort 1 and cohort 2\nNumber subjects\nOnly in reference cohort",
-  #                   "Cohort name reference and cohort name comparator\nCohort 1 and cohort 2\nNumber subjects\nOnly in comparator cohort",
-  #                   "Cohort name reference and cohort name comparator\nCohort 1 and cohort 2\nNumber subjects\nIn both cohorts",
-  #                   "Cohort name reference and cohort name comparator\nCohort 1 and cohort 3\nNumber subjects\nOnly in reference cohort",
-  #                   "Cohort name reference and cohort name comparator\nCohort 1 and cohort 3\nNumber subjects\nOnly in comparator cohort",
-  #                   "Cohort name reference and cohort name comparator\nCohort 1 and cohort 3\nNumber subjects\nIn both cohorts",
-  #                   "Cohort name reference and cohort name comparator\nCohort 1 and cohort 4\nNumber subjects\nOnly in reference cohort",
-  #                   "Cohort name reference and cohort name comparator\nCohort 1 and cohort 4\nNumber subjects\nOnly in comparator cohort",
-  #                   "Cohort name reference and cohort name comparator\nCohort 1 and cohort 4\nNumber subjects\nIn both cohorts",
-  #                   "Cohort name reference and cohort name comparator\nCohort 2 and cohort 3\nNumber subjects\nOnly in reference cohort",
-  #                   "Cohort name reference and cohort name comparator\nCohort 2 and cohort 3\nNumber subjects\nOnly in comparator cohort",
-  #                   "Cohort name reference and cohort name comparator\nCohort 2 and cohort 3\nNumber subjects\nIn both cohorts",
-  #                   "Cohort name reference and cohort name comparator\nCohort 2 and cohort 4\nNumber subjects\nOnly in reference cohort",
-  #                   "Cohort name reference and cohort name comparator\nCohort 2 and cohort 4\nNumber subjects\nOnly in comparator cohort",
-  #                   "Cohort name reference and cohort name comparator\nCohort 2 and cohort 4\nNumber subjects\nIn both cohorts",
-  #                   "Cohort name reference and cohort name comparator\nCohort 3 and cohort 4\nNumber subjects\nOnly in reference cohort" ,
-  #                   "Cohort name reference and cohort name comparator\nCohort 3 and cohort 4\nNumber subjects\nOnly in comparator cohort",
-  #                   "Cohort name reference and cohort name comparator\nCohort 3 and cohort 4\nNumber subjects\nIn both cohorts") %in%
-  #                   colnames(fxResult1$body$dataset)))
+  expect_true(all(c("CDM name",
+                    "Estimate name",
+                    "Cohort name reference and cohort name comparator\nCohort 1 and cohort 2\nOnly in reference cohort",
+                    "Cohort name reference and cohort name comparator\nCohort 1 and cohort 2\nOnly in comparator cohort",
+                    "Cohort name reference and cohort name comparator\nCohort 1 and cohort 2\nIn both cohorts",
+                    "Cohort name reference and cohort name comparator\nCohort 1 and cohort 3\nOnly in reference cohort",
+                    "Cohort name reference and cohort name comparator\nCohort 1 and cohort 3\nOnly in comparator cohort",
+                    "Cohort name reference and cohort name comparator\nCohort 1 and cohort 3\nIn both cohorts",
+                    "Cohort name reference and cohort name comparator\nCohort 1 and cohort 4\nOnly in reference cohort",
+                    "Cohort name reference and cohort name comparator\nCohort 1 and cohort 4\nOnly in comparator cohort",
+                    "Cohort name reference and cohort name comparator\nCohort 1 and cohort 4\nIn both cohorts",
+                    "Cohort name reference and cohort name comparator\nCohort 2 and cohort 3\nOnly in reference cohort",
+                    "Cohort name reference and cohort name comparator\nCohort 2 and cohort 3\nOnly in comparator cohort",
+                    "Cohort name reference and cohort name comparator\nCohort 2 and cohort 3\nIn both cohorts",
+                    "Cohort name reference and cohort name comparator\nCohort 2 and cohort 4\nOnly in reference cohort",
+                    "Cohort name reference and cohort name comparator\nCohort 2 and cohort 4\nOnly in comparator cohort",
+                    "Cohort name reference and cohort name comparator\nCohort 2 and cohort 4\nIn both cohorts",
+                    "Cohort name reference and cohort name comparator\nCohort 3 and cohort 4\nOnly in reference cohort" ,
+                    "Cohort name reference and cohort name comparator\nCohort 3 and cohort 4\nOnly in comparator cohort",
+                    "Cohort name reference and cohort name comparator\nCohort 3 and cohort 4\nIn both cohorts") %in%
+                    colnames(fxResult1$body$dataset)))
 
   cdm$table <- cdm$table |>
     PatientProfiles::addAge(ageGroup = list(c(0,40), c(41,100))) |>
@@ -201,32 +201,32 @@ test_that("tableCohortOverlap", {
                                        split = character(),
                                        header = character())
   expect_true(all(c("tbl_df", "tbl", "data.frame") %in% class(tibbleResult1)))
-  # expect_true(all(c("CDM name", "Group name", "Group level", "Strata name", "Strata level", "Estimate name",
-  #                   "Additional name", "Additional level",
-  #                   "[header_level]Number subjects\n[header_level]Only in reference cohort",
-  #                   "[header_level]Number subjects\n[header_level]Only in comparator cohort",
-  #                   "[header_level]Number subjects\n[header_level]In both cohorts" ) %in% colnames(tibbleResult1)))
+  expect_true(all(c("CDM name", "Group name", "Group level", "Strata name", "Strata level", "Estimate name",
+                    "Additional name", "Additional level",
+                    "[header_level]Only in reference cohort",
+                    "[header_level]Only in comparator cohort",
+                    "[header_level]In both cohorts" ) %in% colnames(tibbleResult1)))
 
   gtResult2 <-  tableCohortOverlap(overlap3,
                                    type = "gt")
   expect_true("gt_tbl" %in% class(gtResult2))
-  # expect_true(all(c("CDM name", "Cohort name reference", "Cohort name comparator", "Estimate name",
-  #                   "[header]Age group\n[header_level]0 to 40\n[header]Sex\n[header_level]Overall\n[header_level]Number subjects\n[header_level]Only in reference cohort",
-  #                   "[header]Age group\n[header_level]0 to 40\n[header]Sex\n[header_level]Overall\n[header_level]Number subjects\n[header_level]Only in comparator cohort",
-  #                   "[header]Age group\n[header_level]0 to 40\n[header]Sex\n[header_level]Overall\n[header_level]Number subjects\n[header_level]In both cohorts",
-  #                   "[header]Age group\n[header_level]41 to 100\n[header]Sex\n[header_level]Overall\n[header_level]Number subjects\n[header_level]Only in reference cohort",
-  #                   "[header]Age group\n[header_level]41 to 100\n[header]Sex\n[header_level]Overall\n[header_level]Number subjects\n[header_level]Only in comparator cohort",
-  #                   "[header]Age group\n[header_level]41 to 100\n[header]Sex\n[header_level]Overall\n[header_level]Number subjects\n[header_level]In both cohorts",
-  #                   "[header]Age group\n[header_level]0 to 40\n[header]Sex\n[header_level]Female\n[header_level]Number subjects\n[header_level]Only in reference cohort",
-  #                   "[header]Age group\n[header_level]0 to 40\n[header]Sex\n[header_level]Female\n[header_level]Number subjects\n[header_level]Only in comparator cohort",
-  #                   "[header]Age group\n[header_level]0 to 40\n[header]Sex\n[header_level]Female\n[header_level]Number subjects\n[header_level]In both cohorts",
-  #                   "[header]Age group\n[header_level]41 to 100\n[header]Sex\n[header_level]Female\n[header_level]Number subjects\n[header_level]Only in reference cohort",
-  #                   "[header]Age group\n[header_level]41 to 100\n[header]Sex\n[header_level]Female\n[header_level]Number subjects\n[header_level]Only in comparator cohort",
-  #                   "[header]Age group\n[header_level]41 to 100\n[header]Sex\n[header_level]Female\n[header_level]Number subjects\n[header_level]In both cohorts",
-  #                   "[header]Age group\n[header_level]Overall\n[header]Sex\n[header_level]Overall\n[header_level]Number subjects\n[header_level]Only in reference cohort",
-  #                   "[header]Age group\n[header_level]Overall\n[header]Sex\n[header_level]Overall\n[header_level]Number subjects\n[header_level]Only in comparator cohort",
-  #                   "[header]Age group\n[header_level]Overall\n[header]Sex\n[header_level]Overall\n[header_level]Number subjects\n[header_level]In both cohorts" ) %in%
-  #                   colnames(gtResult2$`_data`)))
+  expect_true(all(c("CDM name", "Cohort name reference", "Cohort name comparator", "Estimate name",
+                    "[header]Age group\n[header_level]0 to 40\n[header]Sex\n[header_level]Overall\n[header_level]Only in reference cohort",
+                    "[header]Age group\n[header_level]0 to 40\n[header]Sex\n[header_level]Overall\n[header_level]Only in comparator cohort",
+                    "[header]Age group\n[header_level]0 to 40\n[header]Sex\n[header_level]Overall\n[header_level]In both cohorts",
+                    "[header]Age group\n[header_level]41 to 100\n[header]Sex\n[header_level]Overall\n[header_level]Only in reference cohort",
+                    "[header]Age group\n[header_level]41 to 100\n[header]Sex\n[header_level]Overall\n[header_level]Only in comparator cohort",
+                    "[header]Age group\n[header_level]41 to 100\n[header]Sex\n[header_level]Overall\n[header_level]In both cohorts",
+                    "[header]Age group\n[header_level]0 to 40\n[header]Sex\n[header_level]Female\n[header_level]Only in reference cohort",
+                    "[header]Age group\n[header_level]0 to 40\n[header]Sex\n[header_level]Female\n[header_level]Only in comparator cohort",
+                    "[header]Age group\n[header_level]0 to 40\n[header]Sex\n[header_level]Female\n[header_level]In both cohorts",
+                    "[header]Age group\n[header_level]41 to 100\n[header]Sex\n[header_level]Female\n[header_level]Only in reference cohort",
+                    "[header]Age group\n[header_level]41 to 100\n[header]Sex\n[header_level]Female\n[header_level]Only in comparator cohort",
+                    "[header]Age group\n[header_level]41 to 100\n[header]Sex\n[header_level]Female\n[header_level]In both cohorts",
+                    "[header]Age group\n[header_level]Overall\n[header]Sex\n[header_level]Overall\n[header_level]Only in reference cohort",
+                    "[header]Age group\n[header_level]Overall\n[header]Sex\n[header_level]Overall\n[header_level]Only in comparator cohort",
+                    "[header]Age group\n[header_level]Overall\n[header]Sex\n[header_level]Overall\n[header_level]In both cohorts" ) %in%
+                    colnames(gtResult2$`_data`)))
 
   CDMConnector::cdm_disconnect(cdm)
 })
