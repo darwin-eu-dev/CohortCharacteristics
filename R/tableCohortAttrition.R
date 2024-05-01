@@ -65,7 +65,7 @@ tableCohortAttrition <- function(result,
       )) |>
       dplyr::select(!"min_cell_count")
   } else {
-    cli::cli_inform(c("!" = "Result is not suppressed."))
+    cli::cli_inform(c("!" = "Results have not been suppressed."))
   }
 
   # create table
