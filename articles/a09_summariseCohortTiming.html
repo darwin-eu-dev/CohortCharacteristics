@@ -103,16 +103,22 @@ using the Eunomia data.</p>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span><span class="fu">duckdb</span><span class="fu">::</span><span class="fu"><a href="https://r.duckdb.org/reference/duckdb.html" class="external-link">duckdb</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>                       dbdir <span class="op">=</span> <span class="fu">CDMConnector</span><span class="fu">::</span><span class="fu"><a href="https://darwin-eu.github.io/CDMConnector/reference/eunomiaDir.html" class="external-link">eunomia_dir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span>  dbdir <span class="op">=</span> <span class="fu">CDMConnector</span><span class="fu">::</span><span class="fu"><a href="https://darwin-eu.github.io/CDMConnector/reference/eunomiaDir.html" class="external-link">eunomia_dir</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
 <span><span class="va">cdm</span> <span class="op">&lt;-</span> <span class="fu">CDMConnector</span><span class="fu">::</span><span class="fu"><a href="https://darwin-eu.github.io/CDMConnector/reference/cdm_from_con.html" class="external-link">cdm_from_con</a></span><span class="op">(</span><span class="va">con</span>,</span>
-<span>                                  cdm_schem <span class="op">=</span> <span class="st">"main"</span>,</span>
-<span>                                  write_schema <span class="op">=</span> <span class="st">"main"</span>, </span>
-<span>                                  cdm_name <span class="op">=</span> <span class="st">"Eunomia"</span><span class="op">)</span></span>
+<span>  cdm_schem <span class="op">=</span> <span class="st">"main"</span>,</span>
+<span>  write_schema <span class="op">=</span> <span class="st">"main"</span>,</span>
+<span>  cdm_name <span class="op">=</span> <span class="st">"Eunomia"</span></span>
+<span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">meds_cs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://darwin-eu.github.io/CodelistGenerator/reference/getDrugIngredientCodes.html" class="external-link">getDrugIngredientCodes</a></span><span class="op">(</span>cdm <span class="op">=</span> <span class="va">cdm</span>, </span>
-<span>                                  name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"acetaminophen"</span>,</span>
-<span>                                           <span class="st">"morphine"</span>,</span>
-<span>                                           <span class="st">"warfarin"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">meds_cs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://darwin-eu.github.io/CodelistGenerator/reference/getDrugIngredientCodes.html" class="external-link">getDrugIngredientCodes</a></span><span class="op">(</span></span>
+<span>  cdm <span class="op">=</span> <span class="va">cdm</span>,</span>
+<span>  name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="st">"acetaminophen"</span>,</span>
+<span>    <span class="st">"morphine"</span>,</span>
+<span>    <span class="st">"warfarin"</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">cdm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://darwin-eu.github.io/CDMConnector/reference/generateConceptCohortSet.html" class="external-link">generateConceptCohortSet</a></span><span class="op">(</span></span>
 <span>  cdm <span class="op">=</span> <span class="va">cdm</span>,</span>
@@ -143,31 +149,32 @@ entry. Note setting restrictToFirstEntry to TRUE will mean that we only
 consider timing between an individual’s first record in each cohort
 (i.e. their first exposure to each of the medications).</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">meds_timing</span> <span class="op">&lt;-</span> <span class="va">cdm</span><span class="op">$</span><span class="va">meds</span> <span class="op">|&gt;</span> </span>
+<code class="sourceCode R"><span><span class="va">meds_timing</span> <span class="op">&lt;-</span> <span class="va">cdm</span><span class="op">$</span><span class="va">meds</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/summariseCohortTiming.html">summariseCohortTiming</a></span><span class="op">(</span>restrictToFirstEntry <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">meds_timing</span> <span class="op">|&gt;</span> </span>
+<span><span class="va">meds_timing</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Rows: 42</span></span>
 <span><span class="co">#&gt; Columns: 13</span></span>
 <span><span class="co">#&gt; $ result_id        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,…</span></span>
 <span><span class="co">#&gt; $ cdm_name         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "Eunomia", "Eunomia", "Eunomia", "Eunomia", "Eunomia"…</span></span>
 <span><span class="co">#&gt; $ group_name       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "cohort_name_reference &amp;&amp;&amp; cohort_name_comparator", "…</span></span>
-<span><span class="co">#&gt; $ group_level      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "warfarin &amp;&amp;&amp; acetaminophen", "acetaminophen &amp;&amp;&amp; warf…</span></span>
+<span><span class="co">#&gt; $ group_level      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "morphine &amp;&amp;&amp; acetaminophen", "acetaminophen &amp;&amp;&amp; warf…</span></span>
 <span><span class="co">#&gt; $ strata_name      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "overall", "overall", "overall", "overall", "overall"…</span></span>
 <span><span class="co">#&gt; $ strata_level     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "overall", "overall", "overall", "overall", "overall"…</span></span>
 <span><span class="co">#&gt; $ variable_name    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "number records", "number records", "number records",…</span></span>
 <span><span class="co">#&gt; $ variable_level   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…</span></span>
 <span><span class="co">#&gt; $ estimate_name    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "count", "count", "count", "count", "count", "count",…</span></span>
 <span><span class="co">#&gt; $ estimate_type    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "integer", "integer", "integer", "integer", "integer"…</span></span>
-<span><span class="co">#&gt; $ estimate_value   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "136", "136", "35", "35", "6", "6", "136", "136", "35…</span></span>
+<span><span class="co">#&gt; $ estimate_value   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "35", "136", "136", "35", "6", "6", "35", "136", "136…</span></span>
 <span><span class="co">#&gt; $ additional_name  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "overall", "overall", "overall", "overall", "overall"…</span></span>
 <span><span class="co">#&gt; $ additional_level <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "overall", "overall", "overall", "overall", "overall"…</span></span></code></pre></div>
 <p>As with cohort overlap, we have table and plotting functions to help
 view our results.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/tableCohortTiming.html">tableCohortTiming</a></span><span class="op">(</span><span class="va">meds_timing</span>, </span>
-<span>                  timeScale <span class="op">=</span> <span class="st">"years"</span>,</span>
-<span>                  .options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>decimals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>numeric <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/tableCohortTiming.html">tableCohortTiming</a></span><span class="op">(</span><span class="va">meds_timing</span>,</span>
+<span>  timeScale <span class="op">=</span> <span class="st">"years"</span>,</span>
+<span>  .options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>decimals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>numeric <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <div id="glzvnegslq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#glzvnegslq table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -718,35 +725,42 @@ view our results.</p>
 </table>
 </div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plotCohortTiming.html">plotCohortTiming</a></span><span class="op">(</span><span class="va">meds_timing</span>, </span>
-<span>                 plotType <span class="op">=</span> <span class="st">"boxplot"</span>, </span>
-<span>                 timeScale <span class="op">=</span> <span class="st">"years"</span><span class="op">)</span> </span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plotCohortTiming.html">plotCohortTiming</a></span><span class="op">(</span><span class="va">meds_timing</span>,</span>
+<span>  plotType <span class="op">=</span> <span class="st">"boxplot"</span>,</span>
+<span>  timeScale <span class="op">=</span> <span class="st">"years"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="a09_summariseCohortTiming_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
 <p>If we want to see an even more granular summary of cohort timings we
 can make a density plot instead of a box plot. Note, for this we’ll need
 to set density as TRUE when getting our initial results.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">meds_timing</span> <span class="op">&lt;-</span> <span class="va">cdm</span><span class="op">$</span><span class="va">meds</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="../reference/summariseCohortTiming.html">summariseCohortTiming</a></span><span class="op">(</span>restrictToFirstEntry <span class="op">=</span> <span class="cn">TRUE</span>, </span>
-<span>                        density <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/plotCohortTiming.html">plotCohortTiming</a></span><span class="op">(</span><span class="va">meds_timing</span>, </span>
-<span>                 plotType <span class="op">=</span> <span class="st">"density"</span>, </span>
-<span>                 timeScale <span class="op">=</span> <span class="st">"years"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">meds_timing</span> <span class="op">&lt;-</span> <span class="va">cdm</span><span class="op">$</span><span class="va">meds</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/summariseCohortTiming.html">summariseCohortTiming</a></span><span class="op">(</span></span>
+<span>    restrictToFirstEntry <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>    density <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/plotCohortTiming.html">plotCohortTiming</a></span><span class="op">(</span><span class="va">meds_timing</span>,</span>
+<span>  plotType <span class="op">=</span> <span class="st">"density"</span>,</span>
+<span>  timeScale <span class="op">=</span> <span class="st">"years"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="a09_summariseCohortTiming_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
 <p>As well as generating these estimates for cohorts overall, we can
 also obtain stratified estimates.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">cdm</span><span class="op">$</span><span class="va">meds</span> <span class="op">&lt;-</span> <span class="va">cdm</span><span class="op">$</span><span class="va">meds</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">PatientProfiles</span><span class="fu">::</span><span class="fu"><a href="https://darwin-eu-dev.github.io/PatientProfiles/reference/addAge.html" class="external-link">addAge</a></span><span class="op">(</span>ageGroup <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">49</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>,<span class="fl">150</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute</a></span><span class="op">(</span>temporary <span class="op">=</span> <span class="cn">FALSE</span>, name <span class="op">=</span> <span class="st">"meds"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://darwin-eu-dev.github.io/omopgenerics/reference/newCohortTable.html" class="external-link">newCohortTable</a></span><span class="op">(</span><span class="op">)</span> </span>
-<span><span class="va">meds_timing</span> <span class="op">&lt;-</span> <span class="va">cdm</span><span class="op">$</span><span class="va">meds</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="../reference/summariseCohortTiming.html">summariseCohortTiming</a></span><span class="op">(</span>restrictToFirstEntry <span class="op">=</span> <span class="cn">TRUE</span>, </span>
-<span>                        strata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"age_group"</span><span class="op">)</span>, </span>
-<span>                        density <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">cdm</span><span class="op">$</span><span class="va">meds</span> <span class="op">&lt;-</span> <span class="va">cdm</span><span class="op">$</span><span class="va">meds</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">PatientProfiles</span><span class="fu">::</span><span class="fu"><a href="https://darwin-eu-dev.github.io/PatientProfiles/reference/addAge.html" class="external-link">addAge</a></span><span class="op">(</span>ageGroup <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">49</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">150</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute</a></span><span class="op">(</span>temporary <span class="op">=</span> <span class="cn">FALSE</span>, name <span class="op">=</span> <span class="st">"meds"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://darwin-eu-dev.github.io/omopgenerics/reference/newCohortTable.html" class="external-link">newCohortTable</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">meds_timing</span> <span class="op">&lt;-</span> <span class="va">cdm</span><span class="op">$</span><span class="va">meds</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/summariseCohortTiming.html">summariseCohortTiming</a></span><span class="op">(</span></span>
+<span>    restrictToFirstEntry <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>    strata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"age_group"</span><span class="op">)</span>,</span>
+<span>    density <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  <span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/tableCohortTiming.html">tableCohortTiming</a></span><span class="op">(</span><span class="va">meds_timing</span>,</span>
-<span>                  timeScale <span class="op">=</span> <span class="st">"years"</span>,</span>
-<span>                  .options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>decimals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>numeric <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>  timeScale <span class="op">=</span> <span class="st">"years"</span>,</span>
+<span>  .options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>decimals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>numeric <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <div id="tkdbirslsq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#tkdbirslsq table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -1367,11 +1381,12 @@ also obtain stratified estimates.</p>
 </div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plotCohortTiming.html">plotCohortTiming</a></span><span class="op">(</span><span class="va">meds_timing</span>,</span>
-<span>                 plotType <span class="op">=</span> <span class="st">"boxplot"</span>,</span>
-<span>                 timeScale <span class="op">=</span> <span class="st">"years"</span>,</span>
-<span>                 facet <span class="op">=</span> <span class="st">"strata_level"</span>,</span>
-<span>                 colour <span class="op">=</span> <span class="st">"strata_level"</span>, </span>
-<span>                 colourName <span class="op">=</span> <span class="st">"Age group"</span><span class="op">)</span></span></code></pre></div>
+<span>  plotType <span class="op">=</span> <span class="st">"boxplot"</span>,</span>
+<span>  timeScale <span class="op">=</span> <span class="st">"years"</span>,</span>
+<span>  facet <span class="op">=</span> <span class="st">"strata_level"</span>,</span>
+<span>  colour <span class="op">=</span> <span class="st">"strata_level"</span>,</span>
+<span>  colourName <span class="op">=</span> <span class="st">"Age group"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="a09_summariseCohortTiming_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
   </main>
 </div>
