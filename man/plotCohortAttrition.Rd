@@ -37,4 +37,5 @@ cdm$cohort1 |>
   summariseCohortAttrition() |>
   plotCohortAttrition(cohortId = 2)
 }
+
 }

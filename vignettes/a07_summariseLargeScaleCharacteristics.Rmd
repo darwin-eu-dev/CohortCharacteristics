@@ -16,8 +16,8 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>", 
-  message = FALSE, 
+  comment = "#>",
+  message = FALSE,
   warning = FALSE
 )
 
@@ -40,10 +40,12 @@ library(ggplot2)
 library(CohortCharacteristics)
 
 con <- DBI::dbConnect(duckdb::duckdb(),
-                       dbdir = CDMConnector::eunomia_dir())
+  dbdir = CDMConnector::eunomia_dir()
+)
 cdm <- CDMConnector::cdm_from_con(con,
-                                   cdm_schem = "main",
-                                   write_schema = "main")
+  cdm_schem = "main",
+  write_schema = "main"
+)
 
 cdm <- generateConceptCohortSet(
   cdm = cdm,
@@ -62,11 +64,13 @@ To summarise our cohort of individuals with an ankle sprain we will look at thei
 Lastly, but important to note, we are only going to only return results for concepts for which at least 10% of the study cohort had a record.
 
 ```{r}
-lsc <- cdm$ankle_sprain |> 
+lsc <- cdm$ankle_sprain |>
   summariseLargeScaleCharacteristics(
-    window = list(c(-Inf,-1), c(0,0)),
-    eventInWindow = c("condition_occurrence",
-                      "procedure_occurrence"), 
+    window = list(c(-Inf, -1), c(0, 0)),
+    eventInWindow = c(
+      "condition_occurrence",
+      "procedure_occurrence"
+    ),
     episodeInWindow = "drug_exposure",
     minimumFrequency = 0.1
   )
@@ -77,8 +81,9 @@ tableLargeScaleCharacteristics(lsc)
 As we can see we have identified numerous concepts for which at least 10% of our study population had a record. Often with larger cohorts and real patient-level data we will obtain many times more results when running large scale characterisation. One option we have to help summarise our results is to pick out the most frequent concepts. Here, for example, we select the top 5 concepts.
 
 ```{r}
-tableLargeScaleCharacteristics(lsc, 
-                               topConcepts = 5)
+tableLargeScaleCharacteristics(lsc,
+  topConcepts = 5
+)
 ```
 
 ## Stratified large scale characteristics
@@ -86,10 +91,10 @@ tableLargeScaleCharacteristics(lsc,
 Like when summarising pre-specified patient characteristics, we can also get stratified results when summarising large scale characteristics. Here, for example, large scale characteristics are stratified by sex (which we add as an additional column to our cohort table using the PatientProfiles package).
 
 ```{r}
-lsc <- cdm$ankle_sprain |> 
-  PatientProfiles::addSex() |> 
+lsc <- cdm$ankle_sprain |>
+  PatientProfiles::addSex() |>
   summariseLargeScaleCharacteristics(
-    window = list(c(-Inf,-1), c(0,0)),
+    window = list(c(-Inf, -1), c(0, 0)),
     strata = list("sex"),
     eventInWindow = "drug_exposure",
     minimumFrequency = 0.1

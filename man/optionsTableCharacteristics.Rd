@@ -15,7 +15,7 @@ tableCharacteristics, and their given default values.
 }
 \examples{
 {
-optionsTableCharacteristics()
+  optionsTableCharacteristics()
 }
 
 }

@@ -1,4 +1,4 @@
-on_cran <- function(){
+on_cran <- function() {
   !interactive() && !isTRUE(as.logical(Sys.getenv("NOT_CRAN", "false")))
 }
 if (!on_cran()) {
@@ -10,8 +10,7 @@ if (!on_cran()) {
   CDMConnector::downloadEunomiaData(overwrite = TRUE)
 }
 connection <- function(dbToTest) {
-  switch(
-    dbToTest,
+  switch(dbToTest,
     "duckdb" = list(
       con = DBI::dbConnect(duckdb::duckdb(), ":memory:"),
       write_schema = "main"
@@ -19,19 +18,20 @@ connection <- function(dbToTest) {
     "sql server" = list(
       con = DBI::dbConnect(
         odbc::odbc(),
-        Driver   = "ODBC Driver 18 for SQL Server",
-        Server   = Sys.getenv("CDM5_SQL_SERVER_SERVER"),
+        Driver = "ODBC Driver 18 for SQL Server",
+        Server = Sys.getenv("CDM5_SQL_SERVER_SERVER"),
         Database = Sys.getenv("CDM5_SQL_SERVER_CDM_DATABASE"),
-        UID      = Sys.getenv("CDM5_SQL_SERVER_USER"),
-        PWD      = Sys.getenv("CDM5_SQL_SERVER_PASSWORD"),
+        UID = Sys.getenv("CDM5_SQL_SERVER_USER"),
+        PWD = Sys.getenv("CDM5_SQL_SERVER_PASSWORD"),
         TrustServerCertificate = "yes",
-        Port     = 1433
+        Port = 1433
       ),
       write_schema = Sys.getenv("CDM5_SQL_SERVER_OHDSI_SCHEMA")
     ),
     "redshift" = list(
       con = DBI::dbConnect(
-        RPostgres::Redshift(), dbname = Sys.getenv("CDM5_REDSHIFT_DBNAME"),
+        RPostgres::Redshift(),
+        dbname = Sys.getenv("CDM5_REDSHIFT_DBNAME"),
         port = Sys.getenv("CDM5_REDSHIFT_PORT"),
         host = Sys.getenv("CDM5_REDSHIFT_HOST"),
         user = Sys.getenv("CDM5_REDSHIFT_USER"),
@@ -48,4 +48,3 @@ emptyCohort <- dplyr::tibble(
   cohort_start_date = as.Date(character()),
   cohort_end_date = as.Date(character())
 )
-

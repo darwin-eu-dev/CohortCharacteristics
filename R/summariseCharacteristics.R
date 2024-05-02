@@ -136,7 +136,7 @@ summariseCharacteristics <- function(cohort,
     cohortId <- ids
   } else {
     indNot <- !cohortId %in% ids
-    if (sum(indNot)>0) {
+    if (sum(indNot) > 0) {
       if (sum(indNot) == length(cohortId)) {
         cli::cli_abort("No valid cohort ids supplied.")
       } else {
@@ -156,22 +156,22 @@ summariseCharacteristics <- function(cohort,
   )
 
   # return empty result if no analyses chosen
-  if (length(strata) == 0 &
-    isFALSE(counts) &
-    isFALSE(demographics) &
-    is.null(ageGroup) &
-    length(tableIntersectFlag) == 0 &
-    length(tableIntersectCount) == 0 &
-    length(tableIntersectDate) == 0 &
-    length(tableIntersectDays) == 0 &
-    length(cohortIntersectFlag) == 0 &
-    length(cohortIntersectCount) == 0 &
-    length(cohortIntersectDate) == 0 &
-    length(cohortIntersectDays) == 0 &
-    length(conceptIntersectFlag) == 0 &
-    length(conceptIntersectCount) == 0 &
-    length(conceptIntersectDate) == 0 &
-    length(conceptIntersectDays) == 0 &
+  if (length(strata) == 0 &&
+    isFALSE(counts) &&
+    isFALSE(demographics) &&
+    is.null(ageGroup) &&
+    length(tableIntersectFlag) == 0 &&
+    length(tableIntersectCount) == 0 &&
+    length(tableIntersectDate) == 0 &&
+    length(tableIntersectDays) == 0 &&
+    length(cohortIntersectFlag) == 0 &&
+    length(cohortIntersectCount) == 0 &&
+    length(cohortIntersectDate) == 0 &&
+    length(cohortIntersectDays) == 0 &&
+    length(conceptIntersectFlag) == 0 &&
+    length(conceptIntersectCount) == 0 &&
+    length(conceptIntersectDate) == 0 &&
+    length(conceptIntersectDays) == 0 &&
     all(lengths(otherVariables) == 0)) {
     return(
       omopgenerics::emptySummarisedResult() |>
@@ -357,11 +357,11 @@ summariseCharacteristics <- function(cohort,
         )
 
       if (value == "date") {
-        variables <-  variables |> updateVariables(date = shortNames)
+        variables <- variables |> updateVariables(date = shortNames)
       } else if (value %in% c("days", "count")) {
-        variables <-  variables |> updateVariables(numeric = shortNames)
-      } else if  (value == "flag") {
-        variables <-  variables |> updateVariables(binary = shortNames)
+        variables <- variables |> updateVariables(numeric = shortNames)
+      } else if (value == "flag") {
+        variables <- variables |> updateVariables(binary = shortNames)
       }
 
       val$x <- cohort
@@ -371,9 +371,7 @@ summariseCharacteristics <- function(cohort,
       if (type == "cohort") {
         attr(cdm[[cohortInterest]], "cohort_set") <- set
       }
-
     }
-
   }
 
   # update cohort_names
@@ -484,8 +482,10 @@ getType <- function(name) {
 }
 getSummaryName <- function(intersect) {
   paste0(
-    c("summarised",
-      intersect |> snakecase::to_snake_case() |> strsplit("_") |> unlist()),
+    c(
+      "summarised",
+      intersect |> snakecase::to_snake_case() |> strsplit("_") |> unlist()
+    ),
     collapse = "_"
   )
 }

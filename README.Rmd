@@ -61,7 +61,7 @@ cdm$cohort1
 With one line of code from CohortCharacteristics we can generate summary statistics on this cohort.
 ```{r, message=FALSE}
 cohort1_characteristics <- summariseCharacteristics(cdm$cohort1)
-cohort1_characteristics |> 
+cohort1_characteristics |>
   glimpse()
 ```
 

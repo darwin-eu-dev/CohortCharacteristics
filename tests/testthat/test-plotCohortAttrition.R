@@ -1,5 +1,4 @@
 test_that("multiplication works", {
-
   cdm <- DrugUtilisation::mockDrugUtilisation(n = 1000)
 
   cdm[["cohort1"]] <- cdm[["cohort1"]] |>
@@ -13,10 +12,10 @@ test_that("multiplication works", {
 
   x <- plotCohortAttrition(ca, cohortId = 2)
 
-  expect_true(inherits(x,c("grViz","htmlwidget")))
+  expect_true(inherits(x, c("grViz", "htmlwidget")))
 
   # Test empty data
   ca <- ca |> dplyr::filter(result_id == 10)
   x <- plotCohortAttrition(ca)
-  expect_true(inherits(x,c("grViz","htmlwidget")))
+  expect_true(inherits(x, c("grViz", "htmlwidget")))
 })

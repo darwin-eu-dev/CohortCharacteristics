@@ -38,9 +38,9 @@
 #' }
 #'
 tableCohortAttrition <- function(result,
-                             header = "cdm_name",
-                             groupColumn = "cohort_name",
-                             type = "gt") {
+                                 header = "cdm_name",
+                                 groupColumn = "cohort_name",
+                                 type = "gt") {
   # initial checks
   assertClass(result, "summarised_result")
   assertChoice(type, c("gt", "flextable", "tibble"), length = 1)
@@ -59,7 +59,7 @@ tableCohortAttrition <- function(result,
         settings |>
           dplyr::select("result_id", "min_cell_count"),
         by = "result_id"
-      )  |>
+      ) |>
       dplyr::mutate(estimate_value = dplyr::if_else(
         is.na(.data$estimate_value), paste0("<", .data$min_cell_count), .data$estimate_value
       )) |>

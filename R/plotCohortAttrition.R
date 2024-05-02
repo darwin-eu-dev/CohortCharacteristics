@@ -45,7 +45,7 @@
 #'   summariseCohortAttrition() |>
 #'   plotCohortAttrition(cohortId = 2)
 #' }
-
+#'
 plotCohortAttrition <- function(x, cohortId = NULL) {
   if (!inherits(x, "summarised_result")) {
     cli::cli_abort("x must be the output of summariseCohortAttrition()")
@@ -84,34 +84,34 @@ plotCohortAttrition <- function(x, cohortId = NULL) {
   xn <- createLabels(x)
 
   y <- selectLabels(xn)
-  xn  <- y$xn
+  xn <- y$xn
   att <- y$att
 
   # Create graph
-  n  <- nrow(x)
+  n <- nrow(x)
   xg <- DiagrammeR::create_graph()
 
   w1 <- getWidthMainBox(xn)
 
-  if(nrow(x) == 1){
-    xg <-  getSingleNode(xg,xn,w1)
-  }else{
+  if (nrow(x) == 1) {
+    xg <- getSingleNode(xg, xn, w1)
+  } else {
     att <- validateReason(att)
 
-    h2  <- getHeightMiddleBox(att)
+    h2 <- getHeightMiddleBox(att)
 
-    p1 <- getPositionMainBox(xn,n,h2)
+    p1 <- getPositionMainBox(xn, n, h2)
 
     w2 <- getWidthMiddleBox(att)
 
     p2 <- getPositionMiddleBox(p1)
 
-    xg <- getNodes(xn,att,n,xg,h2,w1,p1,w2,p2)
+    xg <- getNodes(xn, att, n, xg, h2, w1, p1, w2, p2)
   }
   return(DiagrammeR::render_graph(xg))
 }
 
-emptyTable <- function(message){
+emptyTable <- function(message) {
   DiagrammeR::create_graph() |>
     DiagrammeR::add_node(
       label = message,
@@ -122,7 +122,8 @@ emptyTable <- function(message){
         fontname = "Calibri",
         fontsize = 10,
         x = 1, y = 1,
-        width = 4,penwidth = 0)
+        width = 4, penwidth = 0
+      )
     ) |>
     DiagrammeR::render_graph()
 }
@@ -130,17 +131,17 @@ emptyTable <- function(message){
 formatNum <- function(col) {
   dplyr::if_else(
     !is.na(as.numeric(col)),
-    gsub(" ", "", format(as.integer(col), big.mark=",")),
+    gsub(" ", "", format(as.integer(col), big.mark = ",")),
     col
   )
 }
 
-createLabels <- function(x){
+createLabels <- function(x) {
   x <- x |>
     dplyr::arrange(.data$reason_id) |>
     dplyr::mutate(
       number_subjects = formatNum(.data$number_subjects),
-      number_records  = formatNum(.data$number_records),
+      number_records = formatNum(.data$number_records),
       excluded_subjects = formatNum(.data$excluded_subjects),
       label = paste0(
         "N subjects = ", .data$number_subjects, "\nN records = ", .data$number_records
@@ -149,31 +150,28 @@ createLabels <- function(x){
   return(x)
 }
 
-selectLabels <- function(xn){
-  if(nrow(xn) == 1){
+selectLabels <- function(xn) {
+  if (nrow(xn) == 1) {
     xn <- xn |>
       dplyr::mutate(label = paste0("Qualifying events", "\n", .data$label)) |>
       dplyr::select("label")
 
     att <- NULL
-  }else{
+  } else {
     att <- xn |>
       dplyr::filter(.data$reason_id > min(.data$reason_id)) |>
       dplyr::mutate(label = paste0(
         "N subjects = ", .data$excluded_subjects, "\nN records = ", .data$excluded_records
-      )
-      ) |>
+      )) |>
       dplyr::select("reason", "label")
 
     xn <- xn |>
       dplyr::mutate(
         label = dplyr::if_else(
           .data$reason_id == min(.data$reason_id),
-          # paste0("𝗜𝗻𝗶𝘁𝗶𝗮𝗹 𝗲𝘃𝗲𝗻𝘁𝘀", "\n", label),
           paste0("Initial events", "\n", .data$label),
           dplyr::if_else(
             .data$reason_id == max(.data$reason_id),
-            # paste0("𝗙𝗶𝗻𝗮𝗹 𝗲𝘃𝗲𝗻𝘁𝘀", "\n", label),
             paste0("Final events", "\n", .data$label),
             .data$label
           )
@@ -184,11 +182,11 @@ selectLabels <- function(xn){
   return(list("xn" = xn, "att" = att))
 }
 
-getWidthMainBox <- function(xn){
-  return(0.08*max(nchar(strsplit(xn$label[1], split = "\n")[[1]])))
+getWidthMainBox <- function(xn) {
+  return(0.08 * max(nchar(strsplit(xn$label[1], split = "\n")[[1]])))
 }
 
-getSingleNode <- function(xg, xn,w1){
+getSingleNode <- function(xg, xn, w1) {
   k <- 1
   xn$label[k] <- gsub("Qualifying events", "Initial events", xn$label[k])
   xg <- xg %>%
@@ -209,36 +207,34 @@ getSingleNode <- function(xg, xn,w1){
     )
 }
 
-getPositionMainBox <- function(xn,n,h2){
-  return(n + 1 - seq_len(n) -cumsum(append(0,h2-0.2)))
+getPositionMainBox <- function(xn, n, h2) {
+  return(n + 1 - seq_len(n) - cumsum(append(0, h2 - 0.2)))
 }
 
-getPositionMiddleBox <- function(p1){
-  return((p1[1:(length(p1)-1)] - p1[2:length(p1)])/2 + (p1[2:(length(p1))]))
+getPositionMiddleBox <- function(p1) {
+  return((p1[1:(length(p1) - 1)] - p1[2:length(p1)]) / 2 + (p1[2:(length(p1))]))
 }
 
-validateReason <- function(att){
-
+validateReason <- function(att) {
   n_char <- nchar(att$reason)
-  n_char_count <- round(n_char/35)
-  n_char_count[n_char_count > 1] = n_char_count[n_char_count > 1] - 1
+  n_char_count <- round(n_char / 35)
+  n_char_count[n_char_count > 1] <- n_char_count[n_char_count > 1] - 1
 
-  for(k in seq_len(nrow(att))){
-
+  for (k in seq_len(nrow(att))) {
     cut <- seq_len(n_char_count[k])
-    cut <- cut*35
-    positions <- unlist(gregexpr(' ', att$reason[k]))
+    cut <- cut * 35
+    positions <- unlist(gregexpr(" ", att$reason[k]))
 
-    matrix_positions <- matrix(positions,length(cut), length(positions), byrow = TRUE)
+    matrix_positions <- matrix(positions, length(cut), length(positions), byrow = TRUE)
 
-    positions <- unique(matrix_positions[seq_len(length(cut)),  apply(abs(matrix_positions - cut),1,which.min)])
+    positions <- unique(matrix_positions[seq_len(length(cut)), apply(abs(matrix_positions - cut), 1, which.min)])
 
-    for(kk in positions){
-      substr(att$reason[k], start = kk, stop = kk+1) <- "\n"
+    for (kk in positions) {
+      substr(att$reason[k], start = kk, stop = kk + 1) <- "\n"
     }
 
     # Ensure that we do not have placed \n at the end of the string
-    att$reason[k] <- sub("\n$","",att$reason[k])
+    att$reason[k] <- sub("\n$", "", att$reason[k])
   }
 
 
@@ -246,15 +242,15 @@ validateReason <- function(att){
   return(att)
 }
 
-getHeightMiddleBox <- function(att){
-  return((stringr::str_count(att$reason, pattern = "\n")+1)*0.2)
+getHeightMiddleBox <- function(att) {
+  return((stringr::str_count(att$reason, pattern = "\n") + 1) * 0.2)
 }
 
-getWidthMiddleBox <- function(att){
-  return(min(2.25,0.08*max(nchar(unlist(strsplit(att$reason,"\n"))))))
+getWidthMiddleBox <- function(att) {
+  return(min(2.25, 0.08 * max(nchar(unlist(strsplit(att$reason, "\n"))))))
 }
 
-getNodes <- function(xn,att,n,xg,h2,w1,p1,w2,p2){
+getNodes <- function(xn, att, n, xg, h2, w1, p1, w2, p2) {
   for (k in seq_len(n)) {
     xg <- xg %>%
       DiagrammeR::add_node(
@@ -312,7 +308,7 @@ getNodes <- function(xn,att,n,xg,h2,w1,p1,w2,p2){
           )
         ) %>%
         DiagrammeR::add_edge(
-          from = 2*k + n, to = 2*k + n -1, edge_aes = DiagrammeR::edge_aes(color = "black")
+          from = 2 * k + n, to = 2 * k + n - 1, edge_aes = DiagrammeR::edge_aes(color = "black")
         )
     }
   }

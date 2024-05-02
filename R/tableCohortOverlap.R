@@ -50,16 +50,15 @@
 #'
 #' @export
 #'
-tableCohortOverlap  <- function(result,
-                                type = "gt",
-                                formatEstimateName = c("N (%)" = "<count> (<percentage>%)"),
-                                header = c("strata"),
-                                split = c("group", "strata", "additional"),
-                                groupColumn = NULL,
-                                minCellCount = lifecycle::deprecated(),
-                                excludeColumns = c("result_id", "estimate_type"),
-                                .options = list()) {
-
+tableCohortOverlap <- function(result,
+                               type = "gt",
+                               formatEstimateName = c("N (%)" = "<count> (<percentage>%)"),
+                               header = c("strata"),
+                               split = c("group", "strata", "additional"),
+                               groupColumn = NULL,
+                               minCellCount = lifecycle::deprecated(),
+                               excludeColumns = c("result_id", "estimate_type"),
+                               .options = list()) {
   if (lifecycle::is_present(minCellCount)) {
     lifecycle::deprecate_warn("0.2.0", "tableCohortOverlap(minCellCount)")
   }
@@ -88,9 +87,12 @@ tableCohortOverlap  <- function(result,
     x <- x |>
       getUniqueCombinations(order = sort(unique(x$cohort_name_reference))) |>
       dplyr::mutate(variable_name = factor(.data$variable_name,
-                                            levels = c("only_in_reference_cohort",
-                                                       "in_both_cohorts",
-                                                       "only_in_comparator_cohort"))) |>
+        levels = c(
+          "only_in_reference_cohort",
+          "in_both_cohorts",
+          "only_in_comparator_cohort"
+        )
+      )) |>
       dplyr::arrange(dplyr::across(dplyr::all_of(
         c("result_id", "cdm_name", "cohort_name_reference", "cohort_name_comparator", "strata_name", "strata_level", "variable_name", "variable_level")
       ))) |>
@@ -102,9 +104,12 @@ tableCohortOverlap  <- function(result,
   } else {
     x <- result |>
       dplyr::mutate(variable_name = factor(.data$variable_name,
-                                            levels = c("only_in_reference_cohort",
-                                                       "in_both_cohorts",
-                                                       "only_in_comparator_cohort"))) |>
+        levels = c(
+          "only_in_reference_cohort",
+          "in_both_cohorts",
+          "only_in_comparator_cohort"
+        )
+      )) |>
       dplyr::arrange(dplyr::across(dplyr::all_of(
         c("result_id", "cdm_name", "group_name", "group_level", "strata_name", "strata_level", "variable_name", "variable_level")
       ))) |>
@@ -115,14 +120,16 @@ tableCohortOverlap  <- function(result,
   }
 
   # format table
-  result <- visOmopResults::visOmopTable(result = x,
-                                        formatEstimateName = formatEstimateName,
-                                        header = c(header, "variable"),
-                                        groupColumn = groupColumn,
-                                        split = split,
-                                        type = type,
-                                        excludeColumns = excludeColumns,
-                                        .options = .options)
+  result <- visOmopResults::visOmopTable(
+    result = x,
+    formatEstimateName = formatEstimateName,
+    header = c(header, "variable"),
+    groupColumn = groupColumn,
+    split = split,
+    type = type,
+    excludeColumns = excludeColumns,
+    .options = .options
+  )
 
   return(result)
 }
@@ -163,7 +170,7 @@ defaultOverlapOptions <- function(userOptions) {
 #'
 #' @examples
 #' {
-#' optionsTableCohortOverlap()
+#'   optionsTableCohortOverlap()
 #' }
 #'
 optionsTableCohortOverlap <- function() {
@@ -177,12 +184,12 @@ formatOverlapEstimate <- function(count, percentage, .options) {
     niceNum(percentage, .options, "percentage"),
     "%)"
   )
-
 }
 niceNum <- function(num, .options, type) {
   trimws(format(round(num, .options$decimals[[type]]),
-                big.mark = .options$bigMark,
-                decimal.mark = .options$decimalMark,
-                nsmall = .options$decimals[[type]],
-                scientific = FALSE))
+    big.mark = .options$bigMark,
+    decimal.mark = .options$decimalMark,
+    nsmall = .options$decimals[[type]],
+    scientific = FALSE
+  ))
 }

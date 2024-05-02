@@ -42,12 +42,16 @@ library(DrugUtilisation)
 cdm <- DrugUtilisation::mockDrugUtilisation()
 
 lsc <- CohortCharacteristics::summariseLargeScaleCharacteristics(cdm$cohort1,
-eventInWindow = "condition_occurrence", minimumFrequency = 0.05)
-plotLargeScaleCharacteristics(data = lsc,
-                              position = "horizontal",
-                              facet     = NULL,
-                              splitStrata = TRUE,
-                              colorVars   = NULL)
+  eventInWindow = "condition_occurrence", minimumFrequency = 0.05
+)
+plotLargeScaleCharacteristics(
+  data = lsc,
+  position = "horizontal",
+  facet = NULL,
+  splitStrata = TRUE,
+  colorVars = NULL
+)
 CDMConnector::cdmDisconnect(cdm = cdm)
 }
+
 }

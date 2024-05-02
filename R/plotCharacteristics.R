@@ -45,14 +45,20 @@
 #' )
 #'
 #' results |>
-#'  filter(variable_name  == "Cohort2 flag -365 to -1",
-#'          estimate_name == "percentage") |>
-#'   plotCharacteristics(plotStyle = "barplot",
-#'                       colour  = "variable_level",
-#'                       x = "variable_level",
-#'                       facet = c("cdm_name",
-#'                                 "group_level",
-#'                                 "strata_level"))
+#'   filter(
+#'     variable_name == "Cohort2 flag -365 to -1",
+#'     estimate_name == "percentage"
+#'   ) |>
+#'   plotCharacteristics(
+#'     plotStyle = "barplot",
+#'     colour = "variable_level",
+#'     x = "variable_level",
+#'     facet = c(
+#'       "cdm_name",
+#'       "group_level",
+#'       "strata_level"
+#'     )
+#'   )
 #'
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
@@ -60,10 +66,9 @@ plotCharacteristics <- function(data,
                                 x = "variable_name",
                                 plotStyle = "barplot",
                                 facet = NULL,
-                                colour  = NULL,
+                                colour = NULL,
                                 colourName = NULL,
                                 .options = list()) {
-
   errorMessage <- checkmate::makeAssertCollection()
 
   checkmate::assertTRUE(plotStyle %in% c("boxplot", "barplot", "density"), add = errorMessage)
@@ -79,18 +84,22 @@ plotCharacteristics <- function(data,
     dplyr::select("variable_name") |>
     dplyr::distinct() |>
     dplyr::pull())
-  if(nVariableNames != 1){
-    emptyPlot("Only one variable name can be plotted at a time.",
-              "Please filter variable_name column in results before passing to plotCharacteristics()")
+  if (nVariableNames != 1) {
+    emptyPlot(
+      "Only one variable name can be plotted at a time.",
+      "Please filter variable_name column in results before passing to plotCharacteristics()"
+    )
   }
 
   nEstimateTypes <- length(data |>
-                             dplyr::select("estimate_type") |>
-                             dplyr::distinct() |>
-                             dplyr::pull())
-  if(nEstimateTypes != 1){
-    emptyPlot("Only one estimate type can be plotted at a time.",
-              "Please filter estimate_type column in results before passing to plotCharacteristics()")
+    dplyr::select("estimate_type") |>
+    dplyr::distinct() |>
+    dplyr::pull())
+  if (nEstimateTypes != 1) {
+    emptyPlot(
+      "Only one estimate type can be plotted at a time.",
+      "Please filter estimate_type column in results before passing to plotCharacteristics()"
+    )
   }
 
   estimateType <- data |>
@@ -98,37 +107,37 @@ plotCharacteristics <- function(data,
     dplyr::distinct() |>
     dplyr::pull()
 
-  if(!estimateType %in% c("numeric", "percentage")){
+  if (!estimateType %in% c("numeric", "percentage")) {
     emptyPlot(paste0(estimateType, " not currently supported by plotCharacteristics()"))
   }
 
-    gg <- plotfunction(
-      data,
-      xAxis,
-      yAxis,
-      plotStyle = plotStyle,
-      facetVarX = NULL,
-      facetVarY = NULL,
-      colorVars = colour,
-      vertical_x,
-      facet = facet,
-      .options = .options
-    )
+  gg <- plotfunction(
+    data,
+    xAxis,
+    yAxis,
+    plotStyle = plotStyle,
+    facetVarX = NULL,
+    facetVarY = NULL,
+    colorVars = colour,
+    vertical_x,
+    facet = facet,
+    .options = .options
+  )
 
 
   gg <- gg +
     ggplot2::theme_bw()
 
 
-  if(estimateType == "numeric"){
+  if (estimateType == "numeric") {
     var <- unique(data$variable_name)
 
-    if(xAxis == "estimate_value"){
+    if (xAxis == "estimate_value") {
       gg <- gg +
         ggplot2::ylab(var) +
         ggplot2::xlab("")
     }
-    if(yAxis == "estimate_value"){
+    if (yAxis == "estimate_value") {
       gg <- gg +
         ggplot2::ylab(var) +
         ggplot2::xlab("")
@@ -136,34 +145,37 @@ plotCharacteristics <- function(data,
   }
 
 
-  if(estimateType == "percentage"){
-    if(xAxis == "estimate_value"){
-    gg <- gg +
-      ggplot2::xlab("Percentage") +
-      ggplot2::ylab("")
+  if (estimateType == "percentage") {
+    if (xAxis == "estimate_value") {
+      gg <- gg +
+        ggplot2::xlab("Percentage") +
+        ggplot2::ylab("")
     }
-    if(yAxis == "estimate_value"){
+    if (yAxis == "estimate_value") {
       gg <- gg +
         ggplot2::ylab("Percentage") +
         ggplot2::xlab("")
     }
   }
 
-  gg <-  gg +
+  gg <- gg +
     ggplot2::theme_bw() +
     ggplot2::theme(legend.position = "top")
 
-  if(!is.null(colourName)){
+  if (!is.null(colourName)) {
     gg <- gg +
-       ggplot2::labs(color = colourName,
-                     fill = colourName)
-  } else{
+      ggplot2::labs(
+        color = colourName,
+        fill = colourName
+      )
+  } else {
     gg <- gg +
-      ggplot2::labs(color = "",
-                    fill = "")
+      ggplot2::labs(
+        color = "",
+        fill = ""
+      )
   }
 
 
   gg
 }
-

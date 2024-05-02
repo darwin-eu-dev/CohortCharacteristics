@@ -147,7 +147,6 @@ checkAgeGroup <- function(ageGroup, overlap = FALSE) {
       if (any(ageGroup[[k]] |> unlist() |> unique() < 0)) {
         cli::cli_abort("ageGroup can't contain negative values")
       }
-
     }
     if (is.null(names(ageGroup))) {
       names(ageGroup) <- paste0("age_group_", 1:length(ageGroup))
@@ -193,8 +192,12 @@ checkWindow <- function(window) {
   }
 
   names(window) <- getWindowNames(window)
-  lower <- lapply(window, function(x) {x[1]}) |> unlist()
-  upper <- lapply(window, function(x) {x[2]}) |> unlist()
+  lower <- lapply(window, function(x) {
+    x[1]
+  }) |> unlist()
+  upper <- lapply(window, function(x) {
+    x[2]
+  }) |> unlist()
 
   if (any(lower > upper)) {
     cli::cli_abort("First element in window must be smaller or equal to the second one")
@@ -389,7 +392,7 @@ checkSnakeCase <- function(name, verbose = TRUE) {
 
 #' @noRd
 checkExclude <- function(exclude) {
-  if (!is.null(exclude) & !is.character(exclude)) {
+  if (!is.null(exclude) && !is.character(exclude)) {
     cli::cli_abort("eclude must a character vector or NULL")
   }
 }
@@ -412,8 +415,10 @@ checkStrata <- function(strata, table, type = "strata") {
       cli::cli_abort(errorMessage)
     }
     if (!all(unlist(strata) %in% colnames(table))) {
-      notPresent <- strata |> unlist() |> unique()
-      notPresent <- notPresent[! notPresent %in% colnames(table)]
+      notPresent <- strata |>
+        unlist() |>
+        unique()
+      notPresent <- notPresent[!notPresent %in% colnames(table)]
       cli::cli_abort(paste0(
         errorMessage,
         ". The following columns were not found in the data: ",
@@ -428,25 +433,27 @@ checkStrata <- function(strata, table, type = "strata") {
 checkSuppressCellCount <- function(suppressCellCount) {
   checkmate::assertIntegerish(
     suppressCellCount,
-    lower = 0, len = 1, any.missing = F
+    lower = 0, len = 1, any.missing = FALSE
   )
 }
 
 #' @noRd
 checkBigMark <- function(bigMark) {
-  checkmate::checkCharacter(bigMark, min.chars = 0, len = 1, any.missing = F)
+  checkmate::checkCharacter(bigMark, min.chars = 0, len = 1,
+                            any.missing = FALSE)
 }
 
 #' @noRd
 checkDecimalMark <- function(decimalMark) {
-  checkmate::checkCharacter(decimalMark, min.chars = 1, len = 1, any.missing = F)
+  checkmate::checkCharacter(decimalMark, min.chars = 1, len = 1,
+                            any.missing = FALSE)
 }
 
 #' @noRd
 checkSignificantDecimals <- function(significantDecimals) {
   checkmate::assertIntegerish(
     significantDecimals,
-    lower = 0, len = 1, any.missing = F
+    lower = 0, len = 1, any.missing = FALSE
   )
 }
 
@@ -495,7 +502,7 @@ checkOtherVariablesEstimates <- function(otherVariablesEstimates, otherVariables
       call = call
     )
   }
-  if (length(otherVariablesEstimates) == 1 & length(otherVariables) > 1) {
+  if (length(otherVariablesEstimates) == 1 && length(otherVariables) > 1) {
     otherVariablesEstimates <- rep(otherVariablesEstimates, length(otherVariables))
   }
   if (is.null(names(otherVariablesEstimates))) {
@@ -512,14 +519,15 @@ assertClass <- function(x,
   errorMessage <- paste0(
     paste0(substitute(x), collapse = ""), " must have class: ",
     paste0(class, collapse = ", "), "; but has class: ",
-    paste0(base::class(x), collapse = ", ") ,"."
+    paste0(base::class(x), collapse = ", "), "."
   )
   if (is.null(x)) {
     if (null) {
       return(invisible(x))
     } else {
       cli::cli_abort(
-        "{paste0(substitute(x), collapse = '')} can not be NULL.", call = call
+        "{paste0(substitute(x), collapse = '')} can not be NULL.",
+        call = call
       )
     }
   }
@@ -530,8 +538,8 @@ assertClass <- function(x,
 }
 
 correctStrata <- function(strata, overall) {
-  if (length(strata) == 0 | overall) {
-    strata = c(list(character()), strata)
+  if (length(strata) == 0 || overall) {
+    strata <- c(list(character()), strata)
   }
   strata <- unique(strata)
   return(strata)
@@ -583,7 +591,6 @@ assertCharacter <- function(x,
 
   # assert null
   if (assertNull(x, null, errorMessage, call)) {
-
     # assert class
     if (!is.character(x)) {
       cli::cli_abort(errorMessage, call = call)
@@ -634,7 +641,6 @@ assertList <- function(x,
 
   # assert null
   if (assertNull(x, null, errorMessage, call)) {
-
     # assert class
     if (!is.list(x)) {
       cli::cli_abort(errorMessage, call = call)
@@ -688,7 +694,6 @@ assertChoice <- function(x,
 
   # assert null
   if (assertNull(x, null, errorMessage, call)) {
-
     # assert class
     if (!all(class(x) == class(choices))) {
       cli::cli_abort(errorMessage, call = call)
@@ -777,7 +782,6 @@ assertNumeric <- function(x,
 
   # assert null
   if (assertNull(x, null, errorMessage, call)) {
-
     # assert class
     if (!is.numeric(x)) {
       cli::cli_abort(errorMessage, call = call)
@@ -787,7 +791,7 @@ assertNumeric <- function(x,
     xNoNa <- x[!is.na(x)]
 
     # assert integerish
-    if (integerish & base::length(xNoNa) > 0) {
+    if (integerish && base::length(xNoNa) > 0) {
       err <- max(abs(xNoNa - round(xNoNa)))
       if (err > 0.0001) {
         cli::cli_abort(errorMessage, call = call)
@@ -795,14 +799,14 @@ assertNumeric <- function(x,
     }
 
     # assert lower bound
-    if (!is.infinite(min) & base::length(xNoNa) > 0) {
+    if (!is.infinite(min) && base::length(xNoNa) > 0) {
       if (base::min(xNoNa) < min) {
         cli::cli_abort(errorMessage, call = call)
       }
     }
 
     # assert upper bound
-    if (!is.infinite(max) & base::length(xNoNa) > 0) {
+    if (!is.infinite(max) && base::length(xNoNa) > 0) {
       if (base::max(xNoNa) > max) {
         cli::cli_abort(errorMessage, call = call)
       }
@@ -876,14 +880,15 @@ assertClass <- function(x,
   errorMessage <- paste0(
     paste0(substitute(x), collapse = ""), " must have class: ",
     paste0(class, collapse = ", "), "; but has class: ",
-    paste0(base::class(x), collapse = ", ") ,"."
+    paste0(base::class(x), collapse = ", "), "."
   )
   if (is.null(x)) {
     if (null) {
       return(invisible(x))
     } else {
       cli::cli_abort(
-        "{paste0(substitute(x), collapse = '')} can not be NULL.", call = call
+        "{paste0(substitute(x), collapse = '')} can not be NULL.",
+        call = call
       )
     }
   }
@@ -1016,7 +1021,9 @@ assertIntersect <- function(intersect) {
       } else {
         tblName <- intersect[[k]]$targetCohortTable
       }
-      value <- name |> as.character() |> getValue()
+      value <- name |>
+        as.character() |>
+        getValue()
       winName <- getWindowNames(intersect[[k]]$window)
       namesIntersect[k] <- paste(tblName, value, winName)
     }

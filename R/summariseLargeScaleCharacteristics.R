@@ -41,21 +41,21 @@
 #' cdm <- CohortCharacteristics::mockCohortCharacteristics()
 #'
 #' concept <- dplyr::tibble(
-#' concept_id = c(1125315, 1503328, 1516978, 317009, 378253, 4266367),
-#' domain_id = NA_character_,
-#' vocabulary_id = NA_character_,
-#' concept_class_id = NA_character_,
-#' concept_code = NA_character_,
-#' valid_start_date = as.Date("1900-01-01"),
-#' valid_end_date = as.Date("2099-01-01")
+#'   concept_id = c(1125315, 1503328, 1516978, 317009, 378253, 4266367),
+#'   domain_id = NA_character_,
+#'   vocabulary_id = NA_character_,
+#'   concept_class_id = NA_character_,
+#'   concept_code = NA_character_,
+#'   valid_start_date = as.Date("1900-01-01"),
+#'   valid_end_date = as.Date("2099-01-01")
 #' ) |>
-#'  dplyr::mutate(concept_name = paste0("concept: ", .data$concept_id))
+#'   dplyr::mutate(concept_name = paste0("concept: ", .data$concept_id))
 #' cdm <- CDMConnector::insertTable(cdm, "concept", concept)
 #' results <- cdm$cohort2 |>
-#' summariseLargeScaleCharacteristics(
-#'  episodeInWindow = c("condition_occurrence"),
-#'  minimumFrequency = 0
-#'  )
+#'   summariseLargeScaleCharacteristics(
+#'     episodeInWindow = c("condition_occurrence"),
+#'     minimumFrequency = 0
+#'   )
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
 summariseLargeScaleCharacteristics <- function(cohort,
@@ -89,7 +89,7 @@ summariseLargeScaleCharacteristics <- function(cohort,
   )
   checkmate::assertSubset(eventInWindow, tables)
   checkmate::assertSubset(episodeInWindow, tables)
-  if (is.null(eventInWindow) & is.null(episodeInWindow)) {
+  if (is.null(eventInWindow) && is.null(episodeInWindow)) {
     cli::cli_abort("'eventInWindow' or 'episodeInWindow' must be provided")
   }
   checkmate::assertLogical(includeSource, any.missing = FALSE, len = 1)
@@ -100,16 +100,16 @@ summariseLargeScaleCharacteristics <- function(cohort,
 
   # warn if strata has missing values
   for (k in seq_along(strata)) {
-  missingWorkingStrata <- cohort |>
-    dplyr::filter(is.na(!!as.symbol(strata[[k]]))) |>
-    dplyr::tally() |>
-    dplyr::pull("n")
-  if(missingWorkingStrata > 0){
-    cli::cli_warn("{missingWorkingStrata} missing value{?s} in
+    missingWorkingStrata <- cohort |>
+      dplyr::filter(is.na(!!as.symbol(strata[[k]]))) |>
+      dplyr::tally() |>
+      dplyr::pull("n")
+    if (missingWorkingStrata > 0) {
+      cli::cli_warn("{missingWorkingStrata} missing value{?s} in
                     variable {strata[[k]]} will be dropped when
                     calculating stratified results")
+    }
   }
-}
 
   # add names to windows
   names(window) <- gsub("_", " ", gsub("m", "-", getWindowNames(window)))
@@ -132,8 +132,10 @@ summariseLargeScaleCharacteristics <- function(cohort,
   id <- cli::cli_status("")
   for (i in seq_along(unique(analyses$table))) {
     tab <- unique(analyses$table)[i]
-    cli::cli_status_update(id,
-                           " - getting characteristics from table {tab} ({i} of {length(unique(analyses$table))})")
+    cli::cli_status_update(
+      id,
+      " - getting characteristics from table {tab} ({i} of {length(unique(analyses$table))})"
+    )
     analysesTable <- analyses |> dplyr::filter(.data$table == .env$tab)
     table <- getTable(
       tab, x, includeSource, minWindow, maxWindow, tablePrefix, excludedCodes
@@ -155,7 +157,7 @@ summariseLargeScaleCharacteristics <- function(cohort,
               )
           )
       }
-      if ("source" %in% colnames(table) & analysis == "standard") {
+      if ("source" %in% colnames(table) && analysis == "standard") {
         tableAnalysis <- getTableAnalysis(table, type, "source", tablePrefix)
         for (win in seq_along(window)) {
           tableWindow <- getTableWindow(tableAnalysis, window[[win]], tablePrefix)
@@ -265,7 +267,8 @@ getInitialTable <- function(cohort, tablePrefix, indexDate, censorDate) {
   }
   x <- x |>
     dplyr::select(
-      "subject_id", "cohort_start_date" = dplyr::all_of(indexDate), "start_obs",
+      "subject_id",
+      "cohort_start_date" = dplyr::all_of(indexDate), "start_obs",
       "end_obs"
     ) |>
     dplyr::distinct() |>
@@ -330,7 +333,8 @@ getTable <- function(tab, x, includeSource, minWindow, maxWindow, tablePrefix, e
     if ("source" %in% colnames(table)) {
       table <- table |>
         dplyr::anti_join(
-          cdm[[nm]] |> dplyr::rename("source" = "standard"), by = "source"
+          cdm[[nm]] |> dplyr::rename("source" = "standard"),
+          by = "source"
         )
     }
   }
@@ -407,7 +411,6 @@ denominatorCounts <- function(cohort, x, strata, window, tablePrefix) {
   return(den)
 }
 formatLscResult <- function(lsc, den, cdm, minimumFrequency) {
-
   lsc <- lsc |>
     dplyr::inner_join(
       den |>
@@ -419,15 +422,19 @@ formatLscResult <- function(lsc, den, cdm, minimumFrequency) {
       )
     )
 
-  start_rows <- lsc |> dplyr::tally() |> dplyr::pull("n")
+  start_rows <- lsc |>
+    dplyr::tally() |>
+    dplyr::pull("n")
   lsc <- lsc |>
     dplyr::mutate(percentage = round(100 * .data$count / .data$denominator, 2)) |>
     dplyr::select(-"denominator") |>
     dplyr::filter(.data$percentage >= 100 * .env$minimumFrequency)
-  end_rows <- lsc |> dplyr::tally() |> dplyr::pull("n")
+  end_rows <- lsc |>
+    dplyr::tally() |>
+    dplyr::pull("n")
 
-  if(end_rows < start_rows){
-  cli::cli_inform("{start_rows - end_rows} estimate{?s} dropped as
+  if (end_rows < start_rows) {
+    cli::cli_inform("{start_rows - end_rows} estimate{?s} dropped as
                   frequency less than {paste0(minimumFrequency*100)}%")
   }
 
@@ -457,10 +464,12 @@ addConceptName <- function(lsc, cdm) {
     dplyr::distinct()
 
   conceptsTblName <- omopgenerics::uniqueTableName(omopgenerics::tmpPrefix())
-  cdm <- omopgenerics::insertTable(cdm = cdm,
-                                   name = conceptsTblName,
-                                   table = concepts,
-                                   overwrite = TRUE )
+  cdm <- omopgenerics::insertTable(
+    cdm = cdm,
+    name = conceptsTblName,
+    table = concepts,
+    overwrite = TRUE
+  )
 
   conceptNames <- cdm[["concept"]] |>
     dplyr::select("concept" = "concept_id", "concept_name") |>

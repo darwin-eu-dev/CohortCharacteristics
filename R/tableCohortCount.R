@@ -54,20 +54,19 @@
 #' @export
 #'
 tableCohortCount <- function(result,
-                                 type = "gt",
-                                 formatEstimateName = c(
-                                   "N" = "<count>"
-                                 ),
-                                 header = c("group"),
-                                 split = c("group", "strata"),
-                                 groupColumn = NULL,
-                                 minCellCount = 5,
-                                 excludeColumns = c(
-                                   "result_id", "estimate_type", "variable_level",
-                                   "additional_name", "additional_level"
-                                 ),
-                                 .options = list()) {
-
+                             type = "gt",
+                             formatEstimateName = c(
+                               "N" = "<count>"
+                             ),
+                             header = c("group"),
+                             split = c("group", "strata"),
+                             groupColumn = NULL,
+                             minCellCount = 5,
+                             excludeColumns = c(
+                               "result_id", "estimate_type", "variable_level",
+                               "additional_name", "additional_level"
+                             ),
+                             .options = list()) {
   # check input
   intersects <- tidyr::expand_grid(
     "type" = c("cohort", "concept", "table"),
@@ -87,12 +86,14 @@ tableCohortCount <- function(result,
   .options <- defaultCharacteristicsOptions(.options)
 
   # ensure results are nicely ordered
-  defaultVariableNames <- c("Number records", "Number subjects",
-                            "Cohort start date", "Cohort end date",
-                            "Sex",
-                            "Age",  "Age group",
-                            "Prior observation",
-                            "Future observation")
+  defaultVariableNames <- c(
+    "Number records", "Number subjects",
+    "Cohort start date", "Cohort end date",
+    "Sex",
+    "Age", "Age group",
+    "Prior observation",
+    "Future observation"
+  )
   variableNames <- result |>
     dplyr::select("variable_name") |>
     dplyr::filter(!.data$variable_name %in% .env$defaultVariableNames) |>
@@ -100,18 +101,22 @@ tableCohortCount <- function(result,
     dplyr::pull("variable_name")
 
   variableLevels <- sort(result |>
-                           dplyr::select("variable_level") |>
-                           dplyr::filter(!is.na(.data$variable_level)) |>
-                           dplyr::distinct() |>
-                           dplyr::pull("variable_level"))
+    dplyr::select("variable_level") |>
+    dplyr::filter(!is.na(.data$variable_level)) |>
+    dplyr::distinct() |>
+    dplyr::pull("variable_level"))
 
   # create table
   result <- result |>
     dplyr::mutate(variable_name = factor(.data$variable_name,
-                                         levels = c(defaultVariableNames,
-                                                    variableNames))) |>
+      levels = c(
+        defaultVariableNames,
+        variableNames
+      )
+    )) |>
     dplyr::mutate(variable_level = factor(.data$variable_level,
-                                          levels = variableLevels)) |>
+      levels = variableLevels
+    )) |>
     dplyr::arrange(.data$variable_name, .data$variable_level) |>
     dplyr::mutate(variable_name = as.character(.data$variable_name)) |>
     dplyr::mutate(variable_level = as.character(.data$variable_level))
@@ -125,7 +130,8 @@ tableCohortCount <- function(result,
     split = split,
     type = type,
     excludeColumns = excludeColumns,
-    .options = .options)
+    .options = .options
+  )
 
   return(result)
 }
