@@ -13,7 +13,6 @@ tableCohortTiming(
   header = c("strata"),
   split = c("group", "strata", "additional"),
   groupColumn = NULL,
-  minCellCount = lifecycle::deprecated(),
   excludeColumns = c("result_id", "estimate_type", "variable_level"),
   .options = list()
 )
@@ -37,10 +36,6 @@ in order. Allowed are: `cdm_name`, `group`, `strata`, `additional`,
 "strata", "additional"), or an empty character vector to not split.}
 
 \item{groupColumn}{Column to use as group labels.}
-
-\item{minCellCount}{`r lifecycle::badge("deprecated")` Suppression of
-estimates when counts < minCellCount should be done before with
-`ompogenerics::suppress()`.}
 
 \item{excludeColumns}{Columns to drop from the output table.}
 
