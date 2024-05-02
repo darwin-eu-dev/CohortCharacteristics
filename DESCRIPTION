@@ -63,8 +63,8 @@ Imports:
     rlang,
     cli,
     stringr,
-    omopgenerics,
-    visOmopResults,
+    omopgenerics (>= 0.2.0),
+    visOmopResults (>= 0.3.0),
     PatientProfiles (>= 0.8.0),
     ggpubr,
     magrittr,
@@ -79,7 +79,3 @@ Depends:
 Config/testthat/edition: 3
 Config/testthat/parallel: true
 VignetteBuilder: knitr
-Remotes:
-    darwin-eu/visOmopResults,
-    darwin-eu-dev/omopgenerics,
-    darwin-eu/CDMConnector
