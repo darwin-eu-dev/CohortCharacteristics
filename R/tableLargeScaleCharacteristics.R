@@ -26,9 +26,6 @@
 #' columns.
 #' @param header Specify the headers of the table.
 #' @param topConcepts Number of concepts to restrict the table.
-#' @param minCellCount `r lifecycle::badge("deprecated")` Suppression of
-#' estimates when counts < minCellCount should be done before with
-#' `ompogenerics::suppress()`.
 #'
 #' @export
 #'
@@ -63,11 +60,7 @@ tableLargeScaleCharacteristics <- function(result,
                                              "cdm name", "cohort name",
                                              "strata", "window name"
                                            ),
-                                           topConcepts = NULL,
-                                           minCellCount = lifecycle::deprecated()) {
-  if (lifecycle::is_present(minCellCount)) {
-    lifecycle::deprecate_warn("0.2.0", "tableLargeScaleCharacteristics(minCellCount)")
-  }
+                                           topConcepts = NULL) {
 
   assertClass(result, "summarised_result")
   assertLogical(splitStrata, length = 1)

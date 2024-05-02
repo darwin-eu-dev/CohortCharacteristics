@@ -30,9 +30,6 @@
 #' @param split A vector containing the name-level groups to split ("group",
 #' "strata", "additional"), or an empty character vector to not split.
 #' @param groupColumn Column to use as group labels.
-#' @param minCellCount `r lifecycle::badge("deprecated")` Suppression of
-#' estimates when counts < minCellCount should be done before with
-#' `ompogenerics::suppress()`.
 #' @param excludeColumns Columns to drop from the output table.
 #' @param .options named list with additional formatting options.
 #' CohortCharacteristics::optionsTableCohortTiming() shows allowed arguments and
@@ -62,14 +59,10 @@ tableCohortTiming <- function(result,
                               header = c("strata"),
                               split = c("group", "strata", "additional"),
                               groupColumn = NULL,
-                              minCellCount = lifecycle::deprecated(),
                               excludeColumns = c(
                                 "result_id", "estimate_type", "variable_level"
                               ),
                               .options = list()) {
-  if (lifecycle::is_present(minCellCount)) {
-    lifecycle::deprecate_warn("0.2.0", "tableCohortTiming(minCellCount)")
-  }
 
   # initial checks
   result <- omopgenerics::newSummarisedResult(result) |>

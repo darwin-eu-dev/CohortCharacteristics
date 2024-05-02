@@ -62,27 +62,14 @@
 #'
 #' @examples
 #' \donttest{
+#' library(dplyr)
 #' library(CohortCharacteristics)
 #'
 #' cdm <- mockCohortCharacteristics()
 #'
-#' summariseCharacteristics(
-#'   cohort = cdm$cohort1,
-#'   ageGroup = list(c(0, 19), c(20, 39), c(40, 59), c(60, 79), c(80, 150)),
-#'   tableIntersectCount = list(
-#'     "Number visits prior year" = list(
-#'       tableName = "visit_occurrence", window = c(-365, -1)
-#'     )
-#'   ),
-#'   cohortIntersectFlag = list(
-#'     "Drugs prior year" = list(
-#'       targetCohortTable = "cohort2", window = c(-365, -1)
-#'     ),
-#'     "Conditions any time prior" = list(
-#'       targetCohortTable = "cohort2", window = c(-Inf, -1)
-#'     )
-#'   )
-#' )
+#' summariseCharacteristics(cohort = cdm$cohort1) |>
+#'   glimpse()
+#'
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
 summariseCharacteristics <- function(cohort,
