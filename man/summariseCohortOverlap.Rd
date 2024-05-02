@@ -2,7 +2,7 @@
 % Please edit documentation in R/summariseCohortOverlap.R
 \name{summariseCohortOverlap}
 \alias{summariseCohortOverlap}
-\title{Summarise overalp between cohorts in a cohort table}
+\title{Summarise overlap between cohorts in a cohort table}
 \usage{
 summariseCohortOverlap(cohort, cohortId = NULL, strata = list())
 }
@@ -19,7 +19,7 @@ must have been added as additional columns in the cohort table.}
 A summary of overlap between cohorts in the cohort table.
 }
 \description{
-Summarise overalp between cohorts in a cohort table
+Summarise overlap between cohorts in a cohort table
 }
 \examples{
 \donttest{

@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#' Summarise overalp between cohorts in a cohort table
+#' Summarise overlap between cohorts in a cohort table
 #'
 #' @param cohort A cohort table in the cdm.
 #' @param cohortId A cohort definition id to restrict by. If NULL, all cohorts
