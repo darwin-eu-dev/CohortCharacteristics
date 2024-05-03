@@ -1119,6 +1119,7 @@ test_that("arguments cohortIntersect", {
 })
 
 test_that("arguments conceptIntersect", {
+  skip_on_cran()
   con <- DBI::dbConnect(duckdb::duckdb(), CDMConnector::eunomia_dir())
   cdm <- CDMConnector::cdmFromCon(con = con, cdmSchema = "main", writeSchema = "main")
 
