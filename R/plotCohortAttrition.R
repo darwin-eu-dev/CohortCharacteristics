@@ -77,6 +77,7 @@ plotCohortAttrition <- function(x, cohortId = NULL) {
       "reason_id", "reason", "number_records", "number_subjects",
       "excluded_records", "excluded_subjects"
     ) |>
+    dplyr::mutate(reason_id = as.numeric(.data$reason_id)) |>
     dplyr::arrange(.data$reason_id) |>
     dplyr::mutate(dplyr::across(dplyr::everything(), as.character))
 
@@ -138,7 +139,6 @@ formatNum <- function(col) {
 
 createLabels <- function(x) {
   x <- x |>
-    dplyr::arrange(.data$reason_id) |>
     dplyr::mutate(
       number_subjects = formatNum(.data$number_subjects),
       number_records = formatNum(.data$number_records),
