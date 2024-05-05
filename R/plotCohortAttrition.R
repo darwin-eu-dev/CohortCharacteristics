@@ -216,13 +216,16 @@ getPositionMiddleBox <- function(p1) {
 }
 
 validateReason <- function(att) {
+  max_value <- 37
+
   n_char <- nchar(att$reason)
-  n_char_count <- round(n_char / 35)
+  n_char_count <- round(n_char / max_value)
   n_char_count[n_char_count > 1] <- n_char_count[n_char_count > 1] - 1
+  n_char_count[n_char_count == 1 & n_char < max_value] <- 0
 
   for (k in seq_len(nrow(att))) {
     cut <- seq_len(n_char_count[k])
-    cut <- cut * 35
+    cut <- cut * max_value
     positions <- unlist(gregexpr(" ", att$reason[k]))
 
     matrix_positions <- matrix(positions, length(cut), length(positions), byrow = TRUE)
@@ -236,8 +239,6 @@ validateReason <- function(att) {
     # Ensure that we do not have placed \n at the end of the string
     att$reason[k] <- sub("\n$", "", att$reason[k])
   }
-
-
 
   return(att)
 }
