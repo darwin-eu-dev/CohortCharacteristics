@@ -166,6 +166,7 @@ selectLabels <- function(xn) {
       dplyr::select("reason", "label")
 
     xn <- xn |>
+      dplyr::mutate(reason_id = as.numeric(.data$reason_id)) |>
       dplyr::mutate(
         label = dplyr::if_else(
           .data$reason_id == min(.data$reason_id),
