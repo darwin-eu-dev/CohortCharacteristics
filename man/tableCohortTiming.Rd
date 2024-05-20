@@ -55,7 +55,7 @@ library(CohortCharacteristics)
 cdm <- CohortCharacteristics::mockCohortCharacteristics()
 timing <- summariseCohortTiming(cdm$cohort2)
 tableCohortTiming(timing)
-CDMConnector::cdmDisconnect(cdm = cdm)
+mockDisconnect(cdm = cdm)
 }
 
 }

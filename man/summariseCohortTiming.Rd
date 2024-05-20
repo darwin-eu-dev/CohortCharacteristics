@@ -42,7 +42,7 @@ Summarise timing between entries into cohorts in a cohort table
 library(CohortCharacteristics)
 cdm <- CohortCharacteristics::mockCohortCharacteristics()
 summariseCohortTiming(cdm$cohort2) |> dplyr::glimpse()
-CDMConnector::cdmDisconnect(cdm = cdm)
+mockDisconnect(cdm = cdm)
 }
 
 }
