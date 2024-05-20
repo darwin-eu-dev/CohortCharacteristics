@@ -51,7 +51,7 @@ plotLargeScaleCharacteristics(
   splitStrata = TRUE,
   colorVars = NULL
 )
-CDMConnector::cdmDisconnect(cdm = cdm)
+mockDisconnect(cdm = cdm)
 }
 
 }

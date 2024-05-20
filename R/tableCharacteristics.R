@@ -44,7 +44,7 @@
 #'   summariseCharacteristics() |>
 #'   tableCharacteristics()
 #'
-#' CDMConnector::cdmDisconnect(cdm = cdm)
+#' mockDisconnect(cdm = cdm)
 #' }
 #'
 #' @return A table with a formatted version of the summariseCharacteristics

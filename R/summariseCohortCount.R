@@ -31,7 +31,7 @@
 #' library(CohortCharacteristics)
 #' cdm <- mockCohortCharacteristics()
 #' summariseCohortCount(cohort = cdm$cohort1) |> dplyr::glimpse()
-#' CDMConnector::cdmDisconnect(cdm = cdm)
+#' mockDisconnect(cdm = cdm)
 #' }
 summariseCohortCount <- function(cohort,
                                  cohortId = NULL,

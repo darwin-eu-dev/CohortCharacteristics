@@ -51,7 +51,7 @@ test_that("test summariseCharacteristics", {
   )
 
   cdm <- mockCohortCharacteristics(
-    connectionDetails,
+    con = connection(), writeSchema = writeSchema(),
     dus_cohort = dus_cohort, person = person,
     comorbidities = comorbidities, medication = medication,
     observation_period = observation_period, cohort1 = emptyCohort,
@@ -375,7 +375,9 @@ test_that("test summariseCharacteristics", {
 })
 
 test_that("test empty cohort", {
-  cdm <- mockCohortCharacteristics(connectionDetails = connectionDetails)
+  cdm <- mockCohortCharacteristics(
+    con = connection(), writeSchema = writeSchema()
+  )
 
   expect_no_error(
     cdm$cohort1 |> dplyr::filter(cohort_definition_id == 0) |>
@@ -482,7 +484,7 @@ test_that("test cohort id", {
   )
 
   cdm <- mockCohortCharacteristics(
-    connectionDetails,
+    con = connection(), writeSchema = writeSchema(),
     dus_cohort = dus_cohort, person = person,
     comorbidities = comorbidities, medication = medication,
     observation_period = observation_period, cohort1 = emptyCohort,
@@ -616,6 +618,7 @@ test_that("arguments tableIntersect", {
   )
 
   cdm <- mockCohortCharacteristics(
+    con = connection(), writeSchema = writeSchema(),
     dus_cohort = dus_cohort, person = person,
     observation_period = observation_period,
     visit_occurrence = visit_occurrence,
@@ -911,7 +914,7 @@ test_that("arguments tableIntersect", {
     as.numeric(as.Date("2011-11-11") - as.Date("2009-09-09"))
   )
 
-  CDMConnector::cdm_disconnect(cdm = cdm)
+  mockDisconnect(cdm = cdm)
 })
 
 test_that("arguments cohortIntersect", {
@@ -950,6 +953,7 @@ test_that("arguments cohortIntersect", {
   )
 
   cdm <- mockCohortCharacteristics(
+    con = connection(), writeSchema = writeSchema(),
     dus_cohort = dus_cohort,
     cohort1 = cohort1,
     observation_period = observation_period
@@ -1115,7 +1119,7 @@ test_that("arguments cohortIntersect", {
     as.numeric(as.Date("1999-05-26") - as.Date("1990-04-19"))
   )
 
-  CDMConnector::cdm_disconnect(cdm = cdm)
+  mockDisconnect(cdm = cdm)
 })
 
 test_that("arguments conceptIntersect", {
@@ -1328,5 +1332,5 @@ test_that("arguments conceptIntersect", {
     ))
   )
 
-  CDMConnector::cdm_disconnect(cdm = cdm)
+  mockDisconnect(cdm = cdm)
 })

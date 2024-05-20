@@ -62,7 +62,7 @@ test_that("basic functionality summarise large scale characteristics", {
     condition_type_concept_id = 32020
   )
   cdm <- mockCohortCharacteristics(
-    connectionDetails,
+    con = connection(), writeSchema = writeSchema(),
     person = person, observation_period = observation_period,
     cohort_interest = cohort_interest, drug_exposure = drug_exposure,
     condition_occurrence = condition_occurrence

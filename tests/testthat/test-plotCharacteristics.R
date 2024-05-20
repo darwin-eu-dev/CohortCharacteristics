@@ -50,7 +50,7 @@ test_that("test plot", {
   )
 
   cdm <- mockCohortCharacteristics(
-    connectionDetails,
+    con = connection(), writeSchema = writeSchema(),
     dus_cohort = dus_cohort, person = person,
     comorbidities = comorbidities, medication = medication,
     observation_period = observation_period, cohort1 = emptyCohort,

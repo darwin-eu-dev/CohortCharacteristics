@@ -50,7 +50,7 @@
 #'   splitStrata = TRUE,
 #'   colorVars = NULL
 #' )
-#' CDMConnector::cdmDisconnect(cdm = cdm)
+#' mockDisconnect(cdm = cdm)
 #' }
 #'
 plotLargeScaleCharacteristics <- function(data,

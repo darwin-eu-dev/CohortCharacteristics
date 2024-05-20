@@ -50,6 +50,7 @@ test_that("tableCharacteristics", {
   )
 
   cdm <- mockCohortCharacteristics(
+    con = connection(), writeSchema = writeSchema(),
     dus_cohort = dus_cohort, person = person,
     comorbidities = comorbidities, medication = medication,
     observation_period = observation_period
@@ -159,7 +160,10 @@ test_that("tableCohortOverlap", {
     period_type_concept_id = NA
   )
 
-  cdm <- mockCohortCharacteristics(person = person, observation_period = obs, table = table)
+  cdm <- mockCohortCharacteristics(
+    con = connection(), writeSchema = writeSchema(), person = person,
+    observation_period = obs, table = table
+  )
 
   overlap <- summariseCohortOverlap(cdm$table)
 
@@ -256,7 +260,7 @@ test_that("tableCohortOverlap", {
   ) %in%
     colnames(gtResult2$`_data`)))
 
-  CDMConnector::cdm_disconnect(cdm)
+  mockDisconnect(cdm)
 })
 
 test_that("tableCohortTiming", {
@@ -375,5 +379,5 @@ test_that("tableCohortTiming", {
   #                   "[header]CDM name\n[header_level]PP_MOCK\n[header_level]Cohort name reference and cohort name comparator\n[header_level]Cohort 1 and cohort 3\n[header_level]Overall\n[header_level]Overall") %in%
   #                   colnames(gt3$`_data`)))
   #
-  # CDMConnector::cdm_disconnect(cdm)
+  # mockDisconnect(cdm)
 })

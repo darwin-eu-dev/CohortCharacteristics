@@ -38,7 +38,10 @@ test_that("plotCohortTiming, boxplot", {
     period_type_concept_id = NA
   )
 
-  cdm <- mockCohortCharacteristics(person = person, observation_period = obs, table = table)
+  cdm <- mockCohortCharacteristics(
+    con = connection(), writeSchema = writeSchema(),
+    person = person, observation_period = obs, table = table
+  )
 
   timing1 <- summariseCohortTiming(cdm$table,
     restrictToFirstEntry = TRUE
@@ -84,7 +87,7 @@ test_that("plotCohortTiming, boxplot", {
   # expect_true(boxplot3$labels$fill == "group")
   expect_true(all(c("overall", "0 to 40", "0 to 40 &&& Female", "41 to 150", "41 to 150 &&& Female") %in% unique(boxplot3$data$color_combined)))
 
-  CDMConnector::cdm_disconnect(cdm)
+  mockDisconnect(cdm)
 })
 
 test_that("plotCohortTiming, density", {
@@ -127,7 +130,10 @@ test_that("plotCohortTiming, density", {
     period_type_concept_id = NA
   )
 
-  cdm <- mockCohortCharacteristics(person = person, observation_period = obs, table = table)
+  cdm <- mockCohortCharacteristics(
+    con = connection(), writeSchema = writeSchema(),
+    person = person, observation_period = obs, table = table
+  )
 
   timing1 <- summariseCohortTiming(cdm$table,
     density = TRUE,
@@ -190,7 +196,7 @@ test_that("plotCohortTiming, density", {
   #                                                        "41 to 150", "41 to 150 and female", "41 to 150 and male",
   #                                                        "0 to 40 and male")))
   # not sure why 41 to 150 does not have density
-  CDMConnector::cdm_disconnect(cdm)
+  mockDisconnect(cdm)
 })
 
 test_that("plotCohortOverlap", {
@@ -233,7 +239,10 @@ test_that("plotCohortOverlap", {
     period_type_concept_id = NA
   )
 
-  cdm <- mockCohortCharacteristics(person = person, observation_period = obs, table = table)
+  cdm <- mockCohortCharacteristics(
+    con = connection(), writeSchema = writeSchema(), person = person,
+    observation_period = obs, table = table
+  )
 
   overlap <- summariseCohortOverlap(cdm$table)
 
@@ -292,7 +301,7 @@ test_that("plotCohortOverlap", {
   )
   # expect_true(nrow(gg4$data |> dplyr::distinct(comparison_name, y_pos)) == 12)
 
-  CDMConnector::cdm_disconnect(cdm)
+  mockDisconnect(cdm)
 })
 
 test_that("plotCharacteristics", {
@@ -327,6 +336,7 @@ test_that("plotCharacteristics", {
   )
 
   cdm <- mockCohortCharacteristics(
+    con = connection(), writeSchema = writeSchema(),
     dus_cohort = dus_cohort, person = person,
     observation_period = observation_period
   )
@@ -351,5 +361,5 @@ test_that("plotCharacteristics", {
   )
   expect_true(ggplot2::is.ggplot(gg2))
 
-  CDMConnector::cdm_disconnect(cdm)
+  mockDisconnect(cdm)
 })

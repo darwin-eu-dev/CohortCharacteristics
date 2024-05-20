@@ -55,7 +55,7 @@
 #'   splitStrata = TRUE, facet = variable_level ~ group_level, colorVars = NULL,
 #'   missings = 0
 #' )
-#' CDMConnector::cdmDisconnect(cdm = cdm)
+#' mockDisconnect(cdm = cdm)
 #' }
 #'
 plotComparedLargeScaleCharacteristics <- function(data,

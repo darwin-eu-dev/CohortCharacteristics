@@ -60,7 +60,7 @@
 #'     )
 #'   )
 #'
-#' CDMConnector::cdmDisconnect(cdm = cdm)
+#' mockDisconnect(cdm = cdm)
 #' }
 plotCharacteristics <- function(data,
                                 x = "variable_name",
