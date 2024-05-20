@@ -53,8 +53,7 @@ test_that("test plot", {
     con = connection(), writeSchema = writeSchema(),
     dus_cohort = dus_cohort, person = person,
     comorbidities = comorbidities, medication = medication,
-    observation_period = observation_period, cohort1 = emptyCohort,
-    cohort2 = emptyCohort
+    observation_period = observation_period
   )
 
   cdm$dus_cohort <- omopgenerics::newCohortTable(

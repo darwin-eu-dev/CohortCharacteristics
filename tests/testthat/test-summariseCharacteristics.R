@@ -54,8 +54,7 @@ test_that("test summariseCharacteristics", {
     con = connection(), writeSchema = writeSchema(),
     dus_cohort = dus_cohort, person = person,
     comorbidities = comorbidities, medication = medication,
-    observation_period = observation_period, cohort1 = emptyCohort,
-    cohort2 = emptyCohort
+    observation_period = observation_period
   )
 
   cdm$dus_cohort <- omopgenerics::newCohortTable(
@@ -487,8 +486,7 @@ test_that("test cohort id", {
     con = connection(), writeSchema = writeSchema(),
     dus_cohort = dus_cohort, person = person,
     comorbidities = comorbidities, medication = medication,
-    observation_period = observation_period, cohort1 = emptyCohort,
-    cohort2 = emptyCohort
+    observation_period = observation_period
   )
 
   cdm$dus_cohort <- omopgenerics::newCohortTable(
@@ -621,9 +619,7 @@ test_that("arguments tableIntersect", {
     con = connection(), writeSchema = writeSchema(),
     dus_cohort = dus_cohort, person = person,
     observation_period = observation_period,
-    visit_occurrence = visit_occurrence,
-    cohort1 = emptyCohort,
-    cohort2 = emptyCohort
+    visit_occurrence = visit_occurrence
   )
 
   cdm$dus_cohort <- omopgenerics::newCohortTable(
