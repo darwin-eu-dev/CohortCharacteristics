@@ -413,7 +413,7 @@ test_that("test empty cohort", {
       dplyr::filter(variable_name == "Comorbidities") |>
       dplyr::pull("variable_level") |>
       unique() |>
-      sort() == c("Cohort 1", "Cohort 2", "Cohort3")
+      sort() == c("Cohort 1", "Cohort 2", "Cohort 3")
   ))
 
   expect_no_error(
