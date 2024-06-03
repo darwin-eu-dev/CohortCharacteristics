@@ -1,4 +1,4 @@
-test_that("multiplication works", {
+test_that("plot cohort attrition", {
   cdm <- DrugUtilisation::mockDrugUtilisation(n = 1000)
 
   cdm[["cohort1"]] <- cdm[["cohort1"]] |>

@@ -59,7 +59,6 @@ Imports:
     dplyr,
     tidyr,
     checkmate,
-    lubridate,
     rlang,
     cli,
     stringr,
@@ -69,8 +68,7 @@ Imports:
     ggpubr,
     magrittr,
     snakecase,
-    DiagrammeR,
-    lifecycle
+    DiagrammeR
 URL: https://darwin-eu-dev.github.io/CohortCharacteristics/
 BugReports: https://github.com/darwin-eu-dev/CohortCharacteristics/issues
 Language: en-US

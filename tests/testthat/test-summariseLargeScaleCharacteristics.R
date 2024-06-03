@@ -61,8 +61,9 @@ test_that("basic functionality summarise large scale characteristics", {
     )),
     condition_type_concept_id = 32020
   )
+  con <- connection()
   cdm <- mockCohortCharacteristics(
-    con = connection(), writeSchema = writeSchema(),
+    con = con, writeSchema = writeSchema(),
     person = person, observation_period = observation_period,
     cohort_interest = cohort_interest, drug_exposure = drug_exposure,
     condition_occurrence = condition_occurrence
@@ -77,13 +78,10 @@ test_that("basic functionality summarise large scale characteristics", {
     valid_end_date = as.Date("2099-01-01")
   ) |>
     dplyr::mutate(concept_name = paste0("concept: ", .data$concept_id))
-  name <- CDMConnector::inSchema(
-    schema = connectionDetails$write_schema, table = "concept"
-  )
-  DBI::dbWriteTable(
-    conn = connectionDetails$con, name = name, value = concept, overwrite = TRUE
-  )
-  cdm$concept <- dplyr::tbl(connectionDetails$con, name)
+  con <- conn
+  name <- CDMConnector::inSchema(schema = writeSchema(), table = "concept")
+  DBI::dbWriteTable(conn = con, name = name, value = concept, overwrite = TRUE)
+  cdm$concept <- dplyr::tbl(con, name)
 
   expect_no_error(
     result <- cdm$cohort_interest |>
