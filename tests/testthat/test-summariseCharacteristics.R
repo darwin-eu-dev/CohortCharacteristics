@@ -375,7 +375,7 @@ test_that("test summariseCharacteristics", {
 
 test_that("test empty cohort", {
   cdm <- mockCohortCharacteristics(
-    con = connection(), writeSchema = writeSchema()
+    con = connection(), writeSchema = writeSchema(), numberIndividuals = 100
   )
 
   expect_no_error(
@@ -394,10 +394,10 @@ test_that("test empty cohort", {
     res <- cdm$cohort1 |>
       summariseCharacteristics(cohortIntersectFlag = list(
         "Medications" = list(
-          targetCohortTable = "cohort2", window = c(-365, 0), targetCohortId = 1
+          targetCohortTable = "cohort1", window = c(-365, 0), targetCohortId = 1
         ),
         "Comorbidities" = list(
-          targetCohortTable = "cohort2", window = c(-Inf, 0)
+          targetCohortTable = "cohort1", window = c(-Inf, 0)
         )
       ))
   )
@@ -413,7 +413,7 @@ test_that("test empty cohort", {
       dplyr::filter(variable_name == "Comorbidities") |>
       dplyr::pull("variable_level") |>
       unique() |>
-      sort() == c("Cohort 1", "Cohort 2")
+      sort() == c("Cohort 1", "Cohort 2", "Cohort3")
   ))
 
   expect_no_error(

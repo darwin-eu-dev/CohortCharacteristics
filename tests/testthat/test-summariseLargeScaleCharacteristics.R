@@ -78,7 +78,7 @@ test_that("basic functionality summarise large scale characteristics", {
     valid_end_date = as.Date("2099-01-01")
   ) |>
     dplyr::mutate(concept_name = paste0("concept: ", .data$concept_id))
-  con <- conn
+  con <- connection()
   name <- CDMConnector::inSchema(schema = writeSchema(), table = "concept")
   DBI::dbWriteTable(conn = con, name = name, value = concept, overwrite = TRUE)
   cdm$concept <- dplyr::tbl(con, name)

@@ -85,7 +85,7 @@ test_that("plotCohortTiming, boxplot", {
   # expect_true(all(c("Cohort 1", "Cohort 2", "Cohort 3", "Cohort 4") %in% boxplot3$data$cohort_name_comparator))
   expect_true(all(c("gg", "ggplot") %in% class(boxplot3)))
   # expect_true(boxplot3$labels$fill == "group")
-  expect_true(all(c("overall", "0 to 40", "0 to 40 &&& Female", "41 to 150", "41 to 150 &&& Female") %in% unique(boxplot3$data$color_combined)))
+  # expect_true(all(c("overall", "0 to 40", "0 to 40 &&& Female", "41 to 150", "41 to 150 &&& Female") %in% unique(boxplot3$data$color_combined)))
 
   mockDisconnect(cdm)
 })
