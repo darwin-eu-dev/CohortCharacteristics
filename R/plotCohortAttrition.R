@@ -28,11 +28,10 @@
 #' @examples
 #' \donttest{
 #' library(omopgenerics)
-#' library(DrugUtilisation)
 #' library(dplyr)
 #' library(DiagrammeR)
 #'
-#' cdm <- mockDrugUtilisation(n = 1000)
+#' cdm <- mockCohortCharacteristics(numberIndividuals = 1000)
 #'
 #' cdm[["cohort1"]] <- cdm[["cohort1"]] |>
 #'   filter(year(cohort_start_date) >= 2000) |>

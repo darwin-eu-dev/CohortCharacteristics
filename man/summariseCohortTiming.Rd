@@ -40,7 +40,7 @@ Summarise timing between entries into cohorts in a cohort table
 \examples{
 \donttest{
 library(CohortCharacteristics)
-cdm <- CohortCharacteristics::mockCohortCharacteristics()
+cdm <- mockCohortCharacteristics(numberIndividuals = 100)
 summariseCohortTiming(cdm$cohort2) |> dplyr::glimpse()
 mockDisconnect(cdm = cdm)
 }

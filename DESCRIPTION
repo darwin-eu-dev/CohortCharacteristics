@@ -52,8 +52,7 @@ Suggests:
     flextable,
     tictoc,
     withr,
-    scales,
-    DrugUtilisation
+    scales
 Imports: 
     CDMConnector (>= 1.3.2),
     dplyr,

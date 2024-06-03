@@ -32,15 +32,6 @@
 #' @return A ggplot.
 #' @export
 #'
-#' @examples
-#' \donttest{
-#' library(CohortCharacteristics)
-#' cdm <- CohortCharacteristics::mockCohortCharacteristics()
-#' timing <- summariseCohortTiming(cdm$cohort2)
-#' plotCohortTiming(timing)
-#' mockDisconnect(cdm = cdm)
-#' }
-#'
 plotCohortTiming <- function(result,
                              plotType = "boxplot",
                              timeScale = "days",

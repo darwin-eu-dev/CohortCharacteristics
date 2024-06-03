@@ -35,7 +35,7 @@
 #' @examples
 #' \donttest{
 #' library(CohortCharacteristics)
-#' cdm <- CohortCharacteristics::mockCohortCharacteristics()
+#' cdm <- mockCohortCharacteristics(numberIndividuals = 100)
 #' summariseCohortTiming(cdm$cohort2) |> dplyr::glimpse()
 #' mockDisconnect(cdm = cdm)
 #' }

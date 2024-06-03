@@ -1,5 +1,5 @@
 test_that("plot cohort attrition", {
-  cdm <- DrugUtilisation::mockDrugUtilisation(n = 1000)
+  cdm <- mockCohortCharacteristics(numberIndividuals = 1000)
 
   cdm[["cohort1"]] <- cdm[["cohort1"]] |>
     dplyr::filter(cohort_start_date >= as.Date("2000-01-01")) |>
