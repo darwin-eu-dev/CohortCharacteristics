@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">CohortCharacteristics</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -136,8 +136,9 @@ using the Eunomia data.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>                    1 morphine      all                   0                  0</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>                    2 acetaminophen all                   0                  0</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>                    3 warfarin      all                   0                  0</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1 more variable: end &lt;chr&gt;</span></span></span>
-<span><span class="fu"><a href="https://darwin-eu-dev.github.io/omopgenerics/reference/cohortCount.html" class="external-link">cohortCount</a></span><span class="op">(</span><span class="va">cdm</span><span class="op">$</span><span class="va">meds</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1 more variable: end &lt;chr&gt;</span></span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://darwin-eu-dev.github.io/omopgenerics/reference/cohortCount.html" class="external-link">cohortCount</a></span><span class="op">(</span><span class="va">cdm</span><span class="op">$</span><span class="va">meds</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 3</span></span></span>
 <span><span class="co">#&gt;   cohort_definition_id number_records number_subjects</span></span>
 <span><span class="co">#&gt;                  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
@@ -148,7 +149,7 @@ using the Eunomia data.</p>
 entry. Note setting restrictToFirstEntry to TRUE will mean that we only
 consider timing between an individual’s first record in each cohort
 (i.e. their first exposure to each of the medications).</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">meds_timing</span> <span class="op">&lt;-</span> <span class="va">cdm</span><span class="op">$</span><span class="va">meds</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/summariseCohortTiming.html">summariseCohortTiming</a></span><span class="op">(</span>restrictToFirstEntry <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">meds_timing</span> <span class="op">|&gt;</span></span>
@@ -158,19 +159,19 @@ consider timing between an individual’s first record in each cohort
 <span><span class="co">#&gt; $ result_id        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,…</span></span>
 <span><span class="co">#&gt; $ cdm_name         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "Eunomia", "Eunomia", "Eunomia", "Eunomia", "Eunomia"…</span></span>
 <span><span class="co">#&gt; $ group_name       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "cohort_name_reference &amp;&amp;&amp; cohort_name_comparator", "…</span></span>
-<span><span class="co">#&gt; $ group_level      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "warfarin &amp;&amp;&amp; acetaminophen", "acetaminophen &amp;&amp;&amp; warf…</span></span>
+<span><span class="co">#&gt; $ group_level      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "acetaminophen &amp;&amp;&amp; warfarin", "acetaminophen &amp;&amp;&amp; morp…</span></span>
 <span><span class="co">#&gt; $ strata_name      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "overall", "overall", "overall", "overall", "overall"…</span></span>
 <span><span class="co">#&gt; $ strata_level     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "overall", "overall", "overall", "overall", "overall"…</span></span>
 <span><span class="co">#&gt; $ variable_name    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "number records", "number records", "number records",…</span></span>
 <span><span class="co">#&gt; $ variable_level   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…</span></span>
 <span><span class="co">#&gt; $ estimate_name    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "count", "count", "count", "count", "count", "count",…</span></span>
 <span><span class="co">#&gt; $ estimate_type    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "integer", "integer", "integer", "integer", "integer"…</span></span>
-<span><span class="co">#&gt; $ estimate_value   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "136", "136", "35", "35", "6", "6", "136", "136", "35…</span></span>
+<span><span class="co">#&gt; $ estimate_value   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "136", "35", "136", "35", "6", "6", "136", "35", "136…</span></span>
 <span><span class="co">#&gt; $ additional_name  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "overall", "overall", "overall", "overall", "overall"…</span></span>
 <span><span class="co">#&gt; $ additional_level <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "overall", "overall", "overall", "overall", "overall"…</span></span></code></pre></div>
 <p>As with cohort overlap, we have table and plotting functions to help
 view our results.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tableCohortTiming.html">tableCohortTiming</a></span><span class="op">(</span><span class="va">meds_timing</span>,</span>
 <span>  timeScale <span class="op">=</span> <span class="st">"years"</span>,</span>
 <span>  .options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>decimals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>numeric <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
@@ -724,7 +725,7 @@ view our results.</p>
 </tbody>
 </table>
 </div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plotCohortTiming.html">plotCohortTiming</a></span><span class="op">(</span><span class="va">meds_timing</span>,</span>
 <span>  plotType <span class="op">=</span> <span class="st">"boxplot"</span>,</span>
 <span>  timeScale <span class="op">=</span> <span class="st">"years"</span></span>
@@ -733,7 +734,7 @@ view our results.</p>
 <p>If we want to see an even more granular summary of cohort timings we
 can make a density plot instead of a box plot. Note, for this we’ll need
 to set density as TRUE when getting our initial results.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">meds_timing</span> <span class="op">&lt;-</span> <span class="va">cdm</span><span class="op">$</span><span class="va">meds</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/summariseCohortTiming.html">summariseCohortTiming</a></span><span class="op">(</span></span>
 <span>    restrictToFirstEntry <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -746,7 +747,7 @@ to set density as TRUE when getting our initial results.</p>
 <p><img src="a09_summariseCohortTiming_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
 <p>As well as generating these estimates for cohorts overall, we can
 also obtain stratified estimates.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cdm</span><span class="op">$</span><span class="va">meds</span> <span class="op">&lt;-</span> <span class="va">cdm</span><span class="op">$</span><span class="va">meds</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">PatientProfiles</span><span class="fu">::</span><span class="fu"><a href="https://darwin-eu-dev.github.io/PatientProfiles/reference/addAge.html" class="external-link">addAge</a></span><span class="op">(</span>ageGroup <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">49</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">150</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute</a></span><span class="op">(</span>temporary <span class="op">=</span> <span class="cn">FALSE</span>, name <span class="op">=</span> <span class="st">"meds"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -761,23 +762,23 @@ also obtain stratified estimates.</p>
 <span>  timeScale <span class="op">=</span> <span class="st">"years"</span>,</span>
 <span>  .options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>decimals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>numeric <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div id="tkdbirslsq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#tkdbirslsq table {
+<div id="sqjlmpguda" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#sqjlmpguda table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#tkdbirslsq thead, #tkdbirslsq tbody, #tkdbirslsq tfoot, #tkdbirslsq tr, #tkdbirslsq td, #tkdbirslsq th {
+#sqjlmpguda thead, #sqjlmpguda tbody, #sqjlmpguda tfoot, #sqjlmpguda tr, #sqjlmpguda td, #sqjlmpguda th {
   border-style: none;
 }
 
-#tkdbirslsq p {
+#sqjlmpguda p {
   margin: 0;
   padding: 0;
 }
 
-#tkdbirslsq .gt_table {
+#sqjlmpguda .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -803,12 +804,12 @@ also obtain stratified estimates.</p>
   border-left-color: #D3D3D3;
 }
 
-#tkdbirslsq .gt_caption {
+#sqjlmpguda .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#tkdbirslsq .gt_title {
+#sqjlmpguda .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -820,7 +821,7 @@ also obtain stratified estimates.</p>
   border-bottom-width: 0;
 }
 
-#tkdbirslsq .gt_subtitle {
+#sqjlmpguda .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -832,7 +833,7 @@ also obtain stratified estimates.</p>
   border-top-width: 0;
 }
 
-#tkdbirslsq .gt_heading {
+#sqjlmpguda .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -844,13 +845,13 @@ also obtain stratified estimates.</p>
   border-right-color: #D3D3D3;
 }
 
-#tkdbirslsq .gt_bottom_border {
+#sqjlmpguda .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#tkdbirslsq .gt_col_headings {
+#sqjlmpguda .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -865,7 +866,7 @@ also obtain stratified estimates.</p>
   border-right-color: #D3D3D3;
 }
 
-#tkdbirslsq .gt_col_heading {
+#sqjlmpguda .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -885,7 +886,7 @@ also obtain stratified estimates.</p>
   overflow-x: hidden;
 }
 
-#tkdbirslsq .gt_column_spanner_outer {
+#sqjlmpguda .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -897,15 +898,15 @@ also obtain stratified estimates.</p>
   padding-right: 4px;
 }
 
-#tkdbirslsq .gt_column_spanner_outer:first-child {
+#sqjlmpguda .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#tkdbirslsq .gt_column_spanner_outer:last-child {
+#sqjlmpguda .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#tkdbirslsq .gt_column_spanner {
+#sqjlmpguda .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -917,11 +918,11 @@ also obtain stratified estimates.</p>
   width: 100%;
 }
 
-#tkdbirslsq .gt_spanner_row {
+#sqjlmpguda .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#tkdbirslsq .gt_group_heading {
+#sqjlmpguda .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -947,7 +948,7 @@ also obtain stratified estimates.</p>
   text-align: left;
 }
 
-#tkdbirslsq .gt_empty_group_heading {
+#sqjlmpguda .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -962,15 +963,15 @@ also obtain stratified estimates.</p>
   vertical-align: middle;
 }
 
-#tkdbirslsq .gt_from_md > :first-child {
+#sqjlmpguda .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#tkdbirslsq .gt_from_md > :last-child {
+#sqjlmpguda .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#tkdbirslsq .gt_row {
+#sqjlmpguda .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -989,7 +990,7 @@ also obtain stratified estimates.</p>
   overflow-x: hidden;
 }
 
-#tkdbirslsq .gt_stub {
+#sqjlmpguda .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1002,7 +1003,7 @@ also obtain stratified estimates.</p>
   padding-right: 5px;
 }
 
-#tkdbirslsq .gt_stub_row_group {
+#sqjlmpguda .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1016,15 +1017,15 @@ also obtain stratified estimates.</p>
   vertical-align: top;
 }
 
-#tkdbirslsq .gt_row_group_first td {
+#sqjlmpguda .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#tkdbirslsq .gt_row_group_first th {
+#sqjlmpguda .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#tkdbirslsq .gt_summary_row {
+#sqjlmpguda .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1034,16 +1035,16 @@ also obtain stratified estimates.</p>
   padding-right: 5px;
 }
 
-#tkdbirslsq .gt_first_summary_row {
+#sqjlmpguda .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#tkdbirslsq .gt_first_summary_row.thick {
+#sqjlmpguda .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#tkdbirslsq .gt_last_summary_row {
+#sqjlmpguda .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1053,7 +1054,7 @@ also obtain stratified estimates.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#tkdbirslsq .gt_grand_summary_row {
+#sqjlmpguda .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1063,7 +1064,7 @@ also obtain stratified estimates.</p>
   padding-right: 5px;
 }
 
-#tkdbirslsq .gt_first_grand_summary_row {
+#sqjlmpguda .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1073,7 +1074,7 @@ also obtain stratified estimates.</p>
   border-top-color: #D3D3D3;
 }
 
-#tkdbirslsq .gt_last_grand_summary_row_top {
+#sqjlmpguda .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1083,11 +1084,11 @@ also obtain stratified estimates.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#tkdbirslsq .gt_striped {
+#sqjlmpguda .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#tkdbirslsq .gt_table_body {
+#sqjlmpguda .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1096,7 +1097,7 @@ also obtain stratified estimates.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#tkdbirslsq .gt_footnotes {
+#sqjlmpguda .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1110,7 +1111,7 @@ also obtain stratified estimates.</p>
   border-right-color: #D3D3D3;
 }
 
-#tkdbirslsq .gt_footnote {
+#sqjlmpguda .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1119,7 +1120,7 @@ also obtain stratified estimates.</p>
   padding-right: 5px;
 }
 
-#tkdbirslsq .gt_sourcenotes {
+#sqjlmpguda .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1133,7 +1134,7 @@ also obtain stratified estimates.</p>
   border-right-color: #D3D3D3;
 }
 
-#tkdbirslsq .gt_sourcenote {
+#sqjlmpguda .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1141,63 +1142,63 @@ also obtain stratified estimates.</p>
   padding-right: 5px;
 }
 
-#tkdbirslsq .gt_left {
+#sqjlmpguda .gt_left {
   text-align: left;
 }
 
-#tkdbirslsq .gt_center {
+#sqjlmpguda .gt_center {
   text-align: center;
 }
 
-#tkdbirslsq .gt_right {
+#sqjlmpguda .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#tkdbirslsq .gt_font_normal {
+#sqjlmpguda .gt_font_normal {
   font-weight: normal;
 }
 
-#tkdbirslsq .gt_font_bold {
+#sqjlmpguda .gt_font_bold {
   font-weight: bold;
 }
 
-#tkdbirslsq .gt_font_italic {
+#sqjlmpguda .gt_font_italic {
   font-style: italic;
 }
 
-#tkdbirslsq .gt_super {
+#sqjlmpguda .gt_super {
   font-size: 65%;
 }
 
-#tkdbirslsq .gt_footnote_marks {
+#sqjlmpguda .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#tkdbirslsq .gt_asterisk {
+#sqjlmpguda .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#tkdbirslsq .gt_indent_1 {
+#sqjlmpguda .gt_indent_1 {
   text-indent: 5px;
 }
 
-#tkdbirslsq .gt_indent_2 {
+#sqjlmpguda .gt_indent_2 {
   text-indent: 10px;
 }
 
-#tkdbirslsq .gt_indent_3 {
+#sqjlmpguda .gt_indent_3 {
   text-indent: 15px;
 }
 
-#tkdbirslsq .gt_indent_4 {
+#sqjlmpguda .gt_indent_4 {
   text-indent: 20px;
 }
 
-#tkdbirslsq .gt_indent_5 {
+#sqjlmpguda .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1379,7 +1380,7 @@ also obtain stratified estimates.</p>
 </tbody>
 </table>
 </div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plotCohortTiming.html">plotCohortTiming</a></span><span class="op">(</span><span class="va">meds_timing</span>,</span>
 <span>  plotType <span class="op">=</span> <span class="st">"boxplot"</span>,</span>
 <span>  timeScale <span class="op">=</span> <span class="st">"years"</span>,</span>
