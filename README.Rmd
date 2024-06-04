@@ -48,7 +48,7 @@ library(dplyr)
 ```
 
 ```{r}
-cdm <- mockCohortCharacteristics(patient_size = 1000, drug_exposure_size = 1000)
+cdm <- mockCohortCharacteristics(numberIndividuals = 1000)
 cdm
 ```
 

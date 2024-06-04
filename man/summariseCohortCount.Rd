@@ -26,6 +26,6 @@ Summarise counts for cohorts in a cohort table
 library(CohortCharacteristics)
 cdm <- mockCohortCharacteristics()
 summariseCohortCount(cohort = cdm$cohort1) |> dplyr::glimpse()
-CDMConnector::cdmDisconnect(cdm = cdm)
+mockDisconnect(cdm = cdm)
 }
 }

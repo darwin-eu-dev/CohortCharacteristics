@@ -71,6 +71,6 @@ results |>
     )
   )
 
-CDMConnector::cdmDisconnect(cdm = cdm)
+mockDisconnect(cdm = cdm)
 }
 }

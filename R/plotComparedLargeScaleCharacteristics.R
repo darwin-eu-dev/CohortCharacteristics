@@ -37,27 +37,6 @@
 #'
 #' @export
 #'
-#' @examples
-#' \donttest{
-#' library(CohortCharacteristics)
-#' library(DrugUtilisation)
-#' cdm <- DrugUtilisation::mockDrugUtilisation()
-#'
-#' lsc <- CohortCharacteristics::summariseLargeScaleCharacteristics(cdm$cohort1,
-#'   eventInWindow = "condition_occurrence", episodeInWindow = "drug_exposure",
-#'   minimumFrequency = 0.05
-#' )
-#'
-#' plotComparedLargeScaleCharacteristics(
-#'   data = lsc,
-#'   referenceGroupLevel = "cohort_2", referenceStrataLevel = NULL,
-#'   referenceVariableLevel = "-inf to -366", referenceCdmName = NULL,
-#'   splitStrata = TRUE, facet = variable_level ~ group_level, colorVars = NULL,
-#'   missings = 0
-#' )
-#' CDMConnector::cdmDisconnect(cdm = cdm)
-#' }
-#'
 plotComparedLargeScaleCharacteristics <- function(data,
                                                   referenceGroupLevel = NULL,
                                                   referenceStrataLevel = NULL,
@@ -222,7 +201,7 @@ tidyData <- function(data, referenceGroupLevel, referenceVariableLevel, referenc
       estimate_value_comparator = missings,
       estimate_value_reference = missings
     )) |>
-    dplyr::rename(estimate_value = .data$estimate_value_reference) |>
+    dplyr::rename("estimate_value" = "estimate_value_reference") |>
     dplyr::mutate(estimate_value_comparator = .data$estimate_value_comparator / 100)
 
   return(data)

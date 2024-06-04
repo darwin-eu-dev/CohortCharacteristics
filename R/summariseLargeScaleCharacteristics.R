@@ -56,7 +56,7 @@
 #'     episodeInWindow = c("condition_occurrence"),
 #'     minimumFrequency = 0
 #'   )
-#' CDMConnector::cdmDisconnect(cdm = cdm)
+#' mockDisconnect(cdm = cdm)
 #' }
 summariseLargeScaleCharacteristics <- function(cohort,
                                                strata = list(),

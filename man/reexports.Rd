@@ -5,6 +5,7 @@
 \alias{reexports}
 \alias{suppress}
 \alias{settings}
+\alias{mockDisconnect}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -13,5 +14,7 @@ below to see their documentation.
 
 \describe{
   \item{omopgenerics}{\code{\link[omopgenerics]{settings}}, \code{\link[omopgenerics]{suppress}}}
+
+  \item{PatientProfiles}{\code{\link[PatientProfiles]{mockDisconnect}}}
 }}
 

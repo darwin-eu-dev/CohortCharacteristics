@@ -36,7 +36,10 @@ test_that("summariseCohortTiming", {
     period_type_concept_id = NA
   )
 
-  cdm <- mockCohortCharacteristics(person = person, observation_period = obs, table = table)
+  cdm <- mockCohortCharacteristics(
+    con = connection(), writeSchema = writeSchema(), person = person,
+    observation_period = obs, table = table
+  )
 
   timing1 <- summariseCohortTiming(cdm$table,
     restrictToFirstEntry = TRUE
@@ -112,5 +115,5 @@ test_that("summariseCohortTiming", {
   timing8 <- summariseCohortTiming(cdm$table, cohortId = 1, density = TRUE)
   expect_true(nrow(timing8) == 0)
 
-  CDMConnector::cdm_disconnect(cdm)
+  mockDisconnect(cdm)
 })

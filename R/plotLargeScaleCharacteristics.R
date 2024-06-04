@@ -34,25 +34,6 @@
 #'
 #' @export
 #'
-#' @examples
-#' \donttest{
-#' library(CohortCharacteristics)
-#' library(DrugUtilisation)
-#' cdm <- DrugUtilisation::mockDrugUtilisation()
-#'
-#' lsc <- CohortCharacteristics::summariseLargeScaleCharacteristics(cdm$cohort1,
-#'   eventInWindow = "condition_occurrence", minimumFrequency = 0.05
-#' )
-#' plotLargeScaleCharacteristics(
-#'   data = lsc,
-#'   position = "horizontal",
-#'   facet = NULL,
-#'   splitStrata = TRUE,
-#'   colorVars = NULL
-#' )
-#' CDMConnector::cdmDisconnect(cdm = cdm)
-#' }
-#'
 plotLargeScaleCharacteristics <- function(data,
                                           position = "horizontal",
                                           splitStrata = FALSE,

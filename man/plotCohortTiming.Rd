@@ -40,13 +40,3 @@ A ggplot.
 \description{
 `r lifecycle::badge("experimental")`
 }
-\examples{
-\donttest{
-library(CohortCharacteristics)
-cdm <- CohortCharacteristics::mockCohortCharacteristics()
-timing <- summariseCohortTiming(cdm$cohort2)
-plotCohortTiming(timing)
-CDMConnector::cdmDisconnect(cdm = cdm)
-}
-
-}
