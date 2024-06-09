@@ -225,10 +225,10 @@ validateReason <- function(att) {
 
   for (k in seq_len(nrow(att))) {
     cut <- seq_len(n_char_count[k])
-    empty_positions <- str_locate_all(att$reason[k]," ") |> unlist() |> unique()
+    empty_positions <- stringr::str_locate_all(att$reason[k]," ") |> unlist() |> unique()
 
     if(n_char_count[k] != 0){
-      p <- quantile(empty_positions, probs = seq_len(n_char_count[k])/(n_char_count[k]+1))
+      p <- stats::quantile(empty_positions, probs = seq_len(n_char_count[k])/(n_char_count[k]+1))
       matrix_positions <- matrix(empty_positions, length(cut), length(empty_positions), byrow = TRUE)
       positions <- unique(matrix_positions[seq_len(length(cut)), apply(abs(matrix_positions - p), 1, which.min)])
       for(kk in positions){
