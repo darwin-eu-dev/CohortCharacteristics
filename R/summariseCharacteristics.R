@@ -70,7 +70,7 @@
 #' summariseCharacteristics(cohort = cdm$cohort1) |>
 #'   glimpse()
 #'
-#' CDMConnector::cdmDisconnect(cdm = cdm)
+#' mockDisconnect(cdm = cdm)
 #' }
 summariseCharacteristics <- function(cohort,
                                      cohortId = NULL,

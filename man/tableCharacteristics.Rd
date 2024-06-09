@@ -58,7 +58,7 @@ cdm$cohort1 |>
   summariseCharacteristics() |>
   tableCharacteristics()
 
-CDMConnector::cdmDisconnect(cdm = cdm)
+mockDisconnect(cdm = cdm)
 }
 
 }

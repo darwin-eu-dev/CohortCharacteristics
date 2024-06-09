@@ -60,7 +60,7 @@
 #'     )
 #'   )
 #'
-#' CDMConnector::cdmDisconnect(cdm = cdm)
+#' mockDisconnect(cdm = cdm)
 #' }
 plotCharacteristics <- function(data,
                                 x = "variable_name",
@@ -91,21 +91,22 @@ plotCharacteristics <- function(data,
     )
   }
 
-  nEstimateTypes <- length(data |>
+  data <- data |>
+    dplyr::mutate("estimate_type" = dplyr::if_else(
+      .data$estimate_type == "integer", "numeric", .data$estimate_type
+    ))
+
+  estimateType <- data |>
     dplyr::select("estimate_type") |>
     dplyr::distinct() |>
-    dplyr::pull())
+    dplyr::pull()
+  nEstimateTypes <- length(estimateType)
   if (nEstimateTypes != 1) {
     emptyPlot(
       "Only one estimate type can be plotted at a time.",
       "Please filter estimate_type column in results before passing to plotCharacteristics()"
     )
   }
-
-  estimateType <- data |>
-    dplyr::select("estimate_type") |>
-    dplyr::distinct() |>
-    dplyr::pull()
 
   if (!estimateType %in% c("numeric", "percentage")) {
     emptyPlot(paste0(estimateType, " not currently supported by plotCharacteristics()"))

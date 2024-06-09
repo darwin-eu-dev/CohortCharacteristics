@@ -51,11 +51,10 @@ test_that("test summariseCharacteristics", {
   )
 
   cdm <- mockCohortCharacteristics(
-    connectionDetails,
+    con = connection(), writeSchema = writeSchema(),
     dus_cohort = dus_cohort, person = person,
     comorbidities = comorbidities, medication = medication,
-    observation_period = observation_period, cohort1 = emptyCohort,
-    cohort2 = emptyCohort
+    observation_period = observation_period
   )
 
   cdm$dus_cohort <- omopgenerics::newCohortTable(
@@ -375,7 +374,9 @@ test_that("test summariseCharacteristics", {
 })
 
 test_that("test empty cohort", {
-  cdm <- mockCohortCharacteristics(connectionDetails = connectionDetails)
+  cdm <- mockCohortCharacteristics(
+    con = connection(), writeSchema = writeSchema(), numberIndividuals = 100
+  )
 
   expect_no_error(
     cdm$cohort1 |> dplyr::filter(cohort_definition_id == 0) |>
@@ -393,10 +394,10 @@ test_that("test empty cohort", {
     res <- cdm$cohort1 |>
       summariseCharacteristics(cohortIntersectFlag = list(
         "Medications" = list(
-          targetCohortTable = "cohort2", window = c(-365, 0), targetCohortId = 1
+          targetCohortTable = "cohort1", window = c(-365, 0), targetCohortId = 1
         ),
         "Comorbidities" = list(
-          targetCohortTable = "cohort2", window = c(-Inf, 0)
+          targetCohortTable = "cohort1", window = c(-Inf, 0)
         )
       ))
   )
@@ -412,7 +413,7 @@ test_that("test empty cohort", {
       dplyr::filter(variable_name == "Comorbidities") |>
       dplyr::pull("variable_level") |>
       unique() |>
-      sort() == c("Cohort 1", "Cohort 2")
+      sort() == c("Cohort 1", "Cohort 2", "Cohort 3")
   ))
 
   expect_no_error(
@@ -482,11 +483,10 @@ test_that("test cohort id", {
   )
 
   cdm <- mockCohortCharacteristics(
-    connectionDetails,
+    con = connection(), writeSchema = writeSchema(),
     dus_cohort = dus_cohort, person = person,
     comorbidities = comorbidities, medication = medication,
-    observation_period = observation_period, cohort1 = emptyCohort,
-    cohort2 = emptyCohort
+    observation_period = observation_period
   )
 
   cdm$dus_cohort <- omopgenerics::newCohortTable(
@@ -616,11 +616,10 @@ test_that("arguments tableIntersect", {
   )
 
   cdm <- mockCohortCharacteristics(
+    con = connection(), writeSchema = writeSchema(),
     dus_cohort = dus_cohort, person = person,
     observation_period = observation_period,
-    visit_occurrence = visit_occurrence,
-    cohort1 = emptyCohort,
-    cohort2 = emptyCohort
+    visit_occurrence = visit_occurrence
   )
 
   cdm$dus_cohort <- omopgenerics::newCohortTable(
@@ -911,7 +910,7 @@ test_that("arguments tableIntersect", {
     as.numeric(as.Date("2011-11-11") - as.Date("2009-09-09"))
   )
 
-  CDMConnector::cdm_disconnect(cdm = cdm)
+  mockDisconnect(cdm = cdm)
 })
 
 test_that("arguments cohortIntersect", {
@@ -950,6 +949,7 @@ test_that("arguments cohortIntersect", {
   )
 
   cdm <- mockCohortCharacteristics(
+    con = connection(), writeSchema = writeSchema(),
     dus_cohort = dus_cohort,
     cohort1 = cohort1,
     observation_period = observation_period
@@ -1115,7 +1115,7 @@ test_that("arguments cohortIntersect", {
     as.numeric(as.Date("1999-05-26") - as.Date("1990-04-19"))
   )
 
-  CDMConnector::cdm_disconnect(cdm = cdm)
+  mockDisconnect(cdm = cdm)
 })
 
 test_that("arguments conceptIntersect", {
@@ -1328,5 +1328,5 @@ test_that("arguments conceptIntersect", {
     ))
   )
 
-  CDMConnector::cdm_disconnect(cdm = cdm)
+  mockDisconnect(cdm = cdm)
 })

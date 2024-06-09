@@ -37,7 +37,10 @@ test_that("summariseCohortOverlap", {
     period_type_concept_id = NA
   )
 
-  cdm <- mockCohortCharacteristics(person = person, observation_period = obs, table = table)
+  cdm <- mockCohortCharacteristics(
+    con = connection(), writeSchema = writeSchema(),
+    person = person, observation_period = obs, table = table
+  )
 
   overlap1 <- summariseCohortOverlap(cdm$table)
   expect_equal(
@@ -89,5 +92,5 @@ test_that("summariseCohortOverlap", {
     unique(overlap3$strata_name)))
   expect_true(nrow(overlap3) == 2 * 6 + 2 * 6 * s1 + 2 * 6 * s2)
 
-  CDMConnector::cdm_disconnect(cdm)
+  mockDisconnect(cdm)
 })

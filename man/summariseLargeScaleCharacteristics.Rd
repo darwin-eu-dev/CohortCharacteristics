@@ -71,6 +71,6 @@ results <- cdm$cohort2 |>
     episodeInWindow = c("condition_occurrence"),
     minimumFrequency = 0
   )
-CDMConnector::cdmDisconnect(cdm = cdm)
+mockDisconnect(cdm = cdm)
 }
 }

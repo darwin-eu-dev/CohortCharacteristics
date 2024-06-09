@@ -26,6 +26,6 @@ Summarise overlap between cohorts in a cohort table
 library(CohortCharacteristics)
 cdm <- CohortCharacteristics::mockCohortCharacteristics()
 summariseCohortOverlap(cdm$cohort2) |> dplyr::glimpse()
-CDMConnector::cdmDisconnect(cdm = cdm)
+mockDisconnect(cdm = cdm)
 }
 }

@@ -23,6 +23,6 @@ Summarise attrition associated with cohorts in a cohort table
 library(CohortCharacteristics)
 cdm <- mockCohortCharacteristics()
 summariseCohortAttrition(cohort = cdm$cohort1) |> dplyr::glimpse()
-CDMConnector::cdmDisconnect(cdm = cdm)
+mockDisconnect(cdm = cdm)
 }
 }

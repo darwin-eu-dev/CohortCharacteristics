@@ -51,7 +51,7 @@ library(CohortCharacteristics)
 cdm <- CohortCharacteristics::mockCohortCharacteristics()
 overlap <- summariseCohortOverlap(cdm$cohort2)
 tableCohortOverlap(overlap)
-CDMConnector::cdmDisconnect(cdm = cdm)
+mockDisconnect(cdm = cdm)
 }
 
 }

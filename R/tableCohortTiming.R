@@ -35,15 +35,6 @@
 #' CohortCharacteristics::optionsTableCohortTiming() shows allowed arguments and
 #' their default values.
 #'
-#' @examples
-#' \donttest{
-#' library(CohortCharacteristics)
-#' cdm <- CohortCharacteristics::mockCohortCharacteristics()
-#' timing <- summariseCohortTiming(cdm$cohort2)
-#' tableCohortTiming(timing)
-#' CDMConnector::cdmDisconnect(cdm = cdm)
-#' }
-#'
 #' @return A formatted table of the summariseCohortTiming result.
 #'
 #' @export
