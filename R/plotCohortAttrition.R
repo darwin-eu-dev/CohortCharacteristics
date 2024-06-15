@@ -165,6 +165,7 @@ selectLabels <- function(xn) {
       dplyr::select("reason", "label")
 
     xn <- xn |>
+      dplyr::mutate(reason_id = as.numeric(.data$reason_id)) |>
       dplyr::mutate(
         label = dplyr::if_else(
           .data$reason_id == min(.data$reason_id),
@@ -215,28 +216,26 @@ getPositionMiddleBox <- function(p1) {
 }
 
 validateReason <- function(att) {
+  max_value <- 39
+
   n_char <- nchar(att$reason)
-  n_char_count <- round(n_char / 35)
-  n_char_count[n_char_count > 1] <- n_char_count[n_char_count > 1] - 1
+  n_char_count <- round(n_char / max_value)
+  n_char_count[n_char_count > 1] <- n_char_count[n_char_count > 1]
+  n_char_count[n_char_count == 1 & n_char < max_value] <- 0
 
   for (k in seq_len(nrow(att))) {
     cut <- seq_len(n_char_count[k])
-    cut <- cut * 35
-    positions <- unlist(gregexpr(" ", att$reason[k]))
+    empty_positions <- stringr::str_locate_all(att$reason[k]," ") |> unlist() |> unique()
 
-    matrix_positions <- matrix(positions, length(cut), length(positions), byrow = TRUE)
-
-    positions <- unique(matrix_positions[seq_len(length(cut)), apply(abs(matrix_positions - cut), 1, which.min)])
-
-    for (kk in positions) {
-      substr(att$reason[k], start = kk, stop = kk + 1) <- "\n"
+    if(n_char_count[k] != 0){
+      p <- stats::quantile(empty_positions, probs = seq_len(n_char_count[k])/(n_char_count[k]+1))
+      matrix_positions <- matrix(empty_positions, length(cut), length(empty_positions), byrow = TRUE)
+      positions <- unique(matrix_positions[seq_len(length(cut)), apply(abs(matrix_positions - p), 1, which.min)])
+      for(kk in positions){
+        substr(att$reason[k], start = kk, stop = kk) <- "\n"
+      }
     }
-
-    # Ensure that we do not have placed \n at the end of the string
-    att$reason[k] <- sub("\n$", "", att$reason[k])
   }
-
-
 
   return(att)
 }
