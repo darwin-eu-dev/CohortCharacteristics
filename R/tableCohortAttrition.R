@@ -54,7 +54,7 @@ tableCohortAttrition <- function(result,
   settings <- omopgenerics::settings(result) |>
     dplyr::filter(.data$result_type == "cohort_attrition")
   if ("min_cell_count" %in% colnames(settings)) {
-    res <- res |>
+    result <- result |>
       dplyr::left_join(
         settings |>
           dplyr::select("result_id", "min_cell_count"),
