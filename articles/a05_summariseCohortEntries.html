@@ -5,7 +5,6 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="CohortCharacteristics">
 <title>Summarise cohort entries • CohortCharacteristics</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
@@ -15,62 +14,48 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js" integrity="sha512-7O5pXpc0oCRrxk8RUfDYFgn0nO1t+jLuIOQdOMRp4APB7uZ4vSjspzp5y6YDtDs4VzUSTbWzBFZ/LKJhnyFOKw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Summarise cohort entries">
-<meta property="og:description" content="CohortCharacteristics">
-<meta property="og:image" content="https://darwin-eu-dev.github.io/CohortCharacteristics/logo.png">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Summarise cohort entries">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
-    
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light" data-bs-theme="light"><div class="container">
-    
+
+    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+
     <a class="navbar-brand me-2" href="../index.html">CohortCharacteristics</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.900</small>
 
-    
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item">
-  <a class="nav-link" href="../reference/index.html">Reference</a>
-</li>
+<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="active nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/a05_summariseCohortEntries.html">Summarise cohort entries</a>
-    <a class="dropdown-item" href="../articles/a06_summarisePatientCharacteristics.html">Summarise patient characteristics</a>
-    <a class="dropdown-item" href="../articles/a07_summariseLargeScaleCharacteristics.html">Summarise large scale characteristics</a>
-    <a class="dropdown-item" href="../articles/a08_summariseCohortOverlap.html">Summarise cohort overlap</a>
-    <a class="dropdown-item" href="../articles/a09_summariseCohortTiming.html">Summarise cohort timing</a>
-  </div>
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="../articles/a05_summariseCohortEntries.html">Summarise cohort entries</a></li>
+    <li><a class="dropdown-item" href="../articles/a06_summarisePatientCharacteristics.html">Summarise patient characteristics</a></li>
+    <li><a class="dropdown-item" href="../articles/a07_summariseLargeScaleCharacteristics.html">Summarise large scale characteristics</a></li>
+    <li><a class="dropdown-item" href="../articles/a08_summariseCohortOverlap.html">Summarise cohort overlap</a></li>
+    <li><a class="dropdown-item" href="../articles/a09_summariseCohortTiming.html">Summarise cohort timing</a></li>
+  </ul>
 </li>
       </ul>
-<form class="form-inline my-2 my-lg-0" role="search">
-        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
-</form>
-
-      <ul class="navbar-nav">
-<li class="nav-item">
-  <a class="external-link nav-link" href="https://github.com/darwin-eu-dev/CohortCharacteristics/" aria-label="github">
-    <span class="fab fa fab fa-github fa-lg"></span>
-     
-  </a>
-</li>
+<ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
+</form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/darwin-eu-dev/CohortCharacteristics/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
-    
+
   </div>
 </nav><div class="container template-article">
 
@@ -83,7 +68,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Summarise cohort entries</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/darwin-eu-dev/CohortCharacteristics/blob/HEAD/vignettes/a05_summariseCohortEntries.Rmd" class="external-link"><code>vignettes/a05_summariseCohortEntries.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/darwin-eu-dev/CohortCharacteristics/blob/main/vignettes/a05_summariseCohortEntries.Rmd" class="external-link"><code>vignettes/a05_summariseCohortEntries.Rmd</code></a></small>
       <div class="d-none name"><code>a05_summariseCohortEntries.Rmd</code></div>
     </div>
 
@@ -132,23 +117,23 @@ cohorts.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cohort_counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/summariseCohortCount.html">summariseCohortCount</a></span><span class="op">(</span><span class="va">cdm</span><span class="op">[[</span><span class="st">"injuries"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/tableCohortCount.html">tableCohortCount</a></span><span class="op">(</span><span class="va">cohort_counts</span><span class="op">)</span></span></code></pre></div>
-<div id="haaglvijbf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#haaglvijbf table {
+<div id="fvsybhaagl" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#fvsybhaagl table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#haaglvijbf thead, #haaglvijbf tbody, #haaglvijbf tfoot, #haaglvijbf tr, #haaglvijbf td, #haaglvijbf th {
+#fvsybhaagl thead, #fvsybhaagl tbody, #fvsybhaagl tfoot, #fvsybhaagl tr, #fvsybhaagl td, #fvsybhaagl th {
   border-style: none;
 }
 
-#haaglvijbf p {
+#fvsybhaagl p {
   margin: 0;
   padding: 0;
 }
 
-#haaglvijbf .gt_table {
+#fvsybhaagl .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -174,12 +159,12 @@ cohorts.</p>
   border-left-color: #D3D3D3;
 }
 
-#haaglvijbf .gt_caption {
+#fvsybhaagl .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#haaglvijbf .gt_title {
+#fvsybhaagl .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -191,7 +176,7 @@ cohorts.</p>
   border-bottom-width: 0;
 }
 
-#haaglvijbf .gt_subtitle {
+#fvsybhaagl .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -203,7 +188,7 @@ cohorts.</p>
   border-top-width: 0;
 }
 
-#haaglvijbf .gt_heading {
+#fvsybhaagl .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -215,13 +200,13 @@ cohorts.</p>
   border-right-color: #D3D3D3;
 }
 
-#haaglvijbf .gt_bottom_border {
+#fvsybhaagl .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#haaglvijbf .gt_col_headings {
+#fvsybhaagl .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -236,7 +221,7 @@ cohorts.</p>
   border-right-color: #D3D3D3;
 }
 
-#haaglvijbf .gt_col_heading {
+#fvsybhaagl .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -256,7 +241,7 @@ cohorts.</p>
   overflow-x: hidden;
 }
 
-#haaglvijbf .gt_column_spanner_outer {
+#fvsybhaagl .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -268,15 +253,15 @@ cohorts.</p>
   padding-right: 4px;
 }
 
-#haaglvijbf .gt_column_spanner_outer:first-child {
+#fvsybhaagl .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#haaglvijbf .gt_column_spanner_outer:last-child {
+#fvsybhaagl .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#haaglvijbf .gt_column_spanner {
+#fvsybhaagl .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -288,11 +273,11 @@ cohorts.</p>
   width: 100%;
 }
 
-#haaglvijbf .gt_spanner_row {
+#fvsybhaagl .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#haaglvijbf .gt_group_heading {
+#fvsybhaagl .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -318,7 +303,7 @@ cohorts.</p>
   text-align: left;
 }
 
-#haaglvijbf .gt_empty_group_heading {
+#fvsybhaagl .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -333,15 +318,15 @@ cohorts.</p>
   vertical-align: middle;
 }
 
-#haaglvijbf .gt_from_md > :first-child {
+#fvsybhaagl .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#haaglvijbf .gt_from_md > :last-child {
+#fvsybhaagl .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#haaglvijbf .gt_row {
+#fvsybhaagl .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -360,7 +345,7 @@ cohorts.</p>
   overflow-x: hidden;
 }
 
-#haaglvijbf .gt_stub {
+#fvsybhaagl .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -373,7 +358,7 @@ cohorts.</p>
   padding-right: 5px;
 }
 
-#haaglvijbf .gt_stub_row_group {
+#fvsybhaagl .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -387,15 +372,15 @@ cohorts.</p>
   vertical-align: top;
 }
 
-#haaglvijbf .gt_row_group_first td {
+#fvsybhaagl .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#haaglvijbf .gt_row_group_first th {
+#fvsybhaagl .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#haaglvijbf .gt_summary_row {
+#fvsybhaagl .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -405,16 +390,16 @@ cohorts.</p>
   padding-right: 5px;
 }
 
-#haaglvijbf .gt_first_summary_row {
+#fvsybhaagl .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#haaglvijbf .gt_first_summary_row.thick {
+#fvsybhaagl .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#haaglvijbf .gt_last_summary_row {
+#fvsybhaagl .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -424,7 +409,7 @@ cohorts.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#haaglvijbf .gt_grand_summary_row {
+#fvsybhaagl .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -434,7 +419,7 @@ cohorts.</p>
   padding-right: 5px;
 }
 
-#haaglvijbf .gt_first_grand_summary_row {
+#fvsybhaagl .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -444,7 +429,7 @@ cohorts.</p>
   border-top-color: #D3D3D3;
 }
 
-#haaglvijbf .gt_last_grand_summary_row_top {
+#fvsybhaagl .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -454,11 +439,11 @@ cohorts.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#haaglvijbf .gt_striped {
+#fvsybhaagl .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#haaglvijbf .gt_table_body {
+#fvsybhaagl .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -467,7 +452,7 @@ cohorts.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#haaglvijbf .gt_footnotes {
+#fvsybhaagl .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -481,7 +466,7 @@ cohorts.</p>
   border-right-color: #D3D3D3;
 }
 
-#haaglvijbf .gt_footnote {
+#fvsybhaagl .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -490,7 +475,7 @@ cohorts.</p>
   padding-right: 5px;
 }
 
-#haaglvijbf .gt_sourcenotes {
+#fvsybhaagl .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -504,7 +489,7 @@ cohorts.</p>
   border-right-color: #D3D3D3;
 }
 
-#haaglvijbf .gt_sourcenote {
+#fvsybhaagl .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -512,64 +497,73 @@ cohorts.</p>
   padding-right: 5px;
 }
 
-#haaglvijbf .gt_left {
+#fvsybhaagl .gt_left {
   text-align: left;
 }
 
-#haaglvijbf .gt_center {
+#fvsybhaagl .gt_center {
   text-align: center;
 }
 
-#haaglvijbf .gt_right {
+#fvsybhaagl .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#haaglvijbf .gt_font_normal {
+#fvsybhaagl .gt_font_normal {
   font-weight: normal;
 }
 
-#haaglvijbf .gt_font_bold {
+#fvsybhaagl .gt_font_bold {
   font-weight: bold;
 }
 
-#haaglvijbf .gt_font_italic {
+#fvsybhaagl .gt_font_italic {
   font-style: italic;
 }
 
-#haaglvijbf .gt_super {
+#fvsybhaagl .gt_super {
   font-size: 65%;
 }
 
-#haaglvijbf .gt_footnote_marks {
+#fvsybhaagl .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#haaglvijbf .gt_asterisk {
+#fvsybhaagl .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#haaglvijbf .gt_indent_1 {
+#fvsybhaagl .gt_indent_1 {
   text-indent: 5px;
 }
 
-#haaglvijbf .gt_indent_2 {
+#fvsybhaagl .gt_indent_2 {
   text-indent: 10px;
 }
 
-#haaglvijbf .gt_indent_3 {
+#fvsybhaagl .gt_indent_3 {
   text-indent: 15px;
 }
 
-#haaglvijbf .gt_indent_4 {
+#fvsybhaagl .gt_indent_4 {
   text-indent: 20px;
 }
 
-#haaglvijbf .gt_indent_5 {
+#fvsybhaagl .gt_indent_5 {
   text-indent: 25px;
+}
+
+#fvsybhaagl .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#fvsybhaagl div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
 }
 </style>
 <table class="table gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
@@ -583,10 +577,10 @@ cohorts.</p>
       </th>
     </tr>
 <tr class="gt_col_headings">
-<th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="background-color: #E1E1E1; text-align: center; font-weight: bold;" scope="col" id="Ankle sprain">Ankle sprain</th>
+<th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="background-color: #E1E1E1; text-align: center; font-weight: bold;" scope="col" id="Ankle fracture">Ankle fracture</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="background-color: #E1E1E1; text-align: center; font-weight: bold;" scope="col" id="Ankle sprain">Ankle sprain</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="background-color: #E1E1E1; text-align: center; font-weight: bold;" scope="col" id="Hip fracture">Hip fracture</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="background-color: #E1E1E1; text-align: center; font-weight: bold;" scope="col" id="Forearm fracture">Forearm fracture</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="background-color: #E1E1E1; text-align: center; font-weight: bold;" scope="col" id="Ankle fracture">Ankle fracture</th>
     </tr>
 </thead>
 <tbody class="gt_table_body">
@@ -595,26 +589,26 @@ cohorts.</p>
 <td headers="Variable name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">Number records</td>
 <td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">N</td>
 <td headers="[header]Cohort name
+[header_level]Ankle fracture" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">464</td>
+<td headers="[header]Cohort name
 [header_level]Ankle sprain" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1,915</td>
 <td headers="[header]Cohort name
 [header_level]Hip fracture" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">138</td>
 <td headers="[header]Cohort name
-[header_level]Forearm fracture" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">569</td>
-<td headers="[header]Cohort name
-[header_level]Ankle fracture" class="gt_row gt_right" style="text-align: right;">464</td>
+[header_level]Forearm fracture" class="gt_row gt_right" style="text-align: right;">569</td>
 </tr>
 <tr>
 <td headers="CDM name" class="gt_row gt_left" style="text-align: left; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000;"></td>
 <td headers="Variable name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">Number subjects</td>
 <td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">N</td>
 <td headers="[header]Cohort name
+[header_level]Ankle fracture" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">427</td>
+<td headers="[header]Cohort name
 [header_level]Ankle sprain" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1,357</td>
 <td headers="[header]Cohort name
 [header_level]Hip fracture" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">132</td>
 <td headers="[header]Cohort name
-[header_level]Forearm fracture" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">510</td>
-<td headers="[header]Cohort name
-[header_level]Ankle fracture" class="gt_row gt_right" style="text-align: right;">427</td>
+[header_level]Forearm fracture" class="gt_row gt_right" style="text-align: right;">510</td>
 </tr>
 </tbody>
 </table>
@@ -633,23 +627,23 @@ overall counts of our cohorts.</p>
 <span></span>
 <span><span class="va">cohort_counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/summariseCohortCount.html">summariseCohortCount</a></span><span class="op">(</span><span class="va">cdm</span><span class="op">[[</span><span class="st">"injuries"</span><span class="op">]</span><span class="op">]</span>, strata <span class="op">=</span> <span class="st">"age_group"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/tableCohortCount.html">tableCohortCount</a></span><span class="op">(</span><span class="va">cohort_counts</span><span class="op">)</span></span></code></pre></div>
-<div id="glzvnegslq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#glzvnegslq table {
+<div id="vijbfglzvn" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#vijbfglzvn table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#glzvnegslq thead, #glzvnegslq tbody, #glzvnegslq tfoot, #glzvnegslq tr, #glzvnegslq td, #glzvnegslq th {
+#vijbfglzvn thead, #vijbfglzvn tbody, #vijbfglzvn tfoot, #vijbfglzvn tr, #vijbfglzvn td, #vijbfglzvn th {
   border-style: none;
 }
 
-#glzvnegslq p {
+#vijbfglzvn p {
   margin: 0;
   padding: 0;
 }
 
-#glzvnegslq .gt_table {
+#vijbfglzvn .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -675,12 +669,12 @@ overall counts of our cohorts.</p>
   border-left-color: #D3D3D3;
 }
 
-#glzvnegslq .gt_caption {
+#vijbfglzvn .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#glzvnegslq .gt_title {
+#vijbfglzvn .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -692,7 +686,7 @@ overall counts of our cohorts.</p>
   border-bottom-width: 0;
 }
 
-#glzvnegslq .gt_subtitle {
+#vijbfglzvn .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -704,7 +698,7 @@ overall counts of our cohorts.</p>
   border-top-width: 0;
 }
 
-#glzvnegslq .gt_heading {
+#vijbfglzvn .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -716,13 +710,13 @@ overall counts of our cohorts.</p>
   border-right-color: #D3D3D3;
 }
 
-#glzvnegslq .gt_bottom_border {
+#vijbfglzvn .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#glzvnegslq .gt_col_headings {
+#vijbfglzvn .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -737,7 +731,7 @@ overall counts of our cohorts.</p>
   border-right-color: #D3D3D3;
 }
 
-#glzvnegslq .gt_col_heading {
+#vijbfglzvn .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -757,7 +751,7 @@ overall counts of our cohorts.</p>
   overflow-x: hidden;
 }
 
-#glzvnegslq .gt_column_spanner_outer {
+#vijbfglzvn .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -769,15 +763,15 @@ overall counts of our cohorts.</p>
   padding-right: 4px;
 }
 
-#glzvnegslq .gt_column_spanner_outer:first-child {
+#vijbfglzvn .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#glzvnegslq .gt_column_spanner_outer:last-child {
+#vijbfglzvn .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#glzvnegslq .gt_column_spanner {
+#vijbfglzvn .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -789,11 +783,11 @@ overall counts of our cohorts.</p>
   width: 100%;
 }
 
-#glzvnegslq .gt_spanner_row {
+#vijbfglzvn .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#glzvnegslq .gt_group_heading {
+#vijbfglzvn .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -819,7 +813,7 @@ overall counts of our cohorts.</p>
   text-align: left;
 }
 
-#glzvnegslq .gt_empty_group_heading {
+#vijbfglzvn .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -834,15 +828,15 @@ overall counts of our cohorts.</p>
   vertical-align: middle;
 }
 
-#glzvnegslq .gt_from_md > :first-child {
+#vijbfglzvn .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#glzvnegslq .gt_from_md > :last-child {
+#vijbfglzvn .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#glzvnegslq .gt_row {
+#vijbfglzvn .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -861,7 +855,7 @@ overall counts of our cohorts.</p>
   overflow-x: hidden;
 }
 
-#glzvnegslq .gt_stub {
+#vijbfglzvn .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -874,7 +868,7 @@ overall counts of our cohorts.</p>
   padding-right: 5px;
 }
 
-#glzvnegslq .gt_stub_row_group {
+#vijbfglzvn .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -888,15 +882,15 @@ overall counts of our cohorts.</p>
   vertical-align: top;
 }
 
-#glzvnegslq .gt_row_group_first td {
+#vijbfglzvn .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#glzvnegslq .gt_row_group_first th {
+#vijbfglzvn .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#glzvnegslq .gt_summary_row {
+#vijbfglzvn .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -906,16 +900,16 @@ overall counts of our cohorts.</p>
   padding-right: 5px;
 }
 
-#glzvnegslq .gt_first_summary_row {
+#vijbfglzvn .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#glzvnegslq .gt_first_summary_row.thick {
+#vijbfglzvn .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#glzvnegslq .gt_last_summary_row {
+#vijbfglzvn .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -925,7 +919,7 @@ overall counts of our cohorts.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#glzvnegslq .gt_grand_summary_row {
+#vijbfglzvn .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -935,7 +929,7 @@ overall counts of our cohorts.</p>
   padding-right: 5px;
 }
 
-#glzvnegslq .gt_first_grand_summary_row {
+#vijbfglzvn .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -945,7 +939,7 @@ overall counts of our cohorts.</p>
   border-top-color: #D3D3D3;
 }
 
-#glzvnegslq .gt_last_grand_summary_row_top {
+#vijbfglzvn .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -955,11 +949,11 @@ overall counts of our cohorts.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#glzvnegslq .gt_striped {
+#vijbfglzvn .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#glzvnegslq .gt_table_body {
+#vijbfglzvn .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -968,7 +962,7 @@ overall counts of our cohorts.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#glzvnegslq .gt_footnotes {
+#vijbfglzvn .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -982,7 +976,7 @@ overall counts of our cohorts.</p>
   border-right-color: #D3D3D3;
 }
 
-#glzvnegslq .gt_footnote {
+#vijbfglzvn .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -991,7 +985,7 @@ overall counts of our cohorts.</p>
   padding-right: 5px;
 }
 
-#glzvnegslq .gt_sourcenotes {
+#vijbfglzvn .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1005,7 +999,7 @@ overall counts of our cohorts.</p>
   border-right-color: #D3D3D3;
 }
 
-#glzvnegslq .gt_sourcenote {
+#vijbfglzvn .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1013,64 +1007,73 @@ overall counts of our cohorts.</p>
   padding-right: 5px;
 }
 
-#glzvnegslq .gt_left {
+#vijbfglzvn .gt_left {
   text-align: left;
 }
 
-#glzvnegslq .gt_center {
+#vijbfglzvn .gt_center {
   text-align: center;
 }
 
-#glzvnegslq .gt_right {
+#vijbfglzvn .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#glzvnegslq .gt_font_normal {
+#vijbfglzvn .gt_font_normal {
   font-weight: normal;
 }
 
-#glzvnegslq .gt_font_bold {
+#vijbfglzvn .gt_font_bold {
   font-weight: bold;
 }
 
-#glzvnegslq .gt_font_italic {
+#vijbfglzvn .gt_font_italic {
   font-style: italic;
 }
 
-#glzvnegslq .gt_super {
+#vijbfglzvn .gt_super {
   font-size: 65%;
 }
 
-#glzvnegslq .gt_footnote_marks {
+#vijbfglzvn .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#glzvnegslq .gt_asterisk {
+#vijbfglzvn .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#glzvnegslq .gt_indent_1 {
+#vijbfglzvn .gt_indent_1 {
   text-indent: 5px;
 }
 
-#glzvnegslq .gt_indent_2 {
+#vijbfglzvn .gt_indent_2 {
   text-indent: 10px;
 }
 
-#glzvnegslq .gt_indent_3 {
+#vijbfglzvn .gt_indent_3 {
   text-indent: 15px;
 }
 
-#glzvnegslq .gt_indent_4 {
+#vijbfglzvn .gt_indent_4 {
   text-indent: 20px;
 }
 
-#glzvnegslq .gt_indent_5 {
+#vijbfglzvn .gt_indent_5 {
   text-indent: 25px;
+}
+
+#vijbfglzvn .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#vijbfglzvn div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
 }
 </style>
 <table class="table gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
@@ -1085,8 +1088,8 @@ overall counts of our cohorts.</p>
       </th>
     </tr>
 <tr class="gt_col_headings">
-<th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="background-color: #E1E1E1; text-align: center; font-weight: bold;" scope="col" id="Ankle sprain">Ankle sprain</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="background-color: #E1E1E1; text-align: center; font-weight: bold;" scope="col" id="Ankle fracture">Ankle fracture</th>
+<th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="background-color: #E1E1E1; text-align: center; font-weight: bold;" scope="col" id="Ankle fracture">Ankle fracture</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="background-color: #E1E1E1; text-align: center; font-weight: bold;" scope="col" id="Ankle sprain">Ankle sprain</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="background-color: #E1E1E1; text-align: center; font-weight: bold;" scope="col" id="Hip fracture">Hip fracture</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="background-color: #E1E1E1; text-align: center; font-weight: bold;" scope="col" id="Forearm fracture">Forearm fracture</th>
     </tr>
@@ -1098,9 +1101,9 @@ overall counts of our cohorts.</p>
 <td headers="Variable name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">Number records</td>
 <td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">N</td>
 <td headers="[header]Cohort name
-[header_level]Ankle sprain" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1,915</td>
-<td headers="[header]Cohort name
 [header_level]Ankle fracture" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">464</td>
+<td headers="[header]Cohort name
+[header_level]Ankle sprain" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1,915</td>
 <td headers="[header]Cohort name
 [header_level]Hip fracture" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">138</td>
 <td headers="[header]Cohort name
@@ -1112,9 +1115,9 @@ overall counts of our cohorts.</p>
 <td headers="Variable name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">Number records</td>
 <td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">N</td>
 <td headers="[header]Cohort name
-[header_level]Ankle sprain" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">202</td>
-<td headers="[header]Cohort name
 [header_level]Ankle fracture" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">49</td>
+<td headers="[header]Cohort name
+[header_level]Ankle sprain" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">202</td>
 <td headers="[header]Cohort name
 [header_level]Hip fracture" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">7</td>
 <td headers="[header]Cohort name
@@ -1126,9 +1129,9 @@ overall counts of our cohorts.</p>
 <td headers="Variable name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">Number records</td>
 <td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">N</td>
 <td headers="[header]Cohort name
-[header_level]Ankle sprain" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1,047</td>
-<td headers="[header]Cohort name
 [header_level]Ankle fracture" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">213</td>
+<td headers="[header]Cohort name
+[header_level]Ankle sprain" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1,047</td>
 <td headers="[header]Cohort name
 [header_level]Hip fracture" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">88</td>
 <td headers="[header]Cohort name
@@ -1140,9 +1143,9 @@ overall counts of our cohorts.</p>
 <td headers="Variable name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">Number records</td>
 <td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">N</td>
 <td headers="[header]Cohort name
-[header_level]Ankle sprain" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">666</td>
-<td headers="[header]Cohort name
 [header_level]Ankle fracture" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">202</td>
+<td headers="[header]Cohort name
+[header_level]Ankle sprain" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">666</td>
 <td headers="[header]Cohort name
 [header_level]Hip fracture" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">43</td>
 <td headers="[header]Cohort name
@@ -1154,9 +1157,9 @@ overall counts of our cohorts.</p>
 <td headers="Variable name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">Number subjects</td>
 <td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">N</td>
 <td headers="[header]Cohort name
-[header_level]Ankle sprain" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1,357</td>
-<td headers="[header]Cohort name
 [header_level]Ankle fracture" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">427</td>
+<td headers="[header]Cohort name
+[header_level]Ankle sprain" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1,357</td>
 <td headers="[header]Cohort name
 [header_level]Hip fracture" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">132</td>
 <td headers="[header]Cohort name
@@ -1168,9 +1171,9 @@ overall counts of our cohorts.</p>
 <td headers="Variable name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">Number subjects</td>
 <td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">N</td>
 <td headers="[header]Cohort name
-[header_level]Ankle sprain" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">196</td>
-<td headers="[header]Cohort name
 [header_level]Ankle fracture" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">49</td>
+<td headers="[header]Cohort name
+[header_level]Ankle sprain" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">196</td>
 <td headers="[header]Cohort name
 [header_level]Hip fracture" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">7</td>
 <td headers="[header]Cohort name
@@ -1182,9 +1185,9 @@ overall counts of our cohorts.</p>
 <td headers="Variable name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">Number subjects</td>
 <td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">N</td>
 <td headers="[header]Cohort name
-[header_level]Ankle sprain" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">847</td>
-<td headers="[header]Cohort name
 [header_level]Ankle fracture" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">204</td>
+<td headers="[header]Cohort name
+[header_level]Ankle sprain" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">847</td>
 <td headers="[header]Cohort name
 [header_level]Hip fracture" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">83</td>
 <td headers="[header]Cohort name
@@ -1196,9 +1199,9 @@ overall counts of our cohorts.</p>
 <td headers="Variable name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">Number subjects</td>
 <td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">N</td>
 <td headers="[header]Cohort name
-[header_level]Ankle sprain" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">597</td>
-<td headers="[header]Cohort name
 [header_level]Ankle fracture" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">195</td>
+<td headers="[header]Cohort name
+[header_level]Ankle sprain" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">597</td>
 <td headers="[header]Cohort name
 [header_level]Hip fracture" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">43</td>
 <td headers="[header]Cohort name
@@ -1212,23 +1215,23 @@ counts. In this case we will obscure any counts below 10.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cohort_counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://darwin-eu-dev.github.io/omopgenerics/reference/suppress.html" class="external-link">suppress</a></span><span class="op">(</span><span class="va">cohort_counts</span>, minCellCount <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/tableCohortCount.html">tableCohortCount</a></span><span class="op">(</span><span class="va">cohort_counts</span><span class="op">)</span></span></code></pre></div>
-<div id="eqmfaamrew" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#eqmfaamrew table {
+<div id="egslqeqmfa" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#egslqeqmfa table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#eqmfaamrew thead, #eqmfaamrew tbody, #eqmfaamrew tfoot, #eqmfaamrew tr, #eqmfaamrew td, #eqmfaamrew th {
+#egslqeqmfa thead, #egslqeqmfa tbody, #egslqeqmfa tfoot, #egslqeqmfa tr, #egslqeqmfa td, #egslqeqmfa th {
   border-style: none;
 }
 
-#eqmfaamrew p {
+#egslqeqmfa p {
   margin: 0;
   padding: 0;
 }
 
-#eqmfaamrew .gt_table {
+#egslqeqmfa .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1254,12 +1257,12 @@ counts. In this case we will obscure any counts below 10.</p>
   border-left-color: #D3D3D3;
 }
 
-#eqmfaamrew .gt_caption {
+#egslqeqmfa .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#eqmfaamrew .gt_title {
+#egslqeqmfa .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1271,7 +1274,7 @@ counts. In this case we will obscure any counts below 10.</p>
   border-bottom-width: 0;
 }
 
-#eqmfaamrew .gt_subtitle {
+#egslqeqmfa .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1283,7 +1286,7 @@ counts. In this case we will obscure any counts below 10.</p>
   border-top-width: 0;
 }
 
-#eqmfaamrew .gt_heading {
+#egslqeqmfa .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1295,13 +1298,13 @@ counts. In this case we will obscure any counts below 10.</p>
   border-right-color: #D3D3D3;
 }
 
-#eqmfaamrew .gt_bottom_border {
+#egslqeqmfa .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#eqmfaamrew .gt_col_headings {
+#egslqeqmfa .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1316,7 +1319,7 @@ counts. In this case we will obscure any counts below 10.</p>
   border-right-color: #D3D3D3;
 }
 
-#eqmfaamrew .gt_col_heading {
+#egslqeqmfa .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1336,7 +1339,7 @@ counts. In this case we will obscure any counts below 10.</p>
   overflow-x: hidden;
 }
 
-#eqmfaamrew .gt_column_spanner_outer {
+#egslqeqmfa .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1348,15 +1351,15 @@ counts. In this case we will obscure any counts below 10.</p>
   padding-right: 4px;
 }
 
-#eqmfaamrew .gt_column_spanner_outer:first-child {
+#egslqeqmfa .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#eqmfaamrew .gt_column_spanner_outer:last-child {
+#egslqeqmfa .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#eqmfaamrew .gt_column_spanner {
+#egslqeqmfa .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1368,11 +1371,11 @@ counts. In this case we will obscure any counts below 10.</p>
   width: 100%;
 }
 
-#eqmfaamrew .gt_spanner_row {
+#egslqeqmfa .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#eqmfaamrew .gt_group_heading {
+#egslqeqmfa .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1398,7 +1401,7 @@ counts. In this case we will obscure any counts below 10.</p>
   text-align: left;
 }
 
-#eqmfaamrew .gt_empty_group_heading {
+#egslqeqmfa .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1413,15 +1416,15 @@ counts. In this case we will obscure any counts below 10.</p>
   vertical-align: middle;
 }
 
-#eqmfaamrew .gt_from_md > :first-child {
+#egslqeqmfa .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#eqmfaamrew .gt_from_md > :last-child {
+#egslqeqmfa .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#eqmfaamrew .gt_row {
+#egslqeqmfa .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1440,7 +1443,7 @@ counts. In this case we will obscure any counts below 10.</p>
   overflow-x: hidden;
 }
 
-#eqmfaamrew .gt_stub {
+#egslqeqmfa .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1453,7 +1456,7 @@ counts. In this case we will obscure any counts below 10.</p>
   padding-right: 5px;
 }
 
-#eqmfaamrew .gt_stub_row_group {
+#egslqeqmfa .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1467,15 +1470,15 @@ counts. In this case we will obscure any counts below 10.</p>
   vertical-align: top;
 }
 
-#eqmfaamrew .gt_row_group_first td {
+#egslqeqmfa .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#eqmfaamrew .gt_row_group_first th {
+#egslqeqmfa .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#eqmfaamrew .gt_summary_row {
+#egslqeqmfa .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1485,16 +1488,16 @@ counts. In this case we will obscure any counts below 10.</p>
   padding-right: 5px;
 }
 
-#eqmfaamrew .gt_first_summary_row {
+#egslqeqmfa .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#eqmfaamrew .gt_first_summary_row.thick {
+#egslqeqmfa .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#eqmfaamrew .gt_last_summary_row {
+#egslqeqmfa .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1504,7 +1507,7 @@ counts. In this case we will obscure any counts below 10.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#eqmfaamrew .gt_grand_summary_row {
+#egslqeqmfa .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1514,7 +1517,7 @@ counts. In this case we will obscure any counts below 10.</p>
   padding-right: 5px;
 }
 
-#eqmfaamrew .gt_first_grand_summary_row {
+#egslqeqmfa .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1524,7 +1527,7 @@ counts. In this case we will obscure any counts below 10.</p>
   border-top-color: #D3D3D3;
 }
 
-#eqmfaamrew .gt_last_grand_summary_row_top {
+#egslqeqmfa .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1534,11 +1537,11 @@ counts. In this case we will obscure any counts below 10.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#eqmfaamrew .gt_striped {
+#egslqeqmfa .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#eqmfaamrew .gt_table_body {
+#egslqeqmfa .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1547,7 +1550,7 @@ counts. In this case we will obscure any counts below 10.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#eqmfaamrew .gt_footnotes {
+#egslqeqmfa .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1561,7 +1564,7 @@ counts. In this case we will obscure any counts below 10.</p>
   border-right-color: #D3D3D3;
 }
 
-#eqmfaamrew .gt_footnote {
+#egslqeqmfa .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1570,7 +1573,7 @@ counts. In this case we will obscure any counts below 10.</p>
   padding-right: 5px;
 }
 
-#eqmfaamrew .gt_sourcenotes {
+#egslqeqmfa .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1584,7 +1587,7 @@ counts. In this case we will obscure any counts below 10.</p>
   border-right-color: #D3D3D3;
 }
 
-#eqmfaamrew .gt_sourcenote {
+#egslqeqmfa .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1592,64 +1595,73 @@ counts. In this case we will obscure any counts below 10.</p>
   padding-right: 5px;
 }
 
-#eqmfaamrew .gt_left {
+#egslqeqmfa .gt_left {
   text-align: left;
 }
 
-#eqmfaamrew .gt_center {
+#egslqeqmfa .gt_center {
   text-align: center;
 }
 
-#eqmfaamrew .gt_right {
+#egslqeqmfa .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#eqmfaamrew .gt_font_normal {
+#egslqeqmfa .gt_font_normal {
   font-weight: normal;
 }
 
-#eqmfaamrew .gt_font_bold {
+#egslqeqmfa .gt_font_bold {
   font-weight: bold;
 }
 
-#eqmfaamrew .gt_font_italic {
+#egslqeqmfa .gt_font_italic {
   font-style: italic;
 }
 
-#eqmfaamrew .gt_super {
+#egslqeqmfa .gt_super {
   font-size: 65%;
 }
 
-#eqmfaamrew .gt_footnote_marks {
+#egslqeqmfa .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#eqmfaamrew .gt_asterisk {
+#egslqeqmfa .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#eqmfaamrew .gt_indent_1 {
+#egslqeqmfa .gt_indent_1 {
   text-indent: 5px;
 }
 
-#eqmfaamrew .gt_indent_2 {
+#egslqeqmfa .gt_indent_2 {
   text-indent: 10px;
 }
 
-#eqmfaamrew .gt_indent_3 {
+#egslqeqmfa .gt_indent_3 {
   text-indent: 15px;
 }
 
-#eqmfaamrew .gt_indent_4 {
+#egslqeqmfa .gt_indent_4 {
   text-indent: 20px;
 }
 
-#eqmfaamrew .gt_indent_5 {
+#egslqeqmfa .gt_indent_5 {
   text-indent: 25px;
+}
+
+#egslqeqmfa .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#egslqeqmfa div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
 }
 </style>
 <table class="table gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
@@ -1664,8 +1676,8 @@ counts. In this case we will obscure any counts below 10.</p>
       </th>
     </tr>
 <tr class="gt_col_headings">
-<th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="background-color: #E1E1E1; text-align: center; font-weight: bold;" scope="col" id="Ankle sprain">Ankle sprain</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="background-color: #E1E1E1; text-align: center; font-weight: bold;" scope="col" id="Ankle fracture">Ankle fracture</th>
+<th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="background-color: #E1E1E1; text-align: center; font-weight: bold;" scope="col" id="Ankle fracture">Ankle fracture</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="background-color: #E1E1E1; text-align: center; font-weight: bold;" scope="col" id="Ankle sprain">Ankle sprain</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="background-color: #E1E1E1; text-align: center; font-weight: bold;" scope="col" id="Hip fracture">Hip fracture</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="background-color: #E1E1E1; text-align: center; font-weight: bold;" scope="col" id="Forearm fracture">Forearm fracture</th>
     </tr>
@@ -1677,9 +1689,9 @@ counts. In this case we will obscure any counts below 10.</p>
 <td headers="Variable name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">Number records</td>
 <td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">N</td>
 <td headers="[header]Cohort name
-[header_level]Ankle sprain" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1,915</td>
-<td headers="[header]Cohort name
 [header_level]Ankle fracture" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">464</td>
+<td headers="[header]Cohort name
+[header_level]Ankle sprain" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1,915</td>
 <td headers="[header]Cohort name
 [header_level]Hip fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">138</td>
 <td headers="[header]Cohort name
@@ -1691,9 +1703,9 @@ counts. In this case we will obscure any counts below 10.</p>
 <td headers="Variable name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">Number records</td>
 <td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">N</td>
 <td headers="[header]Cohort name
-[header_level]Ankle sprain" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">202</td>
-<td headers="[header]Cohort name
 [header_level]Ankle fracture" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">49</td>
+<td headers="[header]Cohort name
+[header_level]Ankle sprain" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">202</td>
 <td headers="[header]Cohort name
 [header_level]Hip fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">&lt;10</td>
 <td headers="[header]Cohort name
@@ -1705,9 +1717,9 @@ counts. In this case we will obscure any counts below 10.</p>
 <td headers="Variable name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">Number records</td>
 <td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">N</td>
 <td headers="[header]Cohort name
-[header_level]Ankle sprain" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1,047</td>
-<td headers="[header]Cohort name
 [header_level]Ankle fracture" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">213</td>
+<td headers="[header]Cohort name
+[header_level]Ankle sprain" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1,047</td>
 <td headers="[header]Cohort name
 [header_level]Hip fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">88</td>
 <td headers="[header]Cohort name
@@ -1719,9 +1731,9 @@ counts. In this case we will obscure any counts below 10.</p>
 <td headers="Variable name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">Number records</td>
 <td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">N</td>
 <td headers="[header]Cohort name
-[header_level]Ankle sprain" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">666</td>
-<td headers="[header]Cohort name
 [header_level]Ankle fracture" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">202</td>
+<td headers="[header]Cohort name
+[header_level]Ankle sprain" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">666</td>
 <td headers="[header]Cohort name
 [header_level]Hip fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">43</td>
 <td headers="[header]Cohort name
@@ -1733,9 +1745,9 @@ counts. In this case we will obscure any counts below 10.</p>
 <td headers="Variable name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">Number subjects</td>
 <td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">N</td>
 <td headers="[header]Cohort name
-[header_level]Ankle sprain" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1,357</td>
-<td headers="[header]Cohort name
 [header_level]Ankle fracture" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">427</td>
+<td headers="[header]Cohort name
+[header_level]Ankle sprain" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1,357</td>
 <td headers="[header]Cohort name
 [header_level]Hip fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">132</td>
 <td headers="[header]Cohort name
@@ -1747,9 +1759,9 @@ counts. In this case we will obscure any counts below 10.</p>
 <td headers="Variable name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">Number subjects</td>
 <td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">N</td>
 <td headers="[header]Cohort name
-[header_level]Ankle sprain" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">196</td>
-<td headers="[header]Cohort name
 [header_level]Ankle fracture" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">49</td>
+<td headers="[header]Cohort name
+[header_level]Ankle sprain" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">196</td>
 <td headers="[header]Cohort name
 [header_level]Hip fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">&lt;10</td>
 <td headers="[header]Cohort name
@@ -1761,9 +1773,9 @@ counts. In this case we will obscure any counts below 10.</p>
 <td headers="Variable name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">Number subjects</td>
 <td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">N</td>
 <td headers="[header]Cohort name
-[header_level]Ankle sprain" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">847</td>
-<td headers="[header]Cohort name
 [header_level]Ankle fracture" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">204</td>
+<td headers="[header]Cohort name
+[header_level]Ankle sprain" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">847</td>
 <td headers="[header]Cohort name
 [header_level]Hip fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">83</td>
 <td headers="[header]Cohort name
@@ -1775,9 +1787,9 @@ counts. In this case we will obscure any counts below 10.</p>
 <td headers="Variable name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">Number subjects</td>
 <td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">N</td>
 <td headers="[header]Cohort name
-[header_level]Ankle sprain" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">597</td>
-<td headers="[header]Cohort name
 [header_level]Ankle fracture" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">195</td>
+<td headers="[header]Cohort name
+[header_level]Ankle sprain" class="gt_row gt_right" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">597</td>
 <td headers="[header]Cohort name
 [header_level]Hip fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">43</td>
 <td headers="[header]Cohort name
@@ -1854,23 +1866,23 @@ around.</p>
 our results.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tableCohortAttrition.html">tableCohortAttrition</a></span><span class="op">(</span><span class="va">attrition_summary</span><span class="op">)</span></span></code></pre></div>
-<div id="cljjbjgwtl" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#cljjbjgwtl table {
+<div id="trxpwwkzgf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#trxpwwkzgf table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#cljjbjgwtl thead, #cljjbjgwtl tbody, #cljjbjgwtl tfoot, #cljjbjgwtl tr, #cljjbjgwtl td, #cljjbjgwtl th {
+#trxpwwkzgf thead, #trxpwwkzgf tbody, #trxpwwkzgf tfoot, #trxpwwkzgf tr, #trxpwwkzgf td, #trxpwwkzgf th {
   border-style: none;
 }
 
-#cljjbjgwtl p {
+#trxpwwkzgf p {
   margin: 0;
   padding: 0;
 }
 
-#cljjbjgwtl .gt_table {
+#trxpwwkzgf .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1896,12 +1908,12 @@ our results.</p>
   border-left-color: #D3D3D3;
 }
 
-#cljjbjgwtl .gt_caption {
+#trxpwwkzgf .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#cljjbjgwtl .gt_title {
+#trxpwwkzgf .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1913,7 +1925,7 @@ our results.</p>
   border-bottom-width: 0;
 }
 
-#cljjbjgwtl .gt_subtitle {
+#trxpwwkzgf .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1925,7 +1937,7 @@ our results.</p>
   border-top-width: 0;
 }
 
-#cljjbjgwtl .gt_heading {
+#trxpwwkzgf .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1937,13 +1949,13 @@ our results.</p>
   border-right-color: #D3D3D3;
 }
 
-#cljjbjgwtl .gt_bottom_border {
+#trxpwwkzgf .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#cljjbjgwtl .gt_col_headings {
+#trxpwwkzgf .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1958,7 +1970,7 @@ our results.</p>
   border-right-color: #D3D3D3;
 }
 
-#cljjbjgwtl .gt_col_heading {
+#trxpwwkzgf .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1978,7 +1990,7 @@ our results.</p>
   overflow-x: hidden;
 }
 
-#cljjbjgwtl .gt_column_spanner_outer {
+#trxpwwkzgf .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1990,15 +2002,15 @@ our results.</p>
   padding-right: 4px;
 }
 
-#cljjbjgwtl .gt_column_spanner_outer:first-child {
+#trxpwwkzgf .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#cljjbjgwtl .gt_column_spanner_outer:last-child {
+#trxpwwkzgf .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#cljjbjgwtl .gt_column_spanner {
+#trxpwwkzgf .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2010,11 +2022,11 @@ our results.</p>
   width: 100%;
 }
 
-#cljjbjgwtl .gt_spanner_row {
+#trxpwwkzgf .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#cljjbjgwtl .gt_group_heading {
+#trxpwwkzgf .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2040,7 +2052,7 @@ our results.</p>
   text-align: left;
 }
 
-#cljjbjgwtl .gt_empty_group_heading {
+#trxpwwkzgf .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2055,15 +2067,15 @@ our results.</p>
   vertical-align: middle;
 }
 
-#cljjbjgwtl .gt_from_md > :first-child {
+#trxpwwkzgf .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#cljjbjgwtl .gt_from_md > :last-child {
+#trxpwwkzgf .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#cljjbjgwtl .gt_row {
+#trxpwwkzgf .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2082,7 +2094,7 @@ our results.</p>
   overflow-x: hidden;
 }
 
-#cljjbjgwtl .gt_stub {
+#trxpwwkzgf .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2095,7 +2107,7 @@ our results.</p>
   padding-right: 5px;
 }
 
-#cljjbjgwtl .gt_stub_row_group {
+#trxpwwkzgf .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2109,15 +2121,15 @@ our results.</p>
   vertical-align: top;
 }
 
-#cljjbjgwtl .gt_row_group_first td {
+#trxpwwkzgf .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#cljjbjgwtl .gt_row_group_first th {
+#trxpwwkzgf .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#cljjbjgwtl .gt_summary_row {
+#trxpwwkzgf .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2127,16 +2139,16 @@ our results.</p>
   padding-right: 5px;
 }
 
-#cljjbjgwtl .gt_first_summary_row {
+#trxpwwkzgf .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#cljjbjgwtl .gt_first_summary_row.thick {
+#trxpwwkzgf .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#cljjbjgwtl .gt_last_summary_row {
+#trxpwwkzgf .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2146,7 +2158,7 @@ our results.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#cljjbjgwtl .gt_grand_summary_row {
+#trxpwwkzgf .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2156,7 +2168,7 @@ our results.</p>
   padding-right: 5px;
 }
 
-#cljjbjgwtl .gt_first_grand_summary_row {
+#trxpwwkzgf .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2166,7 +2178,7 @@ our results.</p>
   border-top-color: #D3D3D3;
 }
 
-#cljjbjgwtl .gt_last_grand_summary_row_top {
+#trxpwwkzgf .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2176,11 +2188,11 @@ our results.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#cljjbjgwtl .gt_striped {
+#trxpwwkzgf .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#cljjbjgwtl .gt_table_body {
+#trxpwwkzgf .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2189,7 +2201,7 @@ our results.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#cljjbjgwtl .gt_footnotes {
+#trxpwwkzgf .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2203,7 +2215,7 @@ our results.</p>
   border-right-color: #D3D3D3;
 }
 
-#cljjbjgwtl .gt_footnote {
+#trxpwwkzgf .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2212,7 +2224,7 @@ our results.</p>
   padding-right: 5px;
 }
 
-#cljjbjgwtl .gt_sourcenotes {
+#trxpwwkzgf .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2226,7 +2238,7 @@ our results.</p>
   border-right-color: #D3D3D3;
 }
 
-#cljjbjgwtl .gt_sourcenote {
+#trxpwwkzgf .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2234,64 +2246,73 @@ our results.</p>
   padding-right: 5px;
 }
 
-#cljjbjgwtl .gt_left {
+#trxpwwkzgf .gt_left {
   text-align: left;
 }
 
-#cljjbjgwtl .gt_center {
+#trxpwwkzgf .gt_center {
   text-align: center;
 }
 
-#cljjbjgwtl .gt_right {
+#trxpwwkzgf .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#cljjbjgwtl .gt_font_normal {
+#trxpwwkzgf .gt_font_normal {
   font-weight: normal;
 }
 
-#cljjbjgwtl .gt_font_bold {
+#trxpwwkzgf .gt_font_bold {
   font-weight: bold;
 }
 
-#cljjbjgwtl .gt_font_italic {
+#trxpwwkzgf .gt_font_italic {
   font-style: italic;
 }
 
-#cljjbjgwtl .gt_super {
+#trxpwwkzgf .gt_super {
   font-size: 65%;
 }
 
-#cljjbjgwtl .gt_footnote_marks {
+#trxpwwkzgf .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#cljjbjgwtl .gt_asterisk {
+#trxpwwkzgf .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#cljjbjgwtl .gt_indent_1 {
+#trxpwwkzgf .gt_indent_1 {
   text-indent: 5px;
 }
 
-#cljjbjgwtl .gt_indent_2 {
+#trxpwwkzgf .gt_indent_2 {
   text-indent: 10px;
 }
 
-#cljjbjgwtl .gt_indent_3 {
+#trxpwwkzgf .gt_indent_3 {
   text-indent: 15px;
 }
 
-#cljjbjgwtl .gt_indent_4 {
+#trxpwwkzgf .gt_indent_4 {
   text-indent: 20px;
 }
 
-#cljjbjgwtl .gt_indent_5 {
+#trxpwwkzgf .gt_indent_5 {
   text-indent: 25px;
+}
+
+#trxpwwkzgf .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#trxpwwkzgf div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
 }
 </style>
 <table class="table gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
@@ -2386,7 +2407,7 @@ our results.</p>
 </table>
 </div>
 </div>
-  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
 
@@ -2397,15 +2418,15 @@ our results.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
     </footer>
 </div>
 
-  
 
-  
+
+
 
   </body>
 </html>

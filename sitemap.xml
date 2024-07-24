@@ -1,117 +1,41 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/404.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/CONTRIBUTING.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/articles/a05_summariseCohortEntries.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/articles/a06_summarisePatientCharacteristics.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/articles/a07_summariseLargeScaleCharacteristics.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/articles/a08_summariseCohortOverlap.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/articles/a09_summariseCohortTiming.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/index.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/CohortCharacteristics-package.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/mockCohortCharacteristics.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/optionsTableCharacteristics.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/optionsTableCohortOverlap.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/optionsTableCohortTiming.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/pipe.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/plotCharacteristics.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/plotCohortAttrition.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/plotCohortOverlap.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/plotCohortTiming.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/plotComparedLargeScaleCharacteristics.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/plotLargeScaleCharacteristics.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/reexports.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/summariseCharacteristics.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/summariseCohortAttrition.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/summariseCohortCount.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/summariseCohortOverlap.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/summariseCohortTiming.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/summariseLargeScaleCharacteristics.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/tableCharacteristics.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/tableCohortAttrition.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/tableCohortCount.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/tableCohortOverlap.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/tableCohortTiming.html</loc>
-  </url>
-  <url>
-    <loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/tableLargeScaleCharacteristics.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://darwin-eu-dev.github.io/CohortCharacteristics/404.html</loc></url>
+<url><loc>https://darwin-eu-dev.github.io/CohortCharacteristics/CONTRIBUTING.html</loc></url>
+<url><loc>https://darwin-eu-dev.github.io/CohortCharacteristics/LICENSE-text.html</loc></url>
+<url><loc>https://darwin-eu-dev.github.io/CohortCharacteristics/LICENSE.html</loc></url>
+<url><loc>https://darwin-eu-dev.github.io/CohortCharacteristics/articles/a05_summariseCohortEntries.html</loc></url>
+<url><loc>https://darwin-eu-dev.github.io/CohortCharacteristics/articles/a06_summarisePatientCharacteristics.html</loc></url>
+<url><loc>https://darwin-eu-dev.github.io/CohortCharacteristics/articles/a07_summariseLargeScaleCharacteristics.html</loc></url>
+<url><loc>https://darwin-eu-dev.github.io/CohortCharacteristics/articles/a08_summariseCohortOverlap.html</loc></url>
+<url><loc>https://darwin-eu-dev.github.io/CohortCharacteristics/articles/a09_summariseCohortTiming.html</loc></url>
+<url><loc>https://darwin-eu-dev.github.io/CohortCharacteristics/articles/index.html</loc></url>
+<url><loc>https://darwin-eu-dev.github.io/CohortCharacteristics/authors.html</loc></url>
+<url><loc>https://darwin-eu-dev.github.io/CohortCharacteristics/index.html</loc></url>
+<url><loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/CohortCharacteristics-package.html</loc></url>
+<url><loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/index.html</loc></url>
+<url><loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/mockCohortCharacteristics.html</loc></url>
+<url><loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/optionsTableCharacteristics.html</loc></url>
+<url><loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/optionsTableCohortOverlap.html</loc></url>
+<url><loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/optionsTableCohortTiming.html</loc></url>
+<url><loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/pipe.html</loc></url>
+<url><loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/plotCharacteristics.html</loc></url>
+<url><loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/plotCohortAttrition.html</loc></url>
+<url><loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/plotCohortOverlap.html</loc></url>
+<url><loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/plotCohortTiming.html</loc></url>
+<url><loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/plotComparedLargeScaleCharacteristics.html</loc></url>
+<url><loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/plotLargeScaleCharacteristics.html</loc></url>
+<url><loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/reexports.html</loc></url>
+<url><loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/summariseCharacteristics.html</loc></url>
+<url><loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/summariseCohortAttrition.html</loc></url>
+<url><loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/summariseCohortCount.html</loc></url>
+<url><loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/summariseCohortOverlap.html</loc></url>
+<url><loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/summariseCohortTiming.html</loc></url>
+<url><loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/summariseLargeScaleCharacteristics.html</loc></url>
+<url><loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/tableCharacteristics.html</loc></url>
+<url><loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/tableCohortAttrition.html</loc></url>
+<url><loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/tableCohortCount.html</loc></url>
+<url><loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/tableCohortOverlap.html</loc></url>
+<url><loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/tableCohortTiming.html</loc></url>
+<url><loc>https://darwin-eu-dev.github.io/CohortCharacteristics/reference/tableLargeScaleCharacteristics.html</loc></url>
 </urlset>
+
