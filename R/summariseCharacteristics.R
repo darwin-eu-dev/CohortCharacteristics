@@ -90,6 +90,7 @@
 #'   dplyr::glimpse()
 #'
 #' mockDisconnect(cdm = cdm)
+#'
 #' }
 summariseCharacteristics <- function(cohort,
                                      cohortId = NULL,
