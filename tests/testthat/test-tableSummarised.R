@@ -120,6 +120,22 @@ test_that("tableCharacteristics", {
   expect_true(nrow(tibble1) == 43)
 })
 
+test_that("tableCharacteristics, empty output warning message", {
+  skip_on_cran()
+  library(dplyr)
+  library(CodelistGenerator)
+  library(CohortCharacteristics)
+
+  cdm <- mockVocabRef()
+  ac_result <- summariseAchillesCodeUse(list("oa" = c(3, 4, 5)), cdm)
+  expect_warning(
+    CohortCharacteristics::tableCharacteristics(result = ac_result,
+                                                type = "gt"),
+    "Output is empty, perhaps your result_type is not supported by this function."
+    )
+}
+)
+
 test_that("tableCohortOverlap", {
   skip_on_cran()
   # person <- dplyr::tibble(
