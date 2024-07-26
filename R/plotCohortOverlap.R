@@ -39,6 +39,11 @@ plotCohortOverlap <- function(result,
                               facet = NULL,
                               uniqueCombinations = TRUE,
                               .options = list()) {
+
+  rlang::check_installed("ggplots")
+  rlang::check_installed("ggpubr")
+  rlang::check_installed("scales")
+
   # initial checks
   result <- omopgenerics::newSummarisedResult(result) |>
     visOmopResults::filterSettings(.data$result_type == "cohort_overlap")

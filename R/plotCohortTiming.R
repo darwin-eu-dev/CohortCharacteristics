@@ -40,6 +40,11 @@ plotCohortTiming <- function(result,
                              colourName = NULL,
                              uniqueCombinations = TRUE,
                              .options = list()) {
+
+  rlang::check_installed("ggplots")
+  rlang::check_installed("ggpubr")
+  rlang::check_installed("scales")
+
   # initial checks
   result <- omopgenerics::newSummarisedResult(result)
   checkmate::assertChoice(plotType, c("boxplot", "density"))

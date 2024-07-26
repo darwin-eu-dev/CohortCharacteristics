@@ -46,6 +46,9 @@
 #' }
 #'
 plotCohortAttrition <- function(x, cohortId = NULL) {
+
+  rlang::check_installed("DiagrammeR")
+
   if (!inherits(x, "summarised_result")) {
     cli::cli_abort("x must be the output of summariseCohortAttrition()")
   }

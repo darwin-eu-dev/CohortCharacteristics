@@ -69,6 +69,12 @@ plotCharacteristics <- function(data,
                                 colour = NULL,
                                 colourName = NULL,
                                 .options = list()) {
+
+
+  rlang::check_installed("ggplots")
+  rlang::check_installed("ggpubr")
+  rlang::check_installed("scales")
+
   errorMessage <- checkmate::makeAssertCollection()
 
   checkmate::assertTRUE(plotStyle %in% c("boxplot", "barplot", "density"), add = errorMessage)
