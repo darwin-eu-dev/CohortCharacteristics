@@ -39,9 +39,24 @@ plotCohortOverlap <- function(result,
                               facet = NULL,
                               uniqueCombinations = TRUE,
                               .options = list()) {
-  # initial checks
-  result <- omopgenerics::newSummarisedResult(result) |>
+
+
+  if (!inherits(result, "summarised_result")) {
+    cli::cli_abort("result must be a summarised result")
+  }
+  if (nrow(result) == 0) {
+    cli::cli_warn("Empty result object")
+    return(emptyPlot())
+  }
+
+  result <- result |>
     visOmopResults::filterSettings(.data$result_type == "cohort_overlap")
+  if (nrow(result) == 0) {
+    cli::cli_warn("No cohort overlap results found")
+    return(emptyPlot())
+  }
+
+  # initial checks
   checkmate::assertCharacter(facet, null.ok = TRUE)
   checkmate::assertLogical(uniqueCombinations)
 

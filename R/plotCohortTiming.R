@@ -40,6 +40,15 @@ plotCohortTiming <- function(result,
                              colourName = NULL,
                              uniqueCombinations = TRUE,
                              .options = list()) {
+
+  if (!inherits(result, "summarised_result")) {
+    cli::cli_abort("x must be a summarised result")
+  }
+  if (nrow(result) == 0) {
+    cli::cli_warn("Empty result object")
+    return(emptyPlot())
+  }
+
   # initial checks
   result <- omopgenerics::newSummarisedResult(result)
   checkmate::assertChoice(plotType, c("boxplot", "density"))
@@ -54,10 +63,12 @@ plotCohortTiming <- function(result,
   } else if (plotType == "density") {
     result <- result |>
       visOmopResults::filterSettings(.data$result_type == "cohort_timing_density")
-    if (nrow(result) == 0) {
-      cli::cli_abort("Please provide a cohort timing summarised result with density estimates (use `density = TRUE` in summariseCohortTiming).")
-    }
   }
+
+  if (nrow(result) == 0) {
+    cli::cli_warn("No timing results found")
+    return(emptyPlot())
+    }
 
   colorVars <- colour
   facetVarX <- NULL
