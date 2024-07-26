@@ -71,7 +71,7 @@ plotCharacteristics <- function(data,
                                 .options = list()) {
 
 
-  rlang::check_installed("ggplots")
+  rlang::check_installed("ggplot2")
   rlang::check_installed("ggpubr")
   rlang::check_installed("scales")
 
