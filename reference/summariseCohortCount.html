@@ -79,21 +79,21 @@ must have been added as additional columns in the cohort table.</p></dd>
 <span class="r-in"><span><span class="fu">summariseCohortCount</span><span class="op">(</span>cohort <span class="op">=</span> <span class="va">cdm</span><span class="op">$</span><span class="va">cohort1</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising data</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> summariseCharacteristics finished!</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Rows: 6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Rows: 4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Columns: 13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ result_id        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 1, 1, 1, 1, 1, 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ cdm_name         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "PP_MOCK", "PP_MOCK", "PP_MOCK", "PP_MOCK", "PP_MOCK"…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ result_id        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 1, 1, 1, 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ cdm_name         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "PP_MOCK", "PP_MOCK", "PP_MOCK", "PP_MOCK"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ group_name       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "cohort_name", "cohort_name", "cohort_name", "cohort_…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ group_level      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "cohort_2", "cohort_3", "cohort_1", "cohort_2", "coho…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ strata_name      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "overall", "overall", "overall", "overall", "overall"…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ strata_level     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "overall", "overall", "overall", "overall", "overall"…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ variable_name    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "Number records", "Number records", "Number records",…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ variable_level   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> NA, NA, NA, NA, NA, NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ estimate_name    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "count", "count", "count", "count", "count", "count"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ estimate_type    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "integer", "integer", "integer", "integer", "integer"…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ estimate_value   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "2", "4", "4", "2", "4", "4"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ additional_name  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "overall", "overall", "overall", "overall", "overall"…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ additional_level <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "overall", "overall", "overall", "overall", "overall"…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ group_level      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "cohort_3", "cohort_2", "cohort_3", "cohort_2"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ strata_name      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "overall", "overall", "overall", "overall"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ strata_level     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "overall", "overall", "overall", "overall"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ variable_name    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "Number records", "Number records", "Number subjects"…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ variable_level   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> NA, NA, NA, NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ estimate_name    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "count", "count", "count", "count"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ estimate_type    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "integer", "integer", "integer", "integer"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ estimate_value   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "5", "5", "5", "5"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ additional_name  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "overall", "overall", "overall", "overall"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ additional_level <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "overall", "overall", "overall", "overall"</span>
 <span class="r-in"><span><span class="fu"><a href="https://darwin-eu-dev.github.io/PatientProfiles/reference/mockDisconnect.html" class="external-link">mockDisconnect</a></span><span class="op">(</span>cdm <span class="op">=</span> <span class="va">cdm</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
