@@ -122,17 +122,15 @@ test_that("tableCharacteristics", {
 
 test_that("tableCharacteristics, empty output warning message", {
   skip_on_cran()
-  library(dplyr)
-  library(CodelistGenerator)
-  library(CohortCharacteristics)
 
-  cdm <- mockVocabRef()
-  ac_result <- summariseAchillesCodeUse(list("oa" = c(3, 4, 5)), cdm)
+  cdm <- CodelistGenerator::mockVocabRef()
+  ac_result <- CodelistGenerator::summariseAchillesCodeUse(list("oa" = c(3, 4, 5)), cdm)
   expect_warning(
     CohortCharacteristics::tableCharacteristics(result = ac_result,
                                                 type = "gt"),
     "Output is empty, perhaps your result_type is not supported by this function."
     )
+  PatientProfiles::mockDisconnect(cdm)
 }
 )
 
