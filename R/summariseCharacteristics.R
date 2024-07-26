@@ -64,10 +64,29 @@
 #' \donttest{
 #' library(dplyr)
 #' library(CohortCharacteristics)
+#' library(PatientProfiles)
 #'
 #' cdm <- mockCohortCharacteristics()
-#'
-#' summariseCharacteristics(cohort = cdm$cohort1) |>
+#' cdm$cohort1 |>
+#'   addSex() |>
+#'   addAge(
+#'     ageGroup = list(c(0, 40), c(41, 150))
+#'   ) |>
+#'   summariseCharacteristics(
+#'     strata = list("sex", "age_group"),
+#'     cohortIntersectFlag = list (
+#'       "Cohort 2 Flag" = list(
+#'         targetCohortTable = "cohort2",
+#'         window = c(-365, 0)
+#'       )
+#'     ),
+#'     cohortIntersectCount = list (
+#'       "Cohort 2 Count" = list(
+#'         targetCohortTable = "cohort2",
+#'         window = c(-365, 0)
+#'       )
+#'     )
+#'   ) |>
 #'   glimpse()
 #'
 #' mockDisconnect(cdm = cdm)
