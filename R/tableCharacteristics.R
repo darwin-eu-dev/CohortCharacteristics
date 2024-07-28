@@ -70,7 +70,16 @@ tableCharacteristics <- function(result,
                                  ),
                                  .options = list()) {
 
-  # check input
+
+  if (!inherits(result, "summarised_result")) {
+    cli::cli_abort("result must be a summarised result")
+  }
+  if (nrow(result) == 0) {
+    cli::cli_warn("Empty result object")
+    return(emptyResultTable(type = type))
+  }
+
+   # check input
   intersects <- tidyr::expand_grid(
     "type" = c("cohort", "concept", "table"),
     "value" = c("flag", "count", "date", "days")
@@ -83,6 +92,12 @@ tableCharacteristics <- function(result,
     visOmopResults::filterSettings(.data$result_type %in% c(
       "summarised_characteristics", "summarised_demographics", intersects
     ))
+
+  if (nrow(result) == 0) {
+    cli::cli_warn("No characteristics results found")
+    return(emptyResultTable(type = type))
+  }
+
   checkmate::assertList(.options)
 
   # add default options

@@ -7,7 +7,6 @@
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
-#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -43,7 +42,7 @@ plotCohortOverlap <- function(result,
   rlang::check_installed("ggplot2")
   rlang::check_installed("ggpubr")
   rlang::check_installed("scales")
-  
+
   if (!inherits(result, "summarised_result")) {
     cli::cli_abort("result must be a summarised result")
   }
@@ -51,8 +50,6 @@ plotCohortOverlap <- function(result,
     cli::cli_warn("Empty result object")
     return(emptyPlot())
   }
-
-  result <- result |>
 
   # initial checks
   result <- omopgenerics::newSummarisedResult(result) |>

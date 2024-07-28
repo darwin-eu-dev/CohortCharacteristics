@@ -51,7 +51,25 @@ plotComparedLargeScaleCharacteristics <- function(data,
   rlang::check_installed("ggpubr")
   rlang::check_installed("scales")
 
-  if (length(data$result_id) != 0) {
+  if (!inherits(data, "summarised_result")) {
+    cli::cli_abort("result must be a summarised result")
+  }
+  if (nrow(data) == 0) {
+    cli::cli_warn("Empty result object")
+    return(emptyPlot())
+  }
+
+  data <- data |>
+    visOmopResults::filterSettings(.data$result_type == "summarised_large_scale_characteristics")
+
+
+  if (nrow(data) == 0) {
+    cli::cli_warn("No summarised characteristics results found")
+    return(emptyPlot())
+  }
+
+
+   if (length(data$result_id) != 0) {
     checkSettings(data)
 
     referenceGroupLevel <- checkReference(referenceGroupLevel, data, type = "group_level", argument = "referenceGroupLevel")

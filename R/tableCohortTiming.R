@@ -55,9 +55,23 @@ tableCohortTiming <- function(result,
                               ),
                               .options = list()) {
 
-  # initial checks
+  if (!inherits(result, "summarised_result")) {
+    cli::cli_abort("result must be a summarised result")
+  }
+  if (nrow(result) == 0) {
+    cli::cli_warn("Empty result object")
+    return(emptyResultTable(type = type))
+  }
+
+   # initial checks
   result <- omopgenerics::newSummarisedResult(result) |>
     visOmopResults::filterSettings(.data$result_type == "cohort_timing")
+
+  if (nrow(result) == 0) {
+    cli::cli_warn("No cohort timing results found")
+    return(emptyResultTable(type = type))
+  }
+
   checkmate::assertList(.options)
   checkmate::assertChoice(timeScale, c("days", "years"))
 
