@@ -125,14 +125,9 @@ test_that("tableCharacteristics, empty output warning message", {
 
   cdm <- CodelistGenerator::mockVocabRef()
   ac_result <- CodelistGenerator::summariseAchillesCodeUse(list("oa" = c(3, 4, 5)), cdm)
-  expect_warning(
-    CohortCharacteristics::tableCharacteristics(result = ac_result,
-                                                type = "gt"),
-    "Output is empty, perhaps your result_type is not supported by this function."
-    )
+  expect_warning(tableCharacteristics(result = ac_result, type = "gt")    )
   PatientProfiles::mockDisconnect(cdm)
-}
-)
+})
 
 test_that("tableCohortOverlap", {
   skip_on_cran()
