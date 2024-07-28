@@ -41,6 +41,10 @@ plotCohortTiming <- function(result,
                              uniqueCombinations = TRUE,
                              .options = list()) {
 
+  rlang::check_installed("ggplot2")
+  rlang::check_installed("ggpubr")
+  rlang::check_installed("scales")
+  
   if (!inherits(result, "summarised_result")) {
     cli::cli_abort("x must be a summarised result")
   }

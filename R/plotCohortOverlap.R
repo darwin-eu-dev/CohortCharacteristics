@@ -40,7 +40,10 @@ plotCohortOverlap <- function(result,
                               uniqueCombinations = TRUE,
                               .options = list()) {
 
-
+  rlang::check_installed("ggplot2")
+  rlang::check_installed("ggpubr")
+  rlang::check_installed("scales")
+  
   if (!inherits(result, "summarised_result")) {
     cli::cli_abort("result must be a summarised result")
   }
@@ -50,6 +53,9 @@ plotCohortOverlap <- function(result,
   }
 
   result <- result |>
+
+  # initial checks
+  result <- omopgenerics::newSummarisedResult(result) |>
     visOmopResults::filterSettings(.data$result_type == "cohort_overlap")
   if (nrow(result) == 0) {
     cli::cli_warn("No cohort overlap results found")

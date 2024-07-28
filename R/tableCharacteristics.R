@@ -123,6 +123,25 @@ tableCharacteristics <- function(result,
     dplyr::mutate(variable_name = as.character(.data$variable_name)) |>
     dplyr::mutate(variable_level = as.character(.data$variable_level))
 
+  if (nrow(result)==0){
+    cli::cli_warn(
+      "Output is empty, perhaps your result_type is not supported by this function."
+    )
+   suppressWarnings(
+     # format table
+     result <- visOmopResults::visOmopTable(
+       result = result,
+       formatEstimateName = formatEstimateName,
+       header = header,
+       groupColumn = groupColumn,
+       split = split,
+       type = type,
+       excludeColumns = excludeColumns,
+       .options = .options
+     )
+   )
+  } else {
+
   # format table
   result <- visOmopResults::visOmopTable(
     result = result,
@@ -134,6 +153,7 @@ tableCharacteristics <- function(result,
     excludeColumns = excludeColumns,
     .options = .options
   )
+  }
 
   return(result)
 }
