@@ -102,8 +102,8 @@ library(PatientProfiles)
 
 cdm <- mockCohortCharacteristics()
 cdm$cohort1 |>
-  PatientProfiles::addSex() |>
-  PatientProfiles::addAge(
+  addSex() |>
+  addAge(
     ageGroup = list(c(0, 40), c(41, 150))
   ) |>
   summariseCharacteristics(
@@ -121,7 +121,7 @@ cdm$cohort1 |>
       )
     )
   ) |>
-  dplyr::glimpse()
+  glimpse()
 
 mockDisconnect(cdm = cdm)
 }

@@ -46,6 +46,11 @@ plotComparedLargeScaleCharacteristics <- function(data,
                                                   facet = NULL,
                                                   colorVars = NULL,
                                                   missings = 0) {
+
+  rlang::check_installed("ggplot2")
+  rlang::check_installed("ggpubr")
+  rlang::check_installed("scales")
+
   if (length(data$result_id) != 0) {
     checkSettings(data)
 
