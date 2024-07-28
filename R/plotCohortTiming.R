@@ -125,7 +125,13 @@ plotCohortTiming <- function(result,
       plotStyle = "boxplot",
       facet = facet,
       .options = .options
-    )
+    ) +
+      ggplot2::theme_bw() +
+      ggplot2::labs(
+        title = ggplot2::element_blank(),
+        x = ggplot2::element_blank(),
+        y = xLab
+      )
   } else if (plotType == "density") {
     data_to_plot <- data_to_plot |>
       dplyr::filter(.data$variable_name == "density")
@@ -140,16 +146,14 @@ plotCohortTiming <- function(result,
       plotStyle = "density",
       facet = facet,
       .options = .options
-    )
+    ) +
+      ggplot2::theme_bw() +
+      ggplot2::labs(
+        title = ggplot2::element_blank(),
+        x = xLab,
+        y = ggplot2::element_blank()
+      )
   }
-
-  gg <- gg +
-    ggplot2::theme_bw() +
-    ggplot2::labs(
-      title = ggplot2::element_blank(),
-      x = ggplot2::element_blank(),
-      y = xLab
-    )
 
   if (!is.null(colourName)) {
     gg <- gg +
