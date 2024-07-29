@@ -12,5 +12,6 @@
 ^extras
 ^cran-comments\.md$
 ^vignettes/articles$
+^vignettes/a05_summariseCohortEntries.Rmd
 ^codecov\.yml$
 ^CRAN-SUBMISSION$
