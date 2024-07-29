@@ -52,10 +52,15 @@ plotCohortAttrition <- function(x, cohortId = NULL) {
   if (!inherits(x, "summarised_result")) {
     cli::cli_abort("x must be the output of summariseCohortAttrition()")
   }
+  if (nrow(x) == 0) {
+    cli::cli_warn("Empty result object")
+    return(emptyTable("Empty result object"))
+  }
   x <- x |>
     visOmopResults::filterSettings(.data$result_type == "cohort_attrition")
   if (nrow(x) == 0) {
-    return(emptyTable("No attrition found in the result object."))
+    cli::cli_warn("No attrition found in the results")
+    return(emptyTable("No attrition found in the results"))
   }
   if (!is.null(cohortId)) {
     x <- x |>

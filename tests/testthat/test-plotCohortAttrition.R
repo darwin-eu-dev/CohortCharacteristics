@@ -18,4 +18,11 @@ test_that("plot cohort attrition", {
   ca <- ca |> dplyr::filter(result_id == 10)
   x <- plotCohortAttrition(ca)
   expect_true(inherits(x, c("grViz", "htmlwidget")))
+
+  # Test other result
+  other <- PatientProfiles::summariseResult(cdm[["cohort1"]])
+  x <- plotCohortAttrition(other)
+  expect_true(inherits(x, c("grViz", "htmlwidget")))
+
+
 })

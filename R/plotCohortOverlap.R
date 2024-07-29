@@ -7,7 +7,6 @@
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
-#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -44,9 +43,23 @@ plotCohortOverlap <- function(result,
   rlang::check_installed("ggpubr")
   rlang::check_installed("scales")
 
+  if (!inherits(result, "summarised_result")) {
+    cli::cli_abort("result must be a summarised result")
+  }
+  if (nrow(result) == 0) {
+    cli::cli_warn("Empty result object")
+    return(emptyPlot())
+  }
+
   # initial checks
   result <- omopgenerics::newSummarisedResult(result) |>
     visOmopResults::filterSettings(.data$result_type == "cohort_overlap")
+  if (nrow(result) == 0) {
+    cli::cli_warn("No cohort overlap results found")
+    return(emptyPlot())
+  }
+
+  # initial checks
   checkmate::assertCharacter(facet, null.ok = TRUE)
   checkmate::assertLogical(uniqueCombinations)
 

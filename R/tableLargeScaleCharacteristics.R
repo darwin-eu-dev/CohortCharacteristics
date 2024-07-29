@@ -62,7 +62,14 @@ tableLargeScaleCharacteristics <- function(result,
                                            ),
                                            topConcepts = NULL) {
 
-  assertClass(result, "summarised_result")
+  if (!inherits(result, "summarised_result")) {
+    cli::cli_abort("result must be a summarised result")
+  }
+  if (nrow(result) == 0) {
+    cli::cli_warn("Empty result object")
+    return(emptyResultTable(type = type))
+  }
+
   assertLogical(splitStrata, length = 1)
   if (is.character(header)) {
     header <- tolower(header)
@@ -74,9 +81,10 @@ tableLargeScaleCharacteristics <- function(result,
       .data$result_type == "summarised_large_scale_characteristics"
     )
   if (nrow(result) == 0) {
-    cli::cli_abort(
-      "No summarised_large_scale_characteristics records where found in this result object"
+    cli::cli_warn(
+      "No summarised large scale characteristics found in this result object"
     )
+    return(emptyResultTable(type = type))
   }
 
   # min cell count

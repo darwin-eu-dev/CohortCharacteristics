@@ -47,12 +47,24 @@ tableCohortAttrition <- function(result,
   assertChoice(header, c("cdm_name", "cohort_name"))
   assertChoice(groupColumn, c("cdm_name", "cohort_name"))
 
+  if(nrow(result) == 0){
+   cli::cli_warn("Empty result object")
+   return(emptyResultTable(type = type))
+  }
+
   header <- correct(header)
   groupColumn <- correct(groupColumn)
 
   # showMinCellCount
   settings <- omopgenerics::settings(result) |>
     dplyr::filter(.data$result_type == "cohort_attrition")
+
+  if(nrow(settings) == 0){
+    cli::cli_warn("No cohort_attrition result found")
+    return(emptyResultTable(type = type))
+  }
+
+
   if ("min_cell_count" %in% colnames(settings)) {
     result <- result |>
       dplyr::left_join(
@@ -100,4 +112,17 @@ correct <- function(x) {
   x[x == "cdm_name"] <- "CDM name"
   x[x == "cohort_name"] <- "Cohort name"
   return(x)
+}
+
+
+emptyResultTable <- function(type){
+  if(type == "gt"){
+   result <- gt::gt(dplyr::tibble())
+  } else if(type == "flextable"){
+    result <- flextable::flextable(dplyr::tibble("Table has no data" = "Empty result provided"))
+  } else{
+    result <- dplyr::tibble()
+  }
+
+  result
 }

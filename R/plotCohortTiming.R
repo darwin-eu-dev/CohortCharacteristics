@@ -44,6 +44,14 @@ plotCohortTiming <- function(result,
   rlang::check_installed("ggplot2")
   rlang::check_installed("ggpubr")
   rlang::check_installed("scales")
+  
+  if (!inherits(result, "summarised_result")) {
+    cli::cli_abort("x must be a summarised result")
+  }
+  if (nrow(result) == 0) {
+    cli::cli_warn("Empty result object")
+    return(emptyPlot())
+  }
 
   # initial checks
   result <- omopgenerics::newSummarisedResult(result)
@@ -59,10 +67,12 @@ plotCohortTiming <- function(result,
   } else if (plotType == "density") {
     result <- result |>
       visOmopResults::filterSettings(.data$result_type == "cohort_timing_density")
-    if (nrow(result) == 0) {
-      cli::cli_abort("Please provide a cohort timing summarised result with density estimates (use `density = TRUE` in summariseCohortTiming).")
-    }
   }
+
+  if (nrow(result) == 0) {
+    cli::cli_warn("No timing results found")
+    return(emptyPlot())
+    }
 
   colorVars <- colour
   facetVarX <- NULL

@@ -70,16 +70,31 @@ plotCharacteristics <- function(data,
                                 colourName = NULL,
                                 .options = list()) {
 
-
   rlang::check_installed("ggplot2")
   rlang::check_installed("ggpubr")
   rlang::check_installed("scales")
+
+  if (!inherits(data, "summarised_result")) {
+    cli::cli_abort("result must be a summarised result")
+  }
+  if (nrow(data) == 0) {
+    cli::cli_warn("Empty result object")
+    return(emptyPlot())
+  }
 
   errorMessage <- checkmate::makeAssertCollection()
 
   checkmate::assertTRUE(plotStyle %in% c("boxplot", "barplot", "density"), add = errorMessage)
 
   checkmate::reportAssertions(collection = errorMessage)
+
+  data <- data |>
+    visOmopResults::filterSettings(.data$result_type ==
+                                     "summarised_characteristics")
+  if (nrow(data) == 0) {
+    cli::cli_warn("No summarised characteristics results found")
+    return(emptyPlot())
+  }
 
   xAxis <- x
   yAxis <- "estimate_value"
