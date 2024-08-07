@@ -1224,18 +1224,14 @@ test_that("arguments conceptIntersect", {
   )
 
   ## intersect date
-  expect_warning(
-    expect_warning(
-      expect_no_error(
-        results <- summariseCharacteristics(
-          cohort = cdm$sinusitis,
-          conceptIntersectDate = list(
-            "Codelist date anytime before" = list(
-              conceptSet = codelist,
-              order = "last",
-              window = c(-Inf, -1)
-            )
-          )
+  expect_no_error(
+    results <- summariseCharacteristics(
+      cohort = cdm$sinusitis,
+      conceptIntersectDate = list(
+        "Codelist date anytime before" = list(
+          conceptSet = codelist,
+          order = "last",
+          window = c(-Inf, -1)
         )
       )
     )
@@ -1275,18 +1271,14 @@ test_that("arguments conceptIntersect", {
   )
 
   ## Intersect Days
-  expect_warning(
-    expect_warning(
-      expect_no_error(
-        results <- summariseCharacteristics(
-          cohort = cdm$sinusitis,
-          conceptIntersectDays = list(
-            "Codelist days anytime before" = list(
-              conceptSet = codelist,
-              order = "last",
-              window = c(-Inf, -1)
-            )
-          )
+  expect_no_error(
+    results <- summariseCharacteristics(
+      cohort = cdm$sinusitis,
+      conceptIntersectDays = list(
+        "Codelist days anytime before" = list(
+          conceptSet = codelist,
+          order = "last",
+          window = c(-Inf, -1)
         )
       )
     )
@@ -1297,36 +1289,31 @@ test_that("arguments conceptIntersect", {
       (results %>% dplyr::pull("variable_name"))
   )
 
+  expect_true(all(
+    results %>%
+      dplyr::filter(
+        variable_name == "Codelist days anytime before",
+        estimate_name == "min"
+      ) %>%
+      dplyr::select("estimate_value") %>%
+      dplyr::mutate(estimate_value = as.integer(estimate_value)) %>%
+      dplyr::pull("estimate_value") |>
+      na.omit() %>%
+      as.numeric() < 0
+  ))
 
-  expect_warning(
-    expect_true(all(
-      results %>%
-        dplyr::filter(
-          variable_name == "Codelist days anytime before",
-          estimate_name == "min"
-        ) %>%
-        dplyr::select("estimate_value") %>%
-        dplyr::mutate(estimate_value = as.integer(estimate_value)) %>%
-        dplyr::pull("estimate_value") |>
-        na.omit() %>%
-        as.numeric() < 0
-    ))
-  )
-
-  expect_warning(
-    expect_true(all(
-      results %>%
-        dplyr::filter(
-          variable_name == "Codelist days anytime before",
-          estimate_name == "max"
-        ) %>%
-        dplyr::select("estimate_value") %>%
-        dplyr::mutate(estimate_value = as.integer(estimate_value)) %>%
-        dplyr::pull("estimate_value") |>
-        na.omit() %>%
-        as.numeric() < 0
-    ))
-  )
+  expect_true(all(
+    results %>%
+      dplyr::filter(
+        variable_name == "Codelist days anytime before",
+        estimate_name == "max"
+      ) %>%
+      dplyr::select("estimate_value") %>%
+      dplyr::mutate(estimate_value = as.integer(estimate_value)) %>%
+      dplyr::pull("estimate_value") |>
+      na.omit() %>%
+      as.numeric() < 0
+  ))
 
   mockDisconnect(cdm = cdm)
 })
