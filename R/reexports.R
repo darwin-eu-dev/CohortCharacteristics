@@ -22,6 +22,18 @@ omopgenerics::suppress
 #' @export
 omopgenerics::settings
 
+#' @importFrom omopgenerics bind
+#' @export
+omopgenerics::bind
+
+#' @importFrom omopgenerics importSummarisedResult
+#' @export
+omopgenerics::importSummarisedResult
+
+#' @importFrom omopgenerics exportSummarisedResult
+#' @export
+omopgenerics::exportSummarisedResult
+
 #' It creates a mock database for testing CohortCharacteristics package
 #'
 #' @param con A DBI connection to create the cdm mock object.

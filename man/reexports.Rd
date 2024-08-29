@@ -5,6 +5,9 @@
 \alias{reexports}
 \alias{suppress}
 \alias{settings}
+\alias{bind}
+\alias{importSummarisedResult}
+\alias{exportSummarisedResult}
 \alias{mockDisconnect}
 \title{Objects exported from other packages}
 \keyword{internal}
@@ -13,7 +16,7 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{omopgenerics}{\code{\link[omopgenerics]{settings}}, \code{\link[omopgenerics]{suppress}}}
+  \item{omopgenerics}{\code{\link[omopgenerics]{bind}}, \code{\link[omopgenerics]{exportSummarisedResult}}, \code{\link[omopgenerics]{importSummarisedResult}}, \code{\link[omopgenerics]{settings}}, \code{\link[omopgenerics]{suppress}}}
 
   \item{PatientProfiles}{\code{\link[PatientProfiles]{mockDisconnect}}}
 }}
