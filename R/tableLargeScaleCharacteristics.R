@@ -125,7 +125,7 @@ tableLargeScaleCharacteristics <- function(result,
   # get only topN
   top <- res |>
     dplyr::filter(.data$estimate_name == "count") |>
-    dplyr::select("concept_id", "estimate_value", "group") |>
+    dplyr::select("concept_id", "estimate_value",  "group") |>
     dplyr::mutate("estimate_value" = as.numeric(.data$estimate_value)) |>
     dplyr::arrange(dplyr::desc(.data$estimate_value)) |>
     dplyr::select("concept_id", "group") |>
@@ -139,9 +139,8 @@ tableLargeScaleCharacteristics <- function(result,
   }
   res <- res |>
     dplyr::inner_join(
-      top |>
-        dplyr::select(-"group"),
-      by = "concept_id"
+      top,
+      by = c("concept_id", "group")
     )
 
   res <- res |>
