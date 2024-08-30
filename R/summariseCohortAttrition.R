@@ -67,7 +67,7 @@ summariseCohortAttrition <- function(cohort,
     visOmopResults::uniteAdditional("reason_id") |>
     omopgenerics::newSummarisedResult(
       settings = set |>
-        dplyr::select(-"cohort_name") |>
+        dplyr::select(-c("cohort_name", "cohort_definition_id")) |>
         dplyr::mutate(
           "result_type" = "summarise_cohort_attrition",
           "package_name" = "CohortCharacteristics",

@@ -46,6 +46,9 @@ summariseCohortCount <- function(cohort,
   omopgenerics::newSummarisedResult(
     res,
     settings = settings(res) |>
-      dplyr::mutate("result_type" = "summarise_cohort_count")
+      dplyr::mutate(
+        "result_type" = "summarise_cohort_count",
+        "table_name" = omopgenerics::tableName(cohort)
+      )
   )
 }
