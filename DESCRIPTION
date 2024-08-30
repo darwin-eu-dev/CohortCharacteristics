@@ -39,7 +39,6 @@ Suggests:
     spelling,
     RPostgres,
     dbplyr,
-    PaRe,
     here,
     magick,
     plotly,
