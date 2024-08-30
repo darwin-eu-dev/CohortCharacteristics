@@ -62,7 +62,7 @@ Imports:
     rlang,
     cli,
     stringr,
-    omopgenerics (>= 0.2.0),
+    omopgenerics (>= 0.3.0),
     visOmopResults (>= 0.3.0),
     PatientProfiles (>= 1.0.0),
     magrittr,
