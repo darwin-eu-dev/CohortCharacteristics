@@ -855,10 +855,10 @@ getUniqueCombinationsSr <- function(x) {
     dplyr::filter(.data$id_x < .data$id_y) |>
     dplyr::select("cohort_name_comparator", "cohort_name_reference") |>
     visOmopResults::uniteGroup(
-      cols = c("cohort_name_comparator", "cohort_name_reference"))
-  result <- result |>
+      cols = c("cohort_name_reference", "cohort_name_comparator"))
+  x <- x |>
     dplyr::inner_join(pairs, by = c("group_name", "group_level"))
-  return(result)
+  return(x)
 }
 getUniqueCombinations <- function(x, order) {
   dataCohortRef <- unique(x$cohort_name_reference)

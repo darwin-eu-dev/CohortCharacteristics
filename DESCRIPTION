@@ -60,7 +60,8 @@ Imports:
     visOmopResults (>= 0.3.0),
     PatientProfiles (>= 1.0.0),
     magrittr,
-    snakecase
+    snakecase,
+    lifecycle
 URL: https://darwin-eu-dev.github.io/CohortCharacteristics/
 BugReports: https://github.com/darwin-eu-dev/CohortCharacteristics/issues
 Language: en-US

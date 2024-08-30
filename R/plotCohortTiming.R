@@ -22,12 +22,12 @@
 #' @param plotType Type of desired formatted table, possibilities are "boxplot" and
 #' "density".
 #' @param timeScale Time scale to plot results. Can be days or years.
-#' @param facet variables to facet by
-#' @param colour Variables to use for colours
-#' @param colourName Colour legend name
+#' @param facet variables to facet by.
+#' @param colour Variables to use for colours.
+#' @param colourName deprecated.
 #' @param uniqueCombinations If TRUE, only unique combinations of reference and
 #' comparator plots will be plotted.
-#' @param .options Additional plotting options
+#' @param .options deprecated.
 #'
 #' @return A ggplot.
 #' @export
@@ -35,10 +35,10 @@
 plotCohortTiming <- function(result,
                              plotType = "boxplot",
                              timeScale = "days",
-                             facet = NULL,
-                             colour = NULL,
+                             facet = c("cdm_name", "cohort_name_reference"),
+                             colour = c("cohort_name_comparator"),
                              colourName = lifecycle::deprecated(),
-                             uniqueCombinations = TRUE,
+                             uniqueCombinations = FALSE,
                              .options = lifecycle::deprecated()) {
   if (lifecycle::is_present(colourName)) {
     lifecycle::deprecate_warn(
@@ -81,6 +81,14 @@ plotCohortTiming <- function(result,
   } else if (plotType == "density") {
     result <- result |>
       dplyr::filter(.data$variable_name == "density")
+    if (timeScale == "years") {
+      result <- result |>
+        dplyr::mutate(estimate_value = dplyr::if_else(
+          .data$estimate_name == "x",
+          as.character(as.numeric(.data$estimate_value) / 365.25),
+          .data$estimate_value
+        ))
+    }
   }
 
   xLab <- switch (timeScale,
@@ -121,5 +129,13 @@ plotCohortTiming <- function(result,
       )
   }
 
-  return(gg)
+  p <- addLine(p)
+
+  return(p)
+}
+
+addLine <- function(p) {
+  p +
+    ggplot2::geom_vline(
+      xintercept = 0, colour = "black", linetype = "longdash", alpha = 0.5)
 }

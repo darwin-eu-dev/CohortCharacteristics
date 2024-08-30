@@ -48,7 +48,7 @@ test_that("plotCohortTiming, boxplot", {
   )
   boxplot1 <- plotCohortTiming(timing1,
     facet = "cdm_name",
-    colour = "group_level",
+    colour = c("cohort_name_reference", "cohort_name_comparator"),
     uniqueCombinations = TRUE
   )
   # expect_true(all(c("q0", "q25", "q50", "q75", "q100") %in% colnames(boxplot1$data)))
@@ -59,7 +59,7 @@ test_that("plotCohortTiming, boxplot", {
   # expect_true(boxplot1$labels$fill == "group")
 
   boxplot2 <- plotCohortTiming(timing1,
-    colour = "group_level",
+    colour = c("cohort_name_comparator"),
     uniqueCombinations = FALSE
   )
   # expect_true(all(c("Cohort 1", "Cohort 2") %in% boxplot2$data$cohort_name_reference))
@@ -77,8 +77,8 @@ test_that("plotCohortTiming, boxplot", {
     restrictToFirstEntry = FALSE
   )
   boxplot3 <- plotCohortTiming(timing3,
-    colour = "strata_level",
-    facet = "strata_name",
+    colour = c("age_group", "sex"),
+    facet = c("age_group", "sex"),
     uniqueCombinations = FALSE
   )
   # expect_true(all(c("Cohort 1", "Cohort 2") %in% boxplot3$data$cohort_name_reference))
@@ -142,7 +142,7 @@ test_that("plotCohortTiming, density", {
   density1 <- plotCohortTiming(timing1,
     plotType = "density",
     facet = NULL,
-    colour = "group_level",
+    colour = c("cohort_name_reference", "cohort_name_comparator"),
     uniqueCombinations = TRUE
   )
 
@@ -152,8 +152,8 @@ test_that("plotCohortTiming, density", {
 
   density2 <- plotCohortTiming(timing1,
     plotType = "density",
-    colour = "group_level",
-    facet = "cdm_name",
+    colour = c("cohort_name_comparator"),
+    facet = c("cdm_name", "cohort_name_reference"),
     uniqueCombinations = FALSE
   )
   # expect_true(all(c("plot_id", "timing_label", "x", "y", ".group") %in% colnames(density2$data)))
@@ -167,6 +167,7 @@ test_that("plotCohortTiming, density", {
   density4 <- plotCohortTiming(timing2,
     plotType = "density",
     facet = NULL,
+    colour = c("cohort_name_reference", "cohort_name_comparator"),
     uniqueCombinations = TRUE
   )
   expect_true(all(c("gg", "ggplot") %in% class(density4)))
@@ -186,8 +187,8 @@ test_that("plotCohortTiming, density", {
 
   density3 <- plotCohortTiming(timing3,
     plotType = "density",
-    colour = "strata_name",
-    facet = c("group_level", "strata_level"),
+    colour = c("age_group", "sex"),
+    facet = c("cohort_name_reference", "cohort_name_comparator"),
     uniqueCombinations = FALSE
   )
   # expect_true(all(c("plot_id", "timing_label", "color_var", "x", "y", ".group") %in% colnames(density3$data)))
