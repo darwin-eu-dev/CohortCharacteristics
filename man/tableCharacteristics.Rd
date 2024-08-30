@@ -2,7 +2,7 @@
 % Please edit documentation in R/tableCharacteristics.R
 \name{tableCharacteristics}
 \alias{tableCharacteristics}
-\title{Format a summarised_characteristics object into a visual table.}
+\title{Format a summarise_characteristics object into a visual table.}
 \usage{
 tableCharacteristics(
   result,
@@ -18,7 +18,7 @@ tableCharacteristics(
 )
 }
 \arguments{
-\item{result}{A summarised_characteristics object.}
+\item{result}{A summarise_characteristics object.}
 
 \item{type}{Type of desired formatted table, possibilities: "gt",
 "flextable", "tibble".}

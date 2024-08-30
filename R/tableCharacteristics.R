@@ -14,11 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#' Format a summarised_characteristics object into a visual table.
+#' Format a summarise_characteristics object into a visual table.
 #'
 #' `r lifecycle::badge("experimental")`
 #'
-#' @param result A summarised_characteristics object.
+#' @param result A summarise_characteristics object.
 #' @param type Type of desired formatted table, possibilities: "gt",
 #' "flextable", "tibble".
 #' @param formatEstimateName Named list of estimate name's to join, sorted by
@@ -80,18 +80,8 @@ tableCharacteristics <- function(result,
   }
 
    # check input
-  intersects <- tidyr::expand_grid(
-    "type" = c("cohort", "concept", "table"),
-    "value" = c("flag", "count", "date", "days")
-  ) |>
-    dplyr::mutate("x" = paste0(
-      "summarised_", .data$type, "_intersect_", .data$value
-    )) |>
-    dplyr::pull("x")
   result <- omopgenerics::newSummarisedResult(result) |>
-    visOmopResults::filterSettings(.data$result_type %in% c(
-      "summarised_characteristics", "summarised_demographics", intersects
-    ))
+    visOmopResults::filterSettings(.data$result_type == "summarise_characteristics")
 
   if (nrow(result) == 0) {
     cli::cli_warn("No characteristics results found")

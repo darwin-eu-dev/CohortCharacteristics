@@ -2,7 +2,7 @@
 % Please edit documentation in R/tableCohortCount.R
 \name{tableCohortCount}
 \alias{tableCohortCount}
-\title{Format a summarised_characteristics object into a visual table.}
+\title{Format a summarise_characteristics object into a visual table.}
 \usage{
 tableCohortCount(
   result,
@@ -17,7 +17,7 @@ tableCohortCount(
 )
 }
 \arguments{
-\item{result}{A summarised_characteristics object.}
+\item{result}{A summarise_characteristics object.}
 
 \item{type}{Type of desired formatted table, possibilities: "gt",
 "flextable", "tibble".}

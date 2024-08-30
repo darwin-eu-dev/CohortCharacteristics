@@ -36,41 +36,16 @@
 summariseCohortCount <- function(cohort,
                                  cohortId = NULL,
                                  strata = list()) {
-  summariseCharacteristics(
+  res <- summariseCharacteristics(
     cohort,
     cohortId = cohortId,
     strata = strata,
     counts = TRUE,
     demographics = FALSE
   )
-}
-
-summaryInternal <- function(cohort, cohortId, resultType) {
-  res <- summary(cohort)
-  if (!is.null(cohortId)) {
-    res <- res |>
-      visOmopResults::filterSettings(.data$cohort_definition_id %in% .env$cohortId)
-  }
-  res <- res |>
-    visOmopResults::filterSettings(.data$result_type %in% .env$resultType) |>
-    updateId()
-  return(res)
-}
-updateId <- function(res) {
-  resId <- res |>
-    dplyr::select("result_id") |>
-    dplyr::distinct() |>
-    dplyr::arrange(.data$result_id) |>
-    dplyr::mutate("new_result_id" = dplyr::row_number())
-  res <- res |>
-    dplyr::inner_join(resId, by = "result_id") |>
-    dplyr::select(-"result_id") |>
-    dplyr::rename("result_id" = "new_result_id") |>
-    omopgenerics::newSummarisedResult(
-      settings = settings(res) |>
-        dplyr::inner_join(resId, by = "result_id") |>
-        dplyr::select(-"result_id") |>
-        dplyr::rename("result_id" = "new_result_id")
-    )
-  return(res)
+  omopgenerics::newSummarisedResult(
+    res,
+    settings = settings(res) |>
+      dplyr::mutate("result_type" = "summarise_cohort_count")
+  )
 }

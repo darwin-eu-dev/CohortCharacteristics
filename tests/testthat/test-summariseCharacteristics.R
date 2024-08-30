@@ -270,7 +270,7 @@ test_that("test summariseCharacteristics", {
         "package_version" = as.character(utils::packageVersion(
           "CohortCharacteristics"
         )),
-        "result_type" = "summarised_characteristics"
+        "result_type" = "summarise_characteristics"
       ))
   )
 

@@ -60,7 +60,7 @@ plotComparedLargeScaleCharacteristics <- function(data,
   }
 
   data <- data |>
-    visOmopResults::filterSettings(.data$result_type == "summarised_large_scale_characteristics")
+    visOmopResults::filterSettings(.data$result_type == "summarise_large_scale_characteristics")
 
 
   if (nrow(data) == 0) {

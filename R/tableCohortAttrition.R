@@ -57,7 +57,7 @@ tableCohortAttrition <- function(result,
 
   # showMinCellCount
   settings <- omopgenerics::settings(result) |>
-    dplyr::filter(.data$result_type == "cohort_attrition")
+    dplyr::filter(.data$result_type == "summarise_cohort_attrition")
 
   if(nrow(settings) == 0){
     cli::cli_warn("No cohort_attrition result found")
@@ -82,7 +82,7 @@ tableCohortAttrition <- function(result,
 
   # create table
   result <- result |>
-    visOmopResults::filterSettings(.data$result_type == "cohort_attrition") |>
+    visOmopResults::filterSettings(.data$result_type == "summarise_cohort_attrition") |>
     visOmopResults::splitAll() |>
     dplyr::arrange(.data$cohort_name, .data$reason_id) |>
     dplyr::select(-c(

@@ -158,7 +158,7 @@ summariseCharacteristics <- function(cohort,
     "package_version" = as.character(utils::packageVersion(
       "CohortCharacteristics"
     )),
-    "result_type" = "summarised_characteristics"
+    "result_type" = "summarise_characteristics"
   )
 
   # return empty result if no analyses chosen

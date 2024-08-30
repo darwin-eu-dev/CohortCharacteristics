@@ -63,9 +63,10 @@ tableCohortTiming <- function(result,
     return(emptyResultTable(type = type))
   }
 
-   # initial checks
+  # initial checks
   result <- omopgenerics::newSummarisedResult(result) |>
-    visOmopResults::filterSettings(.data$result_type == "cohort_timing")
+    visOmopResults::filterSettings(.data$result_type == "summarise_cohort_timing") |>
+    dplyr::filter(.data$variable_name != "density")
 
   if (nrow(result) == 0) {
     cli::cli_warn("No cohort timing results found")
@@ -89,9 +90,6 @@ tableCohortTiming <- function(result,
     x <- result |>
       dplyr::arrange(dplyr::across(dplyr::all_of(c("cdm_name", "group_name", "group_level", "strata_name", "strata_level"))))
   }
-
-
-
 
   if (timeScale == "years") {
     x <- dplyr::bind_rows(

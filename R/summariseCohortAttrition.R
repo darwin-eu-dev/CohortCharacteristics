@@ -33,9 +33,51 @@
 #' }
 summariseCohortAttrition <- function(cohort,
                                      cohortId = NULL) {
-  assertClass(cohort, "cohort_table")
-  assertNumeric(cohortId, integerish = TRUE, min = 1, null = TRUE)
+  cohort <- omopgenerics::validateCohortArgument(cohort)
+  cohortId <- omopgenerics::validateCohortIdArgument(cohortId, cohort)
 
-  cohort |>
-    summaryInternal(cohortId = cohortId, resultType = "cohort_attrition")
+  set <- omopgenerics::settings(cohort) |>
+    dplyr::filter(.data$cohort_definition_id %in% .env$cohortId) |>
+    dplyr::mutate("result_id" = as.integer(dplyr::row_number()))
+
+  attritionSummary <- omopgenerics::attrition(cohort) |>
+    dplyr::inner_join(
+      set |>
+        dplyr::select("cohort_definition_id", "result_id", "cohort_name"),
+      by = "cohort_definition_id"
+    ) |>
+    dplyr::select(-"cohort_definition_id") |>
+    dplyr::mutate(dplyr::across(!"result_id", as.character)) |>
+    tidyr::pivot_longer(
+      cols = c(
+        "number_records", "number_subjects", "excluded_records",
+        "excluded_subjects"
+      ),
+      names_to = "variable_name",
+      values_to = "estimate_value"
+    ) |>
+    dplyr::mutate(
+      "estimate_name" = "count",
+      "variable_level" = NA_character_,
+      "estimate_type" = "integer",
+      "cdm_name" = omopgenerics::cdmName(cohort)
+    ) |>
+    visOmopResults::uniteGroup("cohort_name") |>
+    visOmopResults::uniteStrata("reason") |>
+    visOmopResults::uniteAdditional("reason_id") |>
+    omopgenerics::newSummarisedResult(
+      settings = set |>
+        dplyr::select(-"cohort_name") |>
+        dplyr::mutate(
+          "result_type" = "summarise_cohort_attrition",
+          "package_name" = "CohortCharacteristics",
+          "package_version" = as.character(utils::packageVersion("CohortCharacteristics")),
+          "table_name" = omopgenerics::tableName(cohort)
+        ) |>
+        dplyr::relocate(dplyr::all_of(c(
+          "result_id", "result_type", "package_name", "package_version"
+        )))
+    )
+
+  return(attritionSummary)
 }
