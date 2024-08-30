@@ -90,7 +90,7 @@ plotCharacteristics <- function(data,
 
   data <- data |>
     visOmopResults::filterSettings(.data$result_type ==
-                                     "summarised_characteristics")
+                                     "summarise_characteristics")
   if (nrow(data) == 0) {
     cli::cli_warn("No summarised characteristics results found")
     return(emptyPlot())

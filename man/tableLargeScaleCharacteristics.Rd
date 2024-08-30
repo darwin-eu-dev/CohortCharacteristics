@@ -2,7 +2,7 @@
 % Please edit documentation in R/tableLargeScaleCharacteristics.R
 \name{tableLargeScaleCharacteristics}
 \alias{tableLargeScaleCharacteristics}
-\title{Format a summarised_large_scale_characteristics object into a visual table.}
+\title{Format a summarise_large_scale_characteristics object into a visual table.}
 \usage{
 tableLargeScaleCharacteristics(
   result,
@@ -14,7 +14,7 @@ tableLargeScaleCharacteristics(
 )
 }
 \arguments{
-\item{result}{A summarised_large_scale_characteristics object.}
+\item{result}{A summarise_large_scale_characteristics object.}
 
 \item{type}{Output type ("gt" or "flextable").}
 

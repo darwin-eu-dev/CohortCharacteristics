@@ -239,7 +239,7 @@ summariseCohortOverlap <- function(cohort,
     omopgenerics::newSummarisedResult(
       settings = dplyr::tibble(
         result_id = 1L,
-        result_type = "cohort_overlap",
+        result_type = "summarise_cohort_overlap",
         package_name = "CohortCharacteristics",
         package_version = as.character(utils::packageVersion("CohortCharacteristics"))
       )

@@ -107,10 +107,7 @@ test_that("summariseCohortTiming", {
   timing6 <- summariseCohortTiming(cdm$table, cohortId = 1)
   expect_true(nrow(timing6) == 0)
 
-  expect_warning(timing7 <- summariseCohortTiming(cdm$table,
-    cohortId = 5:7
-  ))
-  expect_true(nrow(timing7) == 0)
+  expect_error(timing7 <- summariseCohortTiming(cdm$table, cohortId = 5))
 
   timing8 <- summariseCohortTiming(cdm$table, cohortId = 1, density = TRUE)
   expect_true(nrow(timing8) == 0)

@@ -129,7 +129,7 @@ facetFunction <- function(facet, splitStrata, data) {
     visOmopResults::addSettings() |>
     dplyr::filter(
       .data$estimate_type == "percentage",
-      .data$result_type == "summarised_large_scale_characteristics"
+      .data$result_type == "summarise_large_scale_characteristics"
     )
   return(list("facetVarX" = facetVarX, "facetVarY" = facetVarY, "data" = data))
 }

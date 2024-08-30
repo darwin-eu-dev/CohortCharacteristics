@@ -215,7 +215,7 @@ summariseLargeScaleCharacteristics <- function(cohort,
     omopgenerics::newSummarisedResult(
       settings = sets |>
         dplyr::mutate(
-          "result_type" = "summarised_large_scale_characteristics",
+          "result_type" = "summarise_large_scale_characteristics",
           "package_name" = "CohortCharacteristics",
           "package_version" = as.character(utils::packageVersion("CohortCharacteristics"))
         )

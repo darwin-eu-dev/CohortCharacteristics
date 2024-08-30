@@ -44,7 +44,7 @@ plotCohortTiming <- function(result,
   rlang::check_installed("ggplot2")
   rlang::check_installed("ggpubr")
   rlang::check_installed("scales")
-  
+
   if (!inherits(result, "summarised_result")) {
     cli::cli_abort("x must be a summarised result")
   }
@@ -61,12 +61,14 @@ plotCohortTiming <- function(result,
   checkmate::assertCharacter(colour, null.ok = TRUE)
   checkmate::assertCharacter(colourName, null.ok = TRUE, len = 1)
   checkmate::assertLogical(uniqueCombinations)
+  result <- result |>
+    visOmopResults::filterSettings(.data$result_type == "summarise_cohort_timing")
   if (plotType == "boxplot") {
     result <- result |>
-      visOmopResults::filterSettings(.data$result_type == "cohort_timing")
+      dplyr::filter(.data$variable_name != "density")
   } else if (plotType == "density") {
     result <- result |>
-      visOmopResults::filterSettings(.data$result_type == "cohort_timing_density")
+      dplyr::filter(.data$variable_name == "density")
   }
 
   if (nrow(result) == 0) {

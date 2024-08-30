@@ -57,7 +57,7 @@ plotCohortAttrition <- function(x, cohortId = NULL) {
     return(emptyTable("Empty result object"))
   }
   x <- x |>
-    visOmopResults::filterSettings(.data$result_type == "cohort_attrition")
+    visOmopResults::filterSettings(.data$result_type == "summarise_cohort_attrition")
   if (nrow(x) == 0) {
     cli::cli_warn("No attrition found in the results")
     return(emptyTable("No attrition found in the results"))

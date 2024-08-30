@@ -14,11 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#' Format a summarised_large_scale_characteristics object into a visual table.
+#' Format a summarise_large_scale_characteristics object into a visual table.
 #'
 #' `r lifecycle::badge("experimental")`
 #'
-#' @param result A summarised_large_scale_characteristics object.
+#' @param result A summarise_large_scale_characteristics object.
 #' @param type Output type ("gt" or "flextable").
 #' @param formatEstimateName Named list of estimate name's to join, sorted by
 #' computation order. Indicate estimate_name's between <...>.
@@ -78,7 +78,7 @@ tableLargeScaleCharacteristics <- function(result,
   assertChoice(header, choices = c("cdm name", "cohort name", "strata", "window name"))
   result <- result |>
     visOmopResults::filterSettings(
-      .data$result_type == "summarised_large_scale_characteristics"
+      .data$result_type == "summarise_large_scale_characteristics"
     )
   if (nrow(result) == 0) {
     cli::cli_warn(
@@ -89,7 +89,7 @@ tableLargeScaleCharacteristics <- function(result,
 
   # min cell count
   settings <- omopgenerics::settings(result) |>
-    dplyr::filter(.data$result_type == "summarised_large_scale_characteristics")
+    dplyr::filter(.data$result_type == "summarise_large_scale_characteristics")
   if ("min_cell_count" %in% colnames(settings)) {
     result <- result |>
       dplyr::left_join(
