@@ -102,8 +102,10 @@ tableCohortOverlap(meds_overlap)
 ```
 
 ```{r}
-plotCohortOverlap(meds_overlap,
-  facet = "strata_level"
+plotCohortOverlap(
+  meds_overlap,
+  uniqueCombinations = TRUE,
+  y = c("cohort_name_reference", "cohort_name_comparator"),
+  facet = c("age_group")
 )
 ```
-

@@ -6,9 +6,10 @@
 \usage{
 plotCohortOverlap(
   result,
-  facet = NULL,
-  uniqueCombinations = TRUE,
-  .options = list()
+  facet = c("cdm_name", "cohort_name_reference"),
+  uniqueCombinations = FALSE,
+  y = NULL,
+  .options = lifecycle::deprecated()
 )
 }
 \arguments{
@@ -19,7 +20,10 @@ plotCohortOverlap(
 \item{uniqueCombinations}{If TRUE, only unique combinations of reference and
 comparator plots will be plotted.}
 
-\item{.options}{Additional plotting options}
+\item{y}{Variables to use in y axis, if NULL all variables not present in
+facet are used.}
+
+\item{.options}{deprecated.}
 }
 \value{
 A ggplot.

@@ -279,7 +279,7 @@ test_that("plotCohortOverlap", {
   )
 
   gg3 <- plotCohortOverlap(overlap2 |> dplyr::filter(.data$variable_level == "number_subjects"),
-    facet = c("strata_name", "strata_level"),
+    facet = c("age_group", "sex"),
     uniqueCombinations = TRUE
   )
   expect_true("ggplot" %in% class(gg3))
