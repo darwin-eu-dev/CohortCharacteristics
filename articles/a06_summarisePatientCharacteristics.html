@@ -897,8 +897,7 @@ summary of the people in each cohort.</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">variable_name</span> <span class="op">==</span> <span class="st">"Age"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/plotCharacteristics.html">plotCharacteristics</a></span><span class="op">(</span></span>
 <span>    plotStyle <span class="op">=</span> <span class="st">"boxplot"</span>,</span>
-<span>    colour <span class="op">=</span> <span class="st">"group_level"</span>,</span>
-<span>    x <span class="op">=</span> <span class="st">"group_level"</span>,</span>
+<span>    colour <span class="op">=</span> <span class="st">"cohort_name"</span>,</span>
 <span>    facet <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cdm_name"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <p><img src="a06_summarisePatientCharacteristics_files/figure-html/unnamed-chunk-5-1.png" width="672"></p>
@@ -920,23 +919,23 @@ table and then stratify our results by age group.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tableCharacteristics.html">tableCharacteristics</a></span><span class="op">(</span><span class="va">chars</span>,</span>
 <span>  groupColumn <span class="op">=</span> <span class="st">"age_group"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div id="vijbfglzvn" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#vijbfglzvn table {
+<div id="negslqeqmf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#negslqeqmf table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#vijbfglzvn thead, #vijbfglzvn tbody, #vijbfglzvn tfoot, #vijbfglzvn tr, #vijbfglzvn td, #vijbfglzvn th {
+#negslqeqmf thead, #negslqeqmf tbody, #negslqeqmf tfoot, #negslqeqmf tr, #negslqeqmf td, #negslqeqmf th {
   border-style: none;
 }
 
-#vijbfglzvn p {
+#negslqeqmf p {
   margin: 0;
   padding: 0;
 }
 
-#vijbfglzvn .gt_table {
+#negslqeqmf .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -962,12 +961,12 @@ table and then stratify our results by age group.</p>
   border-left-color: #D3D3D3;
 }
 
-#vijbfglzvn .gt_caption {
+#negslqeqmf .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#vijbfglzvn .gt_title {
+#negslqeqmf .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -979,7 +978,7 @@ table and then stratify our results by age group.</p>
   border-bottom-width: 0;
 }
 
-#vijbfglzvn .gt_subtitle {
+#negslqeqmf .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -991,7 +990,7 @@ table and then stratify our results by age group.</p>
   border-top-width: 0;
 }
 
-#vijbfglzvn .gt_heading {
+#negslqeqmf .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1003,13 +1002,13 @@ table and then stratify our results by age group.</p>
   border-right-color: #D3D3D3;
 }
 
-#vijbfglzvn .gt_bottom_border {
+#negslqeqmf .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#vijbfglzvn .gt_col_headings {
+#negslqeqmf .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1024,7 +1023,7 @@ table and then stratify our results by age group.</p>
   border-right-color: #D3D3D3;
 }
 
-#vijbfglzvn .gt_col_heading {
+#negslqeqmf .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1044,7 +1043,7 @@ table and then stratify our results by age group.</p>
   overflow-x: hidden;
 }
 
-#vijbfglzvn .gt_column_spanner_outer {
+#negslqeqmf .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1056,15 +1055,15 @@ table and then stratify our results by age group.</p>
   padding-right: 4px;
 }
 
-#vijbfglzvn .gt_column_spanner_outer:first-child {
+#negslqeqmf .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#vijbfglzvn .gt_column_spanner_outer:last-child {
+#negslqeqmf .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#vijbfglzvn .gt_column_spanner {
+#negslqeqmf .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1076,11 +1075,11 @@ table and then stratify our results by age group.</p>
   width: 100%;
 }
 
-#vijbfglzvn .gt_spanner_row {
+#negslqeqmf .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#vijbfglzvn .gt_group_heading {
+#negslqeqmf .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1106,7 +1105,7 @@ table and then stratify our results by age group.</p>
   text-align: left;
 }
 
-#vijbfglzvn .gt_empty_group_heading {
+#negslqeqmf .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1121,15 +1120,15 @@ table and then stratify our results by age group.</p>
   vertical-align: middle;
 }
 
-#vijbfglzvn .gt_from_md > :first-child {
+#negslqeqmf .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#vijbfglzvn .gt_from_md > :last-child {
+#negslqeqmf .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#vijbfglzvn .gt_row {
+#negslqeqmf .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1148,7 +1147,7 @@ table and then stratify our results by age group.</p>
   overflow-x: hidden;
 }
 
-#vijbfglzvn .gt_stub {
+#negslqeqmf .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1161,7 +1160,7 @@ table and then stratify our results by age group.</p>
   padding-right: 5px;
 }
 
-#vijbfglzvn .gt_stub_row_group {
+#negslqeqmf .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1175,15 +1174,15 @@ table and then stratify our results by age group.</p>
   vertical-align: top;
 }
 
-#vijbfglzvn .gt_row_group_first td {
+#negslqeqmf .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#vijbfglzvn .gt_row_group_first th {
+#negslqeqmf .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#vijbfglzvn .gt_summary_row {
+#negslqeqmf .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1193,16 +1192,16 @@ table and then stratify our results by age group.</p>
   padding-right: 5px;
 }
 
-#vijbfglzvn .gt_first_summary_row {
+#negslqeqmf .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#vijbfglzvn .gt_first_summary_row.thick {
+#negslqeqmf .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#vijbfglzvn .gt_last_summary_row {
+#negslqeqmf .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1212,7 +1211,7 @@ table and then stratify our results by age group.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#vijbfglzvn .gt_grand_summary_row {
+#negslqeqmf .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1222,7 +1221,7 @@ table and then stratify our results by age group.</p>
   padding-right: 5px;
 }
 
-#vijbfglzvn .gt_first_grand_summary_row {
+#negslqeqmf .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1232,7 +1231,7 @@ table and then stratify our results by age group.</p>
   border-top-color: #D3D3D3;
 }
 
-#vijbfglzvn .gt_last_grand_summary_row_top {
+#negslqeqmf .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1242,11 +1241,11 @@ table and then stratify our results by age group.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#vijbfglzvn .gt_striped {
+#negslqeqmf .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#vijbfglzvn .gt_table_body {
+#negslqeqmf .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1255,7 +1254,7 @@ table and then stratify our results by age group.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#vijbfglzvn .gt_footnotes {
+#negslqeqmf .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1269,7 +1268,7 @@ table and then stratify our results by age group.</p>
   border-right-color: #D3D3D3;
 }
 
-#vijbfglzvn .gt_footnote {
+#negslqeqmf .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1278,7 +1277,7 @@ table and then stratify our results by age group.</p>
   padding-right: 5px;
 }
 
-#vijbfglzvn .gt_sourcenotes {
+#negslqeqmf .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1292,7 +1291,7 @@ table and then stratify our results by age group.</p>
   border-right-color: #D3D3D3;
 }
 
-#vijbfglzvn .gt_sourcenote {
+#negslqeqmf .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1300,72 +1299,72 @@ table and then stratify our results by age group.</p>
   padding-right: 5px;
 }
 
-#vijbfglzvn .gt_left {
+#negslqeqmf .gt_left {
   text-align: left;
 }
 
-#vijbfglzvn .gt_center {
+#negslqeqmf .gt_center {
   text-align: center;
 }
 
-#vijbfglzvn .gt_right {
+#negslqeqmf .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#vijbfglzvn .gt_font_normal {
+#negslqeqmf .gt_font_normal {
   font-weight: normal;
 }
 
-#vijbfglzvn .gt_font_bold {
+#negslqeqmf .gt_font_bold {
   font-weight: bold;
 }
 
-#vijbfglzvn .gt_font_italic {
+#negslqeqmf .gt_font_italic {
   font-style: italic;
 }
 
-#vijbfglzvn .gt_super {
+#negslqeqmf .gt_super {
   font-size: 65%;
 }
 
-#vijbfglzvn .gt_footnote_marks {
+#negslqeqmf .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#vijbfglzvn .gt_asterisk {
+#negslqeqmf .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#vijbfglzvn .gt_indent_1 {
+#negslqeqmf .gt_indent_1 {
   text-indent: 5px;
 }
 
-#vijbfglzvn .gt_indent_2 {
+#negslqeqmf .gt_indent_2 {
   text-indent: 10px;
 }
 
-#vijbfglzvn .gt_indent_3 {
+#negslqeqmf .gt_indent_3 {
   text-indent: 15px;
 }
 
-#vijbfglzvn .gt_indent_4 {
+#negslqeqmf .gt_indent_4 {
   text-indent: 20px;
 }
 
-#vijbfglzvn .gt_indent_5 {
+#negslqeqmf .gt_indent_5 {
   text-indent: 25px;
 }
 
-#vijbfglzvn .katex-display {
+#negslqeqmf .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#vijbfglzvn div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#negslqeqmf div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -2119,9 +2118,8 @@ table and then stratify our results by age group.</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">variable_name</span> <span class="op">==</span> <span class="st">"Prior observation"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/plotCharacteristics.html">plotCharacteristics</a></span><span class="op">(</span></span>
 <span>    plotStyle <span class="op">=</span> <span class="st">"boxplot"</span>,</span>
-<span>    colour <span class="op">=</span> <span class="st">"group_level"</span>,</span>
-<span>    x <span class="op">=</span> <span class="st">"group_level"</span>,</span>
-<span>    facet <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"strata_level"</span><span class="op">)</span></span>
+<span>    colour <span class="op">=</span> <span class="st">"cohort_name"</span>,</span>
+<span>    facet <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"age_group"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="a06_summarisePatientCharacteristics_files/figure-html/unnamed-chunk-8-1.png" width="672"></p>
@@ -2132,11 +2130,7 @@ table and then stratify our results by age group.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">meds_cs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://darwin-eu.github.io/CodelistGenerator/reference/getDrugIngredientCodes.html" class="external-link">getDrugIngredientCodes</a></span><span class="op">(</span></span>
 <span>  cdm <span class="op">=</span> <span class="va">cdm</span>,</span>
-<span>  name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>    <span class="st">"acetaminophen"</span>,</span>
-<span>    <span class="st">"morphine"</span>,</span>
-<span>    <span class="st">"warfarin"</span></span>
-<span>  <span class="op">)</span></span>
+<span>  name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"acetaminophen"</span>, <span class="st">"morphine"</span>, <span class="st">"warfarin"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">cdm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://darwin-eu.github.io/CDMConnector/reference/generateConceptCohortSet.html" class="external-link">generateConceptCohortSet</a></span><span class="op">(</span></span>
 <span>  cdm <span class="op">=</span> <span class="va">cdm</span>,</span>
@@ -2162,23 +2156,23 @@ table and then stratify our results by age group.</p>
 with patient characteristics.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tableCharacteristics.html">tableCharacteristics</a></span><span class="op">(</span><span class="va">chars</span><span class="op">)</span></span></code></pre></div>
-<div id="weytkovhgs" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#weytkovhgs table {
+<div id="lcphlxbgrz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#lcphlxbgrz table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#weytkovhgs thead, #weytkovhgs tbody, #weytkovhgs tfoot, #weytkovhgs tr, #weytkovhgs td, #weytkovhgs th {
+#lcphlxbgrz thead, #lcphlxbgrz tbody, #lcphlxbgrz tfoot, #lcphlxbgrz tr, #lcphlxbgrz td, #lcphlxbgrz th {
   border-style: none;
 }
 
-#weytkovhgs p {
+#lcphlxbgrz p {
   margin: 0;
   padding: 0;
 }
 
-#weytkovhgs .gt_table {
+#lcphlxbgrz .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -2204,12 +2198,12 @@ with patient characteristics.</p>
   border-left-color: #D3D3D3;
 }
 
-#weytkovhgs .gt_caption {
+#lcphlxbgrz .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#weytkovhgs .gt_title {
+#lcphlxbgrz .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2221,7 +2215,7 @@ with patient characteristics.</p>
   border-bottom-width: 0;
 }
 
-#weytkovhgs .gt_subtitle {
+#lcphlxbgrz .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2233,7 +2227,7 @@ with patient characteristics.</p>
   border-top-width: 0;
 }
 
-#weytkovhgs .gt_heading {
+#lcphlxbgrz .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2245,13 +2239,13 @@ with patient characteristics.</p>
   border-right-color: #D3D3D3;
 }
 
-#weytkovhgs .gt_bottom_border {
+#lcphlxbgrz .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#weytkovhgs .gt_col_headings {
+#lcphlxbgrz .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2266,7 +2260,7 @@ with patient characteristics.</p>
   border-right-color: #D3D3D3;
 }
 
-#weytkovhgs .gt_col_heading {
+#lcphlxbgrz .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2286,7 +2280,7 @@ with patient characteristics.</p>
   overflow-x: hidden;
 }
 
-#weytkovhgs .gt_column_spanner_outer {
+#lcphlxbgrz .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2298,15 +2292,15 @@ with patient characteristics.</p>
   padding-right: 4px;
 }
 
-#weytkovhgs .gt_column_spanner_outer:first-child {
+#lcphlxbgrz .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#weytkovhgs .gt_column_spanner_outer:last-child {
+#lcphlxbgrz .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#weytkovhgs .gt_column_spanner {
+#lcphlxbgrz .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2318,11 +2312,11 @@ with patient characteristics.</p>
   width: 100%;
 }
 
-#weytkovhgs .gt_spanner_row {
+#lcphlxbgrz .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#weytkovhgs .gt_group_heading {
+#lcphlxbgrz .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2348,7 +2342,7 @@ with patient characteristics.</p>
   text-align: left;
 }
 
-#weytkovhgs .gt_empty_group_heading {
+#lcphlxbgrz .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2363,15 +2357,15 @@ with patient characteristics.</p>
   vertical-align: middle;
 }
 
-#weytkovhgs .gt_from_md > :first-child {
+#lcphlxbgrz .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#weytkovhgs .gt_from_md > :last-child {
+#lcphlxbgrz .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#weytkovhgs .gt_row {
+#lcphlxbgrz .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2390,7 +2384,7 @@ with patient characteristics.</p>
   overflow-x: hidden;
 }
 
-#weytkovhgs .gt_stub {
+#lcphlxbgrz .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2403,7 +2397,7 @@ with patient characteristics.</p>
   padding-right: 5px;
 }
 
-#weytkovhgs .gt_stub_row_group {
+#lcphlxbgrz .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2417,15 +2411,15 @@ with patient characteristics.</p>
   vertical-align: top;
 }
 
-#weytkovhgs .gt_row_group_first td {
+#lcphlxbgrz .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#weytkovhgs .gt_row_group_first th {
+#lcphlxbgrz .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#weytkovhgs .gt_summary_row {
+#lcphlxbgrz .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2435,16 +2429,16 @@ with patient characteristics.</p>
   padding-right: 5px;
 }
 
-#weytkovhgs .gt_first_summary_row {
+#lcphlxbgrz .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#weytkovhgs .gt_first_summary_row.thick {
+#lcphlxbgrz .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#weytkovhgs .gt_last_summary_row {
+#lcphlxbgrz .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2454,7 +2448,7 @@ with patient characteristics.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#weytkovhgs .gt_grand_summary_row {
+#lcphlxbgrz .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2464,7 +2458,7 @@ with patient characteristics.</p>
   padding-right: 5px;
 }
 
-#weytkovhgs .gt_first_grand_summary_row {
+#lcphlxbgrz .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2474,7 +2468,7 @@ with patient characteristics.</p>
   border-top-color: #D3D3D3;
 }
 
-#weytkovhgs .gt_last_grand_summary_row_top {
+#lcphlxbgrz .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2484,11 +2478,11 @@ with patient characteristics.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#weytkovhgs .gt_striped {
+#lcphlxbgrz .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#weytkovhgs .gt_table_body {
+#lcphlxbgrz .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2497,7 +2491,7 @@ with patient characteristics.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#weytkovhgs .gt_footnotes {
+#lcphlxbgrz .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2511,7 +2505,7 @@ with patient characteristics.</p>
   border-right-color: #D3D3D3;
 }
 
-#weytkovhgs .gt_footnote {
+#lcphlxbgrz .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2520,7 +2514,7 @@ with patient characteristics.</p>
   padding-right: 5px;
 }
 
-#weytkovhgs .gt_sourcenotes {
+#lcphlxbgrz .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2534,7 +2528,7 @@ with patient characteristics.</p>
   border-right-color: #D3D3D3;
 }
 
-#weytkovhgs .gt_sourcenote {
+#lcphlxbgrz .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2542,72 +2536,72 @@ with patient characteristics.</p>
   padding-right: 5px;
 }
 
-#weytkovhgs .gt_left {
+#lcphlxbgrz .gt_left {
   text-align: left;
 }
 
-#weytkovhgs .gt_center {
+#lcphlxbgrz .gt_center {
   text-align: center;
 }
 
-#weytkovhgs .gt_right {
+#lcphlxbgrz .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#weytkovhgs .gt_font_normal {
+#lcphlxbgrz .gt_font_normal {
   font-weight: normal;
 }
 
-#weytkovhgs .gt_font_bold {
+#lcphlxbgrz .gt_font_bold {
   font-weight: bold;
 }
 
-#weytkovhgs .gt_font_italic {
+#lcphlxbgrz .gt_font_italic {
   font-style: italic;
 }
 
-#weytkovhgs .gt_super {
+#lcphlxbgrz .gt_super {
   font-size: 65%;
 }
 
-#weytkovhgs .gt_footnote_marks {
+#lcphlxbgrz .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#weytkovhgs .gt_asterisk {
+#lcphlxbgrz .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#weytkovhgs .gt_indent_1 {
+#lcphlxbgrz .gt_indent_1 {
   text-indent: 5px;
 }
 
-#weytkovhgs .gt_indent_2 {
+#lcphlxbgrz .gt_indent_2 {
   text-indent: 10px;
 }
 
-#weytkovhgs .gt_indent_3 {
+#lcphlxbgrz .gt_indent_3 {
   text-indent: 15px;
 }
 
-#weytkovhgs .gt_indent_4 {
+#lcphlxbgrz .gt_indent_4 {
   text-indent: 20px;
 }
 
-#weytkovhgs .gt_indent_5 {
+#lcphlxbgrz .gt_indent_5 {
   text-indent: 25px;
 }
 
-#weytkovhgs .katex-display {
+#lcphlxbgrz .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#weytkovhgs div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#lcphlxbgrz div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -2968,15 +2962,12 @@ interest.</p>
 <span>  <span class="fu"><a href="../reference/plotCharacteristics.html">plotCharacteristics</a></span><span class="op">(</span></span>
 <span>    plotStyle <span class="op">=</span> <span class="st">"barplot"</span>,</span>
 <span>    colour <span class="op">=</span> <span class="st">"variable_level"</span>,</span>
-<span>    x <span class="op">=</span> <span class="st">"variable_level"</span>,</span>
-<span>    facet <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>      <span class="st">"cdm_name"</span>,</span>
-<span>      <span class="st">"group_level"</span></span>
-<span>    <span class="op">)</span></span>
+<span>    facet <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cdm_name"</span>, <span class="st">"cohort_name"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_discrete.html" class="external-link">scale_x_discrete</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rev.html" class="external-link">rev</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">plot_data</span><span class="op">$</span><span class="va">variable_level</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Medication use prior to index date"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Medication use prior to index date"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "variable_level"</span></span></code></pre></div>
 <p><img src="a06_summarisePatientCharacteristics_files/figure-html/unnamed-chunk-12-1.png" width="672"></p>
 </div>
 <div class="section level2">
@@ -3005,23 +2996,23 @@ an an ongoing observation period. Meanwhile, when working with concept
 sets we will instead be working directly with record-level data.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tableCharacteristics.html">tableCharacteristics</a></span><span class="op">(</span><span class="va">chars</span><span class="op">)</span></span></code></pre></div>
-<div id="sdaymbwmsz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#sdaymbwmsz table {
+<div id="qaipjjkurj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#qaipjjkurj table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#sdaymbwmsz thead, #sdaymbwmsz tbody, #sdaymbwmsz tfoot, #sdaymbwmsz tr, #sdaymbwmsz td, #sdaymbwmsz th {
+#qaipjjkurj thead, #qaipjjkurj tbody, #qaipjjkurj tfoot, #qaipjjkurj tr, #qaipjjkurj td, #qaipjjkurj th {
   border-style: none;
 }
 
-#sdaymbwmsz p {
+#qaipjjkurj p {
   margin: 0;
   padding: 0;
 }
 
-#sdaymbwmsz .gt_table {
+#qaipjjkurj .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -3047,12 +3038,12 @@ sets we will instead be working directly with record-level data.</p>
   border-left-color: #D3D3D3;
 }
 
-#sdaymbwmsz .gt_caption {
+#qaipjjkurj .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#sdaymbwmsz .gt_title {
+#qaipjjkurj .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -3064,7 +3055,7 @@ sets we will instead be working directly with record-level data.</p>
   border-bottom-width: 0;
 }
 
-#sdaymbwmsz .gt_subtitle {
+#qaipjjkurj .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -3076,7 +3067,7 @@ sets we will instead be working directly with record-level data.</p>
   border-top-width: 0;
 }
 
-#sdaymbwmsz .gt_heading {
+#qaipjjkurj .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -3088,13 +3079,13 @@ sets we will instead be working directly with record-level data.</p>
   border-right-color: #D3D3D3;
 }
 
-#sdaymbwmsz .gt_bottom_border {
+#qaipjjkurj .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#sdaymbwmsz .gt_col_headings {
+#qaipjjkurj .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3109,7 +3100,7 @@ sets we will instead be working directly with record-level data.</p>
   border-right-color: #D3D3D3;
 }
 
-#sdaymbwmsz .gt_col_heading {
+#qaipjjkurj .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3129,7 +3120,7 @@ sets we will instead be working directly with record-level data.</p>
   overflow-x: hidden;
 }
 
-#sdaymbwmsz .gt_column_spanner_outer {
+#qaipjjkurj .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3141,15 +3132,15 @@ sets we will instead be working directly with record-level data.</p>
   padding-right: 4px;
 }
 
-#sdaymbwmsz .gt_column_spanner_outer:first-child {
+#qaipjjkurj .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#sdaymbwmsz .gt_column_spanner_outer:last-child {
+#qaipjjkurj .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#sdaymbwmsz .gt_column_spanner {
+#qaipjjkurj .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -3161,11 +3152,11 @@ sets we will instead be working directly with record-level data.</p>
   width: 100%;
 }
 
-#sdaymbwmsz .gt_spanner_row {
+#qaipjjkurj .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#sdaymbwmsz .gt_group_heading {
+#qaipjjkurj .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3191,7 +3182,7 @@ sets we will instead be working directly with record-level data.</p>
   text-align: left;
 }
 
-#sdaymbwmsz .gt_empty_group_heading {
+#qaipjjkurj .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -3206,15 +3197,15 @@ sets we will instead be working directly with record-level data.</p>
   vertical-align: middle;
 }
 
-#sdaymbwmsz .gt_from_md > :first-child {
+#qaipjjkurj .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#sdaymbwmsz .gt_from_md > :last-child {
+#qaipjjkurj .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#sdaymbwmsz .gt_row {
+#qaipjjkurj .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3233,7 +3224,7 @@ sets we will instead be working directly with record-level data.</p>
   overflow-x: hidden;
 }
 
-#sdaymbwmsz .gt_stub {
+#qaipjjkurj .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3246,7 +3237,7 @@ sets we will instead be working directly with record-level data.</p>
   padding-right: 5px;
 }
 
-#sdaymbwmsz .gt_stub_row_group {
+#qaipjjkurj .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3260,15 +3251,15 @@ sets we will instead be working directly with record-level data.</p>
   vertical-align: top;
 }
 
-#sdaymbwmsz .gt_row_group_first td {
+#qaipjjkurj .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#sdaymbwmsz .gt_row_group_first th {
+#qaipjjkurj .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#sdaymbwmsz .gt_summary_row {
+#qaipjjkurj .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3278,16 +3269,16 @@ sets we will instead be working directly with record-level data.</p>
   padding-right: 5px;
 }
 
-#sdaymbwmsz .gt_first_summary_row {
+#qaipjjkurj .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#sdaymbwmsz .gt_first_summary_row.thick {
+#qaipjjkurj .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#sdaymbwmsz .gt_last_summary_row {
+#qaipjjkurj .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3297,7 +3288,7 @@ sets we will instead be working directly with record-level data.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#sdaymbwmsz .gt_grand_summary_row {
+#qaipjjkurj .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3307,7 +3298,7 @@ sets we will instead be working directly with record-level data.</p>
   padding-right: 5px;
 }
 
-#sdaymbwmsz .gt_first_grand_summary_row {
+#qaipjjkurj .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3317,7 +3308,7 @@ sets we will instead be working directly with record-level data.</p>
   border-top-color: #D3D3D3;
 }
 
-#sdaymbwmsz .gt_last_grand_summary_row_top {
+#qaipjjkurj .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3327,11 +3318,11 @@ sets we will instead be working directly with record-level data.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#sdaymbwmsz .gt_striped {
+#qaipjjkurj .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#sdaymbwmsz .gt_table_body {
+#qaipjjkurj .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3340,7 +3331,7 @@ sets we will instead be working directly with record-level data.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#sdaymbwmsz .gt_footnotes {
+#qaipjjkurj .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3354,7 +3345,7 @@ sets we will instead be working directly with record-level data.</p>
   border-right-color: #D3D3D3;
 }
 
-#sdaymbwmsz .gt_footnote {
+#qaipjjkurj .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -3363,7 +3354,7 @@ sets we will instead be working directly with record-level data.</p>
   padding-right: 5px;
 }
 
-#sdaymbwmsz .gt_sourcenotes {
+#qaipjjkurj .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3377,7 +3368,7 @@ sets we will instead be working directly with record-level data.</p>
   border-right-color: #D3D3D3;
 }
 
-#sdaymbwmsz .gt_sourcenote {
+#qaipjjkurj .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -3385,72 +3376,72 @@ sets we will instead be working directly with record-level data.</p>
   padding-right: 5px;
 }
 
-#sdaymbwmsz .gt_left {
+#qaipjjkurj .gt_left {
   text-align: left;
 }
 
-#sdaymbwmsz .gt_center {
+#qaipjjkurj .gt_center {
   text-align: center;
 }
 
-#sdaymbwmsz .gt_right {
+#qaipjjkurj .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#sdaymbwmsz .gt_font_normal {
+#qaipjjkurj .gt_font_normal {
   font-weight: normal;
 }
 
-#sdaymbwmsz .gt_font_bold {
+#qaipjjkurj .gt_font_bold {
   font-weight: bold;
 }
 
-#sdaymbwmsz .gt_font_italic {
+#qaipjjkurj .gt_font_italic {
   font-style: italic;
 }
 
-#sdaymbwmsz .gt_super {
+#qaipjjkurj .gt_super {
   font-size: 65%;
 }
 
-#sdaymbwmsz .gt_footnote_marks {
+#qaipjjkurj .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#sdaymbwmsz .gt_asterisk {
+#qaipjjkurj .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#sdaymbwmsz .gt_indent_1 {
+#qaipjjkurj .gt_indent_1 {
   text-indent: 5px;
 }
 
-#sdaymbwmsz .gt_indent_2 {
+#qaipjjkurj .gt_indent_2 {
   text-indent: 10px;
 }
 
-#sdaymbwmsz .gt_indent_3 {
+#qaipjjkurj .gt_indent_3 {
   text-indent: 15px;
 }
 
-#sdaymbwmsz .gt_indent_4 {
+#qaipjjkurj .gt_indent_4 {
   text-indent: 20px;
 }
 
-#sdaymbwmsz .gt_indent_5 {
+#qaipjjkurj .gt_indent_5 {
   text-indent: 25px;
 }
 
-#sdaymbwmsz .katex-display {
+#qaipjjkurj .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#sdaymbwmsz div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#qaipjjkurj div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -3827,23 +3818,23 @@ add a count of visit occurrences</p>
 <span>  <span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tableCharacteristics.html">tableCharacteristics</a></span><span class="op">(</span><span class="va">chars</span><span class="op">)</span></span></code></pre></div>
-<div id="lhkpkbjkhr" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#lhkpkbjkhr table {
+<div id="oelfyoqait" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#oelfyoqait table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#lhkpkbjkhr thead, #lhkpkbjkhr tbody, #lhkpkbjkhr tfoot, #lhkpkbjkhr tr, #lhkpkbjkhr td, #lhkpkbjkhr th {
+#oelfyoqait thead, #oelfyoqait tbody, #oelfyoqait tfoot, #oelfyoqait tr, #oelfyoqait td, #oelfyoqait th {
   border-style: none;
 }
 
-#lhkpkbjkhr p {
+#oelfyoqait p {
   margin: 0;
   padding: 0;
 }
 
-#lhkpkbjkhr .gt_table {
+#oelfyoqait .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -3869,12 +3860,12 @@ add a count of visit occurrences</p>
   border-left-color: #D3D3D3;
 }
 
-#lhkpkbjkhr .gt_caption {
+#oelfyoqait .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#lhkpkbjkhr .gt_title {
+#oelfyoqait .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -3886,7 +3877,7 @@ add a count of visit occurrences</p>
   border-bottom-width: 0;
 }
 
-#lhkpkbjkhr .gt_subtitle {
+#oelfyoqait .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -3898,7 +3889,7 @@ add a count of visit occurrences</p>
   border-top-width: 0;
 }
 
-#lhkpkbjkhr .gt_heading {
+#oelfyoqait .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -3910,13 +3901,13 @@ add a count of visit occurrences</p>
   border-right-color: #D3D3D3;
 }
 
-#lhkpkbjkhr .gt_bottom_border {
+#oelfyoqait .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#lhkpkbjkhr .gt_col_headings {
+#oelfyoqait .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3931,7 +3922,7 @@ add a count of visit occurrences</p>
   border-right-color: #D3D3D3;
 }
 
-#lhkpkbjkhr .gt_col_heading {
+#oelfyoqait .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3951,7 +3942,7 @@ add a count of visit occurrences</p>
   overflow-x: hidden;
 }
 
-#lhkpkbjkhr .gt_column_spanner_outer {
+#oelfyoqait .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3963,15 +3954,15 @@ add a count of visit occurrences</p>
   padding-right: 4px;
 }
 
-#lhkpkbjkhr .gt_column_spanner_outer:first-child {
+#oelfyoqait .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#lhkpkbjkhr .gt_column_spanner_outer:last-child {
+#oelfyoqait .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#lhkpkbjkhr .gt_column_spanner {
+#oelfyoqait .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -3983,11 +3974,11 @@ add a count of visit occurrences</p>
   width: 100%;
 }
 
-#lhkpkbjkhr .gt_spanner_row {
+#oelfyoqait .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#lhkpkbjkhr .gt_group_heading {
+#oelfyoqait .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -4013,7 +4004,7 @@ add a count of visit occurrences</p>
   text-align: left;
 }
 
-#lhkpkbjkhr .gt_empty_group_heading {
+#oelfyoqait .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -4028,15 +4019,15 @@ add a count of visit occurrences</p>
   vertical-align: middle;
 }
 
-#lhkpkbjkhr .gt_from_md > :first-child {
+#oelfyoqait .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#lhkpkbjkhr .gt_from_md > :last-child {
+#oelfyoqait .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#lhkpkbjkhr .gt_row {
+#oelfyoqait .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -4055,7 +4046,7 @@ add a count of visit occurrences</p>
   overflow-x: hidden;
 }
 
-#lhkpkbjkhr .gt_stub {
+#oelfyoqait .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -4068,7 +4059,7 @@ add a count of visit occurrences</p>
   padding-right: 5px;
 }
 
-#lhkpkbjkhr .gt_stub_row_group {
+#oelfyoqait .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -4082,15 +4073,15 @@ add a count of visit occurrences</p>
   vertical-align: top;
 }
 
-#lhkpkbjkhr .gt_row_group_first td {
+#oelfyoqait .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#lhkpkbjkhr .gt_row_group_first th {
+#oelfyoqait .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#lhkpkbjkhr .gt_summary_row {
+#oelfyoqait .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -4100,16 +4091,16 @@ add a count of visit occurrences</p>
   padding-right: 5px;
 }
 
-#lhkpkbjkhr .gt_first_summary_row {
+#oelfyoqait .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#lhkpkbjkhr .gt_first_summary_row.thick {
+#oelfyoqait .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#lhkpkbjkhr .gt_last_summary_row {
+#oelfyoqait .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -4119,7 +4110,7 @@ add a count of visit occurrences</p>
   border-bottom-color: #D3D3D3;
 }
 
-#lhkpkbjkhr .gt_grand_summary_row {
+#oelfyoqait .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -4129,7 +4120,7 @@ add a count of visit occurrences</p>
   padding-right: 5px;
 }
 
-#lhkpkbjkhr .gt_first_grand_summary_row {
+#oelfyoqait .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -4139,7 +4130,7 @@ add a count of visit occurrences</p>
   border-top-color: #D3D3D3;
 }
 
-#lhkpkbjkhr .gt_last_grand_summary_row_top {
+#oelfyoqait .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -4149,11 +4140,11 @@ add a count of visit occurrences</p>
   border-bottom-color: #D3D3D3;
 }
 
-#lhkpkbjkhr .gt_striped {
+#oelfyoqait .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#lhkpkbjkhr .gt_table_body {
+#oelfyoqait .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -4162,7 +4153,7 @@ add a count of visit occurrences</p>
   border-bottom-color: #D3D3D3;
 }
 
-#lhkpkbjkhr .gt_footnotes {
+#oelfyoqait .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -4176,7 +4167,7 @@ add a count of visit occurrences</p>
   border-right-color: #D3D3D3;
 }
 
-#lhkpkbjkhr .gt_footnote {
+#oelfyoqait .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -4185,7 +4176,7 @@ add a count of visit occurrences</p>
   padding-right: 5px;
 }
 
-#lhkpkbjkhr .gt_sourcenotes {
+#oelfyoqait .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -4199,7 +4190,7 @@ add a count of visit occurrences</p>
   border-right-color: #D3D3D3;
 }
 
-#lhkpkbjkhr .gt_sourcenote {
+#oelfyoqait .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -4207,72 +4198,72 @@ add a count of visit occurrences</p>
   padding-right: 5px;
 }
 
-#lhkpkbjkhr .gt_left {
+#oelfyoqait .gt_left {
   text-align: left;
 }
 
-#lhkpkbjkhr .gt_center {
+#oelfyoqait .gt_center {
   text-align: center;
 }
 
-#lhkpkbjkhr .gt_right {
+#oelfyoqait .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#lhkpkbjkhr .gt_font_normal {
+#oelfyoqait .gt_font_normal {
   font-weight: normal;
 }
 
-#lhkpkbjkhr .gt_font_bold {
+#oelfyoqait .gt_font_bold {
   font-weight: bold;
 }
 
-#lhkpkbjkhr .gt_font_italic {
+#oelfyoqait .gt_font_italic {
   font-style: italic;
 }
 
-#lhkpkbjkhr .gt_super {
+#oelfyoqait .gt_super {
   font-size: 65%;
 }
 
-#lhkpkbjkhr .gt_footnote_marks {
+#oelfyoqait .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#lhkpkbjkhr .gt_asterisk {
+#oelfyoqait .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#lhkpkbjkhr .gt_indent_1 {
+#oelfyoqait .gt_indent_1 {
   text-indent: 5px;
 }
 
-#lhkpkbjkhr .gt_indent_2 {
+#oelfyoqait .gt_indent_2 {
   text-indent: 10px;
 }
 
-#lhkpkbjkhr .gt_indent_3 {
+#oelfyoqait .gt_indent_3 {
   text-indent: 15px;
 }
 
-#lhkpkbjkhr .gt_indent_4 {
+#oelfyoqait .gt_indent_4 {
   text-indent: 20px;
 }
 
-#lhkpkbjkhr .gt_indent_5 {
+#oelfyoqait .gt_indent_5 {
   text-indent: 25px;
 }
 
-#lhkpkbjkhr .katex-display {
+#oelfyoqait .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#lhkpkbjkhr div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#oelfyoqait div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -4289,9 +4280,9 @@ add a count of visit occurrences</p>
     </tr>
 <tr class="gt_col_headings">
 <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="background-color: #E1E1E1; text-align: center; font-weight: bold;" scope="col" id="Ankle sprain">Ankle sprain</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="background-color: #E1E1E1; text-align: center; font-weight: bold;" scope="col" id="Ankle fracture">Ankle fracture</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="background-color: #E1E1E1; text-align: center; font-weight: bold;" scope="col" id="Forearm fracture">Forearm fracture</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="background-color: #E1E1E1; text-align: center; font-weight: bold;" scope="col" id="Hip fracture">Hip fracture</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="background-color: #E1E1E1; text-align: center; font-weight: bold;" scope="col" id="Ankle fracture">Ankle fracture</th>
     </tr>
 </thead>
 <tbody class="gt_table_body">
@@ -4303,11 +4294,11 @@ add a count of visit occurrences</p>
 <td headers="[header]Cohort name
 [header_level]Ankle sprain" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1,915</td>
 <td headers="[header]Cohort name
+[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">464</td>
+<td headers="[header]Cohort name
 [header_level]Forearm fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">569</td>
 <td headers="[header]Cohort name
-[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">138</td>
-<td headers="[header]Cohort name
-[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right;">464</td>
+[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right;">138</td>
 </tr>
 <tr>
 <td headers="CDM name" class="gt_row gt_left" style="text-align: left; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000;"></td>
@@ -4317,11 +4308,11 @@ add a count of visit occurrences</p>
 <td headers="[header]Cohort name
 [header_level]Ankle sprain" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1,357</td>
 <td headers="[header]Cohort name
+[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">427</td>
+<td headers="[header]Cohort name
 [header_level]Forearm fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">510</td>
 <td headers="[header]Cohort name
-[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">132</td>
-<td headers="[header]Cohort name
-[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right;">427</td>
+[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right;">132</td>
 </tr>
 <tr>
 <td headers="CDM name" class="gt_row gt_left" style="text-align: left; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000;"></td>
@@ -4331,11 +4322,11 @@ add a count of visit occurrences</p>
 <td headers="[header]Cohort name
 [header_level]Ankle sprain" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1982-11-09 [1968-06-15 - 1999-04-13]</td>
 <td headers="[header]Cohort name
+[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1981-01-15 [1965-03-11 - 1997-08-03]</td>
+<td headers="[header]Cohort name
 [header_level]Forearm fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1981-07-24 [1967-03-05 - 2000-12-16]</td>
 <td headers="[header]Cohort name
-[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1996-09-17 [1977-09-20 - 2010-06-22]</td>
-<td headers="[header]Cohort name
-[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right;">1981-01-15 [1965-03-11 - 1997-08-03]</td>
+[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right;">1996-09-17 [1977-09-20 - 2010-06-22]</td>
 </tr>
 <tr>
 <td headers="CDM name" class="gt_row gt_left" style="text-align: left; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000;"></td>
@@ -4345,11 +4336,11 @@ add a count of visit occurrences</p>
 <td headers="[header]Cohort name
 [header_level]Ankle sprain" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1912-02-25 to 2019-05-30</td>
 <td headers="[header]Cohort name
+[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1911-09-07 to 2019-06-23</td>
+<td headers="[header]Cohort name
 [header_level]Forearm fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1917-08-16 to 2019-06-26</td>
 <td headers="[header]Cohort name
-[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1927-12-14 to 2019-05-08</td>
-<td headers="[header]Cohort name
-[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right;">1911-09-07 to 2019-06-23</td>
+[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right;">1927-12-14 to 2019-05-08</td>
 </tr>
 <tr>
 <td headers="CDM name" class="gt_row gt_left" style="text-align: left; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000;"></td>
@@ -4359,11 +4350,11 @@ add a count of visit occurrences</p>
 <td headers="[header]Cohort name
 [header_level]Ankle sprain" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1982-12-10 [1968-07-06 - 1999-05-09]</td>
 <td headers="[header]Cohort name
+[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1981-02-28 [1965-04-11 - 1997-10-12]</td>
+<td headers="[header]Cohort name
 [header_level]Forearm fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1981-08-23 [1967-04-10 - 2001-02-27]</td>
 <td headers="[header]Cohort name
-[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1996-11-16 [1977-12-04 - 2010-07-22]</td>
-<td headers="[header]Cohort name
-[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right;">1981-02-28 [1965-04-11 - 1997-10-12]</td>
+[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right;">1996-11-16 [1977-12-04 - 2010-07-22]</td>
 </tr>
 <tr>
 <td headers="CDM name" class="gt_row gt_left" style="text-align: left; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000;"></td>
@@ -4373,11 +4364,11 @@ add a count of visit occurrences</p>
 <td headers="[header]Cohort name
 [header_level]Ankle sprain" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1912-03-10 to 2019-05-30</td>
 <td headers="[header]Cohort name
+[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1911-12-06 to 2019-06-24</td>
+<td headers="[header]Cohort name
 [header_level]Forearm fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1917-11-14 to 2019-06-26</td>
 <td headers="[header]Cohort name
-[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1928-03-13 to 2019-06-07</td>
-<td headers="[header]Cohort name
-[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right;">1911-12-06 to 2019-06-24</td>
+[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right;">1928-03-13 to 2019-06-07</td>
 </tr>
 <tr>
 <td headers="CDM name" class="gt_row gt_left" style="text-align: left; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000;"></td>
@@ -4387,11 +4378,11 @@ add a count of visit occurrences</p>
 <td headers="[header]Cohort name
 [header_level]Ankle sprain" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">954 (49.8%)</td>
 <td headers="[header]Cohort name
+[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">238 (51.3%)</td>
+<td headers="[header]Cohort name
 [header_level]Forearm fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">286 (50.3%)</td>
 <td headers="[header]Cohort name
-[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">74 (53.6%)</td>
-<td headers="[header]Cohort name
-[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right;">238 (51.3%)</td>
+[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right;">74 (53.6%)</td>
 </tr>
 <tr>
 <td headers="CDM name" class="gt_row gt_left" style="text-align: left; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000;"></td>
@@ -4401,11 +4392,11 @@ add a count of visit occurrences</p>
 <td headers="[header]Cohort name
 [header_level]Ankle sprain" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">961 (50.2%)</td>
 <td headers="[header]Cohort name
+[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">226 (48.7%)</td>
+<td headers="[header]Cohort name
 [header_level]Forearm fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">283 (49.7%)</td>
 <td headers="[header]Cohort name
-[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">64 (46.4%)</td>
-<td headers="[header]Cohort name
-[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right;">226 (48.7%)</td>
+[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right;">64 (46.4%)</td>
 </tr>
 <tr>
 <td headers="CDM name" class="gt_row gt_left" style="text-align: left; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000;"></td>
@@ -4415,11 +4406,11 @@ add a count of visit occurrences</p>
 <td headers="[header]Cohort name
 [header_level]Ankle sprain" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">21 [9 - 41]</td>
 <td headers="[header]Cohort name
+[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">16 [9 - 43]</td>
+<td headers="[header]Cohort name
 [header_level]Forearm fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">17 [9 - 46]</td>
 <td headers="[header]Cohort name
-[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">40 [13 - 66]</td>
-<td headers="[header]Cohort name
-[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right;">16 [9 - 43]</td>
+[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right;">40 [13 - 66]</td>
 </tr>
 <tr>
 <td headers="CDM name" class="gt_row gt_left" style="text-align: left; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000;"></td>
@@ -4429,11 +4420,11 @@ add a count of visit occurrences</p>
 <td headers="[header]Cohort name
 [header_level]Ankle sprain" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">26.63 (21.03)</td>
 <td headers="[header]Cohort name
+[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">27.38 (24.70)</td>
+<td headers="[header]Cohort name
 [header_level]Forearm fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">28.69 (25.97)</td>
 <td headers="[header]Cohort name
-[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">40.06 (28.82)</td>
-<td headers="[header]Cohort name
-[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right;">27.38 (24.70)</td>
+[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right;">40.06 (28.82)</td>
 </tr>
 <tr>
 <td headers="CDM name" class="gt_row gt_left" style="text-align: left; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000;"></td>
@@ -4443,11 +4434,11 @@ add a count of visit occurrences</p>
 <td headers="[header]Cohort name
 [header_level]Ankle sprain" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">0 to 105</td>
 <td headers="[header]Cohort name
+[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">0 to 107</td>
+<td headers="[header]Cohort name
 [header_level]Forearm fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">0 to 106</td>
 <td headers="[header]Cohort name
-[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1 to 108</td>
-<td headers="[header]Cohort name
-[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right;">0 to 107</td>
+[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right;">1 to 108</td>
 </tr>
 <tr>
 <td headers="CDM name" class="gt_row gt_left" style="text-align: left; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000;"></td>
@@ -4457,11 +4448,11 @@ add a count of visit occurrences</p>
 <td headers="[header]Cohort name
 [header_level]Ankle sprain" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">7,833 [3,628 - 15,147]</td>
 <td headers="[header]Cohort name
+[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">6,030 [3,360 - 16,032]</td>
+<td headers="[header]Cohort name
 [header_level]Forearm fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">6,289 [3,390 - 16,847]</td>
 <td headers="[header]Cohort name
-[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">14,522 [4,801 - 24,401]</td>
-<td headers="[header]Cohort name
-[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right;">6,030 [3,360 - 16,032]</td>
+[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right;">14,522 [4,801 - 24,401]</td>
 </tr>
 <tr>
 <td headers="CDM name" class="gt_row gt_left" style="text-align: left; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000;"></td>
@@ -4471,11 +4462,11 @@ add a count of visit occurrences</p>
 <td headers="[header]Cohort name
 [header_level]Ankle sprain" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">9,918.17 (7,672.74)</td>
 <td headers="[header]Cohort name
+[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">10,196.57 (9,011.31)</td>
+<td headers="[header]Cohort name
 [header_level]Forearm fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">10,670.43 (9,480.30)</td>
 <td headers="[header]Cohort name
-[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">14,821.73 (10,521.89)</td>
-<td headers="[header]Cohort name
-[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right;">10,196.57 (9,011.31)</td>
+[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right;">14,821.73 (10,521.89)</td>
 </tr>
 <tr>
 <td headers="CDM name" class="gt_row gt_left" style="text-align: left; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000;"></td>
@@ -4485,11 +4476,11 @@ add a count of visit occurrences</p>
 <td headers="[header]Cohort name
 [header_level]Ankle sprain" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">299 to 38,429</td>
 <td headers="[header]Cohort name
+[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">299 to 39,430</td>
+<td headers="[header]Cohort name
 [header_level]Forearm fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">299 to 38,943</td>
 <td headers="[header]Cohort name
-[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">390 to 39,792</td>
-<td headers="[header]Cohort name
-[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right;">299 to 39,430</td>
+[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right;">390 to 39,792</td>
 </tr>
 <tr>
 <td headers="CDM name" class="gt_row gt_left" style="text-align: left; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000;"></td>
@@ -4499,11 +4490,11 @@ add a count of visit occurrences</p>
 <td headers="[header]Cohort name
 [header_level]Ankle sprain" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">12,868 [6,860 - 18,078]</td>
 <td headers="[header]Cohort name
+[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">13,748 [6,878 - 19,331]</td>
+<td headers="[header]Cohort name
 [header_level]Forearm fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">13,165 [5,988 - 18,548]</td>
 <td headers="[header]Cohort name
-[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">7,798 [2,874 - 14,913]</td>
-<td headers="[header]Cohort name
-[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right;">13,748 [6,878 - 19,331]</td>
+[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right;">7,798 [2,874 - 14,913]</td>
 </tr>
 <tr>
 <td headers="CDM name" class="gt_row gt_left" style="text-align: left; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000;"></td>
@@ -4513,11 +4504,11 @@ add a count of visit occurrences</p>
 <td headers="[header]Cohort name
 [header_level]Ankle sprain" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">12,865.11 (7,543.50)</td>
 <td headers="[header]Cohort name
+[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">13,470.92 (8,215.96)</td>
+<td headers="[header]Cohort name
 [header_level]Forearm fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">12,913.27 (7,929.17)</td>
 <td headers="[header]Cohort name
-[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">9,167.33 (7,160.81)</td>
-<td headers="[header]Cohort name
-[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right;">13,470.92 (8,215.96)</td>
+[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right;">9,167.33 (7,160.81)</td>
 </tr>
 <tr>
 <td headers="CDM name" class="gt_row gt_left" style="text-align: left; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000;"></td>
@@ -4527,11 +4518,11 @@ add a count of visit occurrences</p>
 <td headers="[header]Cohort name
 [header_level]Ankle sprain" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">0 to 38,403</td>
 <td headers="[header]Cohort name
+[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1 to 39,051</td>
+<td headers="[header]Cohort name
 [header_level]Forearm fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">0 to 36,654</td>
 <td headers="[header]Cohort name
-[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">0 to 29,045</td>
-<td headers="[header]Cohort name
-[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right;">1 to 39,051</td>
+[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right;">0 to 29,045</td>
 </tr>
 <tr>
 <td headers="CDM name" class="gt_row gt_left" style="text-align: left; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000;"></td>
@@ -4541,11 +4532,11 @@ add a count of visit occurrences</p>
 <td headers="[header]Cohort name
 [header_level]Ankle sprain" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">597 (31.2%)</td>
 <td headers="[header]Cohort name
+[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">149 (32.1%)</td>
+<td headers="[header]Cohort name
 [header_level]Forearm fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">171 (30.1%)</td>
 <td headers="[header]Cohort name
-[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">41 (29.7%)</td>
-<td headers="[header]Cohort name
-[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right;">149 (32.1%)</td>
+[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right;">41 (29.7%)</td>
 </tr>
 <tr>
 <td headers="CDM name" class="gt_row gt_left" style="text-align: left; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000;"></td>
@@ -4555,11 +4546,11 @@ add a count of visit occurrences</p>
 <td headers="[header]Cohort name
 [header_level]Ankle sprain" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">123 (6.4%)</td>
 <td headers="[header]Cohort name
+[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">26 (5.6%)</td>
+<td headers="[header]Cohort name
 [header_level]Forearm fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">37 (6.5%)</td>
 <td headers="[header]Cohort name
-[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">15 (10.9%)</td>
-<td headers="[header]Cohort name
-[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right;">26 (5.6%)</td>
+[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right;">15 (10.9%)</td>
 </tr>
 <tr>
 <td headers="CDM name" class="gt_row gt_left" style="text-align: left; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000;"></td>
@@ -4569,11 +4560,11 @@ add a count of visit occurrences</p>
 <td headers="[header]Cohort name
 [header_level]Ankle sprain" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">0.00 [0.00 - 0.00]</td>
 <td headers="[header]Cohort name
+[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">0.00 [0.00 - 0.00]</td>
+<td headers="[header]Cohort name
 [header_level]Forearm fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">0.00 [0.00 - 0.00]</td>
 <td headers="[header]Cohort name
-[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">0.00 [0.00 - 0.00]</td>
-<td headers="[header]Cohort name
-[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right;">0.00 [0.00 - 0.00]</td>
+[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right;">0.00 [0.00 - 0.00]</td>
 </tr>
 <tr>
 <td headers="CDM name" class="gt_row gt_left" style="text-align: left; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000;"></td>
@@ -4583,11 +4574,11 @@ add a count of visit occurrences</p>
 <td headers="[header]Cohort name
 [header_level]Ankle sprain" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">0.00 (0.06)</td>
 <td headers="[header]Cohort name
+[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">0.00 (0.00)</td>
+<td headers="[header]Cohort name
 [header_level]Forearm fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">0.00 (0.00)</td>
 <td headers="[header]Cohort name
-[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">0.00 (0.00)</td>
-<td headers="[header]Cohort name
-[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right;">0.00 (0.00)</td>
+[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right;">0.00 (0.00)</td>
 </tr>
 <tr>
 <td headers="CDM name" class="gt_row gt_left" style="text-align: left; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000;"></td>
@@ -4597,11 +4588,11 @@ add a count of visit occurrences</p>
 <td headers="[header]Cohort name
 [header_level]Ankle sprain" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">0.00 to 1.00</td>
 <td headers="[header]Cohort name
+[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">0.00 to 0.00</td>
+<td headers="[header]Cohort name
 [header_level]Forearm fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">0.00 to 0.00</td>
 <td headers="[header]Cohort name
-[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">0.00 to 0.00</td>
-<td headers="[header]Cohort name
-[header_level]Ankle fracture" class="gt_row gt_left" style="text-align: right;">0.00 to 0.00</td>
+[header_level]Hip fracture" class="gt_row gt_left" style="text-align: right;">0.00 to 0.00</td>
 </tr>
 </tbody>
 </table>
