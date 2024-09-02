@@ -9,7 +9,6 @@ test_that("summariseCohortTiming", {
     ethnicity_concept_id = 0
   )
 
-
   table <- dplyr::tibble(
     cohort_definition_id = c(rep(1, 15), rep(2, 10), rep(3, 15), rep(4, 5)),
     subject_id = c(

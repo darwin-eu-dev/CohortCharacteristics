@@ -17,15 +17,15 @@
 #' Create a ggplot from the output of summariseCharacteristics.
 #' `r lifecycle::badge("experimental")`
 #'
-#' @param data output of summariseCharacteristics.
-#' @param x what to plot on x axis, default as variable_name column. Has to be a column in data.
-#' @param plotStyle Now allows boxplot or barplot only.
-#' @param facet Variables to facet by
+#' @param result A summariseCharacteristics result.
+#' @param plotStyle Either `barplot`, `scatterplot` or `boxplot`. If `barplot`
+#' or `scatterplot` subset to just one estimate.
+#' @param facet Variables to facet by.
 #' @param colour  column in data to color by.
-#' @param colourName Colour legend name
-#' @param .options Additional plotting options.
+#'
 #' @return A ggplot.
 #' @export
+#'
 #' @examples
 #' \donttest{
 #' library(CohortCharacteristics)
@@ -46,158 +46,90 @@
 #'
 #' results |>
 #'   filter(
-#'     variable_name == "Cohort2 flag -365 to -1",
-#'     estimate_name == "percentage"
+#'     variable_name == "Cohort2 flag -365 to -1", estimate_name == "percentage"
 #'   ) |>
 #'   plotCharacteristics(
 #'     plotStyle = "barplot",
 #'     colour = "variable_level",
-#'     x = "variable_level",
-#'     facet = c(
-#'       "cdm_name",
-#'       "group_level",
-#'       "strata_level"
-#'     )
+#'     facet = c("cdm_name", "cohort_name")
+#'   )
+#'
+#' results |>
+#'   filter(variable_name == "Age", estimate_name == "mean") |>
+#'   plotCharacteristics(
+#'     plotStyle = "scatterplot",
+#'     facet = "cdm_name"
+#'   )
+#'
+#' results |>
+#'   filter(variable_name == "Age") |>
+#'   plotCharacteristics(
+#'     plotStyle = "boxplot",
+#'     facet = "cdm_name",
+#'     colour = "cohort_name"
 #'   )
 #'
 #' mockDisconnect(cdm = cdm)
 #' }
-plotCharacteristics <- function(data,
-                                x = "variable_name",
+plotCharacteristics <- function(result,
                                 plotStyle = "barplot",
                                 facet = NULL,
-                                colour = NULL,
-                                colourName = NULL,
-                                .options = list()) {
+                                colour = NULL) {
+  result <- omopgenerics::validateResultArguemnt(result)
+  omopgenerics::assertChoice(
+    plotStyle, c("barplot", "scatterplot", "boxplot"), length = 1)
 
-  rlang::check_installed("ggplot2")
-  rlang::check_installed("ggpubr")
-  rlang::check_installed("scales")
-
-  if (!inherits(data, "summarised_result")) {
-    cli::cli_abort("result must be a summarised result")
-  }
-  if (nrow(data) == 0) {
-    cli::cli_warn("Empty result object")
-    return(emptyPlot())
-  }
-
-  errorMessage <- checkmate::makeAssertCollection()
-
-  checkmate::assertTRUE(plotStyle %in% c("boxplot", "barplot", "density"), add = errorMessage)
-
-  checkmate::reportAssertions(collection = errorMessage)
-
-  data <- data |>
-    visOmopResults::filterSettings(.data$result_type ==
-                                     "summarise_characteristics")
-  if (nrow(data) == 0) {
+  result <- result |>
+    visOmopResults::filterSettings(
+      .data$result_type == "summarise_characteristics")
+  if (nrow(result) == 0) {
     cli::cli_warn("No summarised characteristics results found")
     return(emptyPlot())
   }
 
-  xAxis <- x
-  yAxis <- "estimate_value"
-  vertical_x <- FALSE
+  variable <- oneVariable(result)
 
-  # only allow one variable name to be used
-  nVariableNames <- length(data |>
-    dplyr::select("variable_name") |>
-    dplyr::distinct() |>
-    dplyr::pull())
-  if (nVariableNames != 1) {
-    emptyPlot(
-      "Only one variable name can be plotted at a time.",
-      "Please filter variable_name column in results before passing to plotCharacteristics()"
-    )
-  }
-
-  data <- data |>
-    dplyr::mutate("estimate_type" = dplyr::if_else(
-      .data$estimate_type == "integer", "numeric", .data$estimate_type
-    ))
-
-  estimateType <- data |>
-    dplyr::select("estimate_type") |>
-    dplyr::distinct() |>
-    dplyr::pull()
-  nEstimateTypes <- length(estimateType)
-  if (nEstimateTypes != 1) {
-    emptyPlot(
-      "Only one estimate type can be plotted at a time.",
-      "Please filter estimate_type column in results before passing to plotCharacteristics()"
-    )
-  }
-
-  if (!estimateType %in% c("numeric", "percentage")) {
-    emptyPlot(paste0(estimateType, " not currently supported by plotCharacteristics()"))
-  }
-
-  gg <- plotfunction(
-    data,
-    xAxis,
-    yAxis,
-    plotStyle = plotStyle,
-    facetVarX = NULL,
-    facetVarY = NULL,
-    colorVars = colour,
-    vertical_x,
-    facet = facet,
-    .options = .options
-  )
-
-
-  gg <- gg +
-    ggplot2::theme_bw()
-
-
-  if (estimateType == "numeric") {
-    var <- unique(data$variable_name)
-
-    if (xAxis == "estimate_value") {
-      gg <- gg +
-        ggplot2::ylab(var) +
-        ggplot2::xlab("")
+  if (plotStyle == "boxplot") {
+    p <- visOmopResults::plotBoxplot(result, facet = facet, colour = colour) +
+      ggplot2::labs(y = glue::glue("{variable}"))
+  } else {
+    estimate <- unique(result$estimate_name)
+    if (length(estimate) > 1) {
+      return(emptyPlot(
+        "Only one estimate name can be plotted at a time.",
+        "Please filter estimate_name column in results before passing to plotCharacteristics()"
+      ))
     }
-    if (yAxis == "estimate_value") {
-      gg <- gg +
-        ggplot2::ylab(var) +
-        ggplot2::xlab("")
+    x <- c(
+      "variable_level", "cdm_name", visOmopResults::groupColumns(result),
+      visOmopResults::strataColumns(result),
+      visOmopResults::additionalColumns(result))
+    res <- result |>
+      dplyr::select(
+        "variable_level", "cdm_name", "group_name", "group_level",
+        "strata_name", "strata_level", "additional_name", "additional_level") |>
+      dplyr::distinct() |>
+      visOmopResults::splitAll()
+    x <- x[!x %in% facet]
+    x <- x[purrr::map_lgl(x, \(x) res[[x]] |> unique() |> length() > 1)]
+    print(x)
+    if (plotStyle == "barplot") {
+      p <- result |>
+        visOmopResults::plotBarplot(
+          x = x, y = estimate, facet = facet, colour = colour)
+    } else if (plotStyle == "scatterplot") {
+      p <- result |>
+        visOmopResults::plotScatter(
+          x = x, y = estimate, facet = facet, colour = colour, line = FALSE,
+          point = TRUE, ribbon = FALSE, group = colour)
     }
+    p <- p +
+      ggplot2::labs(y = glue::glue("{variable} ({estimate})"))
   }
 
-
-  if (estimateType == "percentage") {
-    if (xAxis == "estimate_value") {
-      gg <- gg +
-        ggplot2::xlab("Percentage") +
-        ggplot2::ylab("")
-    }
-    if (yAxis == "estimate_value") {
-      gg <- gg +
-        ggplot2::ylab("Percentage") +
-        ggplot2::xlab("")
-    }
-  }
-
-  gg <- gg +
+  p <- p +
     ggplot2::theme_bw() +
     ggplot2::theme(legend.position = "top")
 
-  if (!is.null(colourName)) {
-    gg <- gg +
-      ggplot2::labs(
-        color = colourName,
-        fill = colourName
-      )
-  } else {
-    gg <- gg +
-      ggplot2::labs(
-        color = "",
-        fill = ""
-      )
-  }
-
-
-  gg
+  return(p)
 }

@@ -203,7 +203,7 @@ getDensityData <- function(x) {
   } else {
     den <- stats::density(x, n = nPoints)
   }
-  lev <- as.character(seq_len(nPoints))
+  lev <- stringr::str_pad(seq_len(nPoints), width = nDigits, side = "left", pad = "0")
   res <- dplyr::tibble(
     variable_level = lev,
     estimate_name = "x",

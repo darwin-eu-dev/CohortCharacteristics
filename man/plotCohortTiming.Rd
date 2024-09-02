@@ -8,11 +8,11 @@ plotCohortTiming(
   result,
   plotType = "boxplot",
   timeScale = "days",
-  facet = NULL,
-  colour = NULL,
-  colourName = NULL,
-  uniqueCombinations = TRUE,
-  .options = list()
+  facet = c("cdm_name", "cohort_name_reference"),
+  colour = c("cohort_name_comparator"),
+  colourName = lifecycle::deprecated(),
+  uniqueCombinations = FALSE,
+  .options = lifecycle::deprecated()
 )
 }
 \arguments{
@@ -23,16 +23,16 @@ plotCohortTiming(
 
 \item{timeScale}{Time scale to plot results. Can be days or years.}
 
-\item{facet}{variables to facet by}
+\item{facet}{variables to facet by.}
 
-\item{colour}{Variables to use for colours}
+\item{colour}{Variables to use for colours.}
 
-\item{colourName}{Colour legend name}
+\item{colourName}{deprecated.}
 
 \item{uniqueCombinations}{If TRUE, only unique combinations of reference and
 comparator plots will be plotted.}
 
-\item{.options}{Additional plotting options}
+\item{.options}{deprecated.}
 }
 \value{
 A ggplot.

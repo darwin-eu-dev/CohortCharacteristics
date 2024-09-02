@@ -79,8 +79,7 @@ chars |>
   filter(variable_name == "Age") |>
   plotCharacteristics(
     plotStyle = "boxplot",
-    colour = "group_level",
-    x = "group_level",
+    colour = "cohort_name",
     facet = c("cdm_name")
   )
 ```
@@ -109,9 +108,8 @@ chars |>
   filter(variable_name == "Prior observation") |>
   plotCharacteristics(
     plotStyle = "boxplot",
-    colour = "group_level",
-    x = "group_level",
-    facet = c("strata_level")
+    colour = "cohort_name",
+    facet = c("age_group")
   ) +
   coord_flip()
 ```
@@ -121,11 +119,7 @@ chars |>
 ```{r}
 meds_cs <- getDrugIngredientCodes(
   cdm = cdm,
-  name = c(
-    "acetaminophen",
-    "morphine",
-    "warfarin"
-  )
+  name = c("acetaminophen", "morphine", "warfarin")
 )
 cdm <- generateConceptCohortSet(
   cdm = cdm,
@@ -170,11 +164,7 @@ plot_data |>
   plotCharacteristics(
     plotStyle = "barplot",
     colour = "variable_level",
-    x = "variable_level",
-    facet = c(
-      "cdm_name",
-      "group_level"
-    )
+    facet = c("cdm_name", "cohort_name")
   ) +
   scale_x_discrete(limits = rev(sort(unique(plot_data$variable_level)))) +
   coord_flip() +
