@@ -57,10 +57,7 @@ plotCohortCount <- function(result,
     return(emptyPlot())
   }
 
-  opts <- unique(result$variable_name)
-  if (length(opts) > 1) {
-    cli::cli_abort("Multiple variables present: {.var {opts}} please subset to one of them.")
-  }
+  opts <- oneVariable(result)
 
   p <- visOmopResults::plotBarplot(
     result = result,
@@ -77,4 +74,13 @@ plotCohortCount <- function(result,
     )
 
   return(p)
+}
+
+oneVariable <- function(result) {
+  opts <- unique(result$variable_name)
+  if (length(opts) > 1) {
+    "Multiple variables present: {.var {opts}}. Please subset to one of them." |>
+      cli::cli_abort()
+  }
+  return(opts)
 }
