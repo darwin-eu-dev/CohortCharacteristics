@@ -263,15 +263,15 @@ test_that("test summariseCharacteristics", {
   ))
   expect_equal(
     empty,
-    omopgenerics::emptySummarisedResult() |>
-      omopgenerics::newSummarisedResult(settings = dplyr::tibble(
-        "result_id" = 1L,
-        "package_name" = "CohortCharacteristics",
-        "package_version" = as.character(utils::packageVersion(
-          "CohortCharacteristics"
-        )),
-        "result_type" = "summarise_characteristics"
-      ))
+    omopgenerics::emptySummarisedResult(settings = dplyr::tibble(
+      "result_id" = 1L,
+      "package_name" = "CohortCharacteristics",
+      "package_version" = as.character(utils::packageVersion(
+        "CohortCharacteristics"
+      )),
+      "result_type" = "summarise_characteristics",
+      "table_name" = "dus_cohort"
+    ))
   )
 
   # demographics
