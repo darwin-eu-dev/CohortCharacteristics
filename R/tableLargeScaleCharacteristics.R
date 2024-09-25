@@ -163,14 +163,10 @@ tableLargeScaleCharacteristics <- function(result,
     )))
 
   header <- cleanHeader(header, strataColumns)
-  tab <- visOmopResults::formatHeader(result = res, header = header)
-  if (type == "gt") {
-    res <- visOmopResults::gtTable(tab, groupColumn = "group")
-  } else {
-    res <- visOmopResults::fxTable(tab, groupColumn = "group")
-  }
+  tab <- visOmopResults::formatHeader(result = res, header = header)|>
+    visOmopResults::formatTable(type = type, groupColumn = "group")
 
-  return(res)
+  return(tab)
 }
 cleanHeader <- function(header, strata) {
   header[header == "cdm name"] <- "CDM name"

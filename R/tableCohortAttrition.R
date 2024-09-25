@@ -95,15 +95,8 @@ tableCohortAttrition <- function(result,
       "CDM name" = "cdm_name",
       "Cohort name" = "cohort_name"
     ) |>
-    visOmopResults::formatHeader(header = c(header, "Variable"))
-
-  if (type == "gt") {
-    result <- result |>
-      visOmopResults::gtTable(groupColumn = groupColumn)
-  } else if (type == "flextable") {
-    result <- result |>
-      visOmopResults::fxTable(groupColumn = groupColumn)
-  }
+    visOmopResults::formatHeader(header = c(header, "Variable")) |>
+    visOmopResults::formatTable(type = type, groupColumn = groupColumn)
 
   return(result)
 }
