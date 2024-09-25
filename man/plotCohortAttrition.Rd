@@ -4,12 +4,13 @@
 \alias{plotCohortAttrition}
 \title{create a ggplot from the output of summariseLargeScaleCharacteristics.}
 \usage{
-plotCohortAttrition(x, cohortId = NULL)
+plotCohortAttrition(result, cohortId = lifecycle::deprecated())
 }
 \arguments{
-\item{x}{attrition table}
+\item{result}{A summarised_result object with the results of
+summariseCohortAttrition().}
 
-\item{cohortId}{target cohort_definition_id}
+\item{cohortId}{deprecated.}
 }
 \value{
 A dgr_graph

@@ -41,6 +41,26 @@ summariseCohortAttrition <- function(cohort,
     dplyr::mutate("result_id" = as.integer(dplyr::row_number()))
 
   attritionSummary <- omopgenerics::attrition(cohort) |>
+    summariseAttrition(
+      set, omopgenerics::tableName(cohort), omopgenerics::cdmName(cohort))
+
+  return(attritionSummary)
+}
+
+summariseAttrition <- function(att,
+                               set = NULL,
+                               tname = "unknown",
+                               cname = "unknown") {
+  if (is.null(set)) {
+    set <- att |>
+      dplyr::select("cohort_definition_id") |>
+      dplyr::distinct() |>
+      dplyr::mutate(
+        "result_id" = .data$cohort_definition_id,
+        "cohort_name" = paste0("unknown_", .data$cohort_definition_id)
+      )
+  }
+  att |>
     dplyr::inner_join(
       set |>
         dplyr::select("cohort_definition_id", "result_id", "cohort_name"),
@@ -60,7 +80,7 @@ summariseCohortAttrition <- function(cohort,
       "estimate_name" = "count",
       "variable_level" = NA_character_,
       "estimate_type" = "integer",
-      "cdm_name" = omopgenerics::cdmName(cohort)
+      "cdm_name" = cname
     ) |>
     visOmopResults::uniteGroup("cohort_name") |>
     visOmopResults::uniteStrata("reason") |>
@@ -72,12 +92,10 @@ summariseCohortAttrition <- function(cohort,
           "result_type" = "summarise_cohort_attrition",
           "package_name" = "CohortCharacteristics",
           "package_version" = as.character(utils::packageVersion("CohortCharacteristics")),
-          "table_name" = omopgenerics::tableName(cohort)
+          "table_name" = tname
         ) |>
         dplyr::relocate(dplyr::all_of(c(
           "result_id", "result_type", "package_name", "package_version"
         )))
     )
-
-  return(attritionSummary)
 }
