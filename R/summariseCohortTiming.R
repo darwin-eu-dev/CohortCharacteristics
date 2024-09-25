@@ -55,11 +55,11 @@ summariseCohortTiming <- function(cohort,
   # validate inputs
   cohort <- omopgenerics::validateCohortArgument(cohort)
   cohortId <- omopgenerics::validateCohortIdArgument(cohortId, cohort)
-  checkmate::assertNumeric(cohortId, any.missing = FALSE, null.ok = TRUE)
+  omopgenerics::assertNumeric(cohortId, null = TRUE)
   checkStrata(strata, cohort)
-  checkmate::assertTRUE(all(c("cohort_definition_id", "subject_id", "cohort_start_date", "cohort_end_date") %in% colnames(cohort)))
-  checkmate::assertLogical(restrictToFirstEntry, any.missing = FALSE, len = 1, null.ok = FALSE)
-  checkmate::assertCharacter(estimates, any.missing = FALSE, null.ok = FALSE)
+  omopgenerics::assertTrue(all(c("cohort_definition_id", "subject_id", "cohort_start_date", "cohort_end_date") %in% colnames(cohort)))
+  omopgenerics::assertLogical(restrictToFirstEntry, length = 1)
+  omopgenerics::assertCharacter(estimates)
   timing <- estimates
 
   if (length(timing) == 0) {

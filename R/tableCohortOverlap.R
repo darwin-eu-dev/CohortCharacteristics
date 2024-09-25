@@ -72,8 +72,7 @@ tableCohortOverlap <- function(result,
     return(emptyResultTable(type = type))
   }
 
-
-  checkmate::assertList(.options)
+  omopgenerics::assertList(.options)
 
   # default
   .options <- defaultOverlapOptions(.options)

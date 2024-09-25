@@ -80,21 +80,21 @@ summariseLargeScaleCharacteristics <- function(cohort,
   # initial checks
   checkX(cohort)
   checkStrata(strata, cohort)
-  checkWindow(window)
+  window <- omopgenerics::validateWindowArgument(window)
   tables <- c(
     "visit_occurrence", "condition_occurrence", "drug_exposure",
     "procedure_occurrence", "device_exposure", "measurement", "observation",
     "drug_era", "condition_era", "specimen",
     paste("ATC", c("1st", "2nd", "3rd", "4th", "5th"))
   )
-  checkmate::assertSubset(eventInWindow, tables)
-  checkmate::assertSubset(episodeInWindow, tables)
+  omopgenerics::assertChoice(eventInWindow, tables, null = TRUE)
+  omopgenerics::assertChoice(episodeInWindow, tables, null = TRUE)
   if (is.null(eventInWindow) && is.null(episodeInWindow)) {
     cli::cli_abort("'eventInWindow' or 'episodeInWindow' must be provided")
   }
-  checkmate::assertLogical(includeSource, any.missing = FALSE, len = 1)
-  checkmate::assertNumber(minimumFrequency, lower = 0, upper = 1)
-  checkmate::assert_integerish(excludedCodes, any.missing = FALSE, null.ok = TRUE)
+  omopgenerics::assertLogical(includeSource, length = 1)
+  omopgenerics::assertNumeric(minimumFrequency, min = 0, max = 1)
+  omopgenerics::assertNumeric(excludedCodes, integerish = TRUE, null = TRUE)
 
   checkCdm(cdm, "concept")
 

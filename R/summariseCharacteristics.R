@@ -114,13 +114,13 @@ summariseCharacteristics <- function(cohort,
   # check initial tables
   cdm <- omopgenerics::cdmReference(cohort)
   checkX(cohort)
-  checkmate::assertLogical(demographics, any.missing = FALSE, len = 1)
+  omopgenerics::assertLogical(demographics, length = 1)
   checkCdm(cdm)
   if (!is.list(strata)) {
     strata <- list(strata)
   }
   strata <- checkStrata(strata, cohort)
-  ageGroup <- checkAgeGroup(ageGroup)
+  ageGroup <- omopgenerics::validateAgeGroupArgument(ageGroup)
   assertLogical(counts)
   tableIntersectFlag <- assertIntersect(tableIntersectFlag)
   tableIntersectCount <- assertIntersect(tableIntersectCount)
@@ -251,8 +251,6 @@ summariseCharacteristics <- function(cohort,
     demographicsCategorical <- sex
 
     if (!is.null(ageGroup)) {
-      # default names
-      ageGroup <- checkAgeGroup(ageGroup)
 
       # update names
       newNames <- uniqueVariableName(length(ageGroup))

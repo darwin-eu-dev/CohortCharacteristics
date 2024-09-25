@@ -105,7 +105,7 @@ positionFunction <- function(position) {
 
 facetFunction <- function(facet, splitStrata, data) {
   if (!is.null(facet)) {
-    checkmate::assertTRUE(inherits(facet, c("formula", "character")))
+    omopgenerics::assertTrue(inherits(facet, c("formula", "character")))
 
     if (inherits(facet, "formula")) {
       facet <- Reduce(paste, deparse(facet))

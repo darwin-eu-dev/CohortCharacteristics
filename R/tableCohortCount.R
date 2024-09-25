@@ -68,7 +68,7 @@ tableCohortCount <- function(result,
   # check input
   result <- omopgenerics::newSummarisedResult(result) |>
     visOmopResults::filterSettings(.data$result_type == "summarise_cohort_count")
-  checkmate::assertList(.options)
+  omopgenerics::assertList(.options)
 
   # add default options
   .options <- defaultCharacteristicsOptions(.options)

@@ -88,7 +88,7 @@ tableCharacteristics <- function(result,
     return(emptyResultTable(type = type))
   }
 
-  checkmate::assertList(.options)
+  omopgenerics::assertList(.options)
 
   # add default options
   .options <- defaultCharacteristicsOptions(.options)

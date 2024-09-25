@@ -73,8 +73,8 @@ tableCohortTiming <- function(result,
     return(emptyResultTable(type = type))
   }
 
-  checkmate::assertList(.options)
-  checkmate::assertChoice(timeScale, c("days", "years"))
+  omopgenerics::assertList(.options)
+  omopgenerics::assertChoice(timeScale, c("days", "years"))
 
   # defaults
   .options <- defaultTimingOptions(.options)
