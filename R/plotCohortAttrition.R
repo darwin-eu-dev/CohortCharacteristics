@@ -18,8 +18,9 @@
 #'
 #' `r lifecycle::badge("experimental")`
 #'
-#' @param x attrition table
-#' @param cohortId target cohort_definition_id
+#' @param result A summarised_result object with the results of
+#' summariseCohortAttrition().
+#' @param cohortId deprecated.
 #'
 #' @return A dgr_graph
 #'
@@ -45,36 +46,38 @@
 #'   plotCohortAttrition(cohortId = 2)
 #' }
 #'
-plotCohortAttrition <- function(x, cohortId = NULL) {
-
+plotCohortAttrition <- function(result,
+                                cohortId = lifecycle::deprecated()) {
+  if (lifecycle::is_present(cohortId)) {
+    lifecycle::deprecate_soft("0.3.0", "plotCohortAttrition(cohortId = )")
+  }
   rlang::check_installed("DiagrammeR")
 
-  if (!inherits(x, "summarised_result")) {
-    cli::cli_abort("x must be the output of summariseCohortAttrition()")
+  if (inherits(result, "cohort_table")) {
+    result <- summariseCohortAttrition(result)
   }
-  if (nrow(x) == 0) {
-    cli::cli_warn("Empty result object")
-    return(emptyTable("Empty result object"))
+  colsAttr <- omopgenerics::cohortColumns("cohort_attrition")
+  if (inherits(result, "data.frame") && all(colsAttr %in% colnames(result))) {
+    result <- result |>
+      dplyr::select(dplyr::all_of(colsAttr)) |>
+      summariseAttrition()
   }
-  x <- x |>
-    visOmopResults::filterSettings(.data$result_type == "summarise_cohort_attrition")
-  if (nrow(x) == 0) {
+  result <- omopgenerics::validateResultArgument(result)
+  result <- result |>
+    visOmopResults::filterSettings(
+      .data$result_type == "summarise_cohort_attrition")
+  if (nrow(result) == 0) {
     cli::cli_warn("No attrition found in the results")
     return(emptyTable("No attrition found in the results"))
   }
-  if (!is.null(cohortId)) {
-    x <- x |>
-      visOmopResults::filterSettings(
-        .data$cohort_definition_id == .env$cohortId
-      )
-  }
-  if (x$result_id |> unique() |> length() > 1) {
+  nCohorts <- length(unique(result$group_level))
+  if (nCohorts > 1) {
     return(
-      emptyTable("More than one cohort found, please select only one cohort to show attrition.")
+      emptyTable(paste0(nCohorts, " present in the reuslt object, please subset to just one of them"))
     )
   }
 
-  x <- x |>
+  x <- result |>
     visOmopResults::splitAll() |>
     visOmopResults::pivotEstimates(
       pivotEstimatesBy = c("variable_name", "estimate_name"),

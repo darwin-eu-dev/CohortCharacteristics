@@ -10,19 +10,33 @@ test_that("plot cohort attrition", {
 
   ca <- cdm[["cohort1"]] |> summariseCohortAttrition()
 
-  x <- plotCohortAttrition(ca, cohortId = 2)
+  expect_warning(x <- plotCohortAttrition(ca, cohortId = 2))
 
   expect_true(inherits(x, c("grViz", "htmlwidget")))
 
   # Test empty data
   ca <- ca |> dplyr::filter(result_id == 10)
-  x <- plotCohortAttrition(ca)
+  expect_warning(x <- plotCohortAttrition(ca))
   expect_true(inherits(x, c("grViz", "htmlwidget")))
 
   # Test other result
   other <- PatientProfiles::summariseResult(cdm[["cohort1"]])
-  x <- plotCohortAttrition(other)
+  expect_warning(x <- plotCohortAttrition(other))
   expect_true(inherits(x, c("grViz", "htmlwidget")))
 
+  # subset to just one cohort
+  cdm$cohort1 <- CohortConstructor::subsetCohorts(cdm$cohort1, cohortId = 1)
+  out <- cdm$cohort1 |>
+    summariseCohortAttrition() |>
+    plotCohortAttrition()
 
+  # test attrition object (to consider if this is needed)
+  res <- plotCohortAttrition(omopgenerics::attrition(cdm$cohort1))
+  expect_identical(out, res)
+
+  # test cohort object (to consider if this is needed)
+  res <- plotCohortAttrition(cdm$cohort1)
+  expect_identical(out, res)
+
+  PatientProfiles::mockDisconnect(cdm = cdm)
 })
