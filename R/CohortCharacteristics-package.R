@@ -22,5 +22,6 @@
 #' @importFrom rlang .data
 #' @importFrom rlang .env
 #' @importFrom rlang :=
+#' @importFrom dplyr %>%
 ## usethis namespace: end
 NULL

@@ -37,7 +37,6 @@ Imports:
     omopgenerics (>= 0.3.0),
     visOmopResults (>= 0.3.0),
     PatientProfiles (>= 1.2.0),
-    magrittr,
     snakecase,
     lifecycle,
     purrr

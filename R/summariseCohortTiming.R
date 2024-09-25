@@ -39,7 +39,6 @@
 #' mockDisconnect(cdm = cdm)
 #' }
 #'
-#' @importFrom dplyr %>%
 summariseCohortTiming <- function(cohort,
                                   cohortId = NULL,
                                   strata = list(),
