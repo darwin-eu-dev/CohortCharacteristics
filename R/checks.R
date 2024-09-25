@@ -57,10 +57,7 @@ checkCdm <- function(cdm, tables = NULL) {
 
 #' @noRd
 checkVariableInX <- function(indexDate, x, nullOk = FALSE, name = "indexDate") {
-  checkmate::assertCharacter(
-    indexDate,
-    any.missing = FALSE, len = 1, null.ok = nullOk
-  )
+  omopgenerics::assertCharacter(indexDate, lenngth = 1, null = nullOk)
   if (!is.null(indexDate) && !(indexDate %in% colnames(x))) {
     cli::cli_abort(glue::glue("{name} ({indexDate}) should be a column in x"))
   }
@@ -69,11 +66,7 @@ checkVariableInX <- function(indexDate, x, nullOk = FALSE, name = "indexDate") {
 
 #' @noRd
 checkCategory <- function(category, overlap = FALSE, type = "numeric") {
-  checkmate::assertList(
-    category,
-    types = type, any.missing = FALSE, unique = TRUE,
-    min.len = 1
-  )
+  omopgenerics::assertList(category, unique = TRUE)
 
   if (is.null(names(category))) {
     names(category) <- rep("", length(category))
@@ -135,82 +128,6 @@ checkCategory <- function(category, overlap = FALSE, type = "numeric") {
   invisible(result)
 }
 
-#' @noRd
-checkAgeGroup <- function(ageGroup, overlap = FALSE) {
-  checkmate::assertList(ageGroup, min.len = 1, null.ok = TRUE)
-  if (!is.null(ageGroup)) {
-    if (is.numeric(ageGroup[[1]])) {
-      ageGroup <- list("age_group" = ageGroup)
-    }
-    for (k in seq_along(ageGroup)) {
-      invisible(checkCategory(ageGroup[[k]], overlap))
-      if (any(ageGroup[[k]] |> unlist() |> unique() < 0)) {
-        cli::cli_abort("ageGroup can't contain negative values")
-      }
-    }
-    if (is.null(names(ageGroup))) {
-      names(ageGroup) <- paste0("age_group_", 1:length(ageGroup))
-    }
-    if ("" %in% names(ageGroup)) {
-      id <- which(names(ageGroup) == "")
-      names(ageGroup)[id] <- paste0("age_group_", id)
-    }
-  }
-  return(invisible(ageGroup))
-}
-
-#' @noRd
-checkWindow <- function(window) {
-  if (!is.list(window)) {
-    cli::cli_abort("window must be a list")
-  }
-
-  # Find if any NA, throw warning that it will be changed to Inf, change it later
-  if (any(unlist(lapply(window, is.na)))) {
-    cli::cli_abort("NA found in window, please use Inf or -Inf instead")
-  }
-
-  originalWindow <- window
-  # change inf to NA to check for floats, as Inf won't pass integerish check
-  window <- lapply(window, function(x) replace(x, is.infinite(x), NA))
-  checkmate::assertList(window, types = "integerish")
-  window <- originalWindow
-
-  # if any element of window list has length over 2, throw error
-  if (any(lengths(window) > 2)) {
-    cli::cli_abort("window can only contain two values: windowStart and windowEnd")
-  }
-
-  # eg if list(1,2,3), change to list(c(1,1), c(2,2), c(3,3))
-  if (length(window) > 1 && any(lengths(window) == 1)) {
-    window[lengths(window) == 1] <- lapply(
-      window[lengths(window) == 1],
-      function(x) c(unlist(x[lengths(x) == 1]), unlist(x[lengths(x) == 1]))
-    )
-    cli::cli_warn("Window list contains element with only 1 value provided,
-          use it as both window start and window end")
-  }
-
-  names(window) <- getWindowNames(window)
-  lower <- lapply(window, function(x) {
-    x[1]
-  }) |> unlist()
-  upper <- lapply(window, function(x) {
-    x[2]
-  }) |> unlist()
-
-  if (any(lower > upper)) {
-    cli::cli_abort("First element in window must be smaller or equal to the second one")
-  }
-  if (any(is.infinite(lower) & lower == upper & sign(upper) == 1)) {
-    cli::cli_abort("Not both elements in the window can be +Inf")
-  }
-  if (any(is.infinite(lower) & lower == upper & sign(upper) == -1)) {
-    cli::cli_abort("Not both elements in the window can be -Inf")
-  }
-
-  invisible(window)
-}
 
 #' @noRd
 checkNewName <- function(name, x) {
@@ -244,20 +161,17 @@ getWindowNames <- function(window) {
 #' @noRd
 checkFilter <- function(filterVariable, filterId, idName, x) {
   if (is.null(filterVariable)) {
-    checkmate::testNull(filterId)
-    checkmate::testNull(idName)
+    if (!is.null(filterId)) cli::cli_abort("filterId should be NULL")
+    if (!is.null(idName)) cli::cli_abort("idName should be NULL")
     filterTbl <- NULL
   } else {
     checkVariableInX(filterVariable, x, FALSE, "filterVariable")
-    checkmate::assertNumeric(filterId, any.missing = FALSE)
-    checkmate::assertNumeric(utils::head(x, 1) |> dplyr::pull(dplyr::all_of(filterVariable)))
+    omopgenerics::assertNumeric(filterId)
+    omopgenerics::assertNumeric(utils::head(x, 1) |> dplyr::pull(dplyr::all_of(filterVariable)))
     if (is.null(idName)) {
       idName <- paste0("id", filterId)
     } else {
-      checkmate::assertCharacter(
-        idName,
-        any.missing = FALSE, len = length(filterId)
-      )
+      omopgenerics::assertCharacter(idName, length = length(filterId))
     }
     filterTbl <- dplyr::tibble(
       id = filterId,
@@ -269,7 +183,7 @@ checkFilter <- function(filterVariable, filterId, idName, x) {
 
 #' @noRd
 checkNameStyle <- function(nameStyle, filterTbl, windowTbl, value) {
-  checkmate::assertCharacter(nameStyle, len = 1, any.missing = FALSE, min.chars = 1)
+  omopgenerics::assertCharacter(nameStyle, length = 1, minNumCharacter = 1)
   filterChange <- !is.null(filterTbl) && nrow(filterTbl) > 1
   windowChange <- !is.null(windowTbl) && nrow(windowTbl) > 1
   valueChange <- length(value) > 1
@@ -300,8 +214,8 @@ checkNameStyle <- function(nameStyle, filterTbl, windowTbl, value) {
 
 #' @noRd
 checkValue <- function(value, x, name) {
-  checkmate::assertCharacter(value, any.missing = FALSE, min.len = 1)
-  checkmate::assertTRUE(
+  omopgenerics::assertCharacter(value, minNumCharacter = 1)
+  omopgenerics::assertTrue(
     all(value %in% c("flag", "count", "date", "days", colnames(x)))
   )
   valueOptions <- c("flag", "count", "date", "days")
@@ -431,29 +345,25 @@ checkStrata <- function(strata, table, type = "strata") {
 
 #' @noRd
 checkSuppressCellCount <- function(suppressCellCount) {
-  checkmate::assertIntegerish(
-    suppressCellCount,
-    lower = 0, len = 1, any.missing = FALSE
+  omopgenerics::assertNumeric(
+    suppressCellCount, integerish = TRUE, min = 0, length = 1
   )
 }
 
 #' @noRd
 checkBigMark <- function(bigMark) {
-  checkmate::checkCharacter(bigMark, min.chars = 0, len = 1,
-                            any.missing = FALSE)
+  omopgenerics::assertCharacter(bigMark, length = 1)
 }
 
 #' @noRd
 checkDecimalMark <- function(decimalMark) {
-  checkmate::checkCharacter(decimalMark, min.chars = 1, len = 1,
-                            any.missing = FALSE)
+  omopgenerics::assertCharacter(decimalMark, length = 1, minNumCharacter = 1)
 }
 
 #' @noRd
 checkSignificantDecimals <- function(significantDecimals) {
-  checkmate::assertIntegerish(
-    significantDecimals,
-    lower = 0, len = 1, any.missing = FALSE
+  omopgenerics::assertNumeric(
+    significantDecimals, integerish = TRUE, min = 0, length = 1
   )
 }
 

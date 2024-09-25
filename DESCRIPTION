@@ -30,7 +30,6 @@ Imports:
     CDMConnector (>= 1.3.2),
     dplyr,
     tidyr,
-    checkmate,
     rlang,
     cli,
     stringr,

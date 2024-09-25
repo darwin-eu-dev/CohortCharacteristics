@@ -24,18 +24,15 @@ plotfunction <- function(data,
                          vertical_x = FALSE,
                          facet = NULL,
                          .options = list()) {
-  errorMessage <- checkmate::makeAssertCollection()
-  checkmate::assertTRUE(inherits(data, "summarised_result"))
+  omopgenerics::assertTrue(inherits(data, "summarised_result"))
   all_vars <- c(xAxis, yAxis, facetVarX, facetVarY, colorVars)
-  checkmate::assertTRUE(all(all_vars[!is.null(all_vars)] %in% colnames(data)))
+  omopgenerics::assertTrue(all(all_vars[!is.null(all_vars)] %in% colnames(data)))
   if (plotStyle == "density" && xAxis != "estimate_value") {
     stop(sprintf("If plotStyle is set to 'density', xAxis must be 'estimate_value'."))
   }
 
-  checkmate::assertVector(facetVarX, add = errorMessage, null.ok = TRUE)
-  checkmate::assertVector(facetVarY, add = errorMessage, null.ok = TRUE)
-  # checkmate::assertList(options, add = errorMessage, null.ok = TRUE)
-
+  omopgenerics::assertCharacter(facetVarX, null = TRUE)
+  omopgenerics::assertCharacter(facetVarY, null = TRUE)
 
   if (nrow(data) == 0) {
     return(ggplot2::ggplot() +
@@ -97,25 +94,7 @@ plotfunction <- function(data,
         remove = FALSE, sep = "; "
       )
   }
-
-  # if (!is.null(facetOrder)) {
-  #   if (!is.null(facetVars)) {
-  #     checkmate::assertTRUE(all(facetOrder %in% data$facet_combined), add = errorMessage)
-  #     data$facet_combined <- factor(data$facet_combined, levels = facetOrder)
-  #     data$facet_combined <- droplevels(data$facet_combined)
-  #     data <- data[!is.na(data$facet_combined), ]
-  #   } else {
-  #     errorMessage <- c(errorMessage, "please provide facetVars before specify facetOrder")
-  #   } # drop the levels user did not specify! (Albert request)
-  # }
-
-
-  checkmate::assertTRUE(any(xAxis == "estimate_value", yAxis == "estimate_value"), add = errorMessage)
-
-
-  checkmate::reportAssertions(collection = errorMessage)
-
-
+  omopgenerics::assertTrue(any(xAxis == "estimate_value", yAxis == "estimate_value"))
 
   df_dates <- data |> dplyr::filter(.data$estimate_type == "date")
   if (plotStyle != "density") {

@@ -38,8 +38,8 @@ summariseCohortOverlap <- function(cohort,
                                    strata = list()) {
   # validate inputs
   assertClass(cohort, "cohort_table")
-  checkmate::assertTRUE(all(c("cohort_definition_id", "subject_id", "cohort_start_date", "cohort_end_date") %in% colnames(cohort)))
-  checkmate::assertNumeric(cohortId, any.missing = FALSE, null.ok = TRUE)
+  omopgenerics::assertTrue(all(c("cohort_definition_id", "subject_id", "cohort_start_date", "cohort_end_date") %in% colnames(cohort)))
+  omopgenerics::assertNumeric(cohortId, null = TRUE)
   checkStrata(strata, cohort)
 
   # add cohort names
