@@ -66,7 +66,7 @@ tableCohortTiming <- function(result,
   # initial checks
   result <- omopgenerics::newSummarisedResult(result) |>
     visOmopResults::filterSettings(.data$result_type == "summarise_cohort_timing") |>
-    dplyr::filter(.data$variable_name != "density")
+    dplyr::filter(!.data$estimate_name %in% c("density_x", "density_y"))
 
   if (nrow(result) == 0) {
     cli::cli_warn("No cohort timing results found")

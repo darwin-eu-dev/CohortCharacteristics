@@ -9,8 +9,8 @@ summariseCohortTiming(
   cohortId = NULL,
   strata = list(),
   restrictToFirstEntry = TRUE,
-  estimates = c("min", "q25", "median", "q75", "max"),
-  density = FALSE
+  estimates = c("min", "q25", "median", "q75", "max", "density"),
+  density = lifecycle::deprecated()
 )
 }
 \arguments{
@@ -28,8 +28,7 @@ considered.}
 
 \item{estimates}{Summary statistics to use when summarising timing.}
 
-\item{density}{TRUE or FALSE. If TRUE, estimates for a density plot will
-also be computed.}
+\item{density}{deprecated.}
 }
 \value{
 A summary of timing between entries into cohorts in the cohort table.
