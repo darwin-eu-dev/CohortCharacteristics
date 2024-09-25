@@ -106,8 +106,9 @@ test_that("tableCharacteristics", {
     colnames(fx1$body$dataset)))
   expect_true(all(fx1$body$dataset$`Variable name` |> unique() %in%
     c(
-      "Number records", "Number subjects", "Cohort start date", "Cohort end date", "Age", "Sex", "Prior observation",
-      "Future observation", "Medications", "Comorbidities"
+      "Number records", "Number subjects", "Cohort start date",
+      "Cohort end date", "Age", "Sex", "Prior observation",
+      "Future observation", "Days in cohort", "Medications", "Comorbidities"
     )))
 
   tibble1 <- tableCharacteristics(result1, type = "tibble", split = "strata", header = character())
@@ -117,7 +118,7 @@ test_that("tableCharacteristics", {
     "CDM name", "Estimate value"
   ) %in%
     colnames(tibble1)))
-  expect_true(nrow(tibble1) == 43)
+  expect_true(nrow(tibble1) == 49)
 })
 
 test_that("tableCharacteristics, empty output warning message", {
