@@ -35,8 +35,7 @@ Imports:
     stringr,
     omopgenerics (>= 0.3.0),
     visOmopResults (>= 0.4.0),
-    PatientProfiles (>= 1.0.0),
-    magrittr,
+    PatientProfiles (>= 1.2.0),
     snakecase,
     lifecycle,
     purrr
