@@ -158,7 +158,8 @@ summariseCharacteristics <- function(cohort,
     "package_version" = as.character(utils::packageVersion(
       "CohortCharacteristics"
     )),
-    "result_type" = "summarise_characteristics"
+    "result_type" = "summarise_characteristics",
+    "table_name" = omopgenerics::tableName(cohort)
   )
 
   # return empty result if no analyses chosen
@@ -204,27 +205,29 @@ summariseCharacteristics <- function(cohort,
       dplyr::all_of(unique(unlist(otherVariables)))
     )
 
-  if (cohort |> dplyr::tally() |> dplyr::pull() == 0) {
+  if (omopgenerics::isTableEmpty(cohort)) {
+    cohortNames <- omopgenerics::settings(cohort)$cohort_name
     if (any(c("subject_id", "person_id") %in% colnames(cohort))) {
       variables <- c("number subjects", "number records")
     } else {
       variables <- "number records"
     }
-    result <- dplyr::tibble(
-      "result_id" = as.integer(1),
-      "cdm_name" = CDMConnector::cdmName(cdm),
-      "group_name" = "overall",
-      "group_level" = "overall",
-      "strata_name" = "overall",
-      "strata_level" = "overall",
-      "variable_name" = variables,
-      "variable_level" = as.character(NA),
-      "estimate_name" = "count",
-      "estimate_type" = "integer",
-      "estimate_value" = "0",
-      "additional_name" = "overall",
-      "additional_level" = "overall"
+    result <- tidyr::expand_grid(
+      "group_level" = cohortNames, "variable_name" = variables
     ) |>
+      dplyr::mutate(
+        "result_id" = as.integer(1),
+        "cdm_name" = CDMConnector::cdmName(cdm),
+        "group_name" = "cohort_name",
+        "strata_name" = "overall",
+        "strata_level" = "overall",
+        "variable_level" = as.character(NA),
+        "estimate_name" = "count",
+        "estimate_type" = "integer",
+        "estimate_value" = "0",
+        "additional_name" = "overall",
+        "additional_level" = "overall"
+      ) |>
       omopgenerics::newSummarisedResult(settings = srSet)
     return(result)
   }

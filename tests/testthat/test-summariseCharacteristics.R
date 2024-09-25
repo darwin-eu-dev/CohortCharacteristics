@@ -263,15 +263,15 @@ test_that("test summariseCharacteristics", {
   ))
   expect_equal(
     empty,
-    omopgenerics::emptySummarisedResult() |>
-      omopgenerics::newSummarisedResult(settings = dplyr::tibble(
-        "result_id" = 1L,
-        "package_name" = "CohortCharacteristics",
-        "package_version" = as.character(utils::packageVersion(
-          "CohortCharacteristics"
-        )),
-        "result_type" = "summarise_characteristics"
-      ))
+    omopgenerics::emptySummarisedResult(settings = dplyr::tibble(
+      "result_id" = 1L,
+      "package_name" = "CohortCharacteristics",
+      "package_version" = as.character(utils::packageVersion(
+        "CohortCharacteristics"
+      )),
+      "result_type" = "summarise_characteristics",
+      "table_name" = "dus_cohort"
+    ))
   )
 
   # demographics
@@ -1316,4 +1316,31 @@ test_that("arguments conceptIntersect", {
   ))
 
   mockDisconnect(cdm = cdm)
+})
+
+test_that("empty input cohort contains name issue #170", {
+  cdm <- mockCohortCharacteristics(
+    con = connection(), writeSchema = writeSchema(), numberIndividuals = 10
+  )
+
+  cdm$cohort1 <- cdm$cohort1 |>
+    dplyr::filter(.data$subject_id == 0L) |>
+    dplyr::compute(name = "cohort1", temporay = FALSE) |>
+    omopgenerics::newCohortTable()
+
+  expect_no_error(res <- cdm$cohort1 |> summariseCharacteristics())
+  expect_true(nrow(res) == 6)
+  expect_true(unique(res$estimate_value) == "0")
+  attr(res, "settings") <- NULL
+  expect_equal(
+    res |>
+      dplyr::select("group_level", "variable_name") |>
+      dplyr::as_tibble(),
+    tidyr::expand_grid(
+      "group_level" = omopgenerics::settings(cdm$cohort1)$cohort_name,
+      "variable_name" = c("number subjects", "number records")
+    )
+  )
+
+  PatientProfiles::mockDisconnect(cdm = cdm)
 })
