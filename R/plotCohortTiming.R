@@ -71,7 +71,9 @@ plotCohortTiming <- function(result,
 
   if (plotType == "boxplot") {
     result <- result |>
-      dplyr::filter(.data$variable_name == "days_between_cohort_entries")
+      dplyr::filter(
+        .data$variable_name == "days_between_cohort_entries",
+        !.data$estimate_name %in% c("density_x", "density_y"))
     if (timeScale == "years") {
       result <- result |>
         dplyr::mutate(
@@ -80,7 +82,9 @@ plotCohortTiming <- function(result,
     }
   } else if (plotType == "density") {
     result <- result |>
-      dplyr::filter(.data$variable_name == "density")
+      dplyr::filter(
+        .data$variable_name == "days_between_cohort_entries",
+        .data$estimate_name %in% c("density_x", "density_y"))
     if (timeScale == "years") {
       result <- result |>
         dplyr::mutate(estimate_value = dplyr::if_else(
@@ -119,7 +123,7 @@ plotCohortTiming <- function(result,
     # plot scatter needs to allow x to be an estimate
     p <- result |>
       visOmopResults::scatterPlot(
-        x = "x", y = "y", ymin = NULL, ymax = NULL, line = TRUE, point = FALSE,
+        x = "density_x", y = "density_y", ymin = NULL, ymax = NULL, line = TRUE, point = FALSE,
         ribbon = FALSE, facet = facet, colour = colour, group = colour) +
       ggplot2::theme_bw() +
       ggplot2::labs(
