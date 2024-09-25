@@ -85,6 +85,7 @@ summariseAttrition <- function(att,
     visOmopResults::uniteGroup("cohort_name") |>
     visOmopResults::uniteStrata("reason") |>
     visOmopResults::uniteAdditional("reason_id") |>
+    orderSummaryAttrition() |>
     omopgenerics::newSummarisedResult(
       settings = set |>
         dplyr::select(!"cohort_name") |>
@@ -98,4 +99,19 @@ summariseAttrition <- function(att,
           "result_id", "result_type", "package_name", "package_version"
         )))
     )
+}
+orderSummaryAttrition <- function(x) {
+  vars <- c(
+    "number_records", "number_subjects", "excluded_records",
+    "excluded_subjects"
+  )
+  x |>
+    dplyr::mutate(additional_level = as.numeric(.data$additional_level)) |>
+    dplyr::inner_join(
+      dplyr::tibble(variable_name = vars, var_id = seq_along(vars)),
+      by = "variable_name"
+    ) |>
+    dplyr::arrange(.data$result_id, .data$additional_level, .data$var_id) |>
+    dplyr::select(!"var_id") |>
+    dplyr::mutate(additional_level = as.character(.data$additional_level))
 }
