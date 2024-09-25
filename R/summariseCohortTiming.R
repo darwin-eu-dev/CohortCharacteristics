@@ -25,8 +25,7 @@
 #' cohort will be considered. If FALSE all entries per individual will be
 #' considered.
 #' @param estimates Summary statistics to use when summarising timing.
-#' @param density TRUE or FALSE. If TRUE, estimates for a density plot will
-#' also be computed.
+#' @param density deprecated.
 #'
 #' @return A summary of timing between entries into cohorts in the cohort table.
 #'
@@ -45,8 +44,15 @@ summariseCohortTiming <- function(cohort,
                                   cohortId = NULL,
                                   strata = list(),
                                   restrictToFirstEntry = TRUE,
-                                  estimates = c("min", "q25", "median", "q75", "max"),
-                                  density = FALSE) {
+                                  estimates = c("min", "q25", "median", "q75", "max", "density"),
+                                  density = lifecycle::deprecated()) {
+  if (lifecycle::is_present(density)) {
+    lifecycle::deprecate_soft(
+      when = "0.3.0", what = "summariseCohortTiming(density = )",
+      details = "Please include 'density' in the estimates vector instead."
+    )
+    if (density) estimates <- unique(c(estimates, "density"))
+  }
   # validate inputs
   cohort <- omopgenerics::validateCohortArgument(cohort)
   cohortId <- omopgenerics::validateCohortIdArgument(cohortId, cohort)
@@ -57,7 +63,7 @@ summariseCohortTiming <- function(cohort,
   checkmate::assertCharacter(estimates, any.missing = FALSE, null.ok = FALSE)
   timing <- estimates
 
-  if (length(timing) == 0 && !density) {
+  if (length(timing) == 0) {
     return(omopgenerics::emptySummarisedResult())
   }
 
@@ -115,105 +121,23 @@ summariseCohortTiming <- function(cohort,
     return(omopgenerics::emptySummarisedResult())
   }
 
-  if (length(timing) > 0) {
-    timingsEstimates <- cohort_timings |>
-      PatientProfiles::summariseResult(
-        group = c("cohort_name_reference", "cohort_name_comparator"),
-        includeOverallGroup = FALSE,
-        strata = strata,
-        includeOverallStrata = TRUE,
-        variables = "days_between_cohort_entries",
-        estimates = timing
-      )
-  } else {
-    timingsEstimates <- omopgenerics::emptySummarisedResult()
-  }
-
-  if (density) {
-    forDensity <- cohort_timings |>
-      visOmopResults::uniteGroup(cols = c("cohort_name_reference", "cohort_name_comparator"))
-    forDensity <- lapply(c(list(character(0)), strata), function(levels, data = forDensity) {
-      data |> visOmopResults::uniteStrata(cols = levels)
-    }) |>
-      dplyr::bind_rows() |>
-      dplyr::select(!dplyr::all_of(c(strataCols)))
-
-    groups <- unique(forDensity$group_level)
-    timingsDensity <- NULL
-    for (gLevel in groups) {
-      # filter group comparison
-      gData <- forDensity |> dplyr::filter(.data$group_level == .env$gLevel)
-      strataNames <- unique(gData$strata_name)
-      for (sName in strataNames) {
-        # filter strata name
-        sNameData <- gData |> dplyr::filter(.data$strata_name == .env$sName)
-        strataLevels <- unique(sNameData$strata_level)
-        # compute density for each strata level
-        for (sLevel in strataLevels) {
-          timingsDensity <- timingsDensity |>
-            dplyr::union_all(
-              getDensityData(sNameData$days_between_cohort_entries[
-                sNameData$strata_level == sLevel]) |>
-                dplyr::mutate(
-                  "group_level" = gLevel,
-                  "strata_name" = sName,
-                  "strata_level" = sLevel
-                )
-            )
-        }
-      }
-    }
-
-    timingsDensity <- timingsDensity |>
-      dplyr::mutate(
-        result_id = 1L,
-        group_name = "cohort_name_reference &&& cohort_name_comparator",
-        variable_name = "density",
-        estimate_type = "numeric"
-      ) |>
-      visOmopResults::uniteAdditional()
-
-  } else {
-    timingsDensity <- omopgenerics::emptySummarisedResult()
-  }
-
-  timingsResult <- timingsEstimates |>
-    dplyr::bind_rows(timingsDensity) |>
+  result <- cohort_timings |>
+    PatientProfiles::summariseResult(
+      group = c("cohort_name_reference", "cohort_name_comparator"),
+      includeOverallGroup = FALSE,
+      strata = strata,
+      includeOverallStrata = TRUE,
+      variables = "days_between_cohort_entries",
+      estimates = timing
+    )  |>
     dplyr::mutate("cdm_name" = omopgenerics::cdmName(cohort)) |>
     omopgenerics::newSummarisedResult(settings = dplyr::tibble(
       "result_id" = 1L,
       "package_name" = "CohortCharacteristics",
       "package_version" = as.character(utils::packageVersion("CohortCharacteristics")),
       "result_type" = "summarise_cohort_timing",
-      "restrict_to_first_entry" = restrictToFirstEntry,
-      "density" = density
+      "restrict_to_first_entry" = restrictToFirstEntry
     ))
 
-  return(timingsResult)
-}
-
-getDensityData <- function(x) {
-  nPoints <- 512
-  nDigits <- ceiling(log(nPoints)/log(10))
-  x <- x[!is.na(x)]
-  if (length(x) == 1) {
-    den <- stats::density(x, bw = 0.5)
-  } else if (length(x) == 0) {
-    den <- list(x = NA, y = NA)
-  } else {
-    den <- stats::density(x, n = nPoints)
-  }
-  lev <- stringr::str_pad(seq_len(nPoints), width = nDigits, side = "left", pad = "0")
-  res <- dplyr::tibble(
-    variable_level = lev,
-    estimate_name = "x",
-    estimate_value = as.character(den$x)
-  ) |>
-    dplyr::union_all(dplyr::tibble(
-      variable_level = lev,
-      estimate_name = "y",
-      estimate_value = as.character(den$y)
-    )) |>
-    dplyr::arrange(.data$variable_level, .data$estimate_name)
-  return(res)
+  return(result)
 }

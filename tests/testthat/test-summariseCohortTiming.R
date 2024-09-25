@@ -66,17 +66,14 @@ test_that("summariseCohortTiming", {
 
   timing3 <- summariseCohortTiming(cdm$table,
     restrictToFirstEntry = FALSE,
-    estimates = character(),
-    density = TRUE
+    estimates = c("density")
   )
-  expect_true(all(c("density") %in%
-    unique(timing3$variable_name)))
-  expect_true(all(c("x", "y") %in%
+  expect_true(all(c("density_x", "density_y") %in%
     unique(timing3$estimate_name)))
   expect_true("overall" == unique(timing3$strata_level))
   expect_no_error(res1 <- tidyr::pivot_wider(timing3, names_from = "estimate_name", values_from = "estimate_value"))
-  expect_true(all(c("x", "y") %in% colnames(res1)))
-  expect_true(class(res1$x) == "character")
+  expect_true(all(c("density_x", "density_y") %in% colnames(res1)))
+  expect_true(class(res1$density_x) == "character")
 
   ## Strata and cohortId----
   cdm$table <- cdm$table |>
@@ -93,23 +90,19 @@ test_that("summariseCohortTiming", {
   # add density tests
   timing5 <- summariseCohortTiming(cdm$table,
     strata = list("age_group", c("age_group", "sex")),
-    estimates = character(),
-    density = TRUE
+    estimates = "density"
   )
-  expect_true(all(unique(timing5$estimate_name[timing5$strata_name == "age_group &&& sex"]) %in% c("x", "y", "count")))
-  expect_true(all(unique(timing5$estimate_name[timing5$strata_name == "overall"]) %in% c("x", "y", "count")))
-  expect_true(all(unique(timing5$estimate_name[timing5$strata_name == "age_group"]) %in% c("x", "y", "count")))
+  expect_true(all(unique(timing5$estimate_name[timing5$strata_name == "age_group &&& sex"]) %in% c("density_x", "density_y", "count")))
+  expect_true(all(unique(timing5$estimate_name[timing5$strata_name == "overall"]) %in% c("density_x", "density_y", "count")))
+  expect_true(all(unique(timing5$estimate_name[timing5$strata_name == "age_group"]) %in% c("density_x", "density_y", "count")))
   expect_no_error(res2 <- tidyr::pivot_wider(timing5, names_from = "estimate_name", values_from = "estimate_value"))
-  expect_true(all(c("x", "y") %in% colnames(res2)))
-  expect_true(class(res2$x) == "character")
+  expect_true(all(c("density_x", "density_y") %in% colnames(res2)))
+  expect_true(class(res2$density_x) == "character")
 
   timing6 <- summariseCohortTiming(cdm$table, cohortId = 1)
   expect_true(nrow(timing6) == 0)
 
   expect_error(timing7 <- summariseCohortTiming(cdm$table, cohortId = 5))
-
-  timing8 <- summariseCohortTiming(cdm$table, cohortId = 1, density = TRUE)
-  expect_true(nrow(timing8) == 0)
 
   mockDisconnect(cdm)
 })
