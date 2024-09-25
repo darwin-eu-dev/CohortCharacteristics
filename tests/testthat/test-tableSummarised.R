@@ -101,7 +101,7 @@ test_that("tableCharacteristics", {
   expect_true(class(fx1) == "flextable")
   expect_true(all(c(
     "Variable name", "Variable level", "Estimate name",
-    "CDM name\nPP_MOCK\nCohort name\nExposed", "CDM name\nPP_MOCK\nCohort name\nUnexposed"
+    "CDM name\nPP_MOCK\nCohort name\nexposed", "CDM name\nPP_MOCK\nCohort name\nunexposed"
   ) %in%
     colnames(fx1$body$dataset)))
   expect_true(all(fx1$body$dataset$`Variable name` |> unique() %in%
@@ -114,7 +114,7 @@ test_that("tableCharacteristics", {
   expect_true(all(class(tibble1) %in% c("tbl_df", "tbl", "data.frame")))
   expect_true(all(c(
     "Variable name", "Variable level", "Estimate name",
-    "CDM name", "Group name", "Group level", "Estimate value"
+    "CDM name", "Estimate value"
   ) %in%
     colnames(tibble1)))
   expect_true(nrow(tibble1) == 43)
