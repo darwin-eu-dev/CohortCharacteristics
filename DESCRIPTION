@@ -26,28 +26,6 @@ License: Apache License (>= 2)
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.2
-Suggests: 
-    covr,
-    duckdb (>= 0.9.0),
-    testthat (>= 3.1.5),
-    knitr,
-    CodelistGenerator,
-    rmarkdown,
-    glue,
-    odbc,
-    ggplot2,
-    spelling,
-    RPostgres,
-    dbplyr,
-    here,
-    DBI,
-    gt,
-    flextable,
-    tictoc,
-    withr,
-    scales,
-    ggpubr,
-    DiagrammeR
 Imports: 
     CDMConnector (>= 1.3.2),
     dplyr,
@@ -71,5 +49,26 @@ Depends:
 Config/testthat/edition: 3
 Config/testthat/parallel: true
 VignetteBuilder: knitr
-Remotes:
-    darwin-eu/visOmopResults
+Suggests: 
+    CodelistGenerator,
+    CohortConstructor,
+    covr,
+    DBI,
+    dbplyr,
+    DiagrammeR,
+    duckdb (>= 1.0.0),
+    flextable,
+    ggplot2,
+    ggpubr,
+    glue,
+    gt,
+    here,
+    knitr,
+    odbc,
+    rmarkdown,
+    RPostgres,
+    scales,
+    spelling,
+    testthat (>= 3.1.5),
+    tictoc,
+    withr

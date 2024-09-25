@@ -62,7 +62,7 @@
 #'
 #' @examples
 #' \donttest{
-#' library(dplyr)
+#' library(dplyr, warn.conflicts = FALSE)
 #' library(CohortCharacteristics)
 #' library(PatientProfiles)
 #'
@@ -247,6 +247,7 @@ summariseCharacteristics <- function(cohort,
     age <- uniqueVariableName()
     priorObservation <- uniqueVariableName()
     futureObservation <- uniqueVariableName()
+    duration <- uniqueVariableName()
     demographicsCategorical <- sex
 
     if (!is.null(ageGroup)) {
@@ -269,9 +270,10 @@ summariseCharacteristics <- function(cohort,
     }
     dic <- dic |>
       dplyr::union_all(dplyr::tibble(
-        short_name = c(sex, age, priorObservation, futureObservation),
+        short_name = c(sex, age, priorObservation, futureObservation, duration),
         new_variable_name = c(
-          "sex", "age", "prior_observation", "future_observation"
+          "sex", "age", "prior_observation", "future_observation",
+          "days_in_cohort"
         ),
         new_variable_level = as.character(NA),
         table = as.character(NA),
@@ -287,13 +289,16 @@ summariseCharacteristics <- function(cohort,
         ageName = age,
         priorObservationName = priorObservation,
         futureObservationName = futureObservation
-      )
+      ) %>%
+      dplyr::mutate(!!duration := as.integer(
+        !!CDMConnector::datediff("cohort_start_date", "cohort_end_date") + 1
+      ))
 
     # update summary settings
     variables <- variables |>
       updateVariables(
         date = c("cohort_start_date", "cohort_end_date"),
-        numeric = c(priorObservation, futureObservation, age),
+        numeric = c(priorObservation, futureObservation, age, duration),
         categorical = demographicsCategorical
       )
   }
