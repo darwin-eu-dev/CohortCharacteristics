@@ -78,7 +78,7 @@ plotCohortOverlap <- function(result,
     y <- y[!y %in% facet]
   }
 
-  p <- visOmopResults::plotBarplot(
+  p <- visOmopResults::barPlot(
     result = result,
     x = y,
     y = "percentage",
