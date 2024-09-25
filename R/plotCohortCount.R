@@ -59,7 +59,7 @@ plotCohortCount <- function(result,
 
   opts <- oneVariable(result)
 
-  p <- visOmopResults::plotBarplot(
+  p <- visOmopResults::barPlot(
     result = result,
     x = x,
     y = "count",

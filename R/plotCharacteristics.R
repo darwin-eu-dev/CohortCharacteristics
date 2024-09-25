@@ -90,7 +90,7 @@ plotCharacteristics <- function(result,
   variable <- oneVariable(result)
 
   if (plotStyle == "boxplot") {
-    p <- visOmopResults::plotBoxplot(result, facet = facet, colour = colour) +
+    p <- visOmopResults::boxPlot(result, facet = facet, colour = colour) +
       ggplot2::labs(y = glue::glue("{variable}"))
   } else {
     estimate <- unique(result$estimate_name)
@@ -115,11 +115,11 @@ plotCharacteristics <- function(result,
     print(x)
     if (plotStyle == "barplot") {
       p <- result |>
-        visOmopResults::plotBarplot(
+        visOmopResults::barPlot(
           x = x, y = estimate, facet = facet, colour = colour)
     } else if (plotStyle == "scatterplot") {
       p <- result |>
-        visOmopResults::plotScatter(
+        visOmopResults::scatterPlot(
           x = x, y = estimate, facet = facet, colour = colour, line = FALSE,
           point = TRUE, ribbon = FALSE, group = colour)
     }

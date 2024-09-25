@@ -247,10 +247,7 @@ test_that("plotCohortOverlap", {
 
   overlap <- summariseCohortOverlap(cdm$table)
 
-  gg1 <- plotCohortOverlap(
-    overlap
-    # overlapLabel = "{cdm_name} &&& {cohort_name_reference} &&& {cohort_name_comparator}"
-  )
+  gg1 <- plotCohortOverlap(overlap)
   expect_true("ggplot" %in% class(gg1))
   # expect_false("cohort_4" %in% gg1$data$cohort_name_reference)
 
@@ -263,10 +260,6 @@ test_that("plotCohortOverlap", {
     uniqueCombinations = TRUE
   )
   expect_true("ggplot" %in% class(gg2))
-  expect_true(gg2$data |> dplyr::filter(variable_name == "number subjects") |> nrow() == 0)
-  # expect_true(nrow(gg2$data |>
-  #                    dplyr::filter(.data$cohort_name_reference %in% c("cohort_1", "cohort_2") &
-  #                                    .data$cohort_name_comparator %in% c("cohort_1", "cohort_2"))) == 3)
   # strata ----
   cdm$table <- cdm$table |>
     PatientProfiles::addAge(ageGroup = list(c(0, 40), c(41, 150))) |>

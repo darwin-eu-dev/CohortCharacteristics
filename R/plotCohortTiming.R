@@ -107,7 +107,7 @@ plotCohortTiming <- function(result,
   }
 
   if (plotType == "boxplot") {
-    p <- visOmopResults::plotBoxplot(result, facet = facet, colour = colour) +
+    p <- visOmopResults::boxPlot(result, facet = facet, colour = colour) +
       ggplot2::coord_flip() +
       ggplot2::theme_bw() +
       ggplot2::labs(
@@ -118,7 +118,7 @@ plotCohortTiming <- function(result,
   } else if (plotType == "density") {
     # plot scatter needs to allow x to be an estimate
     p <- result |>
-      visOmopResults::plotScatter(
+      visOmopResults::scatterPlot(
         x = "x", y = "y", ymin = NULL, ymax = NULL, line = TRUE, point = FALSE,
         ribbon = FALSE, facet = facet, colour = colour, group = colour) +
       ggplot2::theme_bw() +
