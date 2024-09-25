@@ -23,6 +23,10 @@ knitr::opts_chunk$set(
 
 CohortCharacteristics contains functions for summarising characteristics of cohorts of patients identified in an OMOP CDM dataset. Once a cohort table has been created, CohortCharacteristics provides a number of functions to help provide a summary of the characteristics of the individuals within the cohort.
 
+```{r, echo=FALSE}
+citation("CohortCharacteristics")
+```
+
 ## Package installation
 
 You can install the latest version of CohortCharacteristics from CRAN:

@@ -15,6 +15,22 @@ table has been created, CohortCharacteristics provides a number of
 functions to help provide a summary of the characteristics of the
 individuals within the cohort.
 
+    #> To cite package 'CohortCharacteristics' in publications use:
+    #> 
+    #>   Catala M, Guo Y, Du M, Lopez-Guell K, Burn E, Alcalde M (????).
+    #>   _CohortCharacteristics: Summarise and Visualise Characteristics of
+    #>   Patients in the OMOP CDM_. R package version 0.3.0,
+    #>   <https://darwin-eu-dev.github.io/CohortCharacteristics/>.
+    #> 
+    #> A BibTeX entry for LaTeX users is
+    #> 
+    #>   @Manual{,
+    #>     title = {CohortCharacteristics: Summarise and Visualise Characteristics of Patients in the OMOP CDM},
+    #>     author = {Marti Catala and Yuchen Guo and Mike Du and Kim Lopez-Guell and Edward Burn and Marta Alcalde},
+    #>     note = {R package version 0.3.0},
+    #>     url = {https://darwin-eu-dev.github.io/CohortCharacteristics/},
+    #>   }
+
 ## Package installation
 
 You can install the latest version of CohortCharacteristics from CRAN:
@@ -44,7 +60,7 @@ library(dplyr)
 ```
 
 ``` r
-cdm <- mockCohortCharacteristics(patient_size = 1000, drug_exposure_size = 1000)
+cdm <- mockCohortCharacteristics(numberIndividuals = 1000)
 cdm
 ```
 
@@ -53,14 +69,21 @@ cohort1.
 
 ``` r
 cdm$cohort1
-#> # Source:   table<main.cohort1> [4 x 4]
-#> # Database: DuckDB v0.10.0 [martics@Windows 10 x64:R 4.2.1/:memory:]
-#>   cohort_definition_id subject_id cohort_start_date cohort_end_date
-#>                  <dbl>      <dbl> <date>            <date>         
-#> 1                    1          1 2020-01-01        2020-04-01     
-#> 2                    1          1 2020-06-01        2020-08-01     
-#> 3                    1          2 2020-01-02        2020-02-02     
-#> 4                    2          3 2020-01-01        2020-03-01
+#> # Source:   table<main.cohort1> [?? x 4]
+#> # Database: DuckDB v1.0.0 [root@Darwin 23.6.0:R 4.4.1/:memory:]
+#>    cohort_definition_id subject_id cohort_start_date cohort_end_date
+#>                   <int>      <int> <date>            <date>         
+#>  1                    1        601 1959-12-06        1963-11-09     
+#>  2                    3        940 2009-04-18        2013-09-08     
+#>  3                    2        628 1908-06-27        1924-02-28     
+#>  4                    3        512 1983-08-19        1988-04-07     
+#>  5                    1         83 1974-12-15        1975-10-21     
+#>  6                    1        569 1954-08-04        1975-02-04     
+#>  7                    1        173 1917-12-28        1920-11-22     
+#>  8                    1         67 1931-03-08        1934-02-16     
+#>  9                    2        121 1979-07-24        1995-02-06     
+#> 10                    1        655 1938-11-28        1939-07-28     
+#> # ℹ more rows
 ```
 
 With one line of code from CohortCharacteristics we can generate summary
@@ -68,21 +91,21 @@ statistics on this cohort.
 
 ``` r
 cohort1_characteristics <- summariseCharacteristics(cdm$cohort1)
-cohort1_characteristics |> 
+cohort1_characteristics |>
   glimpse()
-#> Rows: 70
+#> Rows: 111
 #> Columns: 13
 #> $ result_id        <int> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,…
 #> $ cdm_name         <chr> "PP_MOCK", "PP_MOCK", "PP_MOCK", "PP_MOCK", "PP_MOCK"…
 #> $ group_name       <chr> "cohort_name", "cohort_name", "cohort_name", "cohort_…
-#> $ group_level      <chr> "cohort_1", "cohort_2", "cohort_1", "cohort_2", "coho…
+#> $ group_level      <chr> "cohort_1", "cohort_3", "cohort_2", "cohort_1", "coho…
 #> $ strata_name      <chr> "overall", "overall", "overall", "overall", "overall"…
 #> $ strata_level     <chr> "overall", "overall", "overall", "overall", "overall"…
-#> $ variable_name    <chr> "Number records", "Number records", "Number subjects"…
+#> $ variable_name    <chr> "Number records", "Number records", "Number records",…
 #> $ variable_level   <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
-#> $ estimate_name    <chr> "count", "count", "count", "count", "min", "min", "q2…
-#> $ estimate_type    <chr> "integer", "integer", "integer", "integer", "date", "…
-#> $ estimate_value   <chr> "3", "1", "2", "1", "2020-01-01", "2020-01-01", "2020…
+#> $ estimate_name    <chr> "count", "count", "count", "count", "count", "count",…
+#> $ estimate_type    <chr> "integer", "integer", "integer", "integer", "integer"…
+#> $ estimate_value   <chr> "320", "351", "329", "320", "351", "329", "1903-08-03…
 #> $ additional_name  <chr> "overall", "overall", "overall", "overall", "overall"…
 #> $ additional_level <chr> "overall", "overall", "overall", "overall", "overall"…
 ```
@@ -91,7 +114,7 @@ And with another line we can create a table of these results.
 
 ``` r
 tableCharacteristics(cohort1_characteristics, type = "tibble")
-#> # A tibble: 17 × 6
+#> # A tibble: 17 × 7
 #>    `CDM name` `Variable name`    `Variable level` `Estimate name`   
 #>    <chr>      <chr>              <chr>            <chr>             
 #>  1 PP_MOCK    Number records     <NA>             N                 
@@ -111,8 +134,9 @@ tableCharacteristics(cohort1_characteristics, type = "tibble")
 #> 15 PP_MOCK    Future observation <NA>             Median [Q25 - Q75]
 #> 16 PP_MOCK    Future observation <NA>             Mean (SD)         
 #> 17 PP_MOCK    Future observation <NA>             Range             
-#> # ℹ 2 more variables: `[header]Cohort name\n[header_level]Cohort 1` <chr>,
-#> #   `[header]Cohort name\n[header_level]Cohort 2` <chr>
+#> # ℹ 3 more variables: `[header_name]Cohort name\n[header_level]cohort_1` <chr>,
+#> #   `[header_name]Cohort name\n[header_level]cohort_3` <chr>,
+#> #   `[header_name]Cohort name\n[header_level]cohort_2` <chr>
 ```
 
 CohortCharacteristics provides a number of other functions to help
