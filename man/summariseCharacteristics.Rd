@@ -96,7 +96,7 @@ Summarise characteristics of cohorts in a cohort table
 }
 \examples{
 \donttest{
-library(dplyr)
+library(dplyr, warn.conflicts = FALSE)
 library(CohortCharacteristics)
 library(PatientProfiles)
 

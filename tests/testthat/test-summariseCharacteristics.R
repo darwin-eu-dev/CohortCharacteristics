@@ -13,7 +13,7 @@ test_that("test summariseCharacteristics", {
       "1990-04-19", "1991-04-19", "2010-11-14", "2000-05-25"
     )),
     cohort_end_date = as.Date(c(
-      "1990-04-19", "1991-04-19", "2010-11-14", "2000-05-25"
+      "1990-04-19", "1992-04-19", "2010-12-14", "2000-05-26"
     )),
     blood_type = c("a", "a", "0", "0"),
     number_visits = c(0, 1, 5, 12)
@@ -178,6 +178,37 @@ test_that("test summariseCharacteristics", {
       dplyr::pull("estimate_value") |>
       as.numeric(),
     0
+  )
+
+  resDays <- result |>
+    dplyr::filter(.data$variable_name == "Days in cohort")
+  expect_identical(
+    unique(resDays$estimate_value[
+      resDays$group_level == "unexposed" & resDays$estimate_name != "sd"]),
+    "2"
+  )
+  resDays <- resDays |>
+    dplyr::filter(.data$group_level == "exposed")
+  days <- c(1L, 367L, 31L)
+  expect_identical(
+    resDays$estimate_value[resDays$estimate_name == "median"],
+    as.character(median(days))
+  )
+  expect_identical(
+    resDays$estimate_value[resDays$estimate_name == "q25"],
+    as.character(quantile(days, 0.25))
+  )
+  expect_identical(
+    resDays$estimate_value[resDays$estimate_name == "q75"],
+    as.character(quantile(days, 0.75))
+  )
+  expect_identical(
+    resDays$estimate_value[resDays$estimate_name == "min"],
+    as.character(min(days))
+  )
+  expect_identical(
+    resDays$estimate_value[resDays$estimate_name == "max"],
+    as.character(max(days))
   )
 
   expect_no_error(result <- summariseCharacteristics(
