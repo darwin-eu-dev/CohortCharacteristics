@@ -49,7 +49,7 @@ plotCohortCount <- function(result,
                             colour = NULL,
                             x = NULL) {
   # initial checks
-  result <- omopgenerics::validateResultArguemnt(result) |>
+  result <- omopgenerics::validateResultArgument(result) |>
     visOmopResults::filterSettings(
       .data$result_type == "summarise_cohort_count")
   if (nrow(result) == 0) {

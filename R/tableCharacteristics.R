@@ -21,23 +21,20 @@
 #' @param result A summarise_characteristics object.
 #' @param type Type of desired formatted table, possibilities: "gt",
 #' "flextable", "tibble".
-#' @param formatEstimateName Named list of estimate name's to join, sorted by
-#' computation order. Indicate estimate_name's between <...>.
 #' @param header A vector containing which elements should go into the header
 #' in order. Allowed are: `cdm_name`, `group`, `strata`, `additional`,
 #' `variable`, `estimate`, `settings`.
-#' @param split A vector containing the name-level groups to split ("group",
-#' "strata", "additional"), or an empty character vector to not split.
 #' @param groupColumn Column to use as group labels.
-#' @param excludeColumns Columns to drop from the output table.
+#' @param hide Columns to drop from the output table.
 #' @param .options Named list with additional formatting options.
 #' CohortCharacteristics::optionsTableCharacteristics() shows allowed arguments and
 #' their default values.
+#' @param formatEstimateName deprecated.
+#' @param split deprecated.
+#' @param excludeColumns deprecated.
 #'
 #' @examples
 #' \donttest{
-#' library(CohortCharacteristics)
-#'
 #' cdm <- mockCohortCharacteristics()
 #'
 #' cdm$cohort1 |>
@@ -54,22 +51,16 @@
 #'
 tableCharacteristics <- function(result,
                                  type = "gt",
-                                 formatEstimateName = c(
-                                   "N (%)" = "<count> (<percentage>%)",
-                                   "N" = "<count>",
-                                   "Median [Q25 - Q75]" = "<median> [<q25> - <q75>]",
-                                   "Mean (SD)" = "<mean> (<sd>)",
-                                   "Range" = "<min> to <max>"
-                                 ),
                                  header = c("group"),
-                                 split = c("group", "strata"),
                                  groupColumn = NULL,
-                                 excludeColumns = c(
+                                 hide = c(
                                    "result_id", "estimate_type",
                                    "additional_name", "additional_level"
                                  ),
-                                 .options = list()) {
-
+                                 .options = list(),
+                                 formatEstimateName = lifecycle::deprecated(),
+                                 split = lifecycle::deprecated(),
+                                 excludeColumns = lifecycle::deprecated()) {
 
   if (!inherits(result, "summarised_result")) {
     cli::cli_abort("result must be a summarised result")
@@ -78,6 +69,15 @@ tableCharacteristics <- function(result,
     cli::cli_warn("Empty result object")
     return(emptyResultTable(type = type))
   }
+
+  estimateName <- c(
+    "N (%)" = "<count> (<percentage>%)",
+    "N" = "<count>",
+    "Median [Q25 - Q75]" = "<median> [<q25> - <q75>]",
+    "Mean (SD)" = "<mean> (<sd>)",
+    "Range" = "<min> to <max>"
+  )
+
 
    # check input
   result <- omopgenerics::newSummarisedResult(result) |>

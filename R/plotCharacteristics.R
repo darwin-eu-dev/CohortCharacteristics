@@ -75,7 +75,7 @@ plotCharacteristics <- function(result,
                                 plotStyle = "barplot",
                                 facet = NULL,
                                 colour = NULL) {
-  result <- omopgenerics::validateResultArguemnt(result)
+  result <- omopgenerics::validateResultArgument(result)
   omopgenerics::assertChoice(
     plotStyle, c("barplot", "scatterplot", "boxplot"), length = 1)
 

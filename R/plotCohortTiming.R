@@ -55,7 +55,7 @@ plotCohortTiming <- function(result,
     )
   }
 
-  result <- omopgenerics::validateResultArguemnt(result) |>
+  result <- omopgenerics::validateResultArgument(result) |>
     visOmopResults::filterSettings(
       .data$result_type == "summarise_cohort_timing")
 

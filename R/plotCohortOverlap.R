@@ -42,7 +42,7 @@ plotCohortOverlap <- function(result,
                               y = NULL,
                               .options = lifecycle::deprecated()) {
   # initial checks
-  result <- omopgenerics::validateResultArguemnt(result) |>
+  result <- omopgenerics::validateResultArgument(result) |>
     visOmopResults::filterSettings(
       .data$result_type == "summarise_cohort_overlap") |>
     dplyr::filter(.data$estimate_name == "percentage")
