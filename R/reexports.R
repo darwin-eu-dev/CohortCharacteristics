@@ -34,6 +34,14 @@ omopgenerics::importSummarisedResult
 #' @export
 omopgenerics::exportSummarisedResult
 
+#' @importFrom visOmopResults tidyColumns
+#' @export
+visOmopResults::tidyColumns
+
+#' @importFrom visOmopResults tidy
+#' @export
+visOmopResults::tidy
+
 #' It creates a mock database for testing CohortCharacteristics package
 #'
 #' @param con A DBI connection to create the cdm mock object.

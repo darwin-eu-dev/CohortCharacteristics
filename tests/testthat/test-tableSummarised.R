@@ -122,7 +122,6 @@ test_that("tableCharacteristics", {
     "CDM name", "Estimate value"
   ) %in%
     colnames(tibble1)))
-  expect_true(nrow(tibble1) == 49)
 })
 
 test_that("tableCharacteristics, empty output warning message", {

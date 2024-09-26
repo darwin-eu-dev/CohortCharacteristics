@@ -8,6 +8,8 @@
 \alias{bind}
 \alias{importSummarisedResult}
 \alias{exportSummarisedResult}
+\alias{tidyColumns}
+\alias{tidy}
 \alias{mockDisconnect}
 \title{Objects exported from other packages}
 \keyword{internal}
@@ -19,5 +21,7 @@ below to see their documentation.
   \item{omopgenerics}{\code{\link[omopgenerics]{bind}}, \code{\link[omopgenerics]{exportSummarisedResult}}, \code{\link[omopgenerics]{importSummarisedResult}}, \code{\link[omopgenerics]{settings}}, \code{\link[omopgenerics]{suppress}}}
 
   \item{PatientProfiles}{\code{\link[PatientProfiles]{mockDisconnect}}}
+
+  \item{visOmopResults}{\code{\link[visOmopResults:reexports]{tidy}}, \code{\link[visOmopResults]{tidyColumns}}}
 }}
 
