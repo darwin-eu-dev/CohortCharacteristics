@@ -216,3 +216,12 @@ getCombinations <- function(...) {
 
   return(combinations)
 }
+sortWindow <- function(window) {
+  window |>
+    purrr::imap(\(x, idx) dplyr::tibble(
+      window_name = idx, first = x[1], second = x[2]
+    )) |>
+    dplyr::bind_rows() |>
+    dplyr::arrange(.data$first, .data$second) |>
+    dplyr::pull("window_name")
+}
