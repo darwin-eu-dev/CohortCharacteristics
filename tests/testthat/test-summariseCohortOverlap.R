@@ -94,3 +94,47 @@ test_that("summariseCohortOverlap", {
 
   mockDisconnect(cdm)
 })
+
+test_that("expect result is deterministic", {
+  set.seed(123456)
+  cdm <- omock::mockCdmReference() |>
+    omock::mockPerson(nPerson = 100) |>
+    omock::mockObservationPeriod() |>
+    omock::mockCohort(numberCohorts = 3, cohortName = c("covid", "tb", "asthma"))
+  cdm$cohort <- cdm$cohort |>
+    dplyr::inner_join(
+      cdm$person |>
+        dplyr::select("subject_id" = "person_id") |>
+        dplyr::mutate(idep = paste0("Q", sample(1:4L, dplyr::n(), replace = TRUE))),
+      by = "subject_id"
+    )
+  aG <- list("<=20" = c(0, 20), ">20" = c(21, Inf))
+  st <- list("sex", "idep", "age_group", c("age_group", "sex"))
+
+  cdm1 <- CDMConnector::copyCdmTo(
+    con = duckdb::dbConnect(duckdb::duckdb()), cdm = cdm, schema = "main")
+  cdm1$cohort <- cdm1$cohort |>
+    PatientProfiles::addDemographics(
+      age = FALSE, priorObservation = FALSE, futureObservation = FALSE,
+      ageGroup = aG, name = "cohort") |>
+    omopgenerics::newCohortTable()
+
+  cdm2 <- CDMConnector::copyCdmTo(
+    con = duckdb::dbConnect(duckdb::duckdb()), cdm = cdm, schema = "main")
+  cdm2$cohort <- cdm2$cohort |>
+    PatientProfiles::addDemographics(
+      age = FALSE, priorObservation = FALSE, futureObservation = FALSE,
+      ageGroup = aG, name = "cohort") |>
+    omopgenerics::newCohortTable()
+
+  result1 <- cdm1$cohort |>
+    CohortCharacteristics::summariseCohortOverlap(strata = st)
+
+  result2 <- cdm2$cohort |>
+    CohortCharacteristics::summariseCohortOverlap(strata = st)
+
+  expect_identical(result1, result2)
+
+  CDMConnector::cdmDisconnect(cdm1)
+  CDMConnector::cdmDisconnect(cdm2)
+})

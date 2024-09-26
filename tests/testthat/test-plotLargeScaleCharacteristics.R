@@ -137,3 +137,29 @@ test_that("Function returns a ggplot object", {
   # do not throw error even if they do not specify color or facet or position
   expect_true(ggplot2::is.ggplot(plot_multiple))
 })
+
+test_that("output is always the same", {
+  set.seed(123456)
+  cdm <- omock::mockCdmReference() |>
+    omock::mockPerson(nPerson = 100) |>
+    omock::mockObservationPeriod() |>
+    omock::mockConditionOccurrence(recordPerson = 3) |>
+    omock::mockCohort(
+      numberCohorts = 3, cohortName = c("covid", "tb", "asthma"))
+
+  cdm1 <- CDMConnector::copyCdmTo(
+    con = duckdb::dbConnect(duckdb::duckdb()), cdm = cdm, schema = "main")
+
+  cdm2 <- CDMConnector::copyCdmTo(
+    con = duckdb::dbConnect(duckdb::duckdb()), cdm = cdm, schema = "main")
+
+  result1 <- cdm1$cohort |>
+    summariseLargeScaleCharacteristics(eventInWindow = "condition_occurrence")
+
+  result2 <- cdm2$cohort |>
+    summariseLargeScaleCharacteristics(eventInWindow = "condition_occurrence")
+
+  expect_identical(result1, result2)
+
+  PatientProfiles::mockDisconnect(cdm = cdm)
+})

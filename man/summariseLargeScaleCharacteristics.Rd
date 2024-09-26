@@ -52,19 +52,23 @@ cohort table
 }
 \examples{
 \donttest{
-library(CohortCharacteristics)
-cdm <- CohortCharacteristics::mockCohortCharacteristics()
+library(dplyr, warn.conflicts = FALSE)
 
-concept <- dplyr::tibble(
-  concept_id = c(1125315, 1503328, 1516978, 317009, 378253, 4266367),
-  domain_id = NA_character_,
-  vocabulary_id = NA_character_,
-  concept_class_id = NA_character_,
-  concept_code = NA_character_,
-  valid_start_date = as.Date("1900-01-01"),
-  valid_end_date = as.Date("2099-01-01")
-) |>
-  dplyr::mutate(concept_name = paste0("concept: ", .data$concept_id))
+cdm <- mockCohortCharacteristics(numberIndividuals = 100)
+
+concept <- cdm$condition_occurrence |>
+  select(concept_id = condition_occurrence_id) |>
+  distinct() |>
+  collect() |>
+  mutate(
+    domain_id = NA_character_,
+    vocabulary_id = NA_character_,
+    concept_class_id = NA_character_,
+    concept_code = NA_character_,
+    valid_start_date = as.Date("1900-01-01"),
+    valid_end_date = as.Date("2099-01-01"),
+    concept_name = paste0("concept: ", concept_id)
+  )
 cdm <- CDMConnector::insertTable(cdm, "concept", concept)
 results <- cdm$cohort2 |>
   summariseLargeScaleCharacteristics(

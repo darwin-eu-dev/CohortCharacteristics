@@ -401,7 +401,6 @@ summariseCharacteristics <- function(cohort,
 
   cli::cli_alert_info("summarising data")
   # summarise results
-
   suppressMessages(
     results <- cohort |>
       PatientProfiles::summariseResult(
@@ -442,6 +441,27 @@ summariseCharacteristics <- function(cohort,
     )) |>
     visOmopResults::uniteAdditional(cols = c("table", "window", "value")) |>
     dplyr::as_tibble()
+
+  # order result
+  combinations <- getCombinations(
+    dplyr::tibble(group_level = settings(cohort)$cohort_name),
+    getStratas(cohort, strata),
+    results |>
+      dplyr::select("variable_name", "variable_level") |>
+      dplyr::distinct(),
+    results |>
+      dplyr::select("estimate_name") |>
+      dplyr::distinct()
+  ) |>
+    dplyr::mutate(order_id = dplyr::row_number())
+  results <- results |>
+    dplyr::left_join(
+      combinations,
+      by = c("group_level", "strata_name", "strata_level", "variable_name",
+             "variable_level", "estimate_name")
+    ) |>
+    dplyr::arrange(.data$order_id) |>
+    dplyr::select(-"order_id")
 
   results <- results |>
     dplyr::mutate("result_id" = 1L) |>
