@@ -25,7 +25,6 @@
 #' in order. Allowed are: `cdm_name`, `group`, `strata`, `additional`,
 #' `variable`, `estimate`, `settings`.
 #' @param groupColumn Column to use as group labels.
-#' @param hide Columns to drop from the output table.
 #' @param uniqueCombinations Whether to display unique combinations
 #' reference - comparator.
 #'
@@ -46,7 +45,6 @@ tableCohortOverlap <- function(result,
                                type = "gt",
                                header = c("variable_name"),
                                groupColumn = c("cdm_name"),
-                               hide = c("variable_level"),
                                uniqueCombinations = TRUE) {
   # validate result
   result <- omopgenerics::validateResultArgument(result)
@@ -79,7 +77,7 @@ tableCohortOverlap <- function(result,
     header = header,
     groupColumn = groupColumn,
     type = type,
-    hide = hide
+    hide = "variable_level"
   )
 
   return(tab)

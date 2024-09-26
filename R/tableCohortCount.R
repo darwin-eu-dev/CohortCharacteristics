@@ -25,7 +25,6 @@
 #' in order. Allowed are: `cdm_name`, `group`, `strata`, `additional`,
 #' `variable`, `estimate`, `settings`.
 #' @param groupColumn Column to use as group labels.
-#' @param hide Columns to drop from the output table.
 #'
 #' @examples
 #' \donttest{
@@ -48,8 +47,7 @@
 tableCohortCount <- function(result,
                              type = "gt",
                              header = "cohort_name",
-                             groupColumn = NULL,
-                             hide = "variable_level") {
+                             groupColumn = NULL) {
   # validate result
   result <- omopgenerics::validateResultArgument(result)
   omopgenerics::assertChoice(type, c("gt", "flextable", "tibble"))
@@ -71,7 +69,7 @@ tableCohortCount <- function(result,
     header = header,
     groupColumn = groupColumn,
     type = type,
-    hide = hide
+    hide = "variable_level"
   )
 
   return(tab)
