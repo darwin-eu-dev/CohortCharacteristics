@@ -16,7 +16,7 @@ mockCohortCharacteristics(
 \item{con}{A DBI connection to create the cdm mock object.}
 
 \item{writeSchema}{Name of an schema on the same connection with writing
-permisions.}
+permissions.}
 
 \item{numberIndividuals}{Number of individuals to create in the cdm
 reference.}

@@ -217,7 +217,7 @@ test_that("basic functionality summarise large scale characteristics", {
       minimumFrequency = 0
     ))
   # multiple variables
-  expect_warning(cdm$cohort1 |>
+  expect_warning(expect_warning(cdm$cohort1 |>
     dplyr::mutate(
       my_strata_1 = NA,
       my_strata_2 = dplyr::if_else(row_number() == 1,
@@ -233,7 +233,7 @@ test_that("basic functionality summarise large scale characteristics", {
         "my_strata_3"
       ),
       minimumFrequency = 0
-    ))
+    )))
 
   # minimum frequencey
   expect_message(result <- cdm$cohort_interest |>

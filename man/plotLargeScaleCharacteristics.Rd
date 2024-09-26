@@ -15,7 +15,7 @@ plotLargeScaleCharacteristics(
 summariseLargeScaleCharacteristics().}
 
 \item{facet}{Character vector that indicates the columns to facet by, you can
-use any tidyColumns(result). Formula als is allowed to specify rows and
+use any tidyColumns(result). Formula also is allowed to specify rows and
 columns.}
 
 \item{colour}{Character vector that indicates the columns to colour by, you

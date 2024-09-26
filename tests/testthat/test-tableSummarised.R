@@ -91,17 +91,12 @@ test_that("tableCharacteristics", {
     )
   )
 
-
-  expect_no_error(gt1 <- tableCharacteristics(result1, excludeColumns = c(
-    "result_id",
-    "estimate_type", "additional_name",
-    "additional_level", "cdm_name"
-  )))
+  expect_no_error(gt1 <- tableCharacteristics(result1,))
   expect_true("gt_tbl" %in% class(gt1))
   expect_true(all(c("Variable name", "Variable level", "Estimate name") %in%
     colnames(gt1$`_data`)))
 
-  fx1 <- tableCharacteristics(result1, header = c("cdm_name", "group", "strata"), type = "flextable")
+  fx1 <- tableCharacteristics(result1, header = c("cdm_name", "cohort_name"), type = "flextable")
   expect_true(class(fx1) == "flextable")
   expect_true(all(c(
     "Variable name", "Variable level", "Estimate name",
@@ -115,7 +110,7 @@ test_that("tableCharacteristics", {
       "Future observation", "Days in cohort", "Medications", "Comorbidities"
     )))
 
-  tibble1 <- tableCharacteristics(result1, type = "tibble", split = "strata", header = character())
+  tibble1 <- tableCharacteristics(result1, type = "tibble", header = character())
   expect_true(all(class(tibble1) %in% c("tbl_df", "tbl", "data.frame")))
   expect_true(all(c(
     "Variable name", "Variable level", "Estimate name",
@@ -126,11 +121,9 @@ test_that("tableCharacteristics", {
 
 test_that("tableCharacteristics, empty output warning message", {
   skip_on_cran()
-
-  cdm <- CodelistGenerator::mockVocabRef()
-  ac_result <- CodelistGenerator::summariseAchillesCodeUse(list("oa" = c(3, 4, 5)), cdm)
-  expect_warning(tableCharacteristics(result = ac_result, type = "gt")    )
-  PatientProfiles::mockDisconnect(cdm)
+  expect_warning(x <- tableCharacteristics(
+    result = omopgenerics::emptySummarisedResult(), type = "gt"))
+  expect_true(inherits(x, "gt_tbl"))
 })
 
 test_that("tableCohortOverlap", {
@@ -183,20 +176,9 @@ test_that("tableCohortOverlap", {
 
   gtResult1 <- tableCohortOverlap(overlap)
   expect_true("gt_tbl" %in% class(gtResult1))
-  expect_equal(
-    gtResult1$`_data`$`CDM name`,
-    c("PP_MOCK", rep("", nrow(gtResult1$`_data`) - 1))
-  )
 
-  fxResult1 <- tableCohortOverlap(overlap,
-    type = "flextable",
-    split = character(),
-    header = "group",
-    excludeColumns = c(
-      "result_id", "estimate_type", "strata_name",
-      "strata_level", "additional_name",
-      "additional_level"
-    )
+  fxResult1 <- tableCohortOverlap(
+    overlap, type = "flextable", header = "cohort_name"
   )
   expect_true("flextable" %in% class(fxResult1))
 

@@ -75,7 +75,7 @@ tableCohortOverlap <- function(result,
   # format table
   tab <- visOmopResults::visOmopTable(
     result = result,
-    formatEstimateName = c("N (%)" = "<count> (<percentage>%)"),
+    estimateName = c("N (%)" = "<count> (<percentage>%)"),
     header = header,
     groupColumn = groupColumn,
     type = type,

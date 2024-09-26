@@ -1,23 +1,23 @@
 test_that("plotCohortTiming, boxplot", {
   skip_on_cran()
   person <- dplyr::tibble(
-    person_id = 1:20,
-    gender_concept_id = 8532,
-    year_of_birth = runif(n = 20, min = 1950, max = 2000),
-    month_of_birth = runif(n = 20, min = 1, max = 12),
-    day_of_birth = runif(n = 20, min = 1, max = 28),
-    race_concept_id = 0,
-    ethnicity_concept_id = 0
+    person_id = 1:20L,
+    gender_concept_id = 8532L,
+    year_of_birth = sample(1950:2000L, size = 20, replace = TRUE),
+    month_of_birth = sample(1:12L, size = 20, replace = TRUE),
+    day_of_birth = sample(1:28L, size = 20, replace = TRUE),
+    race_concept_id = 0L,
+    ethnicity_concept_id = 0L
   )
 
   table <- dplyr::tibble(
-    cohort_definition_id = c(rep(1, 15), rep(2, 10), rep(3, 15), rep(4, 5)),
+    cohort_definition_id = c(rep(1, 15), rep(2, 10), rep(3, 15), rep(4, 5)) |> as.integer(),
     subject_id = c(
       20, 5, 10, 12, 4, 15, 2, 1, 5, 10, 5, 8, 13, 4, 10,
       6, 18, 5, 1, 20, 14, 13, 8, 17, 3,
       16, 15, 20, 17, 3, 14, 6, 11, 8, 7, 20, 19, 5, 2, 18,
       5, 12, 3, 14, 13
-    ),
+    ) |> as.integer(),
     cohort_start_date = as.Date(c(
       rep("2000-01-01", 5), rep("2010-09-05", 5), rep("2006-05-01", 5),
       rep("2003-03-31", 5), rep("2008-07-02", 5), rep("2000-01-01", 5),
@@ -31,11 +31,11 @@ test_that("plotCohortTiming, boxplot", {
   )
 
   obs <- dplyr::tibble(
-    observation_period_id = 1:20,
-    person_id = 1:20,
+    observation_period_id = 1:20L,
+    person_id = 1:20L,
     observation_period_start_date = as.Date("1930-01-01"),
     observation_period_end_date = as.Date("2025-01-01"),
-    period_type_concept_id = NA
+    period_type_concept_id = 0L
   )
 
   cdm <- mockCohortCharacteristics(
@@ -93,23 +93,23 @@ test_that("plotCohortTiming, boxplot", {
 test_that("plotCohortTiming, density", {
   skip_on_cran()
   person <- dplyr::tibble(
-    person_id = 1:20,
-    year_of_birth = runif(n = 20, min = 1950, max = 2000),
-    month_of_birth = runif(n = 20, min = 1, max = 12),
-    day_of_birth = runif(n = 20, min = 1, max = 28),
-    race_concept_id = 0,
-    ethnicity_concept_id = 0
+    person_id = 1:20L,
+    year_of_birth = sample(1950:2000L, size = 20, replace = TRUE),
+    month_of_birth = sample(1:12, size = 20, replace = TRUE),
+    day_of_birth = sample(1:28, size = 20, replace = TRUE),
+    race_concept_id = 0L,
+    ethnicity_concept_id = 0L
   ) |>
     dplyr::mutate(gender_concept_id = sample(c(8532, 8507), size = dplyr::n(), replace = TRUE))
 
   table <- dplyr::tibble(
-    cohort_definition_id = c(rep(1, 15), rep(2, 10), rep(3, 15), rep(4, 5)),
+    cohort_definition_id = c(rep(1, 15), rep(2, 10), rep(3, 15), rep(4, 5)) |> as.integer(),
     subject_id = c(
       20, 5, 10, 12, 4, 15, 2, 1, 5, 10, 5, 8, 13, 4, 10,
       6, 18, 5, 1, 20, 14, 13, 8, 17, 3,
       16, 15, 20, 17, 3, 14, 6, 11, 8, 7, 20, 19, 5, 2, 18,
       5, 12, 3, 14, 13
-    ),
+    ) |> as.integer(),
     cohort_start_date = as.Date(c(
       rep("2000-01-01", 5), rep("2010-09-05", 5), rep("2006-05-01", 5),
       rep("2003-03-31", 5), rep("2008-07-02", 5), rep("2000-01-01", 5),
@@ -123,11 +123,11 @@ test_that("plotCohortTiming, density", {
   )
 
   obs <- dplyr::tibble(
-    observation_period_id = 1:20,
-    person_id = 1:20,
+    observation_period_id = 1:20 |> as.integer(),
+    person_id = 1:20 |> as.integer(),
     observation_period_start_date = as.Date("1930-01-01"),
     observation_period_end_date = as.Date("2025-01-01"),
-    period_type_concept_id = NA
+    period_type_concept_id = 0L
   )
 
   cdm <- mockCohortCharacteristics(
@@ -135,10 +135,7 @@ test_that("plotCohortTiming, density", {
     person = person, observation_period = obs, table = table
   )
 
-  timing1 <- summariseCohortTiming(cdm$table,
-    density = TRUE,
-    restrictToFirstEntry = FALSE
-  )
+  timing1 <- summariseCohortTiming(cdm$table, restrictToFirstEntry = FALSE)
   density1 <- plotCohortTiming(timing1,
     plotType = "density",
     facet = NULL,
@@ -160,10 +157,7 @@ test_that("plotCohortTiming, density", {
   expect_true(all(c("gg", "ggplot") %in% class(density2)))
   # expect_null(density2$labels$fill)
 
-  timing2 <- summariseCohortTiming(cdm$table,
-    estimates = character(),
-    density = TRUE
-  )
+  timing2 <- summariseCohortTiming(cdm$table, estimates = "density")
   density4 <- plotCohortTiming(timing2,
     plotType = "density",
     facet = NULL,
@@ -181,7 +175,6 @@ test_that("plotCohortTiming, density", {
     omopgenerics::newCohortTable()
   timing3 <- summariseCohortTiming(cdm$table,
     strata = list("age_group", c("age_group", "sex")),
-    density = TRUE,
     restrictToFirstEntry = FALSE
   )
 
@@ -203,23 +196,24 @@ test_that("plotCohortTiming, density", {
 test_that("plotCohortOverlap", {
   skip_on_cran()
   person <- dplyr::tibble(
-    person_id = 1:20,
-    gender_concept_id = 8532,
-    year_of_birth = runif(n = 20, min = 1950, max = 1980),
-    month_of_birth = runif(n = 20, min = 1, max = 12),
-    day_of_birth = runif(n = 20, min = 1, max = 28),
-    race_concept_id = 0,
-    ethnicity_concept_id = 0
+    person_id = 1:20L,
+    gender_concept_id = 8532L,
+    year_of_birth = sample(1950:2000L, size = 20, replace = TRUE),
+    month_of_birth = sample(1:12L, size = 20, replace = TRUE),
+    day_of_birth = sample(1:28L, size = 20, replace = TRUE),
+    race_concept_id = 0L,
+    ethnicity_concept_id = 0L
   )
 
   table <- dplyr::tibble(
-    cohort_definition_id = c(rep(1, 15), rep(2, 10), rep(3, 15), rep(4, 5)),
+    cohort_definition_id = c(rep(1, 15), rep(2, 10), rep(3, 15), rep(4, 5)) |>
+      as.integer(),
     subject_id = c(
       20, 5, 10, 12, 4, 15, 2, 1, 5, 10, 5, 8, 13, 4, 10,
       6, 18, 5, 1, 20, 14, 13, 8, 17, 3,
       16, 15, 20, 17, 3, 14, 6, 11, 8, 7, 20, 19, 5, 2, 18,
       5, 12, 3, 14, 13
-    ),
+    ) |> as.integer(),
     cohort_start_date = as.Date(c(
       rep("2000-01-01", 5), rep("2010-09-05", 5), rep("2006-05-01", 5),
       rep("2003-03-31", 5), rep("2008-07-02", 5), rep("2000-01-01", 5),
@@ -233,11 +227,11 @@ test_that("plotCohortOverlap", {
   )
 
   obs <- dplyr::tibble(
-    observation_period_id = 1:20,
-    person_id = 1:20,
+    observation_period_id = 1:20L,
+    person_id = 1:20L,
     observation_period_start_date = as.Date("1930-01-01"),
     observation_period_end_date = as.Date("2025-01-01"),
-    period_type_concept_id = NA
+    period_type_concept_id = 0L
   )
 
   cdm <- mockCohortCharacteristics(
@@ -301,15 +295,17 @@ test_that("plotCohortOverlap", {
 test_that("plotCharacteristics", {
   skip_on_cran()
   person <- dplyr::tibble(
-    person_id = c(1, 2, 3), gender_concept_id = c(8507, 8532, 8532),
-    year_of_birth = c(1985, 2000, 1962), month_of_birth = c(10, 5, 9),
-    day_of_birth = c(30, 10, 24),
-    race_concept_id = 0,
-    ethnicity_concept_id = 0
+    person_id = c(1, 2, 3) |> as.integer(),
+    gender_concept_id = c(8507, 8532, 8532) |> as.integer(),
+    year_of_birth = c(1985, 2000, 1962) |> as.integer(),
+    month_of_birth = c(10, 5, 9) |> as.integer(),
+    day_of_birth = c(30, 10, 24) |> as.integer(),
+    race_concept_id = 0L,
+    ethnicity_concept_id = 0L
   )
   dus_cohort <- dplyr::tibble(
-    cohort_definition_id = c(1, 1, 1, 2),
-    subject_id = c(1, 1, 2, 3),
+    cohort_definition_id = c(1, 1, 1, 2) |> as.integer(),
+    subject_id = c(1, 1, 2, 3) |> as.integer(),
     cohort_start_date = as.Date(c(
       "1990-04-19", "1991-04-19", "2010-11-14", "2000-05-25"
     )),
@@ -318,15 +314,15 @@ test_that("plotCharacteristics", {
     ))
   )
   observation_period <- dplyr::tibble(
-    observation_period_id = c(1, 2, 3),
-    person_id = c(1, 2, 3),
+    observation_period_id = c(1, 2, 3) |> as.integer(),
+    person_id = c(1, 2, 3) |> as.integer(),
     observation_period_start_date = as.Date(c(
       "1975-01-01", "1959-04-29", "1944-12-03"
     )),
     observation_period_end_date = as.Date(c(
       "2021-03-04", "2022-03-14", "2023-07-10"
     )),
-    period_type_concept_id = 0
+    period_type_concept_id = 0L
   )
 
   cdm <- mockCohortCharacteristics(

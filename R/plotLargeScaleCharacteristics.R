@@ -21,7 +21,7 @@
 #' @param result A summarised_result object. Output of
 #' summariseLargeScaleCharacteristics().
 #' @param facet Character vector that indicates the columns to facet by, you can
-#' use any tidyColumns(result). Formula als is allowed to specify rows and
+#' use any tidyColumns(result). Formula also is allowed to specify rows and
 #' columns.
 #' @param colour Character vector that indicates the columns to colour by, you
 #' can use any tidyColumns(result).

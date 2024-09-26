@@ -25,21 +25,14 @@
 #' in order. Allowed are: `cdm_name`, `group`, `strata`, `additional`,
 #' `variable`, `estimate`, `settings`.
 #' @param groupColumn Column to use as group labels.
-#' @param hide Columns to drop from the output table.
-#' @param .options Named list with additional formatting options.
-#' CohortCharacteristics::optionsTableCharacteristics() shows allowed arguments and
-#' their default values.
-#' @param formatEstimateName deprecated.
-#' @param split deprecated.
-#' @param excludeColumns deprecated.
 #'
 #' @examples
 #' \donttest{
 #' cdm <- mockCohortCharacteristics()
 #'
-#' cdm$cohort1 |>
-#'   summariseCharacteristics() |>
-#'   tableCharacteristics()
+#' result <- summariseCharacteristics(cdm$cohort1)
+#'
+#' tableCharacteristics(result)
 #'
 #' mockDisconnect(cdm = cdm)
 #' }
@@ -51,23 +44,20 @@
 #'
 tableCharacteristics <- function(result,
                                  type = "gt",
-                                 header = c("group"),
-                                 groupColumn = NULL,
-                                 hide = c(
-                                   "result_id", "estimate_type",
-                                   "additional_name", "additional_level"
-                                 ),
-                                 .options = list(),
-                                 formatEstimateName = lifecycle::deprecated(),
-                                 split = lifecycle::deprecated(),
-                                 excludeColumns = lifecycle::deprecated()) {
+                                 header = c("cdm_name", "cohort_name"),
+                                 groupColumn = NULL) {
+  # initial checks
+  result <- omopgenerics::validateResultArgument(result)
+  omopgenerics::assertChoice(type, c("gt", "flextable", "tibble"))
 
-  if (!inherits(result, "summarised_result")) {
-    cli::cli_abort("result must be a summarised result")
-  }
+  # check settings
+  result <- result |>
+    visOmopResults::filterSettings(
+      .data$result_type == "summarise_characteristics")
+
   if (nrow(result) == 0) {
-    cli::cli_warn("Empty result object")
-    return(emptyResultTable(type = type))
+    cli::cli_warn("`result` object does not contain any `result_type == 'summarise_characteristics'` information.")
+    return(emptyResultTable(type))
   }
 
   estimateName <- c(
@@ -78,111 +68,14 @@ tableCharacteristics <- function(result,
     "Range" = "<min> to <max>"
   )
 
-
-   # check input
-  result <- omopgenerics::newSummarisedResult(result) |>
-    visOmopResults::filterSettings(.data$result_type == "summarise_characteristics")
-
-  if (nrow(result) == 0) {
-    cli::cli_warn("No characteristics results found")
-    return(emptyResultTable(type = type))
-  }
-
-  omopgenerics::assertList(.options)
-
-  # add default options
-  .options <- defaultCharacteristicsOptions(.options)
-
-  # ensure results are nicely ordered
-  defaultVariableNames <- c(
-    "Number records", "Number subjects",
-    "Cohort start date", "Cohort end date",
-    "Sex",
-    "Age", "Age group",
-    "Prior observation",
-    "Future observation"
-  )
-  variableNames <- result |>
-    dplyr::select("variable_name") |>
-    dplyr::filter(!.data$variable_name %in% .env$defaultVariableNames) |>
-    dplyr::distinct() |>
-    dplyr::pull("variable_name")
-
-  variableLevels <- sort(result |>
-    dplyr::select("variable_level") |>
-    dplyr::filter(!is.na(.data$variable_level)) |>
-    dplyr::distinct() |>
-    dplyr::pull("variable_level"))
-
-  result <- result |>
-    dplyr::mutate(variable_name = factor(.data$variable_name,
-      levels = c(
-        defaultVariableNames,
-        variableNames
-      )
-    )) |>
-    dplyr::mutate(variable_level = factor(.data$variable_level,
-      levels = variableLevels
-    )) |>
-    dplyr::arrange(.data$variable_name, .data$variable_level) |>
-    dplyr::mutate(variable_name = as.character(.data$variable_name)) |>
-    dplyr::mutate(variable_level = as.character(.data$variable_level))
-
-  if (nrow(result)==0){
-    cli::cli_warn(
-      "Output is empty, perhaps your result_type is not supported by this function."
-    )
-   suppressWarnings(
-     # format table
-     result <- visOmopResults::visOmopTable(
-       result = result,
-       formatEstimateName = formatEstimateName,
-       header = header,
-       groupColumn = groupColumn,
-       split = split,
-       type = type,
-       excludeColumns = excludeColumns,
-       .options = .options
-     )
-   )
-  } else {
-
   # format table
-  result <- visOmopResults::visOmopTable(
+  tab <- visOmopResults::visOmopTable(
     result = result,
-    formatEstimateName = formatEstimateName,
+    estimateName = estimateName,
     header = header,
     groupColumn = groupColumn,
-    split = split,
-    type = type,
-    excludeColumns = excludeColumns,
-    .options = .options
-  )
-  }
-
-  return(result)
-}
-
-defaultCharacteristicsOptions <- function(.options) {
-  defaults <- list(
-    "decimals" = c(integer = 0, numeric = 2, percentage = 1, proportion = 3),
-    "decimalMark" = ".",
-    "bigMark" = ",",
-    "keepNotFormatted" = TRUE,
-    "useFormatOrder" = TRUE,
-    "delim" = "\n",
-    "style" = "default",
-    "na" = "-",
-    "title" = NULL,
-    "subtitle" = NULL,
-    "caption" = NULL,
-    "groupAsColumn" = FALSE,
-    "groupOrder" = NULL,
-    "colsToMergeRows" = "all_columns"
+    type = type
   )
 
-  for (opt in names(.options)) {
-    defaults[[opt]] <- .options[[opt]]
-  }
-  return(defaults)
+  return(tab)
 }

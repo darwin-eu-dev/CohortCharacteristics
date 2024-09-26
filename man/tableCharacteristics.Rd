@@ -7,13 +7,8 @@
 tableCharacteristics(
   result,
   type = "gt",
-  header = c("group"),
-  groupColumn = NULL,
-  hide = c("result_id", "estimate_type", "additional_name", "additional_level"),
-  .options = list(),
-  formatEstimateName = lifecycle::deprecated(),
-  split = lifecycle::deprecated(),
-  excludeColumns = lifecycle::deprecated()
+  header = c("cdm_name", "cohort_name"),
+  groupColumn = NULL
 )
 }
 \arguments{
@@ -27,18 +22,6 @@ in order. Allowed are: `cdm_name`, `group`, `strata`, `additional`,
 `variable`, `estimate`, `settings`.}
 
 \item{groupColumn}{Column to use as group labels.}
-
-\item{hide}{Columns to drop from the output table.}
-
-\item{.options}{Named list with additional formatting options.
-CohortCharacteristics::optionsTableCharacteristics() shows allowed arguments and
-their default values.}
-
-\item{formatEstimateName}{deprecated.}
-
-\item{split}{deprecated.}
-
-\item{excludeColumns}{deprecated.}
 }
 \value{
 A table with a formatted version of the summariseCharacteristics
@@ -51,9 +34,9 @@ result.
 \donttest{
 cdm <- mockCohortCharacteristics()
 
-cdm$cohort1 |>
-  summariseCharacteristics() |>
-  tableCharacteristics()
+result <- summariseCharacteristics(cdm$cohort1)
+
+tableCharacteristics(result)
 
 mockDisconnect(cdm = cdm)
 }
