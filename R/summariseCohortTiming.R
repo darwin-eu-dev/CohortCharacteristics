@@ -129,7 +129,40 @@ summariseCohortTiming <- function(cohort,
       variables = "days_between_cohort_entries",
       estimates = timing
     )  |>
-    dplyr::mutate("cdm_name" = omopgenerics::cdmName(cohort)) |>
+    dplyr::mutate("cdm_name" = omopgenerics::cdmName(cohort))
+
+  # get all combinations
+  group <- settings(cohort) |>
+    dplyr::filter(.data$cohort_definition_id %in% .env$cohortId) |>
+    dplyr::pull("cohort_name") |>
+    getCohortComp()
+  strata <- getStratas(cohort, strata)
+  if ("density" %in% estimates) {
+    estimates <- c(estimates[estimates != "density"], "density_x", "density_y")
+  }
+  combinations <- getCombinations(
+    group,
+    strata,
+    dplyr::tibble(
+      variable_name = c("number records", "number subjects"),
+      estimate_name = "count"
+    ) |>
+      dplyr::union_all(dplyr::tibble(
+        variable_name = "days_between_cohort_entries",
+        estimate_name = estimates
+      ))
+  ) |>
+    dplyr::mutate(order_id = dplyr::row_number())
+  result <- result |>
+    dplyr::left_join(
+      combinations,
+      by = c("group_name", "group_level", "strata_name", "strata_level",
+             "variable_name", "estimate_name")
+    ) |>
+    dplyr::arrange(.data$order_id, .data$variable_level) |>
+    dplyr::select(!"order_id")
+
+  result <- result |>
     omopgenerics::newSummarisedResult(settings = dplyr::tibble(
       "result_id" = 1L,
       "package_name" = "CohortCharacteristics",
@@ -139,4 +172,47 @@ summariseCohortTiming <- function(cohort,
     ))
 
   return(result)
+}
+
+getCohortComp <- function(cohortNames) {
+  tidyr::expand_grid(
+    cohort_name_reference = cohortNames, cohort_name_comparator = cohortNames
+  ) |>
+    dplyr::filter(.data$cohort_name_reference != .data$cohort_name_comparator) |>
+    visOmopResults::uniteGroup(
+      cols = c("cohort_name_reference", "cohort_name_comparator")
+    )
+}
+getStratas <- function(data, strata) {
+  res <- purrr::map(strata, \(x) {
+    data |>
+      dplyr::select(dplyr::all_of(x)) |>
+      dplyr::distinct() |>
+      dplyr::collect() |>
+      dplyr::arrange(dplyr::across(dplyr::everything())) |>
+      visOmopResults::uniteStrata(cols = x)
+  }) |>
+    dplyr::bind_rows()
+  dplyr::tibble(strata_name = "overall", strata_level = "overall") |>
+    dplyr::union_all(res)
+}
+getCombinations <- function(...) {
+  x <- list(...)
+  opts <- list()
+  ids <- omopgenerics::uniqueId(length(x), nChar = 1)
+  for (k in seq_along(x)) {
+    x[[k]] <- x[[k]] |>
+      dplyr::mutate(!!ids[k] := dplyr::row_number())
+    opts[[ids[k]]] <- x[[k]][[ids[k]]]
+  }
+
+  combinations <- do.call(tidyr::expand_grid, opts)
+
+  for (k in seq_along(x)) {
+    combinations <- combinations |>
+      dplyr::left_join(x[[k]], by = ids[k]) |>
+      dplyr::select(!dplyr::all_of(ids[k]))
+  }
+
+  return(combinations)
 }

@@ -1,7 +1,7 @@
 test_that("check summariseCohortAttrition is deterministic", {
   cdm <- mockCohortCharacteristics(numberIndividuals = 1000)
 
-  cdm[["cohort1"]] <- cdm[["cohort1"]] |>
+  cdm$cohort1 <- cdm$cohort1 |>
     dplyr::filter(cohort_start_date >= as.Date("2000-01-01")) |>
     omopgenerics::recordCohortAttrition("Restrict to cohort_start_date >= 2000") |>
     dplyr::filter(cohort_end_date < as.Date("2020-01-01")) |>
@@ -10,11 +10,11 @@ test_that("check summariseCohortAttrition is deterministic", {
 
   att <- omopgenerics::attrition(cdm$cohort1)
   att1 <- att |> dplyr::arrange(dplyr::desc(.data$cohort_definition_id))
-  set <- omopgenerics::settings(cohort) |>
+  set <- omopgenerics::settings(cdm$cohort1) |>
     dplyr::mutate("result_id" = as.integer(dplyr::row_number()))
   set1 <- set |> dplyr::arrange(dplyr::desc(.data$cohort_definition_id))
-  tn <- omopgenerics::tableName(cohort)
-  cn <- omopgenerics::cdmName(cohort)
+  tn <- omopgenerics::tableName(cdm$cohort1)
+  cn <- omopgenerics::cdmName(cdm$cohort1)
 
   expect_no_error(x1 <- summariseAttrition(att, set, tn, cn))
   expect_no_error(x2 <- summariseAttrition(att1, set, tn, cn))

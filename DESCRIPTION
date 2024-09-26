@@ -63,6 +63,7 @@ Suggests:
     here,
     knitr,
     odbc,
+    omock,
     rmarkdown,
     RPostgres,
     scales,
