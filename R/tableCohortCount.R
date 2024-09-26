@@ -21,18 +21,11 @@
 #' @param result A summarise_characteristics object.
 #' @param type Type of desired formatted table, possibilities: "gt",
 #' "flextable", "tibble".
-#' @param formatEstimateName Named list of estimate name's to join, sorted by
-#' computation order. Indicate estimate_name's between <...>.
 #' @param header A vector containing which elements should go into the header
 #' in order. Allowed are: `cdm_name`, `group`, `strata`, `additional`,
 #' `variable`, `estimate`, `settings`.
-#' @param split A vector containing the name-level groups to split ("group",
-#' "strata", "additional"), or an empty character vector to not split.
 #' @param groupColumn Column to use as group labels.
-#' @param excludeColumns Columns to drop from the output table.
-#' @param .options Named list with additional formatting options.
-#' CohortCharacteristics::optionsTableCharacteristics() shows allowed arguments and
-#' their default values.
+#' @param hide Columns to drop from the output table.
 #'
 #' @examples
 #' \donttest{
@@ -40,9 +33,9 @@
 #'
 #' cdm <- mockCohortCharacteristics()
 #'
-#' cdm$cohort1 |>
-#'   summariseCharacteristics() |>
-#'   tableCharacteristics()
+#' result <- summariseCohortCount(cdm$cohort1)
+#'
+#' tableCohortCount(result)
 #'
 #' mockDisconnect(cdm = cdm)
 #' }
@@ -54,72 +47,32 @@
 #'
 tableCohortCount <- function(result,
                              type = "gt",
-                             formatEstimateName = c(
-                               "N" = "<count>"
-                             ),
-                             header = c("group"),
-                             split = c("group", "strata"),
+                             header = "cohort_name",
                              groupColumn = NULL,
-                             excludeColumns = c(
-                               "result_id", "estimate_type", "variable_level",
-                               "additional_name", "additional_level"
-                             ),
-                             .options = list()) {
-  # check input
-  result <- omopgenerics::newSummarisedResult(result) |>
-    visOmopResults::filterSettings(.data$result_type == "summarise_cohort_count")
-  omopgenerics::assertList(.options)
+                             hide = "variable_level") {
+  # validate result
+  result <- omopgenerics::validateResultArgument(result)
+  omopgenerics::assertChoice(type, c("gt", "flextable", "tibble"))
 
-  # add default options
-  .options <- defaultCharacteristicsOptions(.options)
-
-  # ensure results are nicely ordered
-  defaultVariableNames <- c(
-    "Number records", "Number subjects",
-    "Cohort start date", "Cohort end date",
-    "Sex",
-    "Age", "Age group",
-    "Prior observation",
-    "Future observation"
-  )
-  variableNames <- result |>
-    dplyr::select("variable_name") |>
-    dplyr::filter(!.data$variable_name %in% .env$defaultVariableNames) |>
-    dplyr::distinct() |>
-    dplyr::pull("variable_name")
-
-  variableLevels <- sort(result |>
-    dplyr::select("variable_level") |>
-    dplyr::filter(!is.na(.data$variable_level)) |>
-    dplyr::distinct() |>
-    dplyr::pull("variable_level"))
-
-  # create table
+  # check settings
   result <- result |>
-    dplyr::mutate(variable_name = factor(.data$variable_name,
-      levels = c(
-        defaultVariableNames,
-        variableNames
-      )
-    )) |>
-    dplyr::mutate(variable_level = factor(.data$variable_level,
-      levels = variableLevels
-    )) |>
-    dplyr::arrange(.data$variable_name, .data$variable_level) |>
-    dplyr::mutate(variable_name = as.character(.data$variable_name)) |>
-    dplyr::mutate(variable_level = as.character(.data$variable_level))
+    visOmopResults::filterSettings(
+      .data$result_type == "summarise_cohort_count")
+
+  if (nrow(result) == 0) {
+    cli::cli_warn("`result` object does not contain any `result_type == 'summarise_cohort_count'` information.")
+    return(emptyResultTable(type))
+  }
 
   # format table
-  result <- visOmopResults::visOmopTable(
+  tab <- visOmopResults::visOmopTable(
     result = result,
-    formatEstimateName = formatEstimateName,
+    estimateName = c("N" = "<count>"),
     header = header,
     groupColumn = groupColumn,
-    split = split,
     type = type,
-    excludeColumns = excludeColumns,
-    .options = .options
+    hide = hide
   )
 
-  return(result)
+  return(tab)
 }

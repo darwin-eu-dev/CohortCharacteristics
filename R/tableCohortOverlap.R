@@ -21,23 +21,18 @@
 #' @param result A summariseOverlapCohort result.
 #' @param type Type of desired formatted table, possibilities: "gt",
 #' "flextable", "tibble".
-#' @param formatEstimateName Named list of estimate name's to join, sorted by
-#' computation order. Indicate estimate_name's between <...>.
 #' @param header A vector containing which elements should go into the header
 #' in order. Allowed are: `cdm_name`, `group`, `strata`, `additional`,
 #' `variable`, `estimate`, `settings`.
-#' @param split A vector containing the name-level groups to split ("group",
-#' "strata", "additional"), or an empty character vector to not split.
 #' @param groupColumn Column to use as group labels.
-#' @param excludeColumns Columns to drop from the output table.
-#' @param .options Named list with additional formatting options.
-#' CohortCharacteristics::optionsTableCohortOverlap() shows allowed arguments and
-#' their default values.
+#' @param hide Columns to drop from the output table.
+#' @param uniqueCombinations Whether to display unique combinations
+#' reference - comparator.
 #'
 #' @examples
 #' \donttest{
 #' library(CohortCharacteristics)
-#' cdm <- CohortCharacteristics::mockCohortCharacteristics()
+#' cdm <- mockCohortCharacteristics()
 #' overlap <- summariseCohortOverlap(cdm$cohort2)
 #' tableCohortOverlap(overlap)
 #' mockDisconnect(cdm = cdm)
@@ -49,133 +44,43 @@
 #'
 tableCohortOverlap <- function(result,
                                type = "gt",
-                               formatEstimateName = c("N (%)" = "<count> (<percentage>%)"),
-                               header = c("strata"),
-                               split = c("group", "strata", "additional"),
-                               groupColumn = NULL,
-                               excludeColumns = c("result_id", "estimate_type"),
-                               .options = list()) {
+                               header = c("variable_name"),
+                               groupColumn = c("cdm_name"),
+                               hide = c("variable_level"),
+                               uniqueCombinations = TRUE) {
+  # validate result
+  result <- omopgenerics::validateResultArgument(result)
+  omopgenerics::assertChoice(type, c("gt", "flextable", "tibble"))
 
-  # initial checks
-  if (!inherits(result, "summarised_result")) {
-    cli::cli_abort("result must be a summarised result")
-  }
+  # check settings
+  result <- result |>
+    visOmopResults::filterSettings(
+      .data$result_type == "summarise_cohort_overlap")
+
   if (nrow(result) == 0) {
-    cli::cli_warn("Empty result object")
-    return(emptyResultTable(type = type))
+    cli::cli_warn("`result` object does not contain any `result_type == 'summarise_cohort_overlap'` information.")
+    return(emptyResultTable(type))
   }
 
   result <- result |>
-    visOmopResults::filterSettings(.data$result_type == "summarise_cohort_overlap")
-  if (nrow(result) == 0) {
-    cli::cli_warn("No cohort overlap results found")
-    return(emptyResultTable(type = type))
-  }
-
-  omopgenerics::assertList(.options)
-
-  # default
-  .options <- defaultOverlapOptions(.options)
-
-  result <- result %>%
-    dplyr::mutate(
-      variable_name = dplyr::case_when(
-        variable_name == "overlap" ~ "in_both_cohorts",
-        variable_name == "comparator" ~ "only_in_comparator_cohort",
-        variable_name == "reference" ~ "only_in_reference_cohort"
-      )
-    )
+    dplyr::mutate(variable_name = dplyr::case_when(
+      variable_name == "overlap" ~ "In both cohorts",
+      variable_name == "comparator" ~ "Only in comparator cohort",
+      variable_name == "reference" ~ "Only in reference cohort"
+    ))
 
   # unique reference - comparator combinations
-  if (.options$uniqueCombinations) {
-    x <- result |>
-      visOmopResults::splitGroup()
-    x <- x |>
-      getUniqueCombinations(order = sort(unique(x$cohort_name_reference))) |>
-      dplyr::mutate(variable_name = factor(.data$variable_name,
-        levels = c(
-          "only_in_reference_cohort",
-          "in_both_cohorts",
-          "only_in_comparator_cohort"
-        )
-      )) |>
-      dplyr::arrange(dplyr::across(dplyr::all_of(
-        c("result_id", "cdm_name", "cohort_name_reference", "cohort_name_comparator", "strata_name", "strata_level", "variable_name", "variable_level")
-      ))) |>
-      dplyr::mutate(
-        variable_name = as.character(.data$variable_name),
-        variable_level = NA_character_
-      ) |>
-      visOmopResults::uniteGroup(cols = c("cohort_name_reference", "cohort_name_comparator"))
-  } else {
-    x <- result |>
-      dplyr::mutate(variable_name = factor(.data$variable_name,
-        levels = c(
-          "only_in_reference_cohort",
-          "in_both_cohorts",
-          "only_in_comparator_cohort"
-        )
-      )) |>
-      dplyr::arrange(dplyr::across(dplyr::all_of(
-        c("result_id", "cdm_name", "group_name", "group_level", "strata_name", "strata_level", "variable_name", "variable_level")
-      ))) |>
-      dplyr::mutate(
-        variable_name = as.character(.data$variable_name),
-        variable_level = NA_character_
-      )
-  }
+  if (uniqueCombinations) result <- getUniqueCombinationsSr(result)
 
   # format table
-  result <- visOmopResults::visOmopTable(
-    result = x,
-    formatEstimateName = formatEstimateName,
-    header = c(header, "variable"),
+  tab <- visOmopResults::visOmopTable(
+    result = result,
+    formatEstimateName = c("N (%)" = "<count> (<percentage>%)"),
+    header = header,
     groupColumn = groupColumn,
-    split = split,
     type = type,
-    excludeColumns = excludeColumns,
-    .options = .options
+    hide = hide
   )
 
-  return(result)
-}
-
-defaultOverlapOptions <- function(userOptions) {
-  defaultOpts <- list(
-    uniqueCombinations = TRUE,
-    c(integer = 0, percentage = 2, numeric = 2, proportion = 2),
-    decimalMark = ".",
-    bigMark = ",",
-    style = "default",
-    na = "-",
-    title = NULL,
-    subtitle = NULL,
-    caption = NULL,
-    groupAsColumn = FALSE,
-    groupOrder = NULL,
-    colsToMergeRows = "all_columns"
-  )
-
-  for (opt in names(userOptions)) {
-    defaultOpts[[opt]] <- userOptions[[opt]]
-  }
-
-  return(defaultOpts)
-}
-
-formatOverlapEstimate <- function(count, percentage, .options) {
-  paste0(
-    niceNum(count, .options, "integer"),
-    " (",
-    niceNum(percentage, .options, "percentage"),
-    "%)"
-  )
-}
-niceNum <- function(num, .options, type) {
-  trimws(format(round(num, .options$decimals[[type]]),
-    big.mark = .options$bigMark,
-    decimal.mark = .options$decimalMark,
-    nsmall = .options$decimals[[type]],
-    scientific = FALSE
-  ))
+  return(tab)
 }
