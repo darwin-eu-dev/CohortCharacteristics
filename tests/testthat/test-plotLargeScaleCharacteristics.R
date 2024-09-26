@@ -92,7 +92,8 @@ test_that("Function returns a ggplot object", {
     )
 
   plot_multiple <- plotLargeScaleCharacteristics(
-    result = test_data |> dplyr::filter((group_level %in% c("cohort_1", "cohort_2")) | variable_name == "settings"),
+    result = test_data |>
+      dplyr::filter(group_level %in% c("cohort_1", "cohort_2")),
     facet = c("variable_level", "cohort_name"),
     colour = c("age_group", "sex")
   )
@@ -103,14 +104,10 @@ test_that("Function returns a ggplot object", {
   expect_no_error(plotLargeScaleCharacteristics(test_data))
 
   plot_multiple <- plotComparedLargeScaleCharacteristics(
-    data = test_data |> dplyr::filter(group_level %in% c("cohort_1", "cohort_2")),
-    referenceGroupLevel = "cohort_1",
-    referenceStrataLevel = "overall",
-    referenceVariableLevel = "-inf to -366",
-    referenceCdmName = NULL,
+    result = test_data |> dplyr::filter(group_level %in% c("cohort_1", "cohort_2")),
+    reference = c(cohort_name = "cohort_1", age_group = "overall", sex = "overall", variable_level = "-inf to -366"),
     facet = NULL,
-    splitStrata = FALSE,
-    colorVars = NULL,
+    colour = NULL,
     missings = 0
   )
 

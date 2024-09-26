@@ -1357,11 +1357,13 @@ test_that("empty input cohort contains name issue #170", {
   cdm <- mockCohortCharacteristics(
     con = connection(), writeSchema = writeSchema(), numberIndividuals = 10
   )
-
+  cdm <- omopgenerics::emptyCohortTable(cdm = cdm, name = "cohort1")
   cdm$cohort1 <- cdm$cohort1 |>
-    dplyr::filter(.data$subject_id == 0L) |>
-    dplyr::compute(name = "cohort1", temporay = FALSE) |>
-    omopgenerics::newCohortTable()
+    omopgenerics::newCohortTable(
+      cohortSetRef = dplyr::tibble(
+        cohort_definition_id = 1:3L, cohort_name = c("c1", "c2", "c3")
+      )
+    )
 
   expect_no_error(res <- cdm$cohort1 |> summariseCharacteristics())
   expect_true(nrow(res) == 6)
