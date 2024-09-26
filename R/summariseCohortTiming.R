@@ -194,7 +194,7 @@ getStratas <- function(data, strata) {
   }) |>
     dplyr::bind_rows()
   dplyr::tibble(strata_name = "overall", strata_level = "overall") |>
-    dplyr::union_all(res)
+    dplyr::bind_rows(res)
 }
 getCombinations <- function(...) {
   x <- list(...)
