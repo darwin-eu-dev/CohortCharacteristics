@@ -7,8 +7,8 @@
 \usage{
 tableCohortAttrition(
   result,
-  header = "cdm_name",
-  groupColumn = "cohort_name",
+  header = "variable_name",
+  groupColumn = c("cdm_name", "cohort_name"),
   type = "gt"
 )
 }
@@ -34,9 +34,11 @@ library(CohortCharacteristics)
 
 cdm <- mockCohortCharacteristics()
 
-cdm$cohort2 |>
-  summariseCohortAttrition() |>
-  tableCohortAttrition()
+result <- summariseCohortAttrition(cdm$cohort2)
+
+tableCohortAttrition(result)
+
+mockDisconnect(cdm)
 }
 
 }

@@ -222,7 +222,8 @@ summariseLargeScaleCharacteristics <- function(cohort,
   results <- results |>
     dplyr::left_join(
       combs,
-      by = c("group_level", "strata_name", "strata_level", "variable_level")
+      by = c("group_level", "strata_name", "strata_level", "variable_level"),
+      relationship = "many-to-many"
     ) |>
     dplyr::mutate(order_id2 = as.numeric(.data$additional_level)) |>
     dplyr::arrange(

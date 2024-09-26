@@ -5,38 +5,21 @@
 \title{create a ggplot from the output of summariseLargeScaleCharacteristics.}
 \usage{
 plotComparedLargeScaleCharacteristics(
-  data,
-  referenceGroupLevel = NULL,
-  referenceStrataLevel = NULL,
-  referenceVariableLevel = NULL,
-  referenceCdmName = NULL,
-  splitStrata = FALSE,
+  result,
+  reference,
   facet = NULL,
-  colorVars = NULL,
+  colour = NULL,
   missings = 0
 )
 }
 \arguments{
-\item{data}{output of summariseLargeScaleCharacteristics().}
+\item{result}{output of summariseLargeScaleCharacteristics().}
 
-\item{referenceGroupLevel}{group_level value to be used as the reference.}
+\item{reference}{A named character to set up the reference.}
 
-\item{referenceStrataLevel}{strata_level value to be used as the reference.}
+\item{facet}{Variables to facet by. Use tidyColumns to see options.}
 
-\item{referenceVariableLevel}{variable_level value to be used as the reference.}
-
-\item{referenceCdmName}{cdm_name value to be used as the reference.}
-
-\item{splitStrata}{boolean variable (TRUE/FALSE)}
-
-\item{facet}{columns in data to facet. If the facet position wants to be specified, use the formula class for the input
-(e.g., strata + table_name ~ group_level + cdm_name). Variables before "~" will be facet by on horizontal axis, whereas those after "~" on vertical axis.
-Character format is also allowed (e.g., c("strata","table_name","group_level","cdm_name")).
-Only the following columns are allowed to be facet by: c("cdm_name", "group_level", "strata_level", "variable_level", "strata", "table_name").
-If splitStrata = TRUE, strata levels are also allowed.}
-
-\item{colorVars}{column in data to color by. Only the following columns are allowed to be used: c("cdm_name", "group_level", "strata_level", "variable_level", "strata", "table_name").
-If splitStrata = TRUE, strata levels are also allowed.}
+\item{colour}{column in data to color by. Use tidyColumns to see options.}
 
 \item{missings}{value to replace the missings with.}
 }

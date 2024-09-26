@@ -5,32 +5,24 @@
 \title{create a ggplot from the output of summariseLargeScaleCharacteristics.}
 \usage{
 plotLargeScaleCharacteristics(
-  data,
-  position = "horizontal",
-  splitStrata = FALSE,
-  facet = NULL,
-  colorVars = "variable_level"
+  result,
+  facet = c("cdm_name", "cohort_name"),
+  colour = "variable_level"
 )
 }
 \arguments{
-\item{data}{output of summariseLargeScaleCharacteristics().}
+\item{result}{A summarised_result object. Output of
+summariseLargeScaleCharacteristics().}
 
-\item{position}{if set to *horizontal* the horizontal axis will plot "variable_name" column and the vertical axis "estimate_value" column.
-If *vertical*, axis will be the other way around.}
+\item{facet}{Character vector that indicates the columns to facet by, you can
+use any tidyColumns(result). Formula also is allowed to specify rows and
+columns.}
 
-\item{splitStrata}{boolean variable (TRUE/FALSE)}
-
-\item{facet}{columns in data to facet. If the facet position wants to be specified, use the formula class for the input
-(e.g., strata + table_name ~ group_level + cdm_name). Variables before "~" will be facet by on horizontal axis, whereas those after "~" on vertical axis.
-Character format is also allowed (e.g., c("strata","table_name","group_level","cdm_name")).
-Only the following columns are allowed to be facet by: c("cdm_name", "group_level", "strata_level", "variable_level", "strata", "table_name").
-If splitStrata = TRUE, strata levels are also allowed.}
-
-\item{colorVars}{column in data to color by. Only the following columns are allowed to be used: c("cdm_name", "group_level", "strata_level", "variable_level", "strata", "table_name").
-If splitStrata = TRUE, strata levels are also allowed.}
+\item{colour}{Character vector that indicates the columns to colour by, you
+can use any tidyColumns(result).}
 }
 \value{
-A ggplot.
+A ggplot2 object.
 }
 \description{
 `r lifecycle::badge("experimental")`

@@ -77,10 +77,7 @@ meds_timing |>
 As with cohort overlap, we have table and plotting functions to help view our results.
 
 ```{r}
-tableCohortTiming(meds_timing,
-  timeScale = "years",
-  .options = list(decimals = c(numeric = 0))
-)
+tableCohortTiming(meds_timing, timeScale = "years")
 ```
 
 ```{r}
@@ -111,10 +108,7 @@ meds_timing <- cdm$meds |>
     strata = list("age_group"),
     density = TRUE
   )
-tableCohortTiming(meds_timing,
-  timeScale = "years",
-  .options = list(decimals = c(numeric = 0))
-)
+tableCohortTiming(meds_timing, timeScale = "years")
 plotCohortTiming(meds_timing,
   plotType = "boxplot",
   timeScale = "years",

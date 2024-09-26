@@ -6,14 +6,14 @@ reference:
 - subtitle: Summarise patient characteristic standard function
 - contents:
   - matches("summarise")
-- subtitle: Create visual tables (gt/flextable) from summarised objects
+- subtitle: Create visual tables from summarised objects
 - contents:
   - matches("table")
-- subtitle: Generate ggplots from summarised_result objects
+- subtitle: Generate ggplot2 plots from summarised_result objects
   desc: Functions to generate plots (ggplot2) from summarised objects.
 - contents:
   - matches("plot")
 - subtitle: Helper functions
 - contents:
-  - matches("options|mock")
+  - matches("mock")
 

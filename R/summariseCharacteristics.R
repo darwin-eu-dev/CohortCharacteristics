@@ -121,7 +121,7 @@ summariseCharacteristics <- function(cohort,
   }
   strata <- checkStrata(strata, cohort)
   ageGroup <- omopgenerics::validateAgeGroupArgument(ageGroup)
-  assertLogical(counts)
+  omopgenerics::assertLogical(counts)
   tableIntersectFlag <- assertIntersect(tableIntersectFlag)
   tableIntersectCount <- assertIntersect(tableIntersectCount)
   tableIntersectDate <- assertIntersect(tableIntersectDate)
@@ -136,7 +136,7 @@ summariseCharacteristics <- function(cohort,
   conceptIntersectDays <- assertIntersect(conceptIntersectDays)
   otherVariables <- checkOtherVariables(otherVariables, cohort)
   otherVariablesEstimates <- checkOtherVariablesEstimates(otherVariablesEstimates, otherVariables)
-  assertNumeric(cohortId, integerish = TRUE, null = TRUE)
+  omopgenerics::assertNumeric(cohortId, integerish = TRUE, null = TRUE)
   ids <- omopgenerics::settings(cohort)$cohort_definition_id
   if (is.null(cohortId)) {
     cohortId <- ids

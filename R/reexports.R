@@ -34,11 +34,19 @@ omopgenerics::importSummarisedResult
 #' @export
 omopgenerics::exportSummarisedResult
 
+#' @importFrom visOmopResults tidyColumns
+#' @export
+visOmopResults::tidyColumns
+
+#' @importFrom visOmopResults tidy
+#' @export
+visOmopResults::tidy
+
 #' It creates a mock database for testing CohortCharacteristics package
 #'
 #' @param con A DBI connection to create the cdm mock object.
 #' @param writeSchema Name of an schema on the same connection with writing
-#' permisions.
+#' permissions.
 #' @param numberIndividuals Number of individuals to create in the cdm
 #' reference.
 #' @param ... User self defined tables to put in cdm, it can input as many

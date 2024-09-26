@@ -7,14 +7,8 @@
 tableCharacteristics(
   result,
   type = "gt",
-  formatEstimateName = c(`N (\%)` = "<count> (<percentage>\%)", N = "<count>",
-    `Median [Q25 - Q75]` = "<median> [<q25> - <q75>]", `Mean (SD)` = "<mean> (<sd>)",
-    Range = "<min> to <max>"),
-  header = c("group"),
-  split = c("group", "strata"),
-  groupColumn = NULL,
-  excludeColumns = c("result_id", "estimate_type", "additional_name", "additional_level"),
-  .options = list()
+  header = c("cdm_name", "cohort_name"),
+  groupColumn = NULL
 )
 }
 \arguments{
@@ -23,23 +17,11 @@ tableCharacteristics(
 \item{type}{Type of desired formatted table, possibilities: "gt",
 "flextable", "tibble".}
 
-\item{formatEstimateName}{Named list of estimate name's to join, sorted by
-computation order. Indicate estimate_name's between <...>.}
-
 \item{header}{A vector containing which elements should go into the header
 in order. Allowed are: `cdm_name`, `group`, `strata`, `additional`,
 `variable`, `estimate`, `settings`.}
 
-\item{split}{A vector containing the name-level groups to split ("group",
-"strata", "additional"), or an empty character vector to not split.}
-
 \item{groupColumn}{Column to use as group labels.}
-
-\item{excludeColumns}{Columns to drop from the output table.}
-
-\item{.options}{Named list with additional formatting options.
-CohortCharacteristics::optionsTableCharacteristics() shows allowed arguments and
-their default values.}
 }
 \value{
 A table with a formatted version of the summariseCharacteristics
@@ -50,13 +32,11 @@ result.
 }
 \examples{
 \donttest{
-library(CohortCharacteristics)
-
 cdm <- mockCohortCharacteristics()
 
-cdm$cohort1 |>
-  summariseCharacteristics() |>
-  tableCharacteristics()
+result <- summariseCharacteristics(cdm$cohort1)
+
+tableCharacteristics(result)
 
 mockDisconnect(cdm = cdm)
 }

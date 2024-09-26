@@ -22,18 +22,12 @@
 #' @param timeScale Time scale to plot results. Can be days or years.
 #' @param type Type of desired formatted table, possibilities: "gt",
 #' "flextable", "tibble".
-#' @param formatEstimateName Named list of estimate name's to join, sorted by
-#' computation order. Indicate estimate_name's between <...>.
-#' @param header A vector containing which elements should go into the header
-#' in order. Allowed are: `cdm_name`, `group`, `strata`, `additional`,
-#' `variable`, `estimate`, `settings`.
-#' @param split A vector containing the name-level groups to split ("group",
-#' "strata", "additional"), or an empty character vector to not split.
-#' @param groupColumn Column to use as group labels.
-#' @param excludeColumns Columns to drop from the output table.
-#' @param .options named list with additional formatting options.
-#' CohortCharacteristics::optionsTableCohortTiming() shows allowed arguments and
-#' their default values.
+#' @param header Columns to use as header. See options with tidyColumns(result).
+#' @param groupColumn Columns to use as group labels. See options with
+#' tidyColumns(result).
+#' @param hide Columns to hide. See options with tidyColumns(result).
+#' @param uniqueCombinations Whether to restrict to unique reference and
+#' comparator.
 #'
 #' @return A formatted table of the summariseCohortTiming result.
 #'
@@ -42,129 +36,49 @@
 tableCohortTiming <- function(result,
                               timeScale = "days",
                               type = "gt",
-                              formatEstimateName = c(
-                                "N" = "<count>",
-                                "Median [Q25 - Q75]" = "<median> [<q25> - <q75>]",
-                                "Range" = "<min> - <max>"
-                              ),
-                              header = c("strata"),
-                              split = c("group", "strata", "additional"),
+                              header = visOmopResults::strataColumns(result),
                               groupColumn = NULL,
-                              excludeColumns = c(
-                                "result_id", "estimate_type", "variable_level"
-                              ),
-                              .options = list()) {
-
-  if (!inherits(result, "summarised_result")) {
-    cli::cli_abort("result must be a summarised result")
-  }
-  if (nrow(result) == 0) {
-    cli::cli_warn("Empty result object")
-    return(emptyResultTable(type = type))
-  }
-
+                              hide = NULL,
+                              uniqueCombinations = TRUE) {
   # initial checks
-  result <- omopgenerics::newSummarisedResult(result) |>
-    visOmopResults::filterSettings(.data$result_type == "summarise_cohort_timing") |>
+  result <- omopgenerics::validateResultArgument(result)
+  omopgenerics::assertChoice(timeScale, c("days", "years"))
+  omopgenerics::assertChoice(type, c("gt", "flextable", "tibble"))
+  omopgenerics::assertLogical(uniqueCombinations, length = 1)
+
+  # check settings
+  result <- result |>
+    visOmopResults::filterSettings(
+      .data$result_type == "summarise_cohort_timing") |>
     dplyr::filter(!.data$estimate_name %in% c("density_x", "density_y"))
 
   if (nrow(result) == 0) {
-    cli::cli_warn("No cohort timing results found")
-    return(emptyResultTable(type = type))
-  }
-
-  omopgenerics::assertList(.options)
-  omopgenerics::assertChoice(timeScale, c("days", "years"))
-
-  # defaults
-  .options <- defaultTimingOptions(.options)
-
-  if (.options$uniqueCombinations) {
-    x <- result |>
-      visOmopResults::splitGroup()
-    x <- x |>
-      getUniqueCombinations(order = sort(unique(x$cohort_name_reference))) |>
-      dplyr::arrange(dplyr::across(dplyr::all_of(c("cdm_name", "cohort_name_reference", "cohort_name_comparator", "strata_name", "strata_level")))) |>
-      visOmopResults::uniteGroup(cols = c("cohort_name_reference", "cohort_name_comparator"))
-  } else {
-    x <- result |>
-      dplyr::arrange(dplyr::across(dplyr::all_of(c("cdm_name", "group_name", "group_level", "strata_name", "strata_level"))))
+    cli::cli_warn("`result` object does not contain any `result_type == 'summarise_cohort_timing'` information.")
+    return(emptyResultTable(type))
   }
 
   if (timeScale == "years") {
-    x <- dplyr::bind_rows(
-      x |>
-        dplyr::filter(.data$variable_name != "days_between_cohort_entries"),
-      x |>
-        dplyr::filter(.data$variable_name == "days_between_cohort_entries") |>
-        dplyr::mutate(
-          estimate_value =
-            as.character(as.numeric(.data$estimate_value) / 365.25)
-        ) |>
-        dplyr::mutate(variable_name = "years_between_cohort_entries")
+    result <- changeDaysToYears(
+      result, "days_between_cohort_entries", "years_between_cohort_entries"
     )
   }
 
+  if (uniqueCombinations) result <- getUniqueCombinationsSr(result)
+
   # format table
-  result <- visOmopResults::visOmopTable(
-    result = x,
-    formatEstimateName = formatEstimateName,
+  tab <- visOmopResults::visOmopTable(
+    result = result,
+    estimateName = c(
+      "N" = "<count>",
+      "Mean (SD)" = "<mean> (<sd>)",
+      "Median [Q25 - Q75]" = "<median> [<q25> - <q75>]",
+      "Range" = "<min> to <max>"
+    ),
     header = header,
     groupColumn = groupColumn,
-    split = split,
     type = type,
-    excludeColumns = excludeColumns,
-    .options = .options
+    hide = hide
   )
 
-  return(result)
-}
-
-defaultTimingOptions <- function(userOptions) {
-  defaultOpts <- list(
-    uniqueCombinations = TRUE,
-    decimals = c(integer = 0, percentage = 2, numeric = 2, proportion = 2),
-    decimalMark = ".",
-    bigMark = ",",
-    keepNotFormatted = TRUE,
-    useFormatOrder = TRUE,
-    delim = "\n",
-    includeHeaderKey = TRUE,
-    style = "default",
-    na = "-",
-    title = NULL,
-    subtitle = NULL,
-    caption = NULL,
-    groupAsColumn = FALSE,
-    groupOrder = NULL,
-    colsToMergeRows = "all_columns"
-  )
-
-  for (opt in names(userOptions)) {
-    defaultOpts[[opt]] <- userOptions[[opt]]
-  }
-
-  return(defaultOpts)
-}
-
-
-
-#' Additional arguments for the function tableCohortTiming.
-#'
-#' @description
-#' It provides a list of allowed inputs for .option argument in
-#' tableCohortTiming and their given default value.
-#'
-#'
-#' @return The default .options named list.
-#'
-#' @export
-#'
-#' @examples
-#' {
-#'   optionsTableCohortTiming()
-#' }
-#'
-optionsTableCohortTiming <- function() {
-  return(defaultTimingOptions(NULL))
+  return(tab)
 }

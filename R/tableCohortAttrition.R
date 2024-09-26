@@ -32,90 +32,52 @@
 #'
 #' cdm <- mockCohortCharacteristics()
 #'
-#' cdm$cohort2 |>
-#'   summariseCohortAttrition() |>
-#'   tableCohortAttrition()
+#' result <- summariseCohortAttrition(cdm$cohort2)
+#'
+#' tableCohortAttrition(result)
+#'
+#' mockDisconnect(cdm)
 #' }
 #'
 tableCohortAttrition <- function(result,
-                                 header = "cdm_name",
-                                 groupColumn = "cohort_name",
+                                 header = "variable_name",
+                                 groupColumn = c("cdm_name", "cohort_name"),
                                  type = "gt") {
   # initial checks
-  assertClass(result, "summarised_result")
-  assertChoice(type, c("gt", "flextable", "tibble"), length = 1)
-  assertChoice(header, c("cdm_name", "cohort_name"))
-  assertChoice(groupColumn, c("cdm_name", "cohort_name"))
+  result <- omopgenerics::validateResultArgument(result)
+  omopgenerics::assertChoice(type, c("gt", "flextable", "tibble"))
 
-  if(nrow(result) == 0){
-   cli::cli_warn("Empty result object")
-   return(emptyResultTable(type = type))
-  }
-
-  header <- correct(header)
-  groupColumn <- correct(groupColumn)
-
-  # showMinCellCount
-  settings <- omopgenerics::settings(result) |>
-    dplyr::filter(.data$result_type == "summarise_cohort_attrition")
-
-  if(nrow(settings) == 0){
-    cli::cli_warn("No cohort_attrition result found")
-    return(emptyResultTable(type = type))
-  }
-
-
-  if ("min_cell_count" %in% colnames(settings)) {
-    result <- result |>
-      dplyr::left_join(
-        settings |>
-          dplyr::select("result_id", "min_cell_count"),
-        by = "result_id"
-      ) |>
-      dplyr::mutate(estimate_value = dplyr::if_else(
-        is.na(.data$estimate_value), paste0("<", .data$min_cell_count), .data$estimate_value
-      )) |>
-      dplyr::select(!"min_cell_count")
-  } else {
-    cli::cli_inform(c("!" = "Results have not been suppressed."))
-  }
-
-  # create table
+  # check settings
   result <- result |>
-    visOmopResults::filterSettings(.data$result_type == "summarise_cohort_attrition") |>
-    visOmopResults::splitAll() |>
-    dplyr::arrange(.data$cohort_name, .data$reason_id) |>
-    dplyr::select(-c(
-      "result_id", "variable_level", "estimate_name", "estimate_type", "reason_id"
-    )) |>
-    dplyr::mutate("variable_name" = stringr::str_to_sentence(gsub("_", " ", .data$variable_name))) |>
-    dplyr::rename(
-      "Reason" = "reason",
-      "Variable" = "variable_name",
-      "CDM name" = "cdm_name",
-      "Cohort name" = "cohort_name"
-    ) |>
-    visOmopResults::formatHeader(header = c(header, "Variable")) |>
-    visOmopResults::formatTable(type = type, groupColumn = groupColumn)
+    visOmopResults::filterSettings(
+      .data$result_type == "summarise_cohort_attrition")
 
-  return(result)
-}
-
-correct <- function(x) {
-  x[x == "cdm_name"] <- "CDM name"
-  x[x == "cohort_name"] <- "Cohort name"
-  return(x)
-}
-
-
-emptyResultTable <- function(type){
-  if(type == "gt"){
-   result <- gt::gt(dplyr::tibble())
-  } else if(type == "flextable"){
-    result <- flextable::flextable(dplyr::tibble("Table has no data" = "Empty result provided"))
-  } else{
-    result <- dplyr::tibble()
+  if (nrow(result) == 0) {
+    cli::cli_warn("`result` object does not contain any `result_type == 'summarise_cohort_attrition'` information.")
+    return(emptyResultTable(type))
   }
 
+  # format table
+  tab <- visOmopResults::visOmopTable(
+    result = result,
+    estimateName = c("N" = "<count>"),
+    header = header,
+    groupColumn = groupColumn,
+    type = type,
+    hide = c("variable_level", "reason_id", "estimate_name")
+  )
+
+  return(tab)
+}
+
+emptyResultTable <- function(type) {
+  x <- dplyr::tibble(`Table has no data` = character())
+  if(type == "gt") {
+    result <- gt::gt(x)
+  } else if(type == "flextable") {
+    result <- flextable::flextable(x)
+  } else {
+    result <- x
+  }
   result
 }

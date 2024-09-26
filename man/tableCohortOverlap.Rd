@@ -7,12 +7,10 @@
 tableCohortOverlap(
   result,
   type = "gt",
-  formatEstimateName = c(`N (\%)` = "<count> (<percentage>\%)"),
-  header = c("strata"),
-  split = c("group", "strata", "additional"),
-  groupColumn = NULL,
-  excludeColumns = c("result_id", "estimate_type"),
-  .options = list()
+  header = c("variable_name"),
+  groupColumn = c("cdm_name"),
+  hide = c("variable_level"),
+  uniqueCombinations = TRUE
 )
 }
 \arguments{
@@ -21,23 +19,16 @@ tableCohortOverlap(
 \item{type}{Type of desired formatted table, possibilities: "gt",
 "flextable", "tibble".}
 
-\item{formatEstimateName}{Named list of estimate name's to join, sorted by
-computation order. Indicate estimate_name's between <...>.}
-
 \item{header}{A vector containing which elements should go into the header
 in order. Allowed are: `cdm_name`, `group`, `strata`, `additional`,
 `variable`, `estimate`, `settings`.}
 
-\item{split}{A vector containing the name-level groups to split ("group",
-"strata", "additional"), or an empty character vector to not split.}
-
 \item{groupColumn}{Column to use as group labels.}
 
-\item{excludeColumns}{Columns to drop from the output table.}
+\item{hide}{Columns to drop from the output table.}
 
-\item{.options}{Named list with additional formatting options.
-CohortCharacteristics::optionsTableCohortOverlap() shows allowed arguments and
-their default values.}
+\item{uniqueCombinations}{Whether to display unique combinations
+reference - comparator.}
 }
 \value{
 A formatted table of the summariseOverlapCohort result.
@@ -48,7 +39,7 @@ A formatted table of the summariseOverlapCohort result.
 \examples{
 \donttest{
 library(CohortCharacteristics)
-cdm <- CohortCharacteristics::mockCohortCharacteristics()
+cdm <- mockCohortCharacteristics()
 overlap <- summariseCohortOverlap(cdm$cohort2)
 tableCohortOverlap(overlap)
 mockDisconnect(cdm = cdm)

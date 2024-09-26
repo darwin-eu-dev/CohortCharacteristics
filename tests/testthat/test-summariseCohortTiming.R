@@ -1,20 +1,17 @@
 test_that("summariseCohortTiming", {
   person <- dplyr::tibble(
-    person_id = 1:20,
-    gender_concept_id = 8532,
-    year_of_birth = runif(n = 20, min = 1950, max = 2000),
-    month_of_birth = runif(n = 20, min = 1, max = 12),
-    day_of_birth = runif(n = 20, min = 1, max = 28),
-    race_concept_id = 0,
-    ethnicity_concept_id = 0
+    person_id = 1:20L,
+    gender_concept_id = 8532L,
+    year_of_birth = sample(1950:2000L, size = 20, replace = TRUE),
+    month_of_birth = sample(1:12L, size = 20, replace = TRUE),
+    day_of_birth = sample(1:28L, size = 20, replace = TRUE),
+    race_concept_id = 0L,
+    ethnicity_concept_id = 0L
   )
 
   table <- dplyr::tibble(
-    cohort_definition_id = c(rep(1, 15), rep(2, 10), rep(3, 15), rep(4, 5)),
-    subject_id = c(
-      sample(1:20, 5), sample(1:20, 5), sample(1:20, 5), sample(1:20, 5), sample(1:20, 5),
-      sample(1:20, 5), sample(1:20, 5), sample(1:20, 5), sample(1:20, 5)
-    ),
+    cohort_definition_id = c(rep(1L, 15), rep(2L, 10), rep(3L, 15), rep(4L, 5)),
+    subject_id = purrr::map(1:9, \(x) sample(1:20L, size = 5)) |> unlist(),
     cohort_start_date = as.Date(c(
       rep("2000-01-01", 5), rep("2010-09-05", 5), rep("2006-05-01", 5),
       rep("2003-03-31", 5), rep("2008-07-02", 5), rep("2000-01-01", 5),
@@ -28,11 +25,11 @@ test_that("summariseCohortTiming", {
   )
 
   obs <- dplyr::tibble(
-    observation_period_id = 1:20,
-    person_id = 1:20,
+    observation_period_id = 1:20L,
+    person_id = 1:20L,
     observation_period_start_date = as.Date("1930-01-01"),
     observation_period_end_date = as.Date("2025-01-01"),
-    period_type_concept_id = NA
+    period_type_concept_id = 0L
   )
 
   cdm <- mockCohortCharacteristics(

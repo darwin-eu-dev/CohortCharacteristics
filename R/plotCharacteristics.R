@@ -20,8 +20,8 @@
 #' @param result A summariseCharacteristics result.
 #' @param plotStyle Either `barplot`, `scatterplot` or `boxplot`. If `barplot`
 #' or `scatterplot` subset to just one estimate.
-#' @param facet Variables to facet by.
-#' @param colour  column in data to color by.
+#' @param facet Variables to facet by. Use tidyColumns to see options.
+#' @param colour  column in data to color by. Use tidyColumns to see options.
 #'
 #' @return A ggplot.
 #' @export
@@ -75,7 +75,7 @@ plotCharacteristics <- function(result,
                                 plotStyle = "barplot",
                                 facet = NULL,
                                 colour = NULL) {
-  result <- omopgenerics::validateResultArguemnt(result)
+  result <- omopgenerics::validateResultArgument(result)
   omopgenerics::assertChoice(
     plotStyle, c("barplot", "scatterplot", "boxplot"), length = 1)
 

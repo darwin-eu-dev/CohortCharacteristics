@@ -7,13 +7,9 @@
 tableCohortCount(
   result,
   type = "gt",
-  formatEstimateName = c(N = "<count>"),
-  header = c("group"),
-  split = c("group", "strata"),
+  header = "cohort_name",
   groupColumn = NULL,
-  excludeColumns = c("result_id", "estimate_type", "variable_level", "additional_name",
-    "additional_level"),
-  .options = list()
+  hide = "variable_level"
 )
 }
 \arguments{
@@ -22,23 +18,13 @@ tableCohortCount(
 \item{type}{Type of desired formatted table, possibilities: "gt",
 "flextable", "tibble".}
 
-\item{formatEstimateName}{Named list of estimate name's to join, sorted by
-computation order. Indicate estimate_name's between <...>.}
-
 \item{header}{A vector containing which elements should go into the header
 in order. Allowed are: `cdm_name`, `group`, `strata`, `additional`,
 `variable`, `estimate`, `settings`.}
 
-\item{split}{A vector containing the name-level groups to split ("group",
-"strata", "additional"), or an empty character vector to not split.}
-
 \item{groupColumn}{Column to use as group labels.}
 
-\item{excludeColumns}{Columns to drop from the output table.}
-
-\item{.options}{Named list with additional formatting options.
-CohortCharacteristics::optionsTableCharacteristics() shows allowed arguments and
-their default values.}
+\item{hide}{Columns to drop from the output table.}
 }
 \value{
 A table with a formatted version of the summariseCohortCount result
@@ -53,9 +39,9 @@ library(CohortCharacteristics)
 
 cdm <- mockCohortCharacteristics()
 
-cdm$cohort1 |>
-  summariseCharacteristics() |>
-  tableCharacteristics()
+result <- summariseCohortCount(cdm$cohort1)
+
+tableCohortCount(result)
 
 mockDisconnect(cdm = cdm)
 }
