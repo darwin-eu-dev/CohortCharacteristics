@@ -8,8 +8,7 @@ tableCohortCount(
   result,
   type = "gt",
   header = "cohort_name",
-  groupColumn = NULL,
-  hide = "variable_level"
+  groupColumn = NULL
 )
 }
 \arguments{
@@ -23,8 +22,6 @@ in order. Allowed are: `cdm_name`, `group`, `strata`, `additional`,
 `variable`, `estimate`, `settings`.}
 
 \item{groupColumn}{Column to use as group labels.}
-
-\item{hide}{Columns to drop from the output table.}
 }
 \value{
 A table with a formatted version of the summariseCohortCount result

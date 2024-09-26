@@ -10,7 +10,6 @@ tableCohortTiming(
   type = "gt",
   header = visOmopResults::strataColumns(result),
   groupColumn = NULL,
-  hide = NULL,
   uniqueCombinations = TRUE
 )
 }
@@ -26,8 +25,6 @@ tableCohortTiming(
 
 \item{groupColumn}{Columns to use as group labels. See options with
 tidyColumns(result).}
-
-\item{hide}{Columns to hide. See options with tidyColumns(result).}
 
 \item{uniqueCombinations}{Whether to restrict to unique reference and
 comparator.}

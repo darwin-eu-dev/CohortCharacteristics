@@ -25,7 +25,6 @@
 #' @param header Columns to use as header. See options with tidyColumns(result).
 #' @param groupColumn Columns to use as group labels. See options with
 #' tidyColumns(result).
-#' @param hide Columns to hide. See options with tidyColumns(result).
 #' @param uniqueCombinations Whether to restrict to unique reference and
 #' comparator.
 #'
@@ -38,7 +37,6 @@ tableCohortTiming <- function(result,
                               type = "gt",
                               header = visOmopResults::strataColumns(result),
                               groupColumn = NULL,
-                              hide = NULL,
                               uniqueCombinations = TRUE) {
   # initial checks
   result <- omopgenerics::validateResultArgument(result)
@@ -76,8 +74,7 @@ tableCohortTiming <- function(result,
     ),
     header = header,
     groupColumn = groupColumn,
-    type = type,
-    hide = hide
+    type = type
   )
 
   return(tab)
