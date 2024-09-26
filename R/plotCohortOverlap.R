@@ -17,7 +17,7 @@
 #'
 #' `r lifecycle::badge("experimental")`
 #'
-#' @param result A summariseCohortOverlap result.
+#' @param result A summarised_result object. Output of summariseCohortOverlap().
 #' @param facet Variables to facet by.
 #' @param uniqueCombinations If TRUE, only unique combinations of reference and
 #' comparator plots will be plotted.

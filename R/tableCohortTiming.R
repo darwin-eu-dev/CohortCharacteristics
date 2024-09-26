@@ -18,15 +18,15 @@
 #'
 #' `r lifecycle::badge("experimental")`
 #'
-#' @param result A summariseCohortTiming result
+#' @param result A summarised_result object. Output of summariseCohortTiming().
 #' @param timeScale Time scale to plot results. Can be days or years.
-#' @param type Type of desired formatted table, possibilities: "gt",
-#' "flextable", "tibble".
+#' @param uniqueCombinations Whether to restrict to unique reference and
+#' comparator.
+#' @param type Type of table. Check supported types with
+#' `visOmopResults::tableType()`.
 #' @param header Columns to use as header. See options with tidyColumns(result).
 #' @param groupColumn Columns to use as group labels. See options with
 #' tidyColumns(result).
-#' @param uniqueCombinations Whether to restrict to unique reference and
-#' comparator.
 #'
 #' @return A formatted table of the summariseCohortTiming result.
 #'
@@ -34,10 +34,10 @@
 #'
 tableCohortTiming <- function(result,
                               timeScale = "days",
+                              uniqueCombinations = TRUE,
                               type = "gt",
                               header = visOmopResults::strataColumns(result),
-                              groupColumn = NULL,
-                              uniqueCombinations = TRUE) {
+                              groupColumn = NULL) {
   # initial checks
   result <- omopgenerics::validateResultArgument(result)
   omopgenerics::assertChoice(timeScale, c("days", "years"))

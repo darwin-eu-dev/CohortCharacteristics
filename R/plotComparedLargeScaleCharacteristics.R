@@ -18,7 +18,8 @@
 #'
 #' `r lifecycle::badge("experimental")`
 #'
-#' @param result output of summariseLargeScaleCharacteristics().
+#' @param result A summarised_result object. Output of
+#' summariseLargeScaleCharacteristics().
 #' @param reference A named character to set up the reference.
 #' @param facet Variables to facet by. Use tidyColumns to see options.
 #' @param colour  column in data to color by. Use tidyColumns to see options.

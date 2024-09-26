@@ -17,7 +17,7 @@
 #'
 #' `r lifecycle::badge("experimental")`
 #'
-#' @param result A summariseCohortCount result.
+#' @param result A summarised_result object. Output of summariseCohortCount().
 #' @param facet Variables to facet by.
 #' @param colour Variables to colour by.
 #' @param x Variables to use in x axis.

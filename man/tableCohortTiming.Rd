@@ -7,27 +7,27 @@
 tableCohortTiming(
   result,
   timeScale = "days",
+  uniqueCombinations = TRUE,
   type = "gt",
   header = visOmopResults::strataColumns(result),
-  groupColumn = NULL,
-  uniqueCombinations = TRUE
+  groupColumn = NULL
 )
 }
 \arguments{
-\item{result}{A summariseCohortTiming result}
+\item{result}{A summarised_result object. Output of summariseCohortTiming().}
 
 \item{timeScale}{Time scale to plot results. Can be days or years.}
 
-\item{type}{Type of desired formatted table, possibilities: "gt",
-"flextable", "tibble".}
+\item{uniqueCombinations}{Whether to restrict to unique reference and
+comparator.}
+
+\item{type}{Type of table. Check supported types with
+`visOmopResults::tableType()`.}
 
 \item{header}{Columns to use as header. See options with tidyColumns(result).}
 
 \item{groupColumn}{Columns to use as group labels. See options with
 tidyColumns(result).}
-
-\item{uniqueCombinations}{Whether to restrict to unique reference and
-comparator.}
 }
 \value{
 A formatted table of the summariseCohortTiming result.

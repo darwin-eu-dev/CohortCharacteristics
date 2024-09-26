@@ -13,7 +13,7 @@ plotCohortOverlap(
 )
 }
 \arguments{
-\item{result}{A summariseCohortOverlap result.}
+\item{result}{A summarised_result object. Output of summariseCohortOverlap().}
 
 \item{facet}{Variables to facet by.}
 

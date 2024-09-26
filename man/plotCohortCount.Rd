@@ -7,7 +7,7 @@
 plotCohortCount(result, facet = c("cdm_name"), colour = NULL, x = NULL)
 }
 \arguments{
-\item{result}{A summariseCohortCount result.}
+\item{result}{A summarised_result object. Output of summariseCohortCount().}
 
 \item{facet}{Variables to facet by.}
 

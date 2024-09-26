@@ -16,7 +16,7 @@ plotCohortTiming(
 )
 }
 \arguments{
-\item{result}{A summariseCohortTiming result.}
+\item{result}{A summarised_result object. Output of summariseCohortTiming().}
 
 \item{plotType}{Type of desired formatted table, possibilities are "boxplot" and
 "density".}

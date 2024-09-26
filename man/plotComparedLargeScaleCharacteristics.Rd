@@ -13,7 +13,8 @@ plotComparedLargeScaleCharacteristics(
 )
 }
 \arguments{
-\item{result}{output of summariseLargeScaleCharacteristics().}
+\item{result}{A summarised_result object. Output of
+summariseLargeScaleCharacteristics().}
 
 \item{reference}{A named character to set up the reference.}
 

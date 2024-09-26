@@ -18,7 +18,7 @@
 #'
 #' `r lifecycle::badge("experimental")`
 #'
-#' @param result A summariseCohortTiming result.
+#' @param result A summarised_result object. Output of summariseCohortTiming().
 #' @param plotType Type of desired formatted table, possibilities are "boxplot" and
 #' "density".
 #' @param timeScale Time scale to plot results. Can be days or years.

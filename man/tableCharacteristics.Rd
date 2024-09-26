@@ -12,10 +12,11 @@ tableCharacteristics(
 )
 }
 \arguments{
-\item{result}{A summarise_characteristics object.}
+\item{result}{A summarised_result object. Output of
+summariseCharacteristics().}
 
-\item{type}{Type of desired formatted table, possibilities: "gt",
-"flextable", "tibble".}
+\item{type}{Type of table. Check supported types with
+`visOmopResults::tableType()`.}
 
 \item{header}{A vector containing which elements should go into the header
 in order. Allowed are: `cdm_name`, `group`, `strata`, `additional`,

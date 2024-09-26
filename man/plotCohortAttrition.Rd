@@ -7,7 +7,7 @@
 plotCohortAttrition(result, cohortId = lifecycle::deprecated())
 }
 \arguments{
-\item{result}{A summarised_result object with the results of
+\item{result}{A summarised_result object. Output of
 summariseCohortAttrition().}
 
 \item{cohortId}{deprecated.}

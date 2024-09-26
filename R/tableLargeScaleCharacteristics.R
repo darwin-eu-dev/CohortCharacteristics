@@ -18,11 +18,13 @@
 #'
 #' `r lifecycle::badge("experimental")`
 #'
-#' @param result A summarise_large_scale_characteristics object.
-#' @param type Output type ("gt" or "flextable").
+#' @param result A summarised_result object. Output of
+#' summariseLargeScaleCharacteristics().
+#' @param topConcepts Number of concepts to restrict the table.
+#' @param type Type of table. Check supported types with
+#' `visOmopResults::tableType()`.
 #' @param header Columns to use as header. See options with tidyColumns(result).
 #' @param groupColumn Columns to group by. See options with tidyColumns(result).
-#' @param topConcepts Number of concepts to restrict the table.
 #'
 #' @export
 #'
@@ -50,14 +52,14 @@
 #' }
 #'
 tableLargeScaleCharacteristics <- function(result,
+                                           topConcepts = NULL,
                                            type = "gt",
                                            header = c(
                                              "cdm_name", "cohort_name",
                                              visOmopResults::strataColumns(result),
                                              "window_name"
                                            ),
-                                           groupColumn = c("table_name", "type", "analysis"),
-                                           topConcepts = NULL) {
+                                           groupColumn = c("table_name", "type", "analysis")) {
   # validate result
   result <- omopgenerics::validateResultArgument(result)
   omopgenerics::assertChoice(type, c("gt", "flextable", "tibble"))
