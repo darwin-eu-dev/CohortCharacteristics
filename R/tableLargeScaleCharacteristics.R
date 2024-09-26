@@ -20,11 +20,8 @@
 #'
 #' @param result A summarise_large_scale_characteristics object.
 #' @param type Output type ("gt" or "flextable").
-#' @param formatEstimateName Named list of estimate name's to join, sorted by
-#' computation order. Indicate estimate_name's between <...>.
-#' @param splitStrata Whether to split strata_group and strata_level to multiple
-#' columns.
-#' @param header Specify the headers of the table.
+#' @param header Columns to use as header. See options with tidyColumns(result).
+#' @param groupName Columns to group by. See options with tidyColumns(result).
 #' @param topConcepts Number of concepts to restrict the table.
 #'
 #' @export
@@ -54,117 +51,50 @@
 #'
 tableLargeScaleCharacteristics <- function(result,
                                            type = "gt",
-                                           formatEstimateName = c("N (%)" = "<count> (<percentage>%)"),
-                                           splitStrata = TRUE,
                                            header = c(
-                                             "cdm name", "cohort name",
-                                             "strata", "window name"
+                                             "cdm_name", "cohort_name",
+                                             visOmopResults::strataColumns(result),
+                                             "window_name"
                                            ),
+                                           groupColumn = c("table_name", "type", "analysis"),
                                            topConcepts = NULL) {
+  # validate result
+  result <- omopgenerics::validateResultArgument(result)
+  omopgenerics::assertChoice(type, c("gt", "flextable", "tibble"))
+  omopgenerics::assertNumeric(topConcepts, integerish = TRUE, length = 1, null = TRUE)
 
-  if (!inherits(result, "summarised_result")) {
-    cli::cli_abort("result must be a summarised result")
-  }
-  if (nrow(result) == 0) {
-    cli::cli_warn("Empty result object")
-    return(emptyResultTable(type = type))
-  }
-
-  assertLogical(splitStrata, length = 1)
-  if (is.character(header)) {
-    header <- tolower(header)
-    header <- gsub("_", " ", header)
-  }
-  assertChoice(header, choices = c("cdm name", "cohort name", "strata", "window name"))
+  # check settings
   result <- result |>
     visOmopResults::filterSettings(
-      .data$result_type == "summarise_large_scale_characteristics"
-    )
+      .data$result_type == "summarise_large_scale_characteristics")
+
   if (nrow(result) == 0) {
-    cli::cli_warn(
-      "No summarised large scale characteristics found in this result object"
-    )
-    return(emptyResultTable(type = type))
+    cli::cli_warn("`result` object does not contain any `result_type == 'summarise_large_scale_characteristics'` information.")
+    return(emptyResultTable(type))
   }
 
-  # min cell count
-  settings <- omopgenerics::settings(result) |>
-    dplyr::filter(.data$result_type == "summarise_large_scale_characteristics")
-  if ("min_cell_count" %in% colnames(settings)) {
-    result <- result |>
-      dplyr::left_join(
-        settings |>
-          dplyr::select("result_id", "min_cell_count"),
-        by = "result_id"
-      ) |>
-      dplyr::mutate(estimate_value = dplyr::if_else(
-        is.na(.data$estimate_value), paste0("<", .data$min_cell_count), .data$estimate_value
-      )) |>
-      dplyr::select(!"min_cell_count")
-  } else {
-    cli::cli_inform(c("!" = "Results have not been suppressed."))
-  }
-
-  sets <- settings(result) |>
-    dplyr::mutate("group" = paste0(
-      "Table: ", .data$table_name, " (", .data$type, " in window)"
-    )) |>
-    dplyr::select("result_id", "group")
-  res <- result |>
-    visOmopResults::splitGroup() |>
-    visOmopResults::splitAdditional() |>
-    dplyr::inner_join(sets, by = "result_id") |>
-    dplyr::rename("window_name" = "variable_level") |>
-    dplyr::select(!"result_id")
-  if (splitStrata) {
-    res <- res |> visOmopResults::splitStrata()
-    strataColumns <- visOmopResults::strataColumns(result)
-  } else {
-    strataColumns <- c("strata_name", "strata_level")
-  }
   # get only topN
-  top <- res |>
-    dplyr::filter(.data$estimate_name == "count") |>
-    dplyr::select("concept_id", "estimate_value",  "group") |>
-    dplyr::mutate("estimate_value" = as.numeric(.data$estimate_value)) |>
-    dplyr::arrange(dplyr::desc(.data$estimate_value)) |>
-    dplyr::select("concept_id", "group") |>
-    dplyr::distinct() |>
-    dplyr::group_by(.data$group) |>
-    dplyr::mutate("order_id" = dplyr::row_number()) |>
-    dplyr::ungroup()
   if (!is.null(topConcepts)) {
-    top <- top |>
-      dplyr::filter(.data$order_id <= .env$topConcepts)
+    top <- result |>
+      dplyr::filter(.data$estimate_name == "count") |>
+      dplyr::mutate("estimate_value" = as.numeric(.data$estimate_value)) |>
+      dplyr::group_by(dplyr::across(!c("variable_name", "estimate_value"))) |>
+      dplyr::arrange(dplyr::desc(.data$estimate_value)) |>
+      utils::head(topConcepts) |>
+      dplyr::ungroup() |>
+      dplyr::select(!dplyr::starts_with("estimate"))
+    result <- result |>
+      dplyr::semi_join(top, by = colnames(top))
   }
-  res <- res |>
-    dplyr::inner_join(
-      top,
-      by = c("concept_id", "group")
-    )
 
-  res <- res |>
-    visOmopResults::formatEstimateValue() |>
-    dplyr::as_tibble() |>
-    visOmopResults::formatEstimateName(estimateNameFormat = formatEstimateName) |>
-    orderWindow() |>
-    dplyr::mutate(
-      "Concept" = paste0(.data$variable_name, " (", .data$concept_id, ")")
-    ) |>
-    dplyr::arrange(!!!rlang::syms(c(
-      "cdm_name", "cohort_name", "Concept",
-      strataColumns, "group", "window_id",
-      "order_id"
-    ))) |>
-    dplyr::select(dplyr::all_of(c(
-      "group",
-      "CDM name" = "cdm_name", "Cohort name" = "cohort_name",
-      strataColumns, "Concept", "Window" = "window_name", "estimate_value"
-    )))
-
-  header <- cleanHeader(header, strataColumns)
-  tab <- visOmopResults::formatHeader(result = res, header = header)|>
-    visOmopResults::formatTable(type = type, groupColumn = "group")
+  tab <- visOmopResults::visOmopTable(
+    result = result,
+    estimateName = c("N(%)" = "<count>(<percentage>%)"),
+    header = header,
+    settingsColumns = c("table_name", "type", "analysis"),
+    groupColumn = groupColumn,
+    type = type
+  )
 
   return(tab)
 }

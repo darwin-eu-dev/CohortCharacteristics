@@ -42,10 +42,10 @@ tableCohortAttrition <- function(result,
                                  groupColumn = "cohort_name",
                                  type = "gt") {
   # initial checks
-  assertClass(result, "summarised_result")
-  assertChoice(type, c("gt", "flextable", "tibble"), length = 1)
-  assertChoice(header, c("cdm_name", "cohort_name"))
-  assertChoice(groupColumn, c("cdm_name", "cohort_name"))
+  omopgenerics::assertClass(result, "summarised_result")
+  omopgenerics::assertChoice(type, c("gt", "flextable", "tibble"), length = 1)
+  omopgenerics::assertChoice(header, c("cdm_name", "cohort_name"))
+  omopgenerics::assertChoice(groupColumn, c("cdm_name", "cohort_name"))
 
   if(nrow(result) == 0){
    cli::cli_warn("Empty result object")
@@ -108,14 +108,14 @@ correct <- function(x) {
 }
 
 
-emptyResultTable <- function(type){
-  if(type == "gt"){
-   result <- gt::gt(dplyr::tibble())
-  } else if(type == "flextable"){
-    result <- flextable::flextable(dplyr::tibble("Table has no data" = "Empty result provided"))
-  } else{
-    result <- dplyr::tibble()
+emptyResultTable <- function(type) {
+  x <- dplyr::tibble(`Table has no data` = character())
+  if(type == "gt") {
+    result <- gt::gt(x)
+  } else if(type == "flextable") {
+    result <- flextable::flextable(x)
+  } else {
+    result <- x
   }
-
   result
 }
