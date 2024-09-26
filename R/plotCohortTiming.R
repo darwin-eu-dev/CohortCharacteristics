@@ -75,10 +75,7 @@ plotCohortTiming <- function(result,
         .data$variable_name == "days_between_cohort_entries",
         !.data$estimate_name %in% c("density_x", "density_y"))
     if (timeScale == "years") {
-      result <- result |>
-        dplyr::mutate(
-          estimate_value = as.character(as.numeric(.data$estimate_value) / 365.25)
-        )
+      result <- changeDaysToYears(result, "days_between_cohort_entries")
     }
   } else if (plotType == "density") {
     result <- result |>
@@ -86,16 +83,11 @@ plotCohortTiming <- function(result,
         .data$variable_name == "days_between_cohort_entries",
         .data$estimate_name %in% c("density_x", "density_y"))
     if (timeScale == "years") {
-      result <- result |>
-        dplyr::mutate(estimate_value = dplyr::if_else(
-          .data$estimate_name == "x",
-          as.character(as.numeric(.data$estimate_value) / 365.25),
-          .data$estimate_value
-        ))
+      result <- changeDaysToYears(result, "density_x")
     }
   }
 
-  xLab <- switch (timeScale,
+  xLab <- switch(timeScale,
     "days" = "Days between cohort entries",
     "years" = "Years between cohort entries",
   )
@@ -105,10 +97,7 @@ plotCohortTiming <- function(result,
     return(emptyPlot())
   }
 
-  if (uniqueCombinations) {
-    result <- result |>
-      getUniqueCombinationsSr()
-  }
+  if (uniqueCombinations) result <- getUniqueCombinationsSr(result)
 
   if (plotType == "boxplot") {
     p <- visOmopResults::boxPlot(result, facet = facet, colour = colour) +

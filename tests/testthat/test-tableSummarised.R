@@ -261,7 +261,10 @@ test_that("tableCohortTiming", {
 
   timing1 <- summariseCohortTiming(cdm$table,
                                    restrictToFirstEntry = TRUE)
-  tibble1 <- tableCohortTiming(timing1, type = "tibble", header = c("strata"), split = c("group", "additional"))
+  tibble1 <- tableCohortTiming(
+    timing1,
+    type = "tibble",
+    header = visOmopResults::strataColumns(timing1))
   expect_true(all(c("CDM name", "Cohort name reference", "Cohort name comparator",
                     "Variable name", "Estimate name", "Estimate value") %in%
                     colnames(tibble1)))
@@ -270,16 +273,22 @@ test_that("tableCohortTiming", {
 
   tibble2 <- tableCohortTiming(timing1, type = "tibble", header = "cohort_name")
 
-  tibble3 <- tableCohortTiming(timing1, type = "tibble", .options = list(uniqueCombinations = FALSE))
+  tibble3 <- tableCohortTiming(timing1, type = "tibble", uniqueCombinations = FALSE)
   expect_true(all(unique(tibble3$`Cohort name comparator`) %in%
                     unique(tibble3$`Cohort name reference`)))
 
-  tibble4 <- tableCohortTiming(timing1, type = "tibble", header = "cohort_name", split = character())
+  tibble4 <- tableCohortTiming(timing1, type = "tibble", header = "cohort_name")
   gt1 <- tableCohortTiming(timing1, type = "gt")
   expect_true("gt_tbl" %in% class(gt1))
 
   fx1 <- tableCohortTiming(timing1, type = "flextable")
   expect_true("flextable" %in% class(fx1))
+
+  # years
+  tibbleDays <- tableCohortTiming(
+    timing1, timeScale = "days", type = "tibble", header = "cohort_name")
+  tibbleYears <- tableCohortTiming(
+    timing1, timeScale = "years", type = "tibble", header = "cohort_name")
 
   # strata ----
   cdm$table <- cdm$table |>

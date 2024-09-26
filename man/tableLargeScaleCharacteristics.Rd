@@ -7,9 +7,9 @@
 tableLargeScaleCharacteristics(
   result,
   type = "gt",
-  formatEstimateName = c(`N (\%)` = "<count> (<percentage>\%)"),
-  splitStrata = TRUE,
-  header = c("cdm name", "cohort name", "strata", "window name"),
+  header = c("cdm_name", "cohort_name", visOmopResults::strataColumns(result),
+    "window_name"),
+  groupColumn = c("table_name", "type", "analysis"),
   topConcepts = NULL
 )
 }
@@ -18,15 +18,11 @@ tableLargeScaleCharacteristics(
 
 \item{type}{Output type ("gt" or "flextable").}
 
-\item{formatEstimateName}{Named list of estimate name's to join, sorted by
-computation order. Indicate estimate_name's between <...>.}
-
-\item{splitStrata}{Whether to split strata_group and strata_level to multiple
-columns.}
-
-\item{header}{Specify the headers of the table.}
+\item{header}{Columns to use as header. See options with tidyColumns(result).}
 
 \item{topConcepts}{Number of concepts to restrict the table.}
+
+\item{groupName}{Columns to group by. See options with tidyColumns(result).}
 }
 \value{
 A formatted table.

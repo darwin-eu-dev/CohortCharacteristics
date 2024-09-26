@@ -163,26 +163,6 @@ defaultOverlapOptions <- function(userOptions) {
   return(defaultOpts)
 }
 
-#' Additional arguments for the function tableCohortOverlap.
-#'
-#' @description
-#' It provides a list of allowed inputs for .option argument in
-#' tableCohortOverlap and their given default value.
-#'
-#'
-#' @return The default .options named list.
-#'
-#' @export
-#'
-#' @examples
-#' {
-#'   optionsTableCohortOverlap()
-#' }
-#'
-optionsTableCohortOverlap <- function() {
-  return(defaultOverlapOptions(NULL))
-}
-
 formatOverlapEstimate <- function(count, percentage, .options) {
   paste0(
     niceNum(count, .options, "integer"),

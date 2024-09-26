@@ -839,6 +839,20 @@ getUniqueCombinationsSr <- function(x) {
     dplyr::inner_join(pairs, by = c("group_name", "group_level"))
   return(x)
 }
+changeDaysToYears <- function(x, oldVar, newVar = oldVar) {
+  id <- x$variable_name == oldVar
+  x |>
+    dplyr::mutate(
+      estimate_value = dplyr::if_else(
+        .env$id,
+        as.character(suppressWarnings(as.numeric(.data$estimate_value))/365.25),
+        .data$estimate_value
+      ),
+      variable_name = dplyr::if_else(.env$id, .env$newVar, .data$variable_name),
+      estimate_type = dplyr::if_else(.env$id, "numeric", .data$estimate_type)
+    )
+}
+
 getUniqueCombinations <- function(x, order) {
   dataCohortRef <- unique(x$cohort_name_reference)
   order <- order[order %in% dataCohortRef]

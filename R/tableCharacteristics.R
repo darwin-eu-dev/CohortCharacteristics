@@ -186,23 +186,3 @@ defaultCharacteristicsOptions <- function(.options) {
   }
   return(defaults)
 }
-
-#' Additional arguments for the function tableCharacteristics.
-#'
-#' @description
-#' It provides a list of allowed inputs for .option argument in
-#' tableCharacteristics, and their given default values.
-#'
-#'
-#' @return The default .options named list.
-#'
-#' @export
-#'
-#' @examples
-#' {
-#'   optionsTableCharacteristics()
-#' }
-#'
-optionsTableCharacteristics <- function() {
-  return(defaultCharacteristicsOptions(NULL))
-}

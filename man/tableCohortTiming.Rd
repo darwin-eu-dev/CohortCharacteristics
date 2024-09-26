@@ -8,13 +8,10 @@ tableCohortTiming(
   result,
   timeScale = "days",
   type = "gt",
-  formatEstimateName = c(N = "<count>", `Median [Q25 - Q75]` =
-    "<median> [<q25> - <q75>]", Range = "<min> - <max>"),
-  header = c("strata"),
-  split = c("group", "strata", "additional"),
+  header = visOmopResults::strataColumns(result),
   groupColumn = NULL,
-  excludeColumns = c("result_id", "estimate_type", "variable_level"),
-  .options = list()
+  hide = NULL,
+  uniqueCombinations = TRUE
 )
 }
 \arguments{
@@ -25,23 +22,15 @@ tableCohortTiming(
 \item{type}{Type of desired formatted table, possibilities: "gt",
 "flextable", "tibble".}
 
-\item{formatEstimateName}{Named list of estimate name's to join, sorted by
-computation order. Indicate estimate_name's between <...>.}
+\item{header}{Columns to use as header. See options with tidyColumns(result).}
 
-\item{header}{A vector containing which elements should go into the header
-in order. Allowed are: `cdm_name`, `group`, `strata`, `additional`,
-`variable`, `estimate`, `settings`.}
+\item{groupColumn}{Columns to use as group labels. See options with
+tidyColumns(result).}
 
-\item{split}{A vector containing the name-level groups to split ("group",
-"strata", "additional"), or an empty character vector to not split.}
+\item{hide}{Columns to hide. See options with tidyColumns(result).}
 
-\item{groupColumn}{Column to use as group labels.}
-
-\item{excludeColumns}{Columns to drop from the output table.}
-
-\item{.options}{named list with additional formatting options.
-CohortCharacteristics::optionsTableCohortTiming() shows allowed arguments and
-their default values.}
+\item{uniqueCombinations}{Whether to restrict to unique reference and
+comparator.}
 }
 \value{
 A formatted table of the summariseCohortTiming result.
