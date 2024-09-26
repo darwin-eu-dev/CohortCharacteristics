@@ -13,6 +13,8 @@ plotComparedLargeScaleCharacteristics(
 )
 }
 \arguments{
+\item{result}{output of summariseLargeScaleCharacteristics().}
+
 \item{reference}{A named character to set up the reference.}
 
 \item{facet}{Variables to facet by. Use tidyColumns to see options.}
@@ -20,8 +22,6 @@ plotComparedLargeScaleCharacteristics(
 \item{colour}{column in data to color by. Use tidyColumns to see options.}
 
 \item{missings}{value to replace the missings with.}
-
-\item{data}{output of summariseLargeScaleCharacteristics().}
 }
 \value{
 A ggplot.

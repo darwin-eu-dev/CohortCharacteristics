@@ -71,9 +71,6 @@ summariseCohortTiming <- function(cohort,
     PatientProfiles::addCohortName()
 
   if (isTRUE(restrictToFirstEntry)) {
-    # to use cohortConstructor once released
-    # cdm[[name]] <- cdm[[name]] |>
-    #   restrictToFirstEntry()
     cohort <- cohort |>
       dplyr::group_by(.data$subject_id, .data$cohort_definition_id) |>
       dplyr::filter(.data$cohort_start_date == min(.data$cohort_start_date, na.rm = TRUE)) |>
@@ -105,11 +102,11 @@ summariseCohortTiming <- function(cohort,
       by = c("subject_id", strataCols)
     ) |>
     dplyr::filter(.data$cohort_name_reference != .data$cohort_name_comparator) %>% # to be removed
-    dplyr::mutate(days_between_cohort_entries = !!CDMConnector::datediff(
+    dplyr::mutate(days_between_cohort_entries = as.integer(!!CDMConnector::datediff(
       "cohort_start_date",
       "cohort_start_date_comparator",
       interval = "day"
-    )) |>
+    ))) |>
     dplyr::select(!c(
       "cohort_start_date", "cohort_end_date", "cohort_start_date_comparator",
       "cohort_end_date_comparator"

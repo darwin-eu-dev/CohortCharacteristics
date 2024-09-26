@@ -20,9 +20,9 @@ tableLargeScaleCharacteristics(
 
 \item{header}{Columns to use as header. See options with tidyColumns(result).}
 
-\item{topConcepts}{Number of concepts to restrict the table.}
+\item{groupColumn}{Columns to group by. See options with tidyColumns(result).}
 
-\item{groupName}{Columns to group by. See options with tidyColumns(result).}
+\item{topConcepts}{Number of concepts to restrict the table.}
 }
 \value{
 A formatted table.
