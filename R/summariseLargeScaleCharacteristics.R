@@ -97,7 +97,7 @@ summariseLargeScaleCharacteristics <- function(cohort,
   omopgenerics::assertNumeric(minimumFrequency, min = 0, max = 1)
   omopgenerics::assertNumeric(excludedCodes, integerish = TRUE, null = TRUE)
 
-  checkCdm(cdm, "concept")
+  cdm <- omopgenerics::validateCdmArgument(cdm)
 
   # warn if strata has missing values
   for (k in seq_along(strata)) {

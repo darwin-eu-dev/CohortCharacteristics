@@ -115,7 +115,7 @@ summariseCharacteristics <- function(cohort,
   cdm <- omopgenerics::cdmReference(cohort)
   checkX(cohort)
   omopgenerics::assertLogical(demographics, length = 1)
-  checkCdm(cdm)
+  cdm <- omopgenerics::validateCdmArgument(cdm)
   if (!is.list(strata)) {
     strata <- list(strata)
   }
