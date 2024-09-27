@@ -19,9 +19,11 @@ summariseCohortAttrition().}
 \item{type}{Type of table. Check supported types with
 `visOmopResults::tableType()`.}
 
-\item{header}{Columns to use as headers.}
+\item{header}{Columns to use as header. See options with
+`tidyColumns(result)`.}
 
-\item{groupColumn}{Columns to use to group.}
+\item{groupColumn}{Columns to group by. See options with
+`tidyColumns(result)`.}
 }
 \value{
 A visual table.

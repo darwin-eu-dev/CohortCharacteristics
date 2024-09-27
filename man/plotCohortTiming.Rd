@@ -23,14 +23,13 @@ plotCohortTiming(
 
 \item{timeScale}{Time scale to plot results. Can be days or years.}
 
-\item{facet}{variables to facet by.}
+\item{facet}{Columns to facet by. See options with `tidyColumns(result)`.
+Formula is also allowed to specify rows and columns.}
 
-\item{colour}{Variables to use for colours.}
+\item{colour}{Columns to color by. See options with `tidyColumns(result)`.}
 
-\item{colourName}{deprecated.}
-
-\item{uniqueCombinations}{If TRUE, only unique combinations of reference and
-comparator plots will be plotted.}
+\item{uniqueCombinations}{Whether to restrict to unique reference and
+comparator comparisons.}
 
 \item{.options}{deprecated.}
 }

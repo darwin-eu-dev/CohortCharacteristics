@@ -9,9 +9,10 @@ plotCohortCount(result, facet = c("cdm_name"), colour = NULL, x = NULL)
 \arguments{
 \item{result}{A summarised_result object. Output of summariseCohortCount().}
 
-\item{facet}{Variables to facet by.}
+\item{facet}{Columns to facet by. See options with `tidyColumns(result)`.
+Formula is also allowed to specify rows and columns.}
 
-\item{colour}{Variables to colour by.}
+\item{colour}{Columns to color by. See options with `tidyColumns(result)`.}
 
 \item{x}{Variables to use in x axis.}
 }

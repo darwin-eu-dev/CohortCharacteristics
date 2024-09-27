@@ -21,10 +21,10 @@
 #' @param result A summarised_result object. Output of summariseCohortCount().
 #' @param type Type of table. Check supported types with
 #' `visOmopResults::tableType()`.
-#' @param header A vector containing which elements should go into the header
-#' in order. Allowed are: `cdm_name`, `group`, `strata`, `additional`,
-#' `variable`, `estimate`, `settings`.
-#' @param groupColumn Column to use as group labels.
+#' @param header Columns to use as header. See options with
+#' `tidyColumns(result)`.
+#' @param groupColumn Columns to group by. See options with
+#' `tidyColumns(result)`.
 #'
 #' @examples
 #' \donttest{

@@ -14,12 +14,10 @@ plotLargeScaleCharacteristics(
 \item{result}{A summarised_result object. Output of
 summariseLargeScaleCharacteristics().}
 
-\item{facet}{Character vector that indicates the columns to facet by, you can
-use any tidyColumns(result). Formula also is allowed to specify rows and
-columns.}
+\item{facet}{Columns to facet by. See options with `tidyColumns(result)`.
+Formula is also allowed to specify rows and columns.}
 
-\item{colour}{Character vector that indicates the columns to colour by, you
-can use any tidyColumns(result).}
+\item{colour}{Columns to color by. See options with `tidyColumns(result)`.}
 }
 \value{
 A ggplot2 object.

@@ -18,9 +18,10 @@
 #' `r lifecycle::badge("experimental")`
 #'
 #' @param result A summarised_result object. Output of summariseCohortOverlap().
-#' @param facet Variables to facet by.
-#' @param uniqueCombinations If TRUE, only unique combinations of reference and
-#' comparator plots will be plotted.
+#' @param facet Columns to facet by. See options with `tidyColumns(result)`.
+#' Formula is also allowed to specify rows and columns.
+#' @param uniqueCombinations Whether to restrict to unique reference and
+#' comparator comparisons.
 #' @param y Variables to use in y axis, if NULL all variables not present in
 #' facet are used.
 #' @param .options deprecated.

@@ -13,9 +13,10 @@ plotCharacteristics(result, plotStyle = "barplot", facet = NULL, colour = NULL)
 \item{plotStyle}{Either `barplot`, `scatterplot` or `boxplot`. If `barplot`
 or `scatterplot` subset to just one estimate.}
 
-\item{facet}{Variables to facet by. Use tidyColumns to see options.}
+\item{facet}{Columns to facet by. See options with `tidyColumns(result)`.
+Formula is also allowed to specify rows and columns.}
 
-\item{colour}{column in data to color by. Use tidyColumns to see options.}
+\item{colour}{Columns to color by. See options with `tidyColumns(result)`.}
 }
 \value{
 A ggplot.

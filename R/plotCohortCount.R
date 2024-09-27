@@ -18,8 +18,9 @@
 #' `r lifecycle::badge("experimental")`
 #'
 #' @param result A summarised_result object. Output of summariseCohortCount().
-#' @param facet Variables to facet by.
-#' @param colour Variables to colour by.
+#' @param facet Columns to facet by. See options with `tidyColumns(result)`.
+#' Formula is also allowed to specify rows and columns.
+#' @param colour Columns to color by. See options with `tidyColumns(result)`.
 #' @param x Variables to use in x axis.
 #'
 #' @return A ggplot.

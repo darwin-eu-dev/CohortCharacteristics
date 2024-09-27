@@ -22,11 +22,11 @@
 #' @param plotType Type of desired formatted table, possibilities are "boxplot" and
 #' "density".
 #' @param timeScale Time scale to plot results. Can be days or years.
-#' @param facet variables to facet by.
-#' @param colour Variables to use for colours.
-#' @param colourName deprecated.
-#' @param uniqueCombinations If TRUE, only unique combinations of reference and
-#' comparator plots will be plotted.
+#' @param facet Columns to facet by. See options with `tidyColumns(result)`.
+#' Formula is also allowed to specify rows and columns.
+#' @param colour Columns to color by. See options with `tidyColumns(result)`.
+#' @param uniqueCombinations Whether to restrict to unique reference and
+#' comparator comparisons.
 #' @param .options deprecated.
 #'
 #' @return A ggplot.

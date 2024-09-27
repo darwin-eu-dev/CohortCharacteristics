@@ -23,8 +23,10 @@
 #' @param topConcepts Number of concepts to restrict the table.
 #' @param type Type of table. Check supported types with
 #' `visOmopResults::tableType()`.
-#' @param header Columns to use as header. See options with tidyColumns(result).
-#' @param groupColumn Columns to group by. See options with tidyColumns(result).
+#' @param header Columns to use as header. See options with
+#' `tidyColumns(result)`.
+#' @param groupColumn Columns to group by. See options with
+#' `tidyColumns(result)`.
 #'
 #' @export
 #'

@@ -21,12 +21,13 @@
 #' @param result A summarised_result object. Output of summariseCohortTiming().
 #' @param timeScale Time scale to plot results. Can be days or years.
 #' @param uniqueCombinations Whether to restrict to unique reference and
-#' comparator.
+#' comparator comparisons.
 #' @param type Type of table. Check supported types with
 #' `visOmopResults::tableType()`.
-#' @param header Columns to use as header. See options with tidyColumns(result).
-#' @param groupColumn Columns to use as group labels. See options with
-#' tidyColumns(result).
+#' @param header Columns to use as header. See options with
+#' `tidyColumns(result)`.
+#' @param groupColumn Columns to group by. See options with
+#' `tidyColumns(result)`.
 #'
 #' @return A formatted table of the summariseCohortTiming result.
 #'

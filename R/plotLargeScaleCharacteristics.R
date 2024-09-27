@@ -20,11 +20,9 @@
 #'
 #' @param result A summarised_result object. Output of
 #' summariseLargeScaleCharacteristics().
-#' @param facet Character vector that indicates the columns to facet by, you can
-#' use any tidyColumns(result). Formula also is allowed to specify rows and
-#' columns.
-#' @param colour Character vector that indicates the columns to colour by, you
-#' can use any tidyColumns(result).
+#' @param facet Columns to facet by. See options with `tidyColumns(result)`.
+#' Formula is also allowed to specify rows and columns.
+#' @param colour Columns to color by. See options with `tidyColumns(result)`.
 #'
 #' @return A ggplot2 object.
 #'

@@ -21,8 +21,10 @@
 #' summariseCohortAttrition().
 #' @param type Type of table. Check supported types with
 #' `visOmopResults::tableType()`.
-#' @param header Columns to use as headers.
-#' @param groupColumn Columns to use to group.
+#' @param header Columns to use as header. See options with
+#' `tidyColumns(result)`.
+#' @param groupColumn Columns to group by. See options with
+#' `tidyColumns(result)`.
 #'
 #' @return A visual table.
 #'

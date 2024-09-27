@@ -18,9 +18,10 @@ summariseLargeScaleCharacteristics().}
 
 \item{reference}{A named character to set up the reference.}
 
-\item{facet}{Variables to facet by. Use tidyColumns to see options.}
+\item{facet}{Columns to facet by. See options with `tidyColumns(result)`.
+Formula is also allowed to specify rows and columns.}
 
-\item{colour}{column in data to color by. Use tidyColumns to see options.}
+\item{colour}{Columns to color by. See options with `tidyColumns(result)`.}
 
 \item{missings}{value to replace the missings with.}
 }
