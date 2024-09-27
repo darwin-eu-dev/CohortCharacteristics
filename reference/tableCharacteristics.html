@@ -59,22 +59,23 @@
 
 
 <dl><dt id="arg-result">result<a class="anchor" aria-label="anchor" href="#arg-result"></a></dt>
-<dd><p>A summarise_characteristics object.</p></dd>
+<dd><p>A summarised_result object. Output of
+summariseCharacteristics().</p></dd>
 
 
 <dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a></dt>
-<dd><p>Type of desired formatted table, possibilities: "gt",
-"flextable", "tibble".</p></dd>
+<dd><p>Type of table. Check supported types with
+`visOmopResults::tableType()`.</p></dd>
 
 
 <dt id="arg-header">header<a class="anchor" aria-label="anchor" href="#arg-header"></a></dt>
-<dd><p>A vector containing which elements should go into the header
-in order. Allowed are: `cdm_name`, `group`, `strata`, `additional`,
-`variable`, `estimate`, `settings`.</p></dd>
+<dd><p>Columns to use as header. See options with
+`tidyColumns(result)`.</p></dd>
 
 
 <dt id="arg-groupcolumn">groupColumn<a class="anchor" aria-label="anchor" href="#arg-groupcolumn"></a></dt>
-<dd><p>Column to use as group labels.</p></dd>
+<dd><p>Columns to group by. See options with
+`tidyColumns(result)`.</p></dd>
 
 </dl></div>
     <div class="section level2">
