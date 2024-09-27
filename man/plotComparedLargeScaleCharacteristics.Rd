@@ -7,9 +7,9 @@
 plotComparedLargeScaleCharacteristics(
   result,
   reference,
+  missings = 0,
   facet = NULL,
-  colour = NULL,
-  missings = 0
+  colour = NULL
 )
 }
 \arguments{
@@ -18,12 +18,13 @@ summariseLargeScaleCharacteristics().}
 
 \item{reference}{A named character to set up the reference.}
 
+\item{missings}{Value to replace the missing value with. If NULL missing
+values will be eliminated.}
+
 \item{facet}{Columns to facet by. See options with \code{tidyColumns(result)}.
 Formula is also allowed to specify rows and columns.}
 
 \item{colour}{Columns to color by. See options with \code{tidyColumns(result)}.}
-
-\item{missings}{value to replace the missings with.}
 }
 \value{
 A ggplot.

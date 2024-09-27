@@ -18,10 +18,10 @@
 #' `r lifecycle::badge("experimental")`
 #'
 #' @param result A summarised_result object. Output of summariseCohortCount().
+#' @param x Variables to use in x axis.
 #' @param facet Columns to facet by. See options with `tidyColumns(result)`.
 #' Formula is also allowed to specify rows and columns.
 #' @param colour Columns to color by. See options with `tidyColumns(result)`.
-#' @param x Variables to use in x axis.
 #'
 #' @return A ggplot.
 #' @export
@@ -33,22 +33,26 @@
 #' library(dplyr)
 #'
 #' cdm <- mockCohortCharacteristics(numberIndividuals = 100)
+#'
 #' counts <- cdm$cohort2 |>
 #'   addSex() |>
 #'   addAge(ageGroup = list(c(0, 29), c(30, 59), c(60, Inf))) |>
 #'   summariseCohortCount(strata = list("age_group", "sex", c("age_group", "sex"))) |>
 #'   filter(variable_name == "Number subjects")
+#'
 #' counts |>
 #'   plotCohortCount(
+#'     x = "sex",
 #'     facet = cohort_name ~ age_group,
-#'     colour = "sex",
-#'     x = "sex")
+#'     colour = "sex"
+#'
+#'   )
 #' }
 #'
 plotCohortCount <- function(result,
+                            x = NULL,
                             facet = c("cdm_name"),
-                            colour = NULL,
-                            x = NULL) {
+                            colour = NULL) {
   # initial checks
   result <- omopgenerics::validateResultArgument(result) |>
     visOmopResults::filterSettings(
@@ -77,11 +81,11 @@ plotCohortCount <- function(result,
   return(p)
 }
 
-oneVariable <- function(result) {
+oneVariable <- function(result, call = parent.frame()) {
   opts <- unique(result$variable_name)
   if (length(opts) > 1) {
     "Multiple variables present: {.var {opts}}. Please subset to one of them." |>
-      cli::cli_abort()
+      cli::cli_abort(call = call)
   }
   return(opts)
 }

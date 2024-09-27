@@ -16,6 +16,8 @@
 
 #' Format a summarise_large_scale_characteristics object into a visual table.
 #'
+#' `r lifecycle::badge("experimental")`
+#'
 #' @param result A summarised_result object. Output of
 #' summariseLargeScaleCharacteristics().
 #' @param topConcepts Number of concepts to restrict the table.
@@ -25,9 +27,6 @@
 #' `tidyColumns(result)`.
 #' @param groupColumn Columns to group by. See options with
 #' `tidyColumns(result)`.
-#'
-#' @description
-#' `r lifecycle::badge("experimental")`
 #'
 #' @export
 #'

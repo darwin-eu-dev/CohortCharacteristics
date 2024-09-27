@@ -4,17 +4,17 @@
 \alias{plotCohortCount}
 \title{Plot the result of summariseCohortCount.}
 \usage{
-plotCohortCount(result, facet = c("cdm_name"), colour = NULL, x = NULL)
+plotCohortCount(result, x = NULL, facet = c("cdm_name"), colour = NULL)
 }
 \arguments{
 \item{result}{A summarised_result object. Output of summariseCohortCount().}
+
+\item{x}{Variables to use in x axis.}
 
 \item{facet}{Columns to facet by. See options with \code{tidyColumns(result)}.
 Formula is also allowed to specify rows and columns.}
 
 \item{colour}{Columns to color by. See options with \code{tidyColumns(result)}.}
-
-\item{x}{Variables to use in x axis.}
 }
 \value{
 A ggplot.
@@ -29,16 +29,20 @@ library(PatientProfiles)
 library(dplyr)
 
 cdm <- mockCohortCharacteristics(numberIndividuals = 100)
+
 counts <- cdm$cohort2 |>
   addSex() |>
   addAge(ageGroup = list(c(0, 29), c(30, 59), c(60, Inf))) |>
   summariseCohortCount(strata = list("age_group", "sex", c("age_group", "sex"))) |>
   filter(variable_name == "Number subjects")
+
 counts |>
   plotCohortCount(
+    x = "sex",
     facet = cohort_name ~ age_group,
-    colour = "sex",
-    x = "sex")
+    colour = "sex"
+
+  )
 }
 
 }
