@@ -13,7 +13,7 @@ summariseCohortAttrition().}
 \item{cohortId}{deprecated.}
 }
 \value{
-A dgr_graph
+A `grViz` visualisation.
 }
 \description{
 `r lifecycle::badge("experimental")`
@@ -22,7 +22,6 @@ A dgr_graph
 \donttest{
 library(omopgenerics)
 library(dplyr)
-library(DiagrammeR)
 
 cdm <- mockCohortCharacteristics(numberIndividuals = 1000)
 
@@ -35,6 +34,7 @@ cdm[["cohort1"]] <- cdm[["cohort1"]] |>
 
 cdm$cohort1 |>
   summariseCohortAttrition() |>
+  filter(group_level == "cohort_2") |>
   plotCohortAttrition(cohortId = 2)
 }
 
