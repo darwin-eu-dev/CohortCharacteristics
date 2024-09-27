@@ -55,7 +55,8 @@ tableCohortOverlap <- function(result,
   # check settings
   result <- result |>
     visOmopResults::filterSettings(
-      .data$result_type == "summarise_cohort_overlap")
+      .data$result_type == "summarise_cohort_overlap"
+    )
 
   if (nrow(result) == 0) {
     cli::cli_warn("`result` object does not contain any `result_type == 'summarise_cohort_overlap'` information.")

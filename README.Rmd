@@ -142,9 +142,9 @@ tableCohortTiming(result, header = "cdm_name", type = "flextable")
 
 ```{r}
 plotCohortTiming(
-  result, 
-  uniqueCombinations = TRUE, 
-  facet = "cdm_name", 
+  result,
+  uniqueCombinations = TRUE,
+  facet = "cdm_name",
   colour = c("cohort_name_reference", "cohort_name_comparator"),
   timeScale = "years"
 )
@@ -152,10 +152,10 @@ plotCohortTiming(
 
 ```{r}
 plotCohortTiming(
-  result, 
+  result,
   plotType = "density",
-  uniqueCombinations = FALSE, 
-  facet = "cdm_name", 
+  uniqueCombinations = FALSE,
+  facet = "cdm_name",
   colour = c("cohort_name_comparator"),
   timeScale = "years"
 )

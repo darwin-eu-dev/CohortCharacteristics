@@ -52,12 +52,12 @@
 #'   )
 #'
 #' resultsLsc |>
-#'  plotComparedLargeScaleCharacteristics(
-#'    reference = c(variable_level = "-365 to -1"),
-#'    colour = "variable_name",
-#'    missings = NULL
-#'  ) |>
-#'  ggplotly()
+#'   plotComparedLargeScaleCharacteristics(
+#'     reference = c(variable_level = "-365 to -1"),
+#'     colour = "variable_name",
+#'     missings = NULL
+#'   ) |>
+#'   ggplotly()
 #'
 #' cdmDisconnect(cdm)
 #' }
@@ -75,7 +75,8 @@ plotComparedLargeScaleCharacteristics <- function(result,
   # check settings
   result <- result |>
     visOmopResults::filterSettings(
-      .data$result_type == "summarise_large_scale_characteristics")
+      .data$result_type == "summarise_large_scale_characteristics"
+    )
 
   if (nrow(result) == 0) {
     cli::cli_warn("`result` object does not contain any `result_type == 'summarise_large_scale_characteristics'` information.")
@@ -124,8 +125,10 @@ checkReference <- function(reference, result, call = parent.frame()) {
   comp <- names(opts)[lengths(opts) > 1]
   notPresent <- comp[!comp %in% names(reference)]
   if (length(notPresent) > 0) {
-    c("x" = "The following variables need to be present on reference: {.var {notPresent}}.",
-      "i" = "Example: {.code reference = c({exampleRef(opts)})}.") |>
+    c(
+      "x" = "The following variables need to be present on reference: {.var {notPresent}}.",
+      "i" = "Example: {.code reference = c({exampleRef(opts)})}."
+    ) |>
       cli::cli_abort(call = call)
   }
   for (k in seq_along(reference)) {
@@ -170,8 +173,10 @@ filterRef <- function(result, reference, negate = FALSE) {
 correctMissings <- function(result, missings) {
   if (is.null(missings)) {
     result <- result |>
-      dplyr::filter(!is.na(.data$percentage_reference),
-                    !is.na(.data$percentage_comparator))
+      dplyr::filter(
+        !is.na(.data$percentage_reference),
+        !is.na(.data$percentage_comparator)
+      )
   } else {
     result <- result |>
       dplyr::mutate(dplyr::across(

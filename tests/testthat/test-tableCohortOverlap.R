@@ -50,7 +50,8 @@ test_that("tableCohortOverlap", {
   expect_true("gt_tbl" %in% class(gtResult1))
 
   fxResult1 <- tableCohortOverlap(
-    overlap, type = "flextable", header = "cohort_name"
+    overlap,
+    type = "flextable", header = "cohort_name"
   )
   expect_true("flextable" %in% class(fxResult1))
 
@@ -61,7 +62,8 @@ test_that("tableCohortOverlap", {
     omopgenerics::newCohortTable()
 
   overlap3 <- summariseCohortOverlap(
-    cdm$table, strata = list("age_group", c("age_group", "sex"))
+    cdm$table,
+    strata = list("age_group", c("age_group", "sex"))
   )
   tibbleResult1 <- tableCohortOverlap(overlap3, type = "tibble")
   expect_true(all(c("tbl_df", "tbl", "data.frame") %in% class(tibbleResult1)))

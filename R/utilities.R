@@ -25,25 +25,27 @@ getUniqueCombinationsSr <- function(x) {
       xUniques |>
         dplyr::rename(
           "cohort_name_reference" = "cohort_name_comparator",
-          "cohort_name_comparator" = "cohort_name_reference"),
+          "cohort_name_comparator" = "cohort_name_reference"
+        ),
       by = c("cohort_name_comparator", "cohort_name_reference"),
       suffix = c("_x", "_y")
     ) |>
     dplyr::filter(.data$id_x < .data$id_y) |>
     dplyr::select("cohort_name_comparator", "cohort_name_reference") |>
     visOmopResults::uniteGroup(
-      cols = c("cohort_name_reference", "cohort_name_comparator"))
+      cols = c("cohort_name_reference", "cohort_name_comparator")
+    )
   x <- x |>
     dplyr::inner_join(pairs, by = c("group_name", "group_level"))
   return(x)
 }
-changeDaysToYears <- function(x, est = NULL, fact = 1/365.25) {
+changeDaysToYears <- function(x, est = NULL, fact = 1 / 365.25) {
   oldVar <- "days_between_cohort_entries"
   newVar <- "years_between_cohort_entries"
   if (!is.null(est)) {
-    id <-  x$variable_name == oldVar & x$estimate_name %in% est
+    id <- x$variable_name == oldVar & x$estimate_name %in% est
   } else {
-    id <-  x$variable_name == oldVar
+    id <- x$variable_name == oldVar
   }
   x |>
     dplyr::mutate(

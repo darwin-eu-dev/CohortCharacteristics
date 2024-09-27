@@ -44,12 +44,12 @@ test_that("plotCohortTiming, boxplot", {
   )
 
   timing1 <- summariseCohortTiming(cdm$table,
-                                   restrictToFirstEntry = TRUE
+    restrictToFirstEntry = TRUE
   )
   boxplot1 <- plotCohortTiming(timing1,
-                               facet = "cdm_name",
-                               colour = c("cohort_name_reference", "cohort_name_comparator"),
-                               uniqueCombinations = TRUE
+    facet = "cdm_name",
+    colour = c("cohort_name_reference", "cohort_name_comparator"),
+    uniqueCombinations = TRUE
   )
   # expect_true(all(c("q0", "q25", "q50", "q75", "q100") %in% colnames(boxplot1$data)))
   # expect_true(all(c("Cohort 1", "Cohort 2") %in% boxplot1$data$cohort_name_reference))
@@ -59,8 +59,8 @@ test_that("plotCohortTiming, boxplot", {
   # expect_true(boxplot1$labels$fill == "group")
 
   boxplot2 <- plotCohortTiming(timing1,
-                               colour = c("cohort_name_comparator"),
-                               uniqueCombinations = FALSE
+    colour = c("cohort_name_comparator"),
+    uniqueCombinations = FALSE
   )
   # expect_true(all(c("Cohort 1", "Cohort 2") %in% boxplot2$data$cohort_name_reference))
   # expect_true(all(c("Cohort 1", "Cohort 2", "Cohort 3", "Cohort 4") %in% boxplot2$data$cohort_name_comparator))
@@ -73,13 +73,13 @@ test_that("plotCohortTiming, boxplot", {
     dplyr::compute(name = "table", temporary = FALSE) |>
     omopgenerics::newCohortTable()
   timing3 <- summariseCohortTiming(cdm$table,
-                                   strata = list("age_group", c("age_group", "sex")),
-                                   restrictToFirstEntry = FALSE
+    strata = list("age_group", c("age_group", "sex")),
+    restrictToFirstEntry = FALSE
   )
   boxplot3 <- plotCohortTiming(timing3,
-                               colour = c("age_group", "sex"),
-                               facet = c("age_group", "sex"),
-                               uniqueCombinations = FALSE
+    colour = c("age_group", "sex"),
+    facet = c("age_group", "sex"),
+    uniqueCombinations = FALSE
   )
   # expect_true(all(c("Cohort 1", "Cohort 2") %in% boxplot3$data$cohort_name_reference))
   # expect_true(all(c("Cohort 1", "Cohort 2", "Cohort 3", "Cohort 4") %in% boxplot3$data$cohort_name_comparator))
@@ -137,10 +137,10 @@ test_that("plotCohortTiming, density", {
 
   timing1 <- summariseCohortTiming(cdm$table, restrictToFirstEntry = FALSE)
   density1 <- plotCohortTiming(timing1,
-                               plotType = "density",
-                               facet = NULL,
-                               colour = c("cohort_name_reference", "cohort_name_comparator"),
-                               uniqueCombinations = TRUE
+    plotType = "density",
+    facet = NULL,
+    colour = c("cohort_name_reference", "cohort_name_comparator"),
+    uniqueCombinations = TRUE
   )
 
   # expect_true(all(c("plot_id", "timing_label", "color_var", "x", "y", ".group") %in% colnames(density1$data)))
@@ -148,10 +148,10 @@ test_that("plotCohortTiming, density", {
   # expect_true(density1$labels$fill == "color_var")
 
   density2 <- plotCohortTiming(timing1,
-                               plotType = "density",
-                               colour = c("cohort_name_comparator"),
-                               facet = c("cdm_name", "cohort_name_reference"),
-                               uniqueCombinations = FALSE
+    plotType = "density",
+    colour = c("cohort_name_comparator"),
+    facet = c("cdm_name", "cohort_name_reference"),
+    uniqueCombinations = FALSE
   )
   # expect_true(all(c("plot_id", "timing_label", "x", "y", ".group") %in% colnames(density2$data)))
   expect_true(all(c("gg", "ggplot") %in% class(density2)))
@@ -159,10 +159,10 @@ test_that("plotCohortTiming, density", {
 
   timing2 <- summariseCohortTiming(cdm$table, estimates = "density")
   density4 <- plotCohortTiming(timing2,
-                               plotType = "density",
-                               facet = NULL,
-                               colour = c("cohort_name_reference", "cohort_name_comparator"),
-                               uniqueCombinations = TRUE
+    plotType = "density",
+    facet = NULL,
+    colour = c("cohort_name_reference", "cohort_name_comparator"),
+    uniqueCombinations = TRUE
   )
   expect_true(all(c("gg", "ggplot") %in% class(density4)))
   # expect_true(all(is.na(density4$data$q50)))
@@ -174,15 +174,15 @@ test_that("plotCohortTiming, density", {
     dplyr::compute(name = "table", temporary = FALSE) |>
     omopgenerics::newCohortTable()
   timing3 <- summariseCohortTiming(cdm$table,
-                                   strata = list("age_group", c("age_group", "sex")),
-                                   restrictToFirstEntry = FALSE
+    strata = list("age_group", c("age_group", "sex")),
+    restrictToFirstEntry = FALSE
   )
 
   density3 <- plotCohortTiming(timing3,
-                               plotType = "density",
-                               colour = c("age_group", "sex"),
-                               facet = c("cohort_name_reference", "cohort_name_comparator"),
-                               uniqueCombinations = FALSE
+    plotType = "density",
+    colour = c("age_group", "sex"),
+    facet = c("cohort_name_reference", "cohort_name_comparator"),
+    uniqueCombinations = FALSE
   )
   # expect_true(all(c("plot_id", "timing_label", "color_var", "x", "y", ".group") %in% colnames(density3$data)))
   expect_true(all(c("gg", "ggplot") %in% class(density3)))

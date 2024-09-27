@@ -91,10 +91,10 @@ test_that("tableCharacteristics", {
     )
   )
 
-  expect_no_error(gt1 <- tableCharacteristics(result1,))
+  expect_no_error(gt1 <- tableCharacteristics(result1, ))
   expect_true("gt_tbl" %in% class(gt1))
   expect_true(all(c("Variable name", "Variable level", "Estimate name") %in%
-                    colnames(gt1$`_data`)))
+    colnames(gt1$`_data`)))
 
   fx1 <- tableCharacteristics(result1, header = c("cdm_name", "cohort_name"), type = "flextable")
   expect_true(class(fx1) == "flextable")
@@ -104,11 +104,11 @@ test_that("tableCharacteristics", {
   ) %in%
     colnames(fx1$body$dataset)))
   expect_true(all(fx1$body$dataset$`Variable name` |> unique() %in%
-                    c(
-                      "Number records", "Number subjects", "Cohort start date",
-                      "Cohort end date", "Age", "Sex", "Prior observation",
-                      "Future observation", "Days in cohort", "Medications", "Comorbidities"
-                    )))
+    c(
+      "Number records", "Number subjects", "Cohort start date",
+      "Cohort end date", "Age", "Sex", "Prior observation",
+      "Future observation", "Days in cohort", "Medications", "Comorbidities"
+    )))
 
   tibble1 <- tableCharacteristics(result1, type = "tibble", header = character())
   expect_true(all(class(tibble1) %in% c("tbl_df", "tbl", "data.frame")))
@@ -122,7 +122,7 @@ test_that("tableCharacteristics", {
 test_that("tableCharacteristics, empty output warning message", {
   skip_on_cran()
   expect_warning(x <- tableCharacteristics(
-    result = omopgenerics::emptySummarisedResult(), type = "gt"))
+    result = omopgenerics::emptySummarisedResult(), type = "gt"
+  ))
   expect_true(inherits(x, "gt_tbl"))
 })
-

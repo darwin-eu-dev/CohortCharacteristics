@@ -75,13 +75,13 @@
 #'   ) |>
 #'   summariseCharacteristics(
 #'     strata = list("sex", "age_group"),
-#'     cohortIntersectFlag = list (
+#'     cohortIntersectFlag = list(
 #'       "Cohort 2 Flag" = list(
 #'         targetCohortTable = "cohort2",
 #'         window = c(-365, 0)
 #'       )
 #'     ),
-#'     cohortIntersectCount = list (
+#'     cohortIntersectCount = list(
 #'       "Cohort 2 Count" = list(
 #'         targetCohortTable = "cohort2",
 #'         window = c(-365, 0)
@@ -252,7 +252,6 @@ summariseCharacteristics <- function(cohort,
     demographicsCategorical <- sex
 
     if (!is.null(ageGroup)) {
-
       # update names
       newNames <- uniqueVariableName(length(ageGroup))
       dic <- dic |>
@@ -458,8 +457,10 @@ summariseCharacteristics <- function(cohort,
   results <- results |>
     dplyr::left_join(
       combinations,
-      by = c("group_level", "strata_name", "strata_level", "variable_name",
-             "variable_level", "estimate_name")
+      by = c(
+        "group_level", "strata_name", "strata_level", "variable_name",
+        "variable_level", "estimate_name"
+      )
     ) |>
     dplyr::arrange(.data$order_id) |>
     dplyr::select(-"order_id")

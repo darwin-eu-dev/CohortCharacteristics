@@ -49,10 +49,10 @@
 #'   )
 #'
 #' resultsLsc |>
-#'  plotLargeScaleCharacteristics(
-#'    facet = c("cdm_name", "cohort_name"),
-#'    colour = "variable_level"
-#'  )
+#'   plotLargeScaleCharacteristics(
+#'     facet = c("cdm_name", "cohort_name"),
+#'     colour = "variable_level"
+#'   )
 #'
 #' cdmDisconnect(cdm)
 #' }
@@ -66,7 +66,8 @@ plotLargeScaleCharacteristics <- function(result,
   # check settings
   result <- result |>
     visOmopResults::filterSettings(
-      .data$result_type == "summarise_large_scale_characteristics")
+      .data$result_type == "summarise_large_scale_characteristics"
+    )
 
   if (nrow(result) == 0) {
     cli::cli_warn("`result` object does not contain any `result_type == 'summarise_large_scale_characteristics'` information.")

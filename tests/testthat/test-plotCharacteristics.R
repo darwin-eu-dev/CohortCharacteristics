@@ -178,14 +178,14 @@ test_that("plotCharacteristics", {
   )
 
   gg1 <- plotCharacteristics(result1 |>
-                               dplyr::filter(variable_name ==
-                                               "Prior observation"))
+    dplyr::filter(variable_name ==
+      "Prior observation"))
   expect_true(ggplot2::is.ggplot(gg1))
 
   gg2 <- plotCharacteristics(
     result1 |>
       dplyr::filter(variable_name ==
-                      "Age"),
+        "Age"),
     plotStyle = "boxplot",
     colour = "variable_name"
   )
@@ -193,4 +193,3 @@ test_that("plotCharacteristics", {
 
   mockDisconnect(cdm)
 })
-

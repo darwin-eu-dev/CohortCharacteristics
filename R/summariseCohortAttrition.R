@@ -47,7 +47,8 @@ summariseCohortAttrition <- function(cohort,
 
   attritionSummary <- omopgenerics::attrition(cohort) |>
     summariseAttrition(
-      set, omopgenerics::tableName(cohort), omopgenerics::cdmName(cohort))
+      set, omopgenerics::tableName(cohort), omopgenerics::cdmName(cohort)
+    )
 
   return(attritionSummary)
 }

@@ -76,7 +76,8 @@ tableCohortTiming <- function(result,
   # check settings
   result <- result |>
     visOmopResults::filterSettings(
-      .data$result_type == "summarise_cohort_timing") |>
+      .data$result_type == "summarise_cohort_timing"
+    ) |>
     dplyr::filter(!.data$estimate_name %in% c("density_x", "density_y"))
 
   if (nrow(result) == 0) {

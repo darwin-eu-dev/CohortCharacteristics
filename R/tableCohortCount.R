@@ -57,7 +57,8 @@ tableCohortCount <- function(result,
   # check settings
   result <- result |>
     visOmopResults::filterSettings(
-      .data$result_type == "summarise_cohort_count")
+      .data$result_type == "summarise_cohort_count"
+    )
 
   if (nrow(result) == 0) {
     cli::cli_warn("`result` object does not contain any `result_type == 'summarise_cohort_count'` information.")

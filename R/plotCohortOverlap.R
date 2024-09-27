@@ -50,7 +50,8 @@ plotCohortOverlap <- function(result,
   # initial checks
   result <- omopgenerics::validateResultArgument(result) |>
     visOmopResults::filterSettings(
-      .data$result_type == "summarise_cohort_overlap") |>
+      .data$result_type == "summarise_cohort_overlap"
+    ) |>
     dplyr::filter(.data$estimate_name == "percentage")
   if (nrow(result) == 0) {
     cli::cli_warn("No cohort overlap results found")
@@ -80,7 +81,8 @@ plotCohortOverlap <- function(result,
   if (is.null(y)) {
     y <- c(
       "cdm_name", visOmopResults::groupColumns(result),
-      visOmopResults::strataColumns(result))
+      visOmopResults::strataColumns(result)
+    )
     y <- y[!y %in% facet]
   }
 

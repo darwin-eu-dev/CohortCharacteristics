@@ -56,7 +56,8 @@ tableCharacteristics <- function(result,
   # check settings
   result <- result |>
     visOmopResults::filterSettings(
-      .data$result_type == "summarise_characteristics")
+      .data$result_type == "summarise_characteristics"
+    )
 
   if (nrow(result) == 0) {
     cli::cli_warn("`result` object does not contain any `result_type == 'summarise_characteristics'` information.")

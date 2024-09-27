@@ -67,12 +67,12 @@ test_that("plotCohortOverlap", {
     omopgenerics::newCohortTable()
 
   overlap2 <- summariseCohortOverlap(cdm$table,
-                                     strata = list("age_group", c("age_group", "sex"))
+    strata = list("age_group", c("age_group", "sex"))
   )
 
   gg3 <- plotCohortOverlap(overlap2 |> dplyr::filter(.data$variable_level == "number_subjects"),
-                           facet = c("age_group", "sex"),
-                           uniqueCombinations = TRUE
+    facet = c("age_group", "sex"),
+    uniqueCombinations = TRUE
   )
   expect_true("ggplot" %in% class(gg3))
 
@@ -85,12 +85,12 @@ test_that("plotCohortOverlap", {
     ) |>
     dplyr::filter(.data$variable_level == "number_subjects")
   gg4 <- plotCohortOverlap(overlap3,
-                           facet = "cdm_name",
-                           uniqueCombinations = FALSE,
-                           .options = list(
-                             facetNcols = 2,
-                             facetScales = "fixed"
-                           )
+    facet = "cdm_name",
+    uniqueCombinations = FALSE,
+    .options = list(
+      facetNcols = 2,
+      facetScales = "fixed"
+    )
   )
 
   mockDisconnect(cdm)

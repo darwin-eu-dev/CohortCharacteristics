@@ -122,13 +122,16 @@ test_that("output is always the same", {
     omock::mockObservationPeriod() |>
     omock::mockConditionOccurrence(recordPerson = 3) |>
     omock::mockCohort(
-      numberCohorts = 3, cohortName = c("covid", "tb", "asthma"))
+      numberCohorts = 3, cohortName = c("covid", "tb", "asthma")
+    )
 
   cdm1 <- CDMConnector::copyCdmTo(
-    con = duckdb::dbConnect(duckdb::duckdb()), cdm = cdm, schema = "main")
+    con = duckdb::dbConnect(duckdb::duckdb()), cdm = cdm, schema = "main"
+  )
 
   cdm2 <- CDMConnector::copyCdmTo(
-    con = duckdb::dbConnect(duckdb::duckdb()), cdm = cdm, schema = "main")
+    con = duckdb::dbConnect(duckdb::duckdb()), cdm = cdm, schema = "main"
+  )
 
   result1 <- cdm1$cohort |>
     summariseLargeScaleCharacteristics(eventInWindow = "condition_occurrence")

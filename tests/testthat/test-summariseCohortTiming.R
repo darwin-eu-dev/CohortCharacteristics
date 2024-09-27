@@ -121,28 +121,34 @@ test_that("result is deterministic", {
   st <- list("sex", "idep", "age_group", c("age_group", "sex"))
 
   cdm1 <- CDMConnector::copyCdmTo(
-    con = duckdb::dbConnect(duckdb::duckdb()), cdm = cdm, schema = "main")
+    con = duckdb::dbConnect(duckdb::duckdb()), cdm = cdm, schema = "main"
+  )
   cdm1$cohort <- cdm1$cohort |>
     PatientProfiles::addDemographics(
       age = FALSE, priorObservation = FALSE, futureObservation = FALSE,
-      ageGroup = aG, name = "cohort") |>
+      ageGroup = aG, name = "cohort"
+    ) |>
     omopgenerics::newCohortTable()
 
   cdm2 <- CDMConnector::copyCdmTo(
-    con = duckdb::dbConnect(duckdb::duckdb()), cdm = cdm, schema = "main")
+    con = duckdb::dbConnect(duckdb::duckdb()), cdm = cdm, schema = "main"
+  )
   cdm2$cohort <- cdm2$cohort |>
     PatientProfiles::addDemographics(
       age = FALSE, priorObservation = FALSE, futureObservation = FALSE,
-      ageGroup = aG, name = "cohort") |>
+      ageGroup = aG, name = "cohort"
+    ) |>
     omopgenerics::newCohortTable()
 
   result1 <- cdm1$cohort |>
     summariseCohortTiming(
-      strata = st, estimates = c("min", "q25", "median", "q75", "max"))
+      strata = st, estimates = c("min", "q25", "median", "q75", "max")
+    )
 
   result2 <- cdm2$cohort |>
     summariseCohortTiming(
-      strata = st, estimates = c("min", "q25", "median", "q75", "max"))
+      strata = st, estimates = c("min", "q25", "median", "q75", "max")
+    )
 
   expect_identical(result1, result2)
 
