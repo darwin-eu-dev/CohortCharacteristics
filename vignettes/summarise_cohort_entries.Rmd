@@ -8,7 +8,7 @@ output:
     number_sections: yes
     toc: yes
 vignette: >
-  %\VignetteIndexEntry{a05_summariseCohortEntries}
+  %\VignetteIndexEntry{summarise_cohort_entries}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -32,18 +32,15 @@ In this example we're going to summarise the characteristics of individuals with
 We'll begin by creating our study cohorts.
 
 ```{r}
+library(duckdb)
 library(CDMConnector)
+library(dplyr, warn.conflicts = FALSE)
+library(PatientProfiles)
 library(CohortCharacteristics)
-library(dplyr)
-library(ggplot2)
 
-con <- DBI::dbConnect(duckdb::duckdb(),
-  dbdir = CDMConnector::eunomia_dir()
-)
-cdm <- CDMConnector::cdm_from_con(con,
-  cdm_schem = "main",
-  write_schema = "main",
-  cdm_name = "Eunomia"
+con <- dbConnect(duckdb(), dbdir = eunomiaDir())
+cdm <- cdmFromCon(
+  con = con, cdmSchem = "main", writeSchema = "main", cdmName = "Eunomia"
 )
 
 cdm <- generateConceptCohortSet(
@@ -64,29 +61,28 @@ cdm <- generateConceptCohortSet(
 
 We can first quickly summarise and present the overall counts of our cohorts.
 ```{r}
-cohort_counts <- summariseCohortCount(cdm[["injuries"]])
-tableCohortCount(cohort_counts)
+cohortCounts <- summariseCohortCount(cdm$injuries)
+tableCohortCount(cohortCounts)
 ```
 
 Moreover, we can also easily stratify these counts. For example, here we add age groups and then stratify our counts by t
 We can summarise the overall counts of our cohorts.
 ```{r}
-cdm[["injuries"]] <- cdm[["injuries"]] |>
-  PatientProfiles::addAge(ageGroup = list(
-    c(0, 3),
-    c(4, 17),
-    c(18, Inf)
-  )) |>
-  compute(temporary = FALSE, name = "injuries")
+cdm$injuries <- cdm$injuries |>
+  addAge(
+    ageGroup = list(c(0, 3), c(4, 17), c(18, Inf)),
+    name = "injuries"
+  )
 
-cohort_counts <- summariseCohortCount(cdm[["injuries"]], strata = "age_group")
-tableCohortCount(cohort_counts)
+cohortCounts <- summariseCohortCount(cdm[["injuries"]], strata = "age_group")
+tableCohortCount(cohortCounts)
 ```
 
 We can also apply minimum cell count suppression to our cohort counts. In this case we will obscure any counts below 10.
 ```{r}
-cohort_counts <- suppress(cohort_counts, minCellCount = 10)
-tableCohortCount(cohort_counts)
+cohortCounts <- cohortCounts |>
+  suppress(minCellCount = 10)
+tableCohortCount(cohortCounts)
 ```
 
 ## Summarising cohort attrition
@@ -101,26 +97,26 @@ cdm <- generateConceptCohortSet(
   limit = "all"
 )
 
-cdm[["ankle_sprain"]] <- cdm[["ankle_sprain"]] |>
+cdm$ankle_sprain <- cdm$ankle_sprain |>
   filter(year(cohort_start_date) >= 2000) |>
-  recordCohortAttrition("Restrict to cohort_start_date >= 2000") |>
-  compute(temporary = FALSE, name = "ankle_sprain")
+  compute(temporary = FALSE, name = "ankle_sprain") |>
+  recordCohortAttrition("Restrict to cohort_start_date >= 2000")
 
-attrition_summary <- summariseCohortAttrition(cdm[["ankle_sprain"]])
+attritionSummary <- summariseCohortAttrition(cdm$ankle_sprain)
 
-plotCohortAttrition(attrition_summary)
+plotCohortAttrition(attritionSummary)
 ```
 
 ```{r}
-cdm[["ankle_sprain"]] <- cdm[["ankle_sprain"]] |>
-  PatientProfiles::addAge() |>
+cdm$ankle_sprain <- cdm$ankle_sprain |>
+  addAge() |>
   filter(age >= 18) |>
   compute(temporary = FALSE, name = "ankle_sprain") |>
   recordCohortAttrition("Restrict to age >= 18")
 
-attrition_summary <- summariseCohortAttrition(cdm[["ankle_sprain"]])
+attritionSummary <- summariseCohortAttrition(cdm$ankle_sprain)
 
-plotCohortAttrition(attrition_summary, cohortId = 1)
+plotCohortAttrition(attritionSummary)
 ```
 
 We could, of course, have applied these requirements the other way around.
@@ -134,24 +130,23 @@ cdm <- generateConceptCohortSet(
   limit = "all"
 )
 
-cdm[["ankle_sprain"]] <- cdm[["ankle_sprain"]] |>
-  PatientProfiles::addAge() |>
+cdm$ankle_sprain <- cdm$ankle_sprain |>
+  addAge() |>
   filter(age >= 18) |>
   compute(temporary = FALSE, name = "ankle_sprain") |>
   recordCohortAttrition("Restrict to age >= 18")
 
-cdm[["ankle_sprain"]] <- cdm[["ankle_sprain"]] |>
+cdm$ankle_sprain <- cdm$ankle_sprain |>
   filter(year(cohort_start_date) >= 2000) |>
-  recordCohortAttrition("Restrict to cohort_start_date >= 2000") |>
-  compute(temporary = FALSE, name = "ankle_sprain")
+  compute(temporary = FALSE, name = "ankle_sprain") |>
+  recordCohortAttrition("Restrict to cohort_start_date >= 2000")
 
+attritionSummary <- summariseCohortAttrition(cdm$ankle_sprain)
 
-attrition_summary <- summariseCohortAttrition(cdm[["ankle_sprain"]])
-
-plotCohortAttrition(attrition_summary, cohortId = 1)
+plotCohortAttrition(attritionSummary)
 ```
 
 As well as plotting cohort attrition, we can also create a table of our results.
 ```{r}
-tableCohortAttrition(attrition_summary)
+tableCohortAttrition(attritionSummary)
 ```

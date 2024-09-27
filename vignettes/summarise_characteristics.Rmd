@@ -2,7 +2,7 @@
 title: "Summarise patient characteristics"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{a06_summarisePatientCharacteristics}
+  %\VignetteIndexEntry{summarise_characteristics}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -27,19 +27,17 @@ In this example we're going to summarise the characteristics of individuals with
 We'll begin by creating our study cohorts.
 
 ```{r}
+library(duckdb)
 library(CDMConnector)
-library(CodelistGenerator)
-library(CohortCharacteristics)
-library(dplyr)
+library(dplyr, warn.conflicts = FALSE)
 library(ggplot2)
+library(CodelistGenerator)
+library(PatientProfiles)
+library(CohortCharacteristics)
 
-con <- DBI::dbConnect(duckdb::duckdb(),
-  dbdir = CDMConnector::eunomia_dir()
-)
-cdm <- CDMConnector::cdm_from_con(con,
-  cdm_schem = "main",
-  write_schema = "main",
-  cdm_name = "Eunomia"
+con <- dbConnect(duckdb(), dbdir = eunomiaDir())
+cdm <- cdmFromCon(
+  con = con, cdmSchem = "main", writeSchema = "main", cdmName = "Eunomia"
 )
 
 cdm <- generateConceptCohortSet(
@@ -90,7 +88,7 @@ We can also generate summaries that are stratified by some variable of interest.
 
 ```{r}
 chars <- cdm$injuries |>
-  PatientProfiles::addAge(ageGroup = list(
+  addAge(ageGroup = list(
     c(0, 49),
     c(50, Inf)
   )) |>
@@ -117,14 +115,14 @@ chars |>
 ## Summaries including presence in other cohorts
 
 ```{r}
-meds_cs <- getDrugIngredientCodes(
+medsCs <- getDrugIngredientCodes(
   cdm = cdm,
   name = c("acetaminophen", "morphine", "warfarin")
 )
 cdm <- generateConceptCohortSet(
   cdm = cdm,
   name = "meds",
-  conceptSet = meds_cs,
+  conceptSet = medsCs,
   end = "event_end_date",
   limit = "all",
   overwrite = TRUE
@@ -178,11 +176,11 @@ Instead of creating cohorts, we could have directly used our concept sets for me
 chars <- cdm$injuries |>
   summariseCharacteristics(conceptIntersectFlag = list(
     "Medications prior to index date" = list(
-      conceptSet = meds_cs,
+      conceptSet = medsCs,
       window = c(-Inf, -1)
     ),
     "Medications on index date" = list(
-      conceptSet = meds_cs,
+      conceptSet = medsCs,
       window = c(0, 0)
     )
   ))
