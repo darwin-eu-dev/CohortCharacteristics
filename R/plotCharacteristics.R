@@ -15,6 +15,7 @@
 # limitations under the License.
 
 #' Create a ggplot from the output of summariseCharacteristics.
+#'
 #' `r lifecycle::badge("experimental")`
 #'
 #' @param result A summariseCharacteristics result.

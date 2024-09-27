@@ -2,8 +2,7 @@
 % Please edit documentation in R/plotCharacteristics.R
 \name{plotCharacteristics}
 \alias{plotCharacteristics}
-\title{Create a ggplot from the output of summariseCharacteristics.
-`r lifecycle::badge("experimental")`}
+\title{Create a ggplot from the output of summariseCharacteristics.}
 \usage{
 plotCharacteristics(result, plotStyle = "barplot", facet = NULL, colour = NULL)
 }
@@ -22,7 +21,6 @@ Formula is also allowed to specify rows and columns.}
 A ggplot.
 }
 \description{
-Create a ggplot from the output of summariseCharacteristics.
 `r lifecycle::badge("experimental")`
 }
 \examples{

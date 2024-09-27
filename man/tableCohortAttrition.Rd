@@ -2,8 +2,7 @@
 % Please edit documentation in R/tableCohortAttrition.R
 \name{tableCohortAttrition}
 \alias{tableCohortAttrition}
-\title{Create a visual table from the output of summariseCohortAttrition.
-`r lifecycle::badge("experimental")`}
+\title{Create a visual table from the output of summariseCohortAttrition.}
 \usage{
 tableCohortAttrition(
   result,
@@ -29,7 +28,6 @@ summariseCohortAttrition().}
 A visual table.
 }
 \description{
-Create a visual table from the output of summariseCohortAttrition.
 `r lifecycle::badge("experimental")`
 }
 \examples{

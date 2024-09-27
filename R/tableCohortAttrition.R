@@ -15,6 +15,7 @@
 # limitations under the License.
 
 #' Create a visual table from the output of summariseCohortAttrition.
+#'
 #' `r lifecycle::badge("experimental")`
 #'
 #' @param result A summarised_result object. Output of
