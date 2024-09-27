@@ -158,29 +158,6 @@ getWindowNames <- function(window) {
 }
 
 #' @noRd
-checkFilter <- function(filterVariable, filterId, idName, x) {
-  if (is.null(filterVariable)) {
-    if (!is.null(filterId)) cli::cli_abort("filterId should be NULL")
-    if (!is.null(idName)) cli::cli_abort("idName should be NULL")
-    filterTbl <- NULL
-  } else {
-    checkVariableInX(filterVariable, x, FALSE, "filterVariable")
-    omopgenerics::assertNumeric(filterId)
-    omopgenerics::assertNumeric(utils::head(x, 1) |> dplyr::pull(dplyr::all_of(filterVariable)))
-    if (is.null(idName)) {
-      idName <- paste0("id", filterId)
-    } else {
-      omopgenerics::assertCharacter(idName, length = length(filterId))
-    }
-    filterTbl <- dplyr::tibble(
-      id = filterId,
-      id_name = idName
-    )
-  }
-  invisible(filterTbl)
-}
-
-#' @noRd
 checkNameStyle <- function(nameStyle, filterTbl, windowTbl, value) {
   omopgenerics::assertCharacter(nameStyle, length = 1, minNumCharacter = 1)
   filterChange <- !is.null(filterTbl) && nrow(filterTbl) > 1
