@@ -27,7 +27,6 @@
 #' @param colour Columns to color by. See options with `tidyColumns(result)`.
 #' @param uniqueCombinations Whether to restrict to unique reference and
 #' comparator comparisons.
-#' @param .options deprecated.
 #'
 #' @return A ggplot.
 #' @export
@@ -37,9 +36,7 @@ plotCohortTiming <- function(result,
                              timeScale = "days",
                              facet = c("cdm_name", "cohort_name_reference"),
                              colour = c("cohort_name_comparator"),
-                             colourName = lifecycle::deprecated(),
-                             uniqueCombinations = FALSE,
-                             .options = lifecycle::deprecated()) {
+                             uniqueCombinations = FALSE) {
   if (lifecycle::is_present(colourName)) {
     lifecycle::deprecate_warn(
       when = "0.3.0",

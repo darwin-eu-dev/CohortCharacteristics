@@ -10,9 +10,7 @@ plotCohortTiming(
   timeScale = "days",
   facet = c("cdm_name", "cohort_name_reference"),
   colour = c("cohort_name_comparator"),
-  colourName = lifecycle::deprecated(),
-  uniqueCombinations = FALSE,
-  .options = lifecycle::deprecated()
+  uniqueCombinations = FALSE
 )
 }
 \arguments{
@@ -30,8 +28,6 @@ Formula is also allowed to specify rows and columns.}
 
 \item{uniqueCombinations}{Whether to restrict to unique reference and
 comparator comparisons.}
-
-\item{.options}{deprecated.}
 }
 \value{
 A ggplot.
