@@ -49,9 +49,9 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plotComparedLargeScaleCharacteristics</span><span class="op">(</span></span>
 <span>  <span class="va">result</span>,</span>
 <span>  <span class="va">reference</span>,</span>
+<span>  missings <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  facet <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  colour <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  missings <span class="op">=</span> <span class="fl">0</span></span>
+<span>  colour <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -68,6 +68,11 @@ summariseLargeScaleCharacteristics().</p></dd>
 <dd><p>A named character to set up the reference.</p></dd>
 
 
+<dt id="arg-missings">missings<a class="anchor" aria-label="anchor" href="#arg-missings"></a></dt>
+<dd><p>Value to replace the missing value with. If NULL missing
+values will be eliminated.</p></dd>
+
+
 <dt id="arg-facet">facet<a class="anchor" aria-label="anchor" href="#arg-facet"></a></dt>
 <dd><p>Columns to facet by. See options with <code>tidyColumns(result)</code>.
 Formula is also allowed to specify rows and columns.</p></dd>
@@ -75,10 +80,6 @@ Formula is also allowed to specify rows and columns.</p></dd>
 
 <dt id="arg-colour">colour<a class="anchor" aria-label="anchor" href="#arg-colour"></a></dt>
 <dd><p>Columns to color by. See options with <code>tidyColumns(result)</code>.</p></dd>
-
-
-<dt id="arg-missings">missings<a class="anchor" aria-label="anchor" href="#arg-missings"></a></dt>
-<dd><p>value to replace the missings with.</p></dd>
 
 </dl></div>
     <div class="section level2">

@@ -50,9 +50,9 @@
 <span>  <span class="va">result</span>,</span>
 <span>  plotType <span class="op">=</span> <span class="st">"boxplot"</span>,</span>
 <span>  timeScale <span class="op">=</span> <span class="st">"days"</span>,</span>
+<span>  uniqueCombinations <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  facet <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cdm_name"</span>, <span class="st">"cohort_name_reference"</span><span class="op">)</span>,</span>
-<span>  colour <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cohort_name_comparator"</span><span class="op">)</span>,</span>
-<span>  uniqueCombinations <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  colour <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cohort_name_comparator"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -73,6 +73,11 @@
 <dd><p>Time scale to plot results. Can be days or years.</p></dd>
 
 
+<dt id="arg-uniquecombinations">uniqueCombinations<a class="anchor" aria-label="anchor" href="#arg-uniquecombinations"></a></dt>
+<dd><p>Whether to restrict to unique reference and
+comparator comparisons.</p></dd>
+
+
 <dt id="arg-facet">facet<a class="anchor" aria-label="anchor" href="#arg-facet"></a></dt>
 <dd><p>Columns to facet by. See options with <code>tidyColumns(result)</code>.
 Formula is also allowed to specify rows and columns.</p></dd>
@@ -80,11 +85,6 @@ Formula is also allowed to specify rows and columns.</p></dd>
 
 <dt id="arg-colour">colour<a class="anchor" aria-label="anchor" href="#arg-colour"></a></dt>
 <dd><p>Columns to color by. See options with <code>tidyColumns(result)</code>.</p></dd>
-
-
-<dt id="arg-uniquecombinations">uniqueCombinations<a class="anchor" aria-label="anchor" href="#arg-uniquecombinations"></a></dt>
-<dd><p>Whether to restrict to unique reference and
-comparator comparisons.</p></dd>
 
 </dl></div>
     <div class="section level2">
