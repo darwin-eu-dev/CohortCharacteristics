@@ -6,26 +6,26 @@
 \usage{
 tableCohortOverlap(
   result,
+  uniqueCombinations = TRUE,
   type = "gt",
   header = c("variable_name"),
-  groupColumn = c("cdm_name"),
-  uniqueCombinations = TRUE
+  groupColumn = c("cdm_name")
 )
 }
 \arguments{
-\item{result}{A summariseOverlapCohort result.}
+\item{result}{A summarised_result object. Output of summariseCohortOverlap().}
 
-\item{type}{Type of desired formatted table, possibilities: "gt",
-"flextable", "tibble".}
+\item{uniqueCombinations}{Whether to restrict to unique reference and
+comparator comparisons.}
 
-\item{header}{A vector containing which elements should go into the header
-in order. Allowed are: `cdm_name`, `group`, `strata`, `additional`,
-`variable`, `estimate`, `settings`.}
+\item{type}{Type of table. Check supported types with
+`visOmopResults::tableType()`.}
 
-\item{groupColumn}{Column to use as group labels.}
+\item{header}{Columns to use as header. See options with
+`tidyColumns(result)`.}
 
-\item{uniqueCombinations}{Whether to display unique combinations
-reference - comparator.}
+\item{groupColumn}{Columns to group by. See options with
+`tidyColumns(result)`.}
 }
 \value{
 A formatted table of the summariseOverlapCohort result.

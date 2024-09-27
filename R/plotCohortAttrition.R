@@ -18,7 +18,7 @@
 #'
 #' `r lifecycle::badge("experimental")`
 #'
-#' @param result A summarised_result object with the results of
+#' @param result A summarised_result object. Output of
 #' summariseCohortAttrition().
 #' @param cohortId deprecated.
 #'

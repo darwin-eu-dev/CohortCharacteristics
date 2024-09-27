@@ -10,29 +10,24 @@ plotCohortTiming(
   timeScale = "days",
   facet = c("cdm_name", "cohort_name_reference"),
   colour = c("cohort_name_comparator"),
-  colourName = lifecycle::deprecated(),
-  uniqueCombinations = FALSE,
-  .options = lifecycle::deprecated()
+  uniqueCombinations = FALSE
 )
 }
 \arguments{
-\item{result}{A summariseCohortTiming result.}
+\item{result}{A summarised_result object. Output of summariseCohortTiming().}
 
 \item{plotType}{Type of desired formatted table, possibilities are "boxplot" and
 "density".}
 
 \item{timeScale}{Time scale to plot results. Can be days or years.}
 
-\item{facet}{variables to facet by.}
+\item{facet}{Columns to facet by. See options with `tidyColumns(result)`.
+Formula is also allowed to specify rows and columns.}
 
-\item{colour}{Variables to use for colours.}
+\item{colour}{Columns to color by. See options with `tidyColumns(result)`.}
 
-\item{colourName}{deprecated.}
-
-\item{uniqueCombinations}{If TRUE, only unique combinations of reference and
-comparator plots will be plotted.}
-
-\item{.options}{deprecated.}
+\item{uniqueCombinations}{Whether to restrict to unique reference and
+comparator comparisons.}
 }
 \value{
 A ggplot.

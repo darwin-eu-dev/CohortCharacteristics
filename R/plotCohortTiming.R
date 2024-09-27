@@ -18,16 +18,15 @@
 #'
 #' `r lifecycle::badge("experimental")`
 #'
-#' @param result A summariseCohortTiming result.
+#' @param result A summarised_result object. Output of summariseCohortTiming().
 #' @param plotType Type of desired formatted table, possibilities are "boxplot" and
 #' "density".
 #' @param timeScale Time scale to plot results. Can be days or years.
-#' @param facet variables to facet by.
-#' @param colour Variables to use for colours.
-#' @param colourName deprecated.
-#' @param uniqueCombinations If TRUE, only unique combinations of reference and
-#' comparator plots will be plotted.
-#' @param .options deprecated.
+#' @param facet Columns to facet by. See options with `tidyColumns(result)`.
+#' Formula is also allowed to specify rows and columns.
+#' @param colour Columns to color by. See options with `tidyColumns(result)`.
+#' @param uniqueCombinations Whether to restrict to unique reference and
+#' comparator comparisons.
 #'
 #' @return A ggplot.
 #' @export
@@ -37,24 +36,7 @@ plotCohortTiming <- function(result,
                              timeScale = "days",
                              facet = c("cdm_name", "cohort_name_reference"),
                              colour = c("cohort_name_comparator"),
-                             colourName = lifecycle::deprecated(),
-                             uniqueCombinations = FALSE,
-                             .options = lifecycle::deprecated()) {
-  if (lifecycle::is_present(colourName)) {
-    lifecycle::deprecate_warn(
-      when = "0.3.0",
-      what = "plotCohortTiming(colourName = )",
-      with = "ggplot2::labs(color = )"
-    )
-  }
-  if (lifecycle::is_present(.options)) {
-    lifecycle::deprecate_warn(
-      when = "0.3.0",
-      what = "plotCohortTiming(.options = )",
-      with = "ggplot2::facet_wrap()"
-    )
-  }
-
+                             uniqueCombinations = FALSE) {
   result <- omopgenerics::validateResultArgument(result) |>
     visOmopResults::filterSettings(
       .data$result_type == "summarise_cohort_timing")

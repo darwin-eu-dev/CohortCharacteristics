@@ -12,16 +12,17 @@ tableCharacteristics(
 )
 }
 \arguments{
-\item{result}{A summarise_characteristics object.}
+\item{result}{A summarised_result object. Output of
+summariseCharacteristics().}
 
-\item{type}{Type of desired formatted table, possibilities: "gt",
-"flextable", "tibble".}
+\item{type}{Type of table. Check supported types with
+`visOmopResults::tableType()`.}
 
-\item{header}{A vector containing which elements should go into the header
-in order. Allowed are: `cdm_name`, `group`, `strata`, `additional`,
-`variable`, `estimate`, `settings`.}
+\item{header}{Columns to use as header. See options with
+`tidyColumns(result)`.}
 
-\item{groupColumn}{Column to use as group labels.}
+\item{groupColumn}{Columns to group by. See options with
+`tidyColumns(result)`.}
 }
 \value{
 A table with a formatted version of the summariseCharacteristics

@@ -6,23 +6,27 @@
 \usage{
 tableLargeScaleCharacteristics(
   result,
+  topConcepts = NULL,
   type = "gt",
   header = c("cdm_name", "cohort_name", visOmopResults::strataColumns(result),
     "window_name"),
-  groupColumn = c("table_name", "type", "analysis"),
-  topConcepts = NULL
+  groupColumn = c("table_name", "type", "analysis")
 )
 }
 \arguments{
-\item{result}{A summarise_large_scale_characteristics object.}
-
-\item{type}{Output type ("gt" or "flextable").}
-
-\item{header}{Columns to use as header. See options with tidyColumns(result).}
-
-\item{groupColumn}{Columns to group by. See options with tidyColumns(result).}
+\item{result}{A summarised_result object. Output of
+summariseLargeScaleCharacteristics().}
 
 \item{topConcepts}{Number of concepts to restrict the table.}
+
+\item{type}{Type of table. Check supported types with
+`visOmopResults::tableType()`.}
+
+\item{header}{Columns to use as header. See options with
+`tidyColumns(result)`.}
+
+\item{groupColumn}{Columns to group by. See options with
+`tidyColumns(result)`.}
 }
 \value{
 A formatted table.

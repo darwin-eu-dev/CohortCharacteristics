@@ -13,12 +13,13 @@ plotCohortOverlap(
 )
 }
 \arguments{
-\item{result}{A summariseCohortOverlap result.}
+\item{result}{A summarised_result object. Output of summariseCohortOverlap().}
 
-\item{facet}{Variables to facet by.}
+\item{facet}{Columns to facet by. See options with `tidyColumns(result)`.
+Formula is also allowed to specify rows and columns.}
 
-\item{uniqueCombinations}{If TRUE, only unique combinations of reference and
-comparator plots will be plotted.}
+\item{uniqueCombinations}{Whether to restrict to unique reference and
+comparator comparisons.}
 
 \item{y}{Variables to use in y axis, if NULL all variables not present in
 facet are used.}

@@ -18,10 +18,12 @@
 #'
 #' `r lifecycle::badge("experimental")`
 #'
-#' @param result output of summariseLargeScaleCharacteristics().
+#' @param result A summarised_result object. Output of
+#' summariseLargeScaleCharacteristics().
 #' @param reference A named character to set up the reference.
-#' @param facet Variables to facet by. Use tidyColumns to see options.
-#' @param colour  column in data to color by. Use tidyColumns to see options.
+#' @param facet Columns to facet by. See options with `tidyColumns(result)`.
+#' Formula is also allowed to specify rows and columns.
+#' @param colour Columns to color by. See options with `tidyColumns(result)`.
 #' @param missings value to replace the missings with.
 #'
 #' @return A ggplot.
