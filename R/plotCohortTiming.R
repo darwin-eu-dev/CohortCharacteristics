@@ -22,11 +22,11 @@
 #' @param plotType Type of desired formatted table, possibilities are "boxplot" and
 #' "density".
 #' @param timeScale Time scale to plot results. Can be days or years.
+#' @param uniqueCombinations Whether to restrict to unique reference and
+#' comparator comparisons.
 #' @param facet Columns to facet by. See options with `tidyColumns(result)`.
 #' Formula is also allowed to specify rows and columns.
 #' @param colour Columns to color by. See options with `tidyColumns(result)`.
-#' @param uniqueCombinations Whether to restrict to unique reference and
-#' comparator comparisons.
 #'
 #' @return A ggplot.
 #' @export
@@ -62,9 +62,9 @@
 plotCohortTiming <- function(result,
                              plotType = "boxplot",
                              timeScale = "days",
+                             uniqueCombinations = FALSE,
                              facet = c("cdm_name", "cohort_name_reference"),
-                             colour = c("cohort_name_comparator"),
-                             uniqueCombinations = FALSE) {
+                             colour = c("cohort_name_comparator")) {
   result <- omopgenerics::validateResultArgument(result) |>
     visOmopResults::filterSettings(
       .data$result_type == "summarise_cohort_timing")

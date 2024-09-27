@@ -21,10 +21,11 @@
 #' @param result A summarised_result object. Output of
 #' summariseLargeScaleCharacteristics().
 #' @param reference A named character to set up the reference.
+#' @param missings Value to replace the missing value with. If NULL missing
+#' values will be eliminated.
 #' @param facet Columns to facet by. See options with `tidyColumns(result)`.
 #' Formula is also allowed to specify rows and columns.
 #' @param colour Columns to color by. See options with `tidyColumns(result)`.
-#' @param missings value to replace the missings with.
 #'
 #' @return A ggplot.
 #'
@@ -64,9 +65,9 @@
 #'
 plotComparedLargeScaleCharacteristics <- function(result,
                                                   reference,
+                                                  missings = 0,
                                                   facet = NULL,
-                                                  colour = NULL,
-                                                  missings = 0) {
+                                                  colour = NULL) {
   # validate result
   result <- omopgenerics::validateResultArgument(result)
   omopgenerics::assertNumeric(missings, min = 0, max = 100, length = 1, null = TRUE)
