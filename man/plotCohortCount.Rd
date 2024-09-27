@@ -9,10 +9,10 @@ plotCohortCount(result, facet = c("cdm_name"), colour = NULL, x = NULL)
 \arguments{
 \item{result}{A summarised_result object. Output of summariseCohortCount().}
 
-\item{facet}{Columns to facet by. See options with `tidyColumns(result)`.
+\item{facet}{Columns to facet by. See options with \code{tidyColumns(result)}.
 Formula is also allowed to specify rows and columns.}
 
-\item{colour}{Columns to color by. See options with `tidyColumns(result)`.}
+\item{colour}{Columns to color by. See options with \code{tidyColumns(result)}.}
 
 \item{x}{Variables to use in x axis.}
 }
@@ -20,7 +20,7 @@ Formula is also allowed to specify rows and columns.}
 A ggplot.
 }
 \description{
-`r lifecycle::badge("experimental")`
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \examples{
 \donttest{

@@ -15,20 +15,20 @@ tableCohortCount(
 \item{result}{A summarised_result object. Output of summariseCohortCount().}
 
 \item{type}{Type of table. Check supported types with
-`visOmopResults::tableType()`.}
+\code{visOmopResults::tableType()}.}
 
 \item{header}{Columns to use as header. See options with
-`tidyColumns(result)`.}
+\code{tidyColumns(result)}.}
 
 \item{groupColumn}{Columns to group by. See options with
-`tidyColumns(result)`.}
+\code{tidyColumns(result)}.}
 }
 \value{
 A table with a formatted version of the summariseCohortCount result
 result.
 }
 \description{
-`r lifecycle::badge("experimental")`
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \examples{
 \donttest{

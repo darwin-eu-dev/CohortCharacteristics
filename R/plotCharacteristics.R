@@ -16,7 +16,7 @@
 
 #' Create a ggplot from the output of summariseCharacteristics.
 #'
-#' `r lifecycle::badge("experimental")`
+#' `r lifecycle::badge('experimental')`
 #'
 #' @param result A summariseCharacteristics result.
 #' @param plotStyle Either `barplot`, `scatterplot` or `boxplot`. If `barplot`

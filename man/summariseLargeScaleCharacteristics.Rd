@@ -43,7 +43,7 @@ or a column date of x}
 \item{excludedCodes}{Codes excluded.}
 }
 \value{
-The output of this function is a `ResultSummary` containing the
+The output of this function is a \code{ResultSummary} containing the
 relevant information.
 }
 \description{

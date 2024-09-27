@@ -14,14 +14,14 @@ plotLargeScaleCharacteristics(
 \item{result}{A summarised_result object. Output of
 summariseLargeScaleCharacteristics().}
 
-\item{facet}{Columns to facet by. See options with `tidyColumns(result)`.
+\item{facet}{Columns to facet by. See options with \code{tidyColumns(result)}.
 Formula is also allowed to specify rows and columns.}
 
-\item{colour}{Columns to color by. See options with `tidyColumns(result)`.}
+\item{colour}{Columns to color by. See options with \code{tidyColumns(result)}.}
 }
 \value{
 A ggplot2 object.
 }
 \description{
-`r lifecycle::badge("experimental")`
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }

@@ -21,10 +21,10 @@ plotCohortTiming(
 
 \item{timeScale}{Time scale to plot results. Can be days or years.}
 
-\item{facet}{Columns to facet by. See options with `tidyColumns(result)`.
+\item{facet}{Columns to facet by. See options with \code{tidyColumns(result)}.
 Formula is also allowed to specify rows and columns.}
 
-\item{colour}{Columns to color by. See options with `tidyColumns(result)`.}
+\item{colour}{Columns to color by. See options with \code{tidyColumns(result)}.}
 
 \item{uniqueCombinations}{Whether to restrict to unique reference and
 comparator comparisons.}
@@ -33,5 +33,5 @@ comparator comparisons.}
 A ggplot.
 }
 \description{
-`r lifecycle::badge("experimental")`
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }

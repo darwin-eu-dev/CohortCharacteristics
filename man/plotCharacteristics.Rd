@@ -9,19 +9,19 @@ plotCharacteristics(result, plotStyle = "barplot", facet = NULL, colour = NULL)
 \arguments{
 \item{result}{A summariseCharacteristics result.}
 
-\item{plotStyle}{Either `barplot`, `scatterplot` or `boxplot`. If `barplot`
-or `scatterplot` subset to just one estimate.}
+\item{plotStyle}{Either \code{barplot}, \code{scatterplot} or \code{boxplot}. If \code{barplot}
+or \code{scatterplot} subset to just one estimate.}
 
-\item{facet}{Columns to facet by. See options with `tidyColumns(result)`.
+\item{facet}{Columns to facet by. See options with \code{tidyColumns(result)}.
 Formula is also allowed to specify rows and columns.}
 
-\item{colour}{Columns to color by. See options with `tidyColumns(result)`.}
+\item{colour}{Columns to color by. See options with \code{tidyColumns(result)}.}
 }
 \value{
 A ggplot.
 }
 \description{
-`r lifecycle::badge("experimental")`
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \examples{
 \donttest{

@@ -18,10 +18,10 @@ summariseLargeScaleCharacteristics().}
 
 \item{reference}{A named character to set up the reference.}
 
-\item{facet}{Columns to facet by. See options with `tidyColumns(result)`.
+\item{facet}{Columns to facet by. See options with \code{tidyColumns(result)}.
 Formula is also allowed to specify rows and columns.}
 
-\item{colour}{Columns to color by. See options with `tidyColumns(result)`.}
+\item{colour}{Columns to color by. See options with \code{tidyColumns(result)}.}
 
 \item{missings}{value to replace the missings with.}
 }
@@ -29,5 +29,5 @@ Formula is also allowed to specify rows and columns.}
 A ggplot.
 }
 \description{
-`r lifecycle::badge("experimental")`
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
