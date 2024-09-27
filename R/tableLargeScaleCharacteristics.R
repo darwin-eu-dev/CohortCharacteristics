@@ -46,12 +46,16 @@
 #'   conceptSet = list("viral_pharyngitis" = 4112343),
 #'   name = "my_cohort"
 #' )
+#'
 #' result <- summariseLargeScaleCharacteristics(
 #'   cohort = cdm$my_cohort,
 #'   eventInWindow = "condition_occurrence",
 #'   episodeInWindow = "drug_exposure"
 #' )
+#'
 #' tableLargeScaleCharacteristics(result)
+#'
+#' cdmDisconnect(cdm)
 #' }
 #'
 tableLargeScaleCharacteristics <- function(result,

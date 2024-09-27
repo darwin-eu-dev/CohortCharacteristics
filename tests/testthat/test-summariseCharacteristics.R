@@ -1404,11 +1404,9 @@ test_that("output is always the same", {
   cdm2 <- CDMConnector::copyCdmTo(
     con = duckdb::dbConnect(duckdb::duckdb()), cdm = cdm, schema = "main")
 
-  result1 <- cdm1$cohort |>
-    CohortCharacteristics::summariseCharacteristics()
+  result1 <- summariseCharacteristics(cdm1$cohort)
 
-  result2 <- cdm2$cohort |>
-    CohortCharacteristics::summariseCharacteristics()
+  result2 <- summariseCharacteristics(cdm2$cohort)
 
   expect_identical(result1, result2)
 

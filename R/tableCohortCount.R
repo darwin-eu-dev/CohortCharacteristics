@@ -44,6 +44,21 @@
 #'
 #' @export
 #'
+#' @examples
+#' \donttest{
+#' #' library(CohortCharacteristics)
+#' library(dplyr, warn.conflicts = FALSE)
+#'
+#' cdm <- mockCohortCharacteristics()
+#'
+#' result <- summariseCohortCount(cohort = cdm$cohort1)
+#'
+#' tableCohortCount(result)
+#'
+#' mockDisconnect(cdm)
+#' }
+#'
+#'
 tableCohortCount <- function(result,
                              type = "gt",
                              header = "cohort_name",

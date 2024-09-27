@@ -20,8 +20,9 @@ A `grViz` visualisation.
 }
 \examples{
 \donttest{
+library(CohortCharacteristics)
 library(omopgenerics)
-library(dplyr)
+library(dplyr, warn.conflicts = FALSE)
 
 cdm <- mockCohortCharacteristics(numberIndividuals = 1000)
 
@@ -32,10 +33,13 @@ cdm[["cohort1"]] <- cdm[["cohort1"]] |>
   recordCohortAttrition("Restrict to cohort_end_date < 2020") |>
   compute(temporary = FALSE, name = "cohort1")
 
-cdm$cohort1 |>
-  summariseCohortAttrition() |>
+result <- summariseCohortAttrition(cdm$cohort1)
+
+result |>
   filter(group_level == "cohort_2") |>
   plotCohortAttrition(cohortId = 2)
+
+mockDisconnect(cdm)
 }
 
 }

@@ -43,4 +43,18 @@ tableCohortCount(result)
 mockDisconnect(cdm = cdm)
 }
 
+\donttest{
+#' library(CohortCharacteristics)
+library(dplyr, warn.conflicts = FALSE)
+
+cdm <- mockCohortCharacteristics()
+
+result <- summariseCohortCount(cohort = cdm$cohort1)
+
+tableCohortCount(result)
+
+mockDisconnect(cdm)
+}
+
+
 }

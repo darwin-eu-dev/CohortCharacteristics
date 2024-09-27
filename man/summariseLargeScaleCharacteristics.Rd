@@ -52,29 +52,26 @@ cohort table
 }
 \examples{
 \donttest{
+library(CohortCharacteristics)
+library(duckdb)
+library(CDMConnector)
+library(DrugUtilisation)
 library(dplyr, warn.conflicts = FALSE)
 
-cdm <- mockCohortCharacteristics(numberIndividuals = 100)
+con <- dbConnect(duckdb(), eunomia_dir())
+cdm <- cdmFromCon(con, cdmSchem = "main", writeSchema = "main")
 
-concept <- cdm$condition_occurrence |>
-  select(concept_id = condition_occurrence_id) |>
-  distinct() |>
-  collect() |>
-  mutate(
-    domain_id = NA_character_,
-    vocabulary_id = NA_character_,
-    concept_class_id = NA_character_,
-    concept_code = NA_character_,
-    valid_start_date = as.Date("1900-01-01"),
-    valid_end_date = as.Date("2099-01-01"),
-    concept_name = paste0("concept: ", concept_id)
-  )
-cdm <- CDMConnector::insertTable(cdm, "concept", concept)
-results <- cdm$cohort2 |>
+cdm <- generateIngredientCohortSet(
+  cdm = cdm, name = "my_cohort", ingredient = "acetaminophen"
+)
+
+cdm$my_cohort |>
   summariseLargeScaleCharacteristics(
-    episodeInWindow = c("condition_occurrence"),
-    minimumFrequency = 0
-  )
-mockDisconnect(cdm = cdm)
+    window = list(c(-365, -1), c(1, 365)),
+    eventInWindow = "condition_occurrence"
+  ) |>
+  glimpse()
+
+cdmDisconnect(cdm)
 }
 }

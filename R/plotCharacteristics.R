@@ -31,7 +31,7 @@
 #' @examples
 #' \donttest{
 #' library(CohortCharacteristics)
-#' library(dplyr)
+#' library(dplyr, warn.conflicts = FALSE)
 #'
 #' cdm <- mockCohortCharacteristics()
 #'
@@ -71,7 +71,7 @@
 #'     colour = "cohort_name"
 #'   )
 #'
-#' mockDisconnect(cdm = cdm)
+#' mockDisconnect(cdm)
 #' }
 plotCharacteristics <- function(result,
                                 plotStyle = "barplot",
