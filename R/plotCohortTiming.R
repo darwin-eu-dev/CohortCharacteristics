@@ -37,21 +37,6 @@ plotCohortTiming <- function(result,
                              facet = c("cdm_name", "cohort_name_reference"),
                              colour = c("cohort_name_comparator"),
                              uniqueCombinations = FALSE) {
-  if (lifecycle::is_present(colourName)) {
-    lifecycle::deprecate_warn(
-      when = "0.3.0",
-      what = "plotCohortTiming(colourName = )",
-      with = "ggplot2::labs(color = )"
-    )
-  }
-  if (lifecycle::is_present(.options)) {
-    lifecycle::deprecate_warn(
-      when = "0.3.0",
-      what = "plotCohortTiming(.options = )",
-      with = "ggplot2::facet_wrap()"
-    )
-  }
-
   result <- omopgenerics::validateResultArgument(result) |>
     visOmopResults::filterSettings(
       .data$result_type == "summarise_cohort_timing")
