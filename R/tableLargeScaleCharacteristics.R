@@ -16,13 +16,14 @@
 
 #' Format a summarise_large_scale_characteristics object into a visual table.
 #'
-#' `r lifecycle::badge("experimental")`
-#'
 #' @param result A summarise_large_scale_characteristics object.
 #' @param type Output type ("gt" or "flextable").
 #' @param header Columns to use as header. See options with tidyColumns(result).
 #' @param groupColumn Columns to group by. See options with tidyColumns(result).
 #' @param topConcepts Number of concepts to restrict the table.
+#'
+#' @description
+#' `r lifecycle::badge("experimental")`
 #'
 #' @export
 #'
