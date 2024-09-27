@@ -8,9 +8,9 @@ plotCohortTiming(
   result,
   plotType = "boxplot",
   timeScale = "days",
+  uniqueCombinations = FALSE,
   facet = c("cdm_name", "cohort_name_reference"),
-  colour = c("cohort_name_comparator"),
-  uniqueCombinations = FALSE
+  colour = c("cohort_name_comparator")
 )
 }
 \arguments{
@@ -21,13 +21,13 @@ plotCohortTiming(
 
 \item{timeScale}{Time scale to plot results. Can be days or years.}
 
+\item{uniqueCombinations}{Whether to restrict to unique reference and
+comparator comparisons.}
+
 \item{facet}{Columns to facet by. See options with \code{tidyColumns(result)}.
 Formula is also allowed to specify rows and columns.}
 
 \item{colour}{Columns to color by. See options with \code{tidyColumns(result)}.}
-
-\item{uniqueCombinations}{Whether to restrict to unique reference and
-comparator comparisons.}
 }
 \value{
 A ggplot.
