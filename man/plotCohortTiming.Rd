@@ -10,7 +10,7 @@ plotCohortTiming(
   timeScale = "days",
   facet = c("cdm_name", "cohort_name_reference"),
   colour = c("cohort_name_comparator"),
-  uniqueCombinations = FALSE
+  uniqueCombinations = TRUE
 )
 }
 \arguments{

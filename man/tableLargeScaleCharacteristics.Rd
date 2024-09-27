@@ -9,7 +9,7 @@ tableLargeScaleCharacteristics(
   topConcepts = NULL,
   type = "gt",
   header = c("cdm_name", "cohort_name", visOmopResults::strataColumns(result),
-    "window_name"),
+    "variable_level"),
   groupColumn = c("table_name", "type", "analysis")
 )
 }
