@@ -22,7 +22,7 @@
 #' summariseCohortAttrition().
 #' @param cohortId deprecated.
 #'
-#' @return A dgr_graph
+#' @return A `grViz` visualisation.
 #'
 #' @export
 #'
@@ -30,7 +30,6 @@
 #' \donttest{
 #' library(omopgenerics)
 #' library(dplyr)
-#' library(DiagrammeR)
 #'
 #' cdm <- mockCohortCharacteristics(numberIndividuals = 1000)
 #'
@@ -43,6 +42,7 @@
 #'
 #' cdm$cohort1 |>
 #'   summariseCohortAttrition() |>
+#'   filter(group_level == "cohort_2") |>
 #'   plotCohortAttrition(cohortId = 2)
 #' }
 #'
