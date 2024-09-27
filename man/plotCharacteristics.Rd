@@ -26,7 +26,7 @@ A ggplot.
 \examples{
 \donttest{
 library(CohortCharacteristics)
-library(dplyr)
+library(dplyr, warn.conflicts = FALSE)
 
 cdm <- mockCohortCharacteristics()
 
@@ -66,6 +66,6 @@ results |>
     colour = "cohort_name"
   )
 
-mockDisconnect(cdm = cdm)
+mockDisconnect(cdm)
 }
 }

@@ -31,10 +31,14 @@
 #' @examples
 #' \donttest{
 #' library(CohortCharacteristics)
+#'
 #' cdm <- mockCohortCharacteristics()
+#'
 #' overlap <- summariseCohortOverlap(cdm$cohort2)
+#'
 #' tableCohortOverlap(overlap)
-#' mockDisconnect(cdm = cdm)
+#'
+#' mockDisconnect(cdm)
 #' }
 #'
 #' @return A formatted table of the summariseOverlapCohort result.

@@ -67,6 +67,7 @@
 #' library(PatientProfiles)
 #'
 #' cdm <- mockCohortCharacteristics()
+#'
 #' cdm$cohort1 |>
 #'   addSex() |>
 #'   addAge(
@@ -89,7 +90,7 @@
 #'   ) |>
 #'   glimpse()
 #'
-#' mockDisconnect(cdm = cdm)
+#' mockDisconnect(cdm)
 #' }
 summariseCharacteristics <- function(cohort,
                                      cohortId = NULL,

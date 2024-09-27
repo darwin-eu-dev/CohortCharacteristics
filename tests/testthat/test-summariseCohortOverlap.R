@@ -129,10 +129,10 @@ test_that("expect result is deterministic", {
     omopgenerics::newCohortTable()
 
   result1 <- cdm1$cohort |>
-    CohortCharacteristics::summariseCohortOverlap(strata = st)
+    summariseCohortOverlap(strata = st)
 
   result2 <- cdm2$cohort |>
-    CohortCharacteristics::summariseCohortOverlap(strata = st)
+    summariseCohortOverlap(strata = st)
 
   expect_identical(result1, result2)
 

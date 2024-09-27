@@ -38,9 +38,14 @@ A ggplot.
 \examples{
 \donttest{
 library(CohortCharacteristics)
-cdm <- CohortCharacteristics::mockCohortCharacteristics()
+
+cdm <- mockCohortCharacteristics()
+
 overlap <- summariseCohortOverlap(cdm$cohort2)
+
 plotCohortOverlap(overlap)
+
+mockDisconnect(cdm)
 }
 
 }

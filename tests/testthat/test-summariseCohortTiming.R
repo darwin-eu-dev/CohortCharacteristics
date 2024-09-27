@@ -137,11 +137,11 @@ test_that("result is deterministic", {
     omopgenerics::newCohortTable()
 
   result1 <- cdm1$cohort |>
-    CohortCharacteristics::summariseCohortTiming(
+    summariseCohortTiming(
       strata = st, estimates = c("min", "q25", "median", "q75", "max"))
 
   result2 <- cdm2$cohort |>
-    CohortCharacteristics::summariseCohortTiming(
+    summariseCohortTiming(
       strata = st, estimates = c("min", "q25", "median", "q75", "max"))
 
   expect_identical(result1, result2)

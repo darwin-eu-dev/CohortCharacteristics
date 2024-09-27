@@ -39,9 +39,14 @@ Summarise timing between entries into cohorts in a cohort table
 \examples{
 \donttest{
 library(CohortCharacteristics)
+library(dplyr, warn.conflicts = FALSE)
+
 cdm <- mockCohortCharacteristics(numberIndividuals = 100)
-summariseCohortTiming(cdm$cohort2) |> dplyr::glimpse()
-mockDisconnect(cdm = cdm)
+
+summariseCohortTiming(cdm$cohort2) |>
+  glimpse()
+
+mockDisconnect(cdm)
 }
 
 }

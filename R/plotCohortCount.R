@@ -30,7 +30,7 @@
 #' \donttest{
 #' library(CohortCharacteristics)
 #' library(PatientProfiles)
-#' library(dplyr)
+#' library(dplyr, warn.conflicts = FALSE)
 #'
 #' cdm <- mockCohortCharacteristics(numberIndividuals = 100)
 #'
@@ -45,8 +45,9 @@
 #'     x = "sex",
 #'     facet = cohort_name ~ age_group,
 #'     colour = "sex"
-#'
 #'   )
+#'
+#' mockDisconnect(cdm)
 #' }
 #'
 plotCohortCount <- function(result,

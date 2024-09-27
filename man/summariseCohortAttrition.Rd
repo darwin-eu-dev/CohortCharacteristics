@@ -21,8 +21,13 @@ Summarise attrition associated with cohorts in a cohort table
 \examples{
 \donttest{
 library(CohortCharacteristics)
+library(dplyr, warn.conflicts = FALSE)
+
 cdm <- mockCohortCharacteristics()
-summariseCohortAttrition(cohort = cdm$cohort1) |> dplyr::glimpse()
-mockDisconnect(cdm = cdm)
+
+summariseCohortAttrition(cohort = cdm$cohort1) |>
+  glimpse()
+
+mockDisconnect(cdm)
 }
 }

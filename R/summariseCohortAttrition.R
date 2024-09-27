@@ -27,9 +27,14 @@
 #' @examples
 #' \donttest{
 #' library(CohortCharacteristics)
+#' library(dplyr, warn.conflicts = FALSE)
+#'
 #' cdm <- mockCohortCharacteristics()
-#' summariseCohortAttrition(cohort = cdm$cohort1) |> dplyr::glimpse()
-#' mockDisconnect(cdm = cdm)
+#'
+#' summariseCohortAttrition(cohort = cdm$cohort1) |>
+#'   glimpse()
+#'
+#' mockDisconnect(cdm)
 #' }
 summariseCohortAttrition <- function(cohort,
                                      cohortId = NULL) {

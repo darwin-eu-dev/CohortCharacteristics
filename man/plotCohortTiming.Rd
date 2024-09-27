@@ -35,3 +35,32 @@ A ggplot.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
+\examples{
+\dontrun{
+library(CohortCharacteristics)
+library(duckdb)
+library(CDMConnector)
+library(DrugUtilisation)
+
+con <- dbConnect(duckdb(), eunomiaDir())
+cdm <- cdmFromCon(con, cdmSchem = "main", writeSchema = "main")
+
+cdm <- generateIngredientCohortSet(
+  cdm = cdm,
+  name = "my_cohort",
+  ingredient = c("acetaminophen", "morphine", "warfarin")
+)
+
+timings <- summariseCohortTiming(cdm$my_cohort)
+
+plotCohortTiming(
+  timings,
+  timeScale = "years",
+  facet = c("cdm_name", "cohort_name_reference"),
+  colour = c("cohort_name_comparator")
+)
+
+cdmDisconnect(cdm)
+}
+
+}
