@@ -46,6 +46,10 @@ install.packages("pak")
 pak::pkg_install("darwin-eu-dev/CohortCharacteristics")
 ```
 
+``` r
+library(CohortCharacteristics)
+```
+
 ## Content
 
 The package contain three types of functions:
@@ -71,130 +75,207 @@ The package contain three types of functions:
 
 ### Mock data
 
-The CohortCharacteristics package is designed to work with data in the
-OMOP CDM format, so our first step is to create a reference to the data
-using the CDMConnector package. For this example we will work with the
-example Eunomia dataset.
+Althought the package provides some simple mock data for testing
+(`mockCohortCharacteristics()`), for these examples we will use the
+GiBleed dataset that can be downloaded using the CDMConnector package
+that will give us some more real results.
 
 ``` r
-library(CohortCharacteristics)
+library(CDMConnector)
+library(duckdb)
 library(dplyr, warn.conflicts = FALSE)
-```
-
-``` r
-cdm <- mockCohortCharacteristics(numberIndividuals = 1000)
-#> Note: method with signature 'DBIConnection#Id' chosen for function 'dbExistsTable',
-#>  target signature 'duckdb_connection#Id'.
-#>  "duckdb_connection#ANY" would also be valid
-cdm
+folder <- tempdir()
+Sys.setenv("EUNOMIA_DATA_FOLDER" = folder)
+downloadEunomiaData(overwrite = TRUE)
 #> 
-#> ── # OMOP CDM reference (duckdb) of PP_MOCK ────────────────────────────────────
-#> • omop tables: person, observation_period, visit_occurrence,
-#> condition_occurrence, drug_exposure, death
-#> • cohort tables: cohort1, cohort2
-#> • achilles tables: -
-#> • other tables: -
+#> Download completed!
+con <- dbConnect(duckdb(), eunomiaDir())
+cdm <- cdmFromCon(con = con, cdmSchema = "main", writeSchema = "main")
 ```
 
-We can see that in this example data we have a cohort table called
-cohort1.
+Let’s create a simple cohort:
 
 ``` r
-cdm$cohort1
-#> # Source:   table<main.cohort1> [?? x 4]
-#> # Database: DuckDB v1.0.0 [root@Darwin 23.6.0:R 4.4.1/:memory:]
-#>    cohort_definition_id subject_id cohort_start_date cohort_end_date
-#>                   <int>      <int> <date>            <date>         
-#>  1                    2        593 2010-01-26        2010-03-07     
-#>  2                    3        695 1950-02-10        1954-01-25     
-#>  3                    1        274 1959-11-29        1960-12-10     
-#>  4                    2        507 1993-10-18        1995-09-03     
-#>  5                    2        550 1980-11-11        1992-05-05     
-#>  6                    3         46 1975-06-22        1979-07-03     
-#>  7                    1         62 1976-04-26        1979-03-19     
-#>  8                    2        749 1970-11-16        1976-10-08     
-#>  9                    1        723 1966-12-28        1967-11-12     
-#> 10                    3        963 1929-10-08        1930-11-24     
-#> # ℹ more rows
+library(DrugUtilisation)
+cdm <- generateIngredientCohortSet(cdm = cdm, name = "my_cohort", ingredient = c("warfarin", "acetaminophen"))
 ```
 
 ### Cohort counts
 
+We can get counts using the function `summariseCohortCount()`:
+
+``` r
+result <- summariseCohortCount(cdm$my_cohort)
+result |>
+  glimpse()
+#> Rows: 4
+#> Columns: 13
+#> $ result_id        <int> 1, 1, 1, 1
+#> $ cdm_name         <chr> "Synthea synthetic health database", "Synthea synthet…
+#> $ group_name       <chr> "cohort_name", "cohort_name", "cohort_name", "cohort_…
+#> $ group_level      <chr> "11289_warfarin", "11289_warfarin", "161_acetaminophe…
+#> $ strata_name      <chr> "overall", "overall", "overall", "overall"
+#> $ strata_level     <chr> "overall", "overall", "overall", "overall"
+#> $ variable_name    <chr> "Number records", "Number subjects", "Number records"…
+#> $ variable_level   <chr> NA, NA, NA, NA
+#> $ estimate_name    <chr> "count", "count", "count", "count"
+#> $ estimate_type    <chr> "integer", "integer", "integer", "integer"
+#> $ estimate_value   <chr> "137", "2679", "13907", "137"
+#> $ additional_name  <chr> "overall", "overall", "overall", "overall"
+#> $ additional_level <chr> "overall", "overall", "overall", "overall"
+```
+
+You can easily create a table using the associated table function,
+`tableCohortCount()`:
+
+``` r
+tableCohortCount(result, type = "flextable")
+```
+
+<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
+
+We could create a simple plot with `plotCohortCount()`:
+
+``` r
+result |>
+  filter(variable_name == "Number subjects") |>
+  plotCohortCount(x = "cohort_name", colour = "cohort_name")
+```
+
+<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
+
+All the other function work using the same dynamic, first `summarise`,
+then `plot`/`table`.
+
 ### Cohort attrition
+
+``` r
+result <- summariseCohortAttrition(cdm$my_cohort)
+```
+
+``` r
+tableCohortAttrition(result, type = "flextable")
+```
+
+<img src="man/figures/README-unnamed-chunk-12-1.png" width="100%" />
+
+``` r
+result |>
+  filter(group_level == "161_acetaminophen") |>
+  plotCohortAttrition()
+```
+
+<div class="grViz html-widget html-fill-item" id="htmlwidget-277e5a8214cb8e2afc92" style="width:100%;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-277e5a8214cb8e2afc92">{"x":{"diagram":"digraph {\n\ngraph [layout = \"neato\",\n       outputorder = \"edgesfirst\",\n       bgcolor = \"white\"]\n\nnode [fontname = \"Helvetica\",\n      fontsize = \"10\",\n      shape = \"circle\",\n      fixedsize = \"true\",\n      width = \"0.5\",\n      style = \"filled\",\n      fillcolor = \"aliceblue\",\n      color = \"gray70\",\n      fontcolor = \"gray50\"]\n\nedge [fontname = \"Helvetica\",\n     fontsize = \"8\",\n     len = \"1.5\",\n     color = \"gray80\",\n     arrowsize = \"0.5\"]\n\n  \"1\" [label = \"Initial events\nN subjects = 2,679\nN records = 13,908\", shape = \"box\", penwidth = \"2\", color = \"black\", fillcolor = \"#F0F8FF\", fontname = \"Calibri\", fontsize = \"11\", fontcolor = \"black\", height = \"0.6\", width = \"1.44\", pos = \"1,2.1!\"] \n  \"2\" [label = \"Final events\nN subjects = 2,679\nN records = 13,907\", shape = \"box\", penwidth = \"2\", color = \"black\", fillcolor = \"#F0F8FF\", fontname = \"Calibri\", fontsize = \"11\", fontcolor = \"black\", height = \"0.6\", width = \"1.44\", pos = \"1,0.7!\"] \n  \"3\" [label = \"N subjects = 0\nN records = 1\", shape = \"box\", color = \"black\", fillcolor = \"#C0C0C0\", fontname = \"Calibri\", fontsize = \"9\", fontcolor = \"black\", height = \"0.4\", width = \"1.2\", pos = \"3,1.4!\"] \n  \"4\" [label = \"join exposures separated by\n1 or less days\", shape = \"box\", color = \"black\", fillcolor = \"#FFFFFF\", fontname = \"Calibri\", fontsize = \"10\", fontcolor = \"back\", height = \"0.4\", width = \"2.16\", pos = \"1,1.4!\"] \n\"1\"->\"2\" [color = \"black\"] \n\"4\"->\"3\" [color = \"black\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 
 ### Characteristics
 
-With one line of code from CohortCharacteristics we can generate summary
-statistics on this cohort.
-
 ``` r
-cohort1_characteristics <- summariseCharacteristics(cdm$cohort1)
-#> ℹ adding demographics columns
-#> ℹ summarising data
-#> ✔ summariseCharacteristics finished!
-cohort1_characteristics |>
-  glimpse()
-#> Rows: 132
-#> Columns: 13
-#> $ result_id        <int> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,…
-#> $ cdm_name         <chr> "PP_MOCK", "PP_MOCK", "PP_MOCK", "PP_MOCK", "PP_MOCK"…
-#> $ group_name       <chr> "cohort_name", "cohort_name", "cohort_name", "cohort_…
-#> $ group_level      <chr> "cohort_1", "cohort_1", "cohort_1", "cohort_1", "coho…
-#> $ strata_name      <chr> "overall", "overall", "overall", "overall", "overall"…
-#> $ strata_level     <chr> "overall", "overall", "overall", "overall", "overall"…
-#> $ variable_name    <chr> "Number records", "Number subjects", "Cohort start da…
-#> $ variable_level   <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
-#> $ estimate_name    <chr> "count", "count", "min", "q25", "median", "q75", "max…
-#> $ estimate_type    <chr> "integer", "integer", "date", "date", "date", "date",…
-#> $ estimate_value   <chr> "355", "355", "1901-12-08", "1941-01-01", "1958-05-16…
-#> $ additional_name  <chr> "overall", "overall", "overall", "overall", "overall"…
-#> $ additional_level <chr> "overall", "overall", "overall", "overall", "overall"…
+result <- summariseCharacteristics(cdm$my_cohort)
 ```
 
-And with another line we can create a table of these results.
-
 ``` r
-tableCharacteristics(cohort1_characteristics, type = "tibble")
-#> ! Results have not been suppressed.
-#> # A tibble: 20 × 6
-#>    `Variable name`    `Variable level` `Estimate name`    [header_name]CDM nam…¹
-#>    <chr>              <chr>            <chr>              <chr>                 
-#>  1 Number records     <NA>             N                  355                   
-#>  2 Number subjects    <NA>             N                  355                   
-#>  3 Cohort start date  <NA>             Median [Q25 - Q75] 1958-05-16 [1941-01-0…
-#>  4 Cohort start date  <NA>             Range              1901-12-08 to 2020-07…
-#>  5 Cohort end date    <NA>             Median [Q25 - Q75] 1965-07-01 [1949-05-2…
-#>  6 Cohort end date    <NA>             Range              1908-02-19 to 2027-01…
-#>  7 Age                <NA>             Median [Q25 - Q75] 13 [5 - 24]           
-#>  8 Age                <NA>             Mean (SD)          15.49 (12.22)         
-#>  9 Age                <NA>             Range              0 to 53               
-#> 10 Sex                Female           N (%)              168 (47.32%)          
-#> 11 Sex                Male             N (%)              187 (52.68%)          
-#> 12 Prior observation  <NA>             Median [Q25 - Q75] 4,848 [2,070 - 9,124] 
-#> 13 Prior observation  <NA>             Mean (SD)          5,839.58 (4,466.56)   
-#> 14 Prior observation  <NA>             Range              19 to 19,421          
-#> 15 Future observation <NA>             Median [Q25 - Q75] 4,749 [2,336 - 8,313] 
-#> 16 Future observation <NA>             Mean (SD)          5,686.77 (4,445.12)   
-#> 17 Future observation <NA>             Range              15 to 21,907          
-#> 18 Days in cohort     <NA>             Median [Q25 - Q75] 1,787 [583 - 4,118]   
-#> 19 Days in cohort     <NA>             Mean (SD)          2,794.07 (2,917.60)   
-#> 20 Days in cohort     <NA>             Range              4 to 14,127           
-#> # ℹ abbreviated name:
-#> #   ¹​`[header_name]CDM name\n[header_level]PP_MOCK\n[header_name]Cohort name\n[header_level]cohort_1`
-#> # ℹ 2 more variables:
-#> #   `[header_name]CDM name\n[header_level]PP_MOCK\n[header_name]Cohort name\n[header_level]cohort_2` <chr>,
-#> #   `[header_name]CDM name\n[header_level]PP_MOCK\n[header_name]Cohort name\n[header_level]cohort_3` <chr>
+tableCharacteristics(result, type = "flextable")
 ```
 
-CohortCharacteristics provides a number of other functions to help
-summarise cohort tables and present the results in publication-ready
-tables and figures. See the vignettes for more details.
+<img src="man/figures/README-unnamed-chunk-15-1.png" width="100%" />
+
+``` r
+result |>
+  filter(variable_name == "Age") |>
+  plotCharacteristics(plotStyle = "boxplot", colour = "cohort_name")
+```
+
+<img src="man/figures/README-unnamed-chunk-16-1.png" width="100%" />
 
 ### Timing between cohorts
 
+``` r
+result <- summariseCohortTiming(cdm$my_cohort)
+```
+
+``` r
+tableCohortTiming(result, header = "cdm_name", type = "flextable")
+```
+
+<img src="man/figures/README-unnamed-chunk-18-1.png" width="100%" />
+
+``` r
+plotCohortTiming(
+  result, 
+  uniqueCombinations = TRUE, 
+  facet = "cdm_name", 
+  colour = c("cohort_name_reference", "cohort_name_comparator"),
+  timeScale = "years"
+)
+```
+
+<img src="man/figures/README-unnamed-chunk-19-1.png" width="100%" />
+
+``` r
+plotCohortTiming(
+  result, 
+  plotType = "density",
+  uniqueCombinations = FALSE, 
+  facet = "cdm_name", 
+  colour = c("cohort_name_comparator"),
+  timeScale = "years"
+)
+```
+
+<img src="man/figures/README-unnamed-chunk-20-1.png" width="100%" />
+
 ### Overlap between cohort
 
+``` r
+result <- summariseCohortOverlap(cdm$my_cohort)
+```
+
+``` r
+tableCohortOverlap(result, type = "flextable")
+```
+
+<img src="man/figures/README-unnamed-chunk-22-1.png" width="100%" />
+
+``` r
+plotCohortOverlap(result, uniqueCombinations = TRUE)
+```
+
+<img src="man/figures/README-unnamed-chunk-23-1.png" width="100%" />
+
 ### Large scale characteristics
+
+``` r
+result <- cdm$my_cohort |>
+  summariseLargeScaleCharacteristics(
+    window = list(c(-90, -1), c(0, 0), c(1, 90)),
+    eventInWindow = "condition_occurrence"
+  )
+```
+
+``` r
+tableLargeScaleCharacteristics(result, type = "flextable")
+```
+
+<img src="man/figures/README-unnamed-chunk-25-1.png" width="100%" />
+
+``` r
+result |>
+  filter(group_level == "161_acetaminophen") |>
+  plotLargeScaleCharacteristics()
+```
+
+<img src="man/figures/README-unnamed-chunk-26-1.png" width="100%" />
+
+``` r
+result |>
+  filter(group_level == "161_acetaminophen", variable_level != "0 to 0") |>
+  plotComparedLargeScaleCharacteristics(
+    reference = c(variable_level = "-90 to -1"), colour = "variable_name"
+  )
+```
+
+<img src="man/figures/README-unnamed-chunk-27-1.png" width="100%" />
 
 ### Disconnect
 
@@ -218,11 +299,18 @@ others database and what we want to export is the summarised_result
 objects and not the table or plot which we would like to build after
 compiling results from different cdm objects.
 
-<p style="color:red">
-Not recommended:
-</p>
+**Not recommended**:
 
 ``` r
-summariseCharacteristics() |>
+cdm$my_cohort |>
+  summariseCharacteristics() |>
   tableCharacteristics()
+```
+
+**Recommended**:
+
+``` r
+x <- summariseCharacteristics(cdm$my_cohort)
+
+tableCharacteristics(x)
 ```

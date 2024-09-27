@@ -44,7 +44,7 @@
 #'
 plotCohortOverlap <- function(result,
                               facet = c("cdm_name", "cohort_name_reference"),
-                              uniqueCombinations = FALSE,
+                              uniqueCombinations = TRUE,
                               y = NULL,
                               .options = lifecycle::deprecated()) {
   # initial checks

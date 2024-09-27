@@ -64,7 +64,7 @@ plotCohortTiming <- function(result,
                              timeScale = "days",
                              facet = c("cdm_name", "cohort_name_reference"),
                              colour = c("cohort_name_comparator"),
-                             uniqueCombinations = FALSE) {
+                             uniqueCombinations = TRUE) {
   result <- omopgenerics::validateResultArgument(result) |>
     visOmopResults::filterSettings(
       .data$result_type == "summarise_cohort_timing")
@@ -85,7 +85,7 @@ plotCohortTiming <- function(result,
         .data$variable_name == "days_between_cohort_entries",
         !.data$estimate_name %in% c("density_x", "density_y"))
     if (timeScale == "years") {
-      result <- changeDaysToYears(result, "days_between_cohort_entries")
+      result <- changeDaysToYears(result)
     }
   } else if (plotType == "density") {
     result <- result |>
@@ -93,7 +93,9 @@ plotCohortTiming <- function(result,
         .data$variable_name == "days_between_cohort_entries",
         .data$estimate_name %in% c("density_x", "density_y"))
     if (timeScale == "years") {
-      result <- changeDaysToYears(result, "density_x")
+      result <- result |>
+        changeDaysToYears("density_x", 1/365.25) |>
+        changeDaysToYears("density_y", 365.25)
     }
   }
 

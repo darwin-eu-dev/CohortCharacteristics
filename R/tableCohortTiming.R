@@ -85,9 +85,7 @@ tableCohortTiming <- function(result,
   }
 
   if (timeScale == "years") {
-    result <- changeDaysToYears(
-      result, "days_between_cohort_entries", "years_between_cohort_entries"
-    )
+    result <- changeDaysToYears(result)
   }
 
   if (uniqueCombinations) result <- getUniqueCombinationsSr(result)
@@ -103,7 +101,8 @@ tableCohortTiming <- function(result,
     ),
     header = header,
     groupColumn = groupColumn,
-    type = type
+    type = type,
+    hide = "variable_level"
   )
 
   return(tab)
