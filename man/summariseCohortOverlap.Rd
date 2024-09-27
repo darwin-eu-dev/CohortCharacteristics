@@ -24,8 +24,13 @@ Summarise overlap between cohorts in a cohort table
 \examples{
 \donttest{
 library(CohortCharacteristics)
-cdm <- CohortCharacteristics::mockCohortCharacteristics()
-summariseCohortOverlap(cdm$cohort2) |> dplyr::glimpse()
-mockDisconnect(cdm = cdm)
+library(dplyr, warn.conflicts = FALSE)
+
+cdm <- mockCohortCharacteristics()
+
+summariseCohortOverlap(cdm$cohort2) |>
+  glimpse()
+
+mockDisconnect(cdm)
 }
 }

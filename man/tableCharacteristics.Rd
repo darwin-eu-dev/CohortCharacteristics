@@ -33,13 +33,15 @@ result.
 }
 \examples{
 \donttest{
+library(CohortCharacteristics)
+
 cdm <- mockCohortCharacteristics()
 
 result <- summariseCharacteristics(cdm$cohort1)
 
 tableCharacteristics(result)
 
-mockDisconnect(cdm = cdm)
+mockDisconnect(cdm)
 }
 
 }

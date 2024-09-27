@@ -101,6 +101,7 @@ library(CohortCharacteristics)
 library(PatientProfiles)
 
 cdm <- mockCohortCharacteristics()
+
 cdm$cohort1 |>
   addSex() |>
   addAge(
@@ -123,6 +124,6 @@ cdm$cohort1 |>
   ) |>
   glimpse()
 
-mockDisconnect(cdm = cdm)
+mockDisconnect(cdm)
 }
 }

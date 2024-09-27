@@ -25,3 +25,33 @@ A ggplot2 object.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
+\examples{
+\dontrun{
+library(CohortCharacteristics)
+library(duckdb)
+library(CDMConnector)
+library(DrugUtilisation)
+
+con <- dbConnect(duckdb(), eunomiaDir())
+cdm <- cdmFromCon(con, cdmSchem = "main", writeSchema = "main")
+
+cdm <- generateIngredientCohortSet(
+  cdm = cdm, name = "my_cohort", ingredient = "acetaminophen"
+)
+
+resultsLsc <- cdm$my_cohort |>
+  summariseLargeScaleCharacteristics(
+    window = list(c(-365, -1), c(1, 365)),
+    eventInWindow = "condition_occurrence"
+  )
+
+resultsLsc |>
+ plotLargeScaleCharacteristics(
+   facet = c("cdm_name", "cohort_name"),
+   colour = "variable_level"
+ )
+
+cdmDisconnect(cdm)
+}
+
+}

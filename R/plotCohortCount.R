@@ -30,19 +30,23 @@
 #' \donttest{
 #' library(CohortCharacteristics)
 #' library(PatientProfiles)
-#' library(dplyr)
+#' library(dplyr, warn.conflicts = FALSE)
 #'
 #' cdm <- mockCohortCharacteristics(numberIndividuals = 100)
+#'
 #' counts <- cdm$cohort2 |>
 #'   addSex() |>
 #'   addAge(ageGroup = list(c(0, 29), c(30, 59), c(60, Inf))) |>
 #'   summariseCohortCount(strata = list("age_group", "sex", c("age_group", "sex"))) |>
 #'   filter(variable_name == "Number subjects")
+#'
 #' counts |>
 #'   plotCohortCount(
 #'     facet = cohort_name ~ age_group,
 #'     colour = "sex",
 #'     x = "sex")
+#'
+#' mockDisconnect(cdm)
 #' }
 #'
 plotCohortCount <- function(result,
