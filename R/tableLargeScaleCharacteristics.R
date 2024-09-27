@@ -39,7 +39,7 @@
 #' library(duckdb)
 #' library(CDMConnector)
 #'
-#' con <- dbConnect(duckdb(), eunomia_dir())
+#' con <- dbConnect(duckdb(), eunomiaDir())
 #' cdm <- cdmFromCon(con = con, cdmSchema = "main", writeSchema = "main")
 #' cdm <- generateConceptCohortSet(
 #'   cdm = cdm,

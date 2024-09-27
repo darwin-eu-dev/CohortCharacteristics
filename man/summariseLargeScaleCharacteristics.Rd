@@ -51,14 +51,14 @@ This function is used to summarise the large scale characteristics of a
 cohort table
 }
 \examples{
-\donttest{
+\dontrun{
 library(CohortCharacteristics)
 library(duckdb)
 library(CDMConnector)
 library(DrugUtilisation)
 library(dplyr, warn.conflicts = FALSE)
 
-con <- dbConnect(duckdb(), eunomia_dir())
+con <- dbConnect(duckdb(), eunomiaDir())
 cdm <- cdmFromCon(con, cdmSchem = "main", writeSchema = "main")
 
 cdm <- generateIngredientCohortSet(

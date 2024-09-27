@@ -26,13 +26,13 @@ A ggplot2 object.
 `r lifecycle::badge("experimental")`
 }
 \examples{
-\donttest{
+\dontrun{
 library(CohortCharacteristics)
 library(duckdb)
 library(CDMConnector)
 library(DrugUtilisation)
 
-con <- dbConnect(duckdb(), eunomia_dir())
+con <- dbConnect(duckdb(), eunomiaDir())
 cdm <- cdmFromCon(con, cdmSchem = "main", writeSchema = "main")
 
 cdm <- generateIngredientCohortSet(
