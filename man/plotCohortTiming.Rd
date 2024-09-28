@@ -8,7 +8,7 @@ plotCohortTiming(
   result,
   plotType = "boxplot",
   timeScale = "days",
-  uniqueCombinations = FALSE,
+  uniqueCombinations = TRUE,
   facet = c("cdm_name", "cohort_name_reference"),
   colour = c("cohort_name_comparator")
 )

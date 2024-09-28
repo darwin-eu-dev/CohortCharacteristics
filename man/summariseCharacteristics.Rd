@@ -109,13 +109,13 @@ cdm$cohort1 |>
   ) |>
   summariseCharacteristics(
     strata = list("sex", "age_group"),
-    cohortIntersectFlag = list (
+    cohortIntersectFlag = list(
       "Cohort 2 Flag" = list(
         targetCohortTable = "cohort2",
         window = c(-365, 0)
       )
     ),
-    cohortIntersectCount = list (
+    cohortIntersectCount = list(
       "Cohort 2 Count" = list(
         targetCohortTable = "cohort2",
         window = c(-365, 0)

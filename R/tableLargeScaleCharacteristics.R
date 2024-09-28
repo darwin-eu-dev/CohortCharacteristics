@@ -63,7 +63,7 @@ tableLargeScaleCharacteristics <- function(result,
                                            header = c(
                                              "cdm_name", "cohort_name",
                                              visOmopResults::strataColumns(result),
-                                             "window_name"
+                                             "variable_level"
                                            ),
                                            groupColumn = c("table_name", "type", "analysis")) {
   # validate result
@@ -74,7 +74,8 @@ tableLargeScaleCharacteristics <- function(result,
   # check settings
   result <- result |>
     visOmopResults::filterSettings(
-      .data$result_type == "summarise_large_scale_characteristics")
+      .data$result_type == "summarise_large_scale_characteristics"
+    )
 
   if (nrow(result) == 0) {
     cli::cli_warn("`result` object does not contain any `result_type == 'summarise_large_scale_characteristics'` information.")

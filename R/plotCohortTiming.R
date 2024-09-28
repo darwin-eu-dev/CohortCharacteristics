@@ -62,12 +62,13 @@
 plotCohortTiming <- function(result,
                              plotType = "boxplot",
                              timeScale = "days",
-                             uniqueCombinations = FALSE,
+                             uniqueCombinations = TRUE,
                              facet = c("cdm_name", "cohort_name_reference"),
                              colour = c("cohort_name_comparator")) {
   result <- omopgenerics::validateResultArgument(result) |>
     visOmopResults::filterSettings(
-      .data$result_type == "summarise_cohort_timing")
+      .data$result_type == "summarise_cohort_timing"
+    )
 
   if (nrow(result) == 0) {
     cli::cli_warn("Empty result object")
@@ -83,17 +84,21 @@ plotCohortTiming <- function(result,
     result <- result |>
       dplyr::filter(
         .data$variable_name == "days_between_cohort_entries",
-        !.data$estimate_name %in% c("density_x", "density_y"))
+        !.data$estimate_name %in% c("density_x", "density_y")
+      )
     if (timeScale == "years") {
-      result <- changeDaysToYears(result, "days_between_cohort_entries")
+      result <- changeDaysToYears(result)
     }
   } else if (plotType == "density") {
     result <- result |>
       dplyr::filter(
         .data$variable_name == "days_between_cohort_entries",
-        .data$estimate_name %in% c("density_x", "density_y"))
+        .data$estimate_name %in% c("density_x", "density_y")
+      )
     if (timeScale == "years") {
-      result <- changeDaysToYears(result, "density_x")
+      result <- result |>
+        changeDaysToYears("density_x", 1 / 365.25) |>
+        changeDaysToYears("density_y", 365.25)
     }
   }
 
@@ -123,7 +128,8 @@ plotCohortTiming <- function(result,
     p <- result |>
       visOmopResults::scatterPlot(
         x = "density_x", y = "density_y", ymin = NULL, ymax = NULL, line = TRUE, point = FALSE,
-        ribbon = FALSE, facet = facet, colour = colour, group = colour) +
+        ribbon = FALSE, facet = facet, colour = colour, group = colour
+      ) +
       ggplot2::theme_bw() +
       ggplot2::labs(
         title = ggplot2::element_blank(),
@@ -140,5 +146,6 @@ plotCohortTiming <- function(result,
 addLine <- function(p) {
   p +
     ggplot2::geom_vline(
-      xintercept = 0, colour = "black", linetype = "longdash", alpha = 0.5)
+      xintercept = 0, colour = "black", linetype = "longdash", alpha = 0.5
+    )
 }

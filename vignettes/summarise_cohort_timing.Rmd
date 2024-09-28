@@ -8,7 +8,7 @@ output:
     number_sections: yes
     toc: yes
 vignette: >
-  %\VignetteIndexEntry{a09_summariseCohortTiming}
+  %\VignetteIndexEntry{summarise_cohort_timing}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -28,22 +28,19 @@ if (!eunomia_is_available()) downloadEunomiaData()
 We saw in the previous vignette how we can summarise the overlap between cohorts. In addition to this, we might also be interested in timings between cohorts. That is, the time between an individual entering one cohort and another. For this we can use the `summariseCohortTiming()`. In this example we'll look at the time between entering cohorts for acetaminophen, morphine, and oxycodone using the Eunomia data.
 
 ```{r}
+library(duckdb)
 library(CDMConnector)
+library(dplyr, warn.conflicts = FALSE)
 library(CodelistGenerator)
+library(PatientProfiles)
 library(CohortCharacteristics)
-library(dplyr)
-library(ggplot2)
 
-con <- DBI::dbConnect(duckdb::duckdb(),
-  dbdir = CDMConnector::eunomia_dir()
-)
-cdm <- CDMConnector::cdm_from_con(con,
-  cdm_schem = "main",
-  write_schema = "main",
-  cdm_name = "Eunomia"
+con <- dbConnect(duckdb(), dbdir = eunomiaDir())
+cdm <- cdmFromCon(
+  con = con, cdmSchem = "main", writeSchema = "main", cdmName = "Eunomia"
 )
 
-meds_cs <- getDrugIngredientCodes(
+medsCs <- getDrugIngredientCodes(
   cdm = cdm,
   name = c(
     "acetaminophen",
@@ -55,7 +52,7 @@ meds_cs <- getDrugIngredientCodes(
 cdm <- generateConceptCohortSet(
   cdm = cdm,
   name = "meds",
-  conceptSet = meds_cs,
+  conceptSet = medsCs,
   end = "event_end_date",
   limit = "all",
   overwrite = TRUE
@@ -68,52 +65,56 @@ cohortCount(cdm$meds)
 Now we have our cohorts we can summarise the timing between cohort entry. Note setting restrictToFirstEntry to TRUE will mean that we only consider timing between an individual's first record in each cohort (i.e. their first exposure to each of the medications).
 
 ```{r}
-meds_timing <- cdm$meds |>
+medsTiming <- cdm$meds |>
   summariseCohortTiming(restrictToFirstEntry = TRUE)
-meds_timing |>
+medsTiming |>
   glimpse()
 ```
 
 As with cohort overlap, we have table and plotting functions to help view our results.
 
 ```{r}
-tableCohortTiming(meds_timing, timeScale = "years")
+tableCohortTiming(medsTiming, timeScale = "years", uniqueCombinations = FALSE)
 ```
 
 ```{r}
-plotCohortTiming(meds_timing,
+plotCohortTiming(
+  medsTiming,
   plotType = "boxplot",
-  timeScale = "years"
+  timeScale = "years",
+  uniqueCombinations = FALSE
 )
 ```
 
 If we want to see an even more granular summary of cohort timings we can make a density plot instead of a box plot. Note, for this we'll need to set density to include 'density' as one of the estimates.
 
 ```{r}
-plotCohortTiming(meds_timing,
+plotCohortTiming(
+  medsTiming,
   plotType = "density",
-  timeScale = "years"
+  timeScale = "years",
+  uniqueCombinations = FALSE
 )
 ```
 
 As well as generating these estimates for cohorts overall, we can also obtain stratified estimates.
 ```{r}
 cdm$meds <- cdm$meds |>
-  PatientProfiles::addAge(ageGroup = list(c(0, 49), c(50, 150))) |>
+  addAge(ageGroup = list(c(0, 49), c(50, 150))) |>
   compute(temporary = FALSE, name = "meds") |>
   newCohortTable()
-meds_timing <- cdm$meds |>
+medsTiming <- cdm$meds |>
   summariseCohortTiming(
     restrictToFirstEntry = TRUE,
     strata = list("age_group"),
     density = TRUE
   )
-tableCohortTiming(meds_timing, timeScale = "years")
-plotCohortTiming(meds_timing,
+tableCohortTiming(medsTiming, timeScale = "years")
+plotCohortTiming(medsTiming,
   plotType = "boxplot",
   timeScale = "years",
   facet = "age_group",
-  colour = "age_group", 
+  colour = "age_group",
   uniqueCombinations = TRUE
 )
 ```

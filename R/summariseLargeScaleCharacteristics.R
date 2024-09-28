@@ -224,7 +224,8 @@ summariseLargeScaleCharacteristics <- function(cohort,
     ) |>
     dplyr::mutate(order_id2 = as.numeric(.data$additional_level)) |>
     dplyr::arrange(
-      .data$result_id, .data$order_id, .data$order_id2, .data$estimate_name) |>
+      .data$result_id, .data$order_id, .data$order_id2, .data$estimate_name
+    ) |>
     dplyr::select(!c("order_id", "order_id2"))
   # TO consider -> order by prevalence/percentage
 

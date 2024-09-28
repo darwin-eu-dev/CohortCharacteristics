@@ -130,7 +130,7 @@ summariseCohortTiming <- function(cohort,
       includeOverallStrata = TRUE,
       variables = "days_between_cohort_entries",
       estimates = timing
-    )  |>
+    ) |>
     dplyr::mutate("cdm_name" = omopgenerics::cdmName(cohort))
 
   # get all combinations
@@ -158,8 +158,10 @@ summariseCohortTiming <- function(cohort,
   result <- result |>
     dplyr::left_join(
       combinations,
-      by = c("group_name", "group_level", "strata_name", "strata_level",
-             "variable_name", "estimate_name")
+      by = c(
+        "group_name", "group_level", "strata_name", "strata_level",
+        "variable_name", "estimate_name"
+      )
     ) |>
     dplyr::arrange(.data$order_id, .data$variable_level) |>
     dplyr::select(!"order_id")

@@ -8,7 +8,7 @@ output:
     number_sections: yes
     toc: yes
 vignette: >
-  %\VignetteIndexEntry{a07_summariseLargeScaleCharacteristics}
+  %\VignetteIndexEntry{summarise_large_scale_characteristics}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -34,17 +34,15 @@ In the previous vignette we have seen how we can use the CohortCharacteristics p
 To show how large scale characterisation can work we'll first create a first-ever ankle sprain study cohort using the Eunomia synthetic data.
 
 ```{r}
+library(duckdb)
 library(CDMConnector)
-library(dplyr)
-library(ggplot2)
+library(dplyr, warn.conflicts = FALSE)
+library(PatientProfiles)
 library(CohortCharacteristics)
 
-con <- DBI::dbConnect(duckdb::duckdb(),
-  dbdir = CDMConnector::eunomia_dir()
-)
-cdm <- CDMConnector::cdm_from_con(con,
-  cdm_schem = "main",
-  write_schema = "main"
+con <- dbConnect(duckdb(), dbdir = eunomiaDir())
+cdm <- cdmFromCon(
+  con = con, cdmSchem = "main", writeSchema = "main", cdmName = "Eunomia"
 )
 
 cdm <- generateConceptCohortSet(
@@ -92,7 +90,7 @@ Like when summarising pre-specified patient characteristics, we can also get str
 
 ```{r}
 lsc <- cdm$ankle_sprain |>
-  PatientProfiles::addSex() |>
+  addSex() |>
   summariseLargeScaleCharacteristics(
     window = list(c(-Inf, -1), c(0, 0)),
     strata = list("sex"),

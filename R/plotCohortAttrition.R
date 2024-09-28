@@ -69,7 +69,8 @@ plotCohortAttrition <- function(result,
   result <- omopgenerics::validateResultArgument(result)
   result <- result |>
     visOmopResults::filterSettings(
-      .data$result_type == "summarise_cohort_attrition")
+      .data$result_type == "summarise_cohort_attrition"
+    )
   if (nrow(result) == 0) {
     cli::cli_warn("No attrition found in the results")
     return(emptyTable("No attrition found in the results"))
@@ -240,13 +241,15 @@ validateReason <- function(att) {
 
   for (k in seq_len(nrow(att))) {
     cut <- seq_len(n_char_count[k])
-    empty_positions <- stringr::str_locate_all(att$reason[k]," ") |> unlist() |> unique()
+    empty_positions <- stringr::str_locate_all(att$reason[k], " ") |>
+      unlist() |>
+      unique()
 
-    if(n_char_count[k] != 0){
-      p <- stats::quantile(empty_positions, probs = seq_len(n_char_count[k])/(n_char_count[k]+1))
+    if (n_char_count[k] != 0) {
+      p <- stats::quantile(empty_positions, probs = seq_len(n_char_count[k]) / (n_char_count[k] + 1))
       matrix_positions <- matrix(empty_positions, length(cut), length(empty_positions), byrow = TRUE)
       positions <- unique(matrix_positions[seq_len(length(cut)), apply(abs(matrix_positions - p), 1, which.min)])
-      for(kk in positions){
+      for (kk in positions) {
         substr(att$reason[k], start = kk, stop = kk) <- "\n"
       }
     }

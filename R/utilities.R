@@ -25,25 +25,33 @@ getUniqueCombinationsSr <- function(x) {
       xUniques |>
         dplyr::rename(
           "cohort_name_reference" = "cohort_name_comparator",
-          "cohort_name_comparator" = "cohort_name_reference"),
+          "cohort_name_comparator" = "cohort_name_reference"
+        ),
       by = c("cohort_name_comparator", "cohort_name_reference"),
       suffix = c("_x", "_y")
     ) |>
     dplyr::filter(.data$id_x < .data$id_y) |>
     dplyr::select("cohort_name_comparator", "cohort_name_reference") |>
     visOmopResults::uniteGroup(
-      cols = c("cohort_name_reference", "cohort_name_comparator"))
+      cols = c("cohort_name_reference", "cohort_name_comparator")
+    )
   x <- x |>
     dplyr::inner_join(pairs, by = c("group_name", "group_level"))
   return(x)
 }
-changeDaysToYears <- function(x, oldVar, newVar = oldVar) {
-  id <- x$variable_name == oldVar
+changeDaysToYears <- function(x, est = NULL, fact = 1 / 365.25) {
+  oldVar <- "days_between_cohort_entries"
+  newVar <- "years_between_cohort_entries"
+  if (!is.null(est)) {
+    id <- x$variable_name == oldVar & x$estimate_name %in% est
+  } else {
+    id <- x$variable_name == oldVar
+  }
   x |>
     dplyr::mutate(
       estimate_value = dplyr::if_else(
         .env$id,
-        as.character(suppressWarnings(as.numeric(.data$estimate_value))/365.25),
+        as.character(suppressWarnings(as.numeric(.data$estimate_value)) * .env$fact),
         .data$estimate_value
       ),
       variable_name = dplyr::if_else(.env$id, .env$newVar, .data$variable_name),

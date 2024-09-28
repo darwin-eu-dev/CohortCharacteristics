@@ -2,6 +2,16 @@ url: https://darwin-eu-dev.github.io/CohortCharacteristics/
 template:
   bootstrap: 5
 
+articles:
+- title: Get started
+  navbar: ~
+  contents:
+  - summarise_cohort_entries
+  - summarise_characteristics
+  - summarise_large_scale_characteristics
+  - summarise_cohort_overlap
+  - summarise_cohort_timing
+
 reference:
 - subtitle: Summarise patient characteristic standard function
 - contents:

@@ -186,7 +186,8 @@ test_that("test summariseCharacteristics", {
     dplyr::filter(.data$variable_name == "Days in cohort")
   expect_identical(
     unique(resDays$estimate_value[
-      resDays$group_level == "unexposed" & resDays$estimate_name != "sd"]),
+      resDays$group_level == "unexposed" & resDays$estimate_name != "sd"
+    ]),
     "2"
   )
   resDays <- resDays |>
@@ -476,7 +477,7 @@ test_that("test cohort id", {
     ethnicity_concept_id = 0L
   )
   dus_cohort <- dplyr::tibble(
-    cohort_definition_id = c(1, 1, 1, 2)  |> as.integer(),
+    cohort_definition_id = c(1, 1, 1, 2) |> as.integer(),
     subject_id = c(1, 1, 2, 3) |> as.integer(),
     cohort_start_date = as.Date(c(
       "1990-04-19", "1991-04-19", "2010-11-14", "2000-05-25"
@@ -1396,13 +1397,16 @@ test_that("output is always the same", {
     omock::mockConditionOccurrence(recordPerson = 3) |>
     omock::mockDrugExposure(recordPerson = 4.5) |>
     omock::mockCohort(
-      numberCohorts = 3, cohortName = c("covid", "tb", "asthma"))
+      numberCohorts = 3, cohortName = c("covid", "tb", "asthma")
+    )
 
   cdm1 <- CDMConnector::copyCdmTo(
-    con = duckdb::dbConnect(duckdb::duckdb()), cdm = cdm, schema = "main")
+    con = duckdb::dbConnect(duckdb::duckdb()), cdm = cdm, schema = "main"
+  )
 
   cdm2 <- CDMConnector::copyCdmTo(
-    con = duckdb::dbConnect(duckdb::duckdb()), cdm = cdm, schema = "main")
+    con = duckdb::dbConnect(duckdb::duckdb()), cdm = cdm, schema = "main"
+  )
 
   result1 <- summariseCharacteristics(cdm1$cohort)
 

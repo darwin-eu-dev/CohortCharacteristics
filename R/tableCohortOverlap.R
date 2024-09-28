@@ -18,27 +18,24 @@
 #'
 #' `r lifecycle::badge("experimental")`
 #'
-#' @param result A summarised_result object. Output of summariseCohortOverlap().
-#' @param uniqueCombinations Whether to restrict to unique reference and
-#' comparator comparisons.
-#' @param type Type of table. Check supported types with
-#' `visOmopResults::tableType()`.
-#' @param header Columns to use as header. See options with
-#' `tidyColumns(result)`.
-#' @param groupColumn Columns to group by. See options with
-#' `tidyColumns(result)`.
+#' @param result A summariseOverlapCohort result.
+#' @param type Type of desired formatted table, possibilities: "gt",
+#' "flextable", "tibble".
+#' @param header A vector containing which elements should go into the header
+#' in order. Allowed are: `cdm_name`, `group`, `strata`, `additional`,
+#' `variable`, `estimate`, `settings`.
+#' @param groupColumn Column to use as group labels.
+#' @param hide Columns to drop from the output table.
+#' @param uniqueCombinations Whether to display unique combinations
+#' reference - comparator.
 #'
 #' @examples
 #' \donttest{
 #' library(CohortCharacteristics)
-#'
 #' cdm <- mockCohortCharacteristics()
-#'
 #' overlap <- summariseCohortOverlap(cdm$cohort2)
-#'
 #' tableCohortOverlap(overlap)
-#'
-#' mockDisconnect(cdm)
+#' mockDisconnect(cdm = cdm)
 #' }
 #'
 #' @return A formatted table of the summariseOverlapCohort result.
@@ -46,10 +43,11 @@
 #' @export
 #'
 tableCohortOverlap <- function(result,
-                               uniqueCombinations = TRUE,
                                type = "gt",
                                header = c("variable_name"),
-                               groupColumn = c("cdm_name")) {
+                               groupColumn = c("cdm_name"),
+                               hide = c("variable_level"),
+                               uniqueCombinations = TRUE) {
   # validate result
   result <- omopgenerics::validateResultArgument(result)
   omopgenerics::assertChoice(type, c("gt", "flextable", "tibble"))
@@ -57,7 +55,8 @@ tableCohortOverlap <- function(result,
   # check settings
   result <- result |>
     visOmopResults::filterSettings(
-      .data$result_type == "summarise_cohort_overlap")
+      .data$result_type == "summarise_cohort_overlap"
+    )
 
   if (nrow(result) == 0) {
     cli::cli_warn("`result` object does not contain any `result_type == 'summarise_cohort_overlap'` information.")
@@ -77,11 +76,11 @@ tableCohortOverlap <- function(result,
   # format table
   tab <- visOmopResults::visOmopTable(
     result = result,
-    estimateName = c("N (%)" = "<count> (<percentage>%)"),
+    formatEstimateName = c("N (%)" = "<count> (<percentage>%)"),
     header = header,
     groupColumn = groupColumn,
     type = type,
-    hide = "variable_level"
+    hide = hide
   )
 
   return(tab)

@@ -1,5 +1,6 @@
 ---
 output: github_document
+always_allow_html: true
 ---
 
 ```{r, include = FALSE}
@@ -12,12 +13,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-# CohortCharacteristics <a href="https://darwin-eu-dev.github.io/CohortCharacteristics/"><img src="man/figures/logo.png" align="right" height="130" /></a>
+# CohortCharacteristics <a href="https://darwin-eu-dev.github.io/CohortCharacteristics/"><img src="man/figures/logo.png" align="right" height="130"/></a>
 
-[![CRAN status](https://www.r-pkg.org/badges/version/CohortCharacteristics)](https://CRAN.R-project.org/package=CohortCharacteristics)
-[![codecov.io](https://codecov.io/github/darwin-eu-dev/CohortCharacteristics/coverage.svg?branch=main)](https://app.codecov.io/github/darwin-eu-dev/CohortCharacteristics?branch=main)
-[![R-CMD-check](https://github.com/darwin-eu-dev/CohortCharacteristics/workflows/R-CMD-check/badge.svg)](https://github.com/darwin-eu-dev/CohortCharacteristics/actions)
-[![Lifecycle:Experimental](https://img.shields.io/badge/Lifecycle-Experimental-339999)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![CRAN status](https://www.r-pkg.org/badges/version/CohortCharacteristics)](https://CRAN.R-project.org/package=CohortCharacteristics) [![codecov.io](https://codecov.io/github/darwin-eu-dev/CohortCharacteristics/coverage.svg?branch=main)](https://app.codecov.io/github/darwin-eu-dev/CohortCharacteristics?branch=main) [![R-CMD-check](https://github.com/darwin-eu-dev/CohortCharacteristics/workflows/R-CMD-check/badge.svg)](https://github.com/darwin-eu-dev/CohortCharacteristics/actions) [![Lifecycle:Experimental](https://img.shields.io/badge/Lifecycle-Experimental-339999)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 
 ## Package overview
 
@@ -35,43 +33,199 @@ You can install the latest version of CohortCharacteristics from CRAN:
 install.packages("CohortCharacteristics")
 ```
 
-Or from github:
+Or install the development version from github:
+
 ```{r, eval=FALSE}
-install.packages("remotes")
-remotes::install_github("darwin-eu-dev/CohortCharacteristics")
-```
-
-## Example usage
-
-The CohortCharacteristics package is designed to work with data in the OMOP CDM format, so our first step is to create a reference to the data using the CDMConnector package. For this example we will work with the example Eunomia dataset.  
-
-```{r, message=FALSE}
-library(CDMConnector)
-library(CohortCharacteristics)
-library(dplyr)
+install.packages("pak")
+pak::pkg_install("darwin-eu-dev/CohortCharacteristics")
 ```
 
 ```{r}
-cdm <- mockCohortCharacteristics(numberIndividuals = 1000)
-cdm
+library(CohortCharacteristics)
 ```
 
-We can see that in this example data we have a cohort table called cohort1.
+## Content
 
-```{r, message=FALSE}
-cdm$cohort1
+The package contain three types of functions:
+
+-   **summarise**\* type functions. These functions produce <summarised_result> standard output. See [omopgenerics](https://darwin-eu-dev.github.io/omopgenerics/articles/summarised_result.html) for more information on this standardised output format. These functions are the ones that do the work in terms of extracting the necessary data from the cdm and summarising it.
+-   **table**\* type functions. These functions work with the output of the summarise ones. They will produce a table visualisation created using the [visOmopresults](https://cran.r-project.org/package=visOmopResults) package.
+-   **plot**\* type functions. These functions work with the output of the summarise ones. They will produce a plot visualisation created using the [visOmopresults](https://cran.r-project.org/package=visOmopResults) package.
+
+## Examples
+
+### Mock data
+
+Althought the package provides some simple mock data for testing (`mockCohortCharacteristics()`), for these examples we will use the GiBleed dataset that can be downloaded using the CDMConnector package that will give us some more real results.
+
+```{r}
+library(CDMConnector)
+library(duckdb)
+library(dplyr, warn.conflicts = FALSE)
+folder <- tempdir()
+Sys.setenv("EUNOMIA_DATA_FOLDER" = folder)
+downloadEunomiaData(overwrite = TRUE)
+con <- dbConnect(duckdb(), eunomiaDir())
+cdm <- cdmFromCon(con = con, cdmSchema = "main", writeSchema = "main")
 ```
 
-With one line of code from CohortCharacteristics we can generate summary statistics on this cohort.
-```{r, message=FALSE}
-cohort1_characteristics <- summariseCharacteristics(cdm$cohort1)
-cohort1_characteristics |>
+Let's create a simple cohort:
+```{r, warning=FALSE}
+library(DrugUtilisation)
+cdm <- generateIngredientCohortSet(cdm = cdm, name = "my_cohort", ingredient = c("warfarin", "acetaminophen"))
+```
+
+### Cohort counts
+
+We can get counts using the function `summariseCohortCount()`:
+```{r}
+result <- summariseCohortCount(cdm$my_cohort)
+result |>
   glimpse()
 ```
 
-And with another line we can create a table of these results.
-```{r, message=FALSE}
-tableCharacteristics(cohort1_characteristics, type = "tibble")
+You can easily create a table using the associated table function, `tableCohortCount()`:
+```{r}
+tableCohortCount(result, type = "flextable")
 ```
 
-CohortCharacteristics provides a number of other functions to help summarise cohort tables and present the results in publication-ready tables and figures. See the vignettes for more details.
+We could create a simple plot with `plotCohortCount()`:
+```{r}
+result |>
+  filter(variable_name == "Number subjects") |>
+  plotCohortCount(x = "cohort_name", colour = "cohort_name")
+```
+
+All the other function work using the same dynamic, first `summarise`, then `plot`/`table`.
+
+### Cohort attrition
+
+```{r}
+result <- summariseCohortAttrition(cdm$my_cohort)
+```
+
+```{r}
+tableCohortAttrition(result, type = "flextable")
+```
+
+```{r}
+result |>
+  filter(group_level == "161_acetaminophen") |>
+  plotCohortAttrition()
+```
+
+### Characteristics
+
+```{r}
+result <- summariseCharacteristics(cdm$my_cohort)
+```
+
+```{r}
+tableCharacteristics(result, type = "flextable")
+```
+
+```{r}
+result |>
+  filter(variable_name == "Age") |>
+  plotCharacteristics(plotStyle = "boxplot", colour = "cohort_name")
+```
+
+### Timing between cohorts
+
+```{r}
+result <- summariseCohortTiming(cdm$my_cohort)
+```
+
+```{r}
+tableCohortTiming(result, header = "cdm_name", type = "flextable")
+```
+
+```{r}
+plotCohortTiming(
+  result,
+  uniqueCombinations = TRUE,
+  facet = "cdm_name",
+  colour = c("cohort_name_reference", "cohort_name_comparator"),
+  timeScale = "years"
+)
+```
+
+```{r}
+plotCohortTiming(
+  result,
+  plotType = "density",
+  uniqueCombinations = FALSE,
+  facet = "cdm_name",
+  colour = c("cohort_name_comparator"),
+  timeScale = "years"
+)
+```
+
+### Overlap between cohort
+
+```{r}
+result <- summariseCohortOverlap(cdm$my_cohort)
+```
+
+```{r}
+tableCohortOverlap(result, type = "flextable")
+```
+
+```{r}
+plotCohortOverlap(result, uniqueCombinations = TRUE)
+```
+
+### Large scale characteristics
+
+```{r}
+result <- cdm$my_cohort |>
+  summariseLargeScaleCharacteristics(
+    window = list(c(-90, -1), c(0, 0), c(1, 90)),
+    eventInWindow = "condition_occurrence"
+  )
+```
+
+```{r}
+tableLargeScaleCharacteristics(result, type = "flextable")
+```
+
+```{r}
+result |>
+  filter(group_level == "161_acetaminophen") |>
+  plotLargeScaleCharacteristics()
+```
+
+```{r}
+result |>
+  filter(group_level == "161_acetaminophen", variable_level != "0 to 0") |>
+  plotComparedLargeScaleCharacteristics(
+    reference = c(variable_level = "-90 to -1"), colour = "variable_name"
+  )
+```
+
+### Disconnect
+
+Disconnect from your database using `CDMConnector::cdmDisconnect()` to close the connection or with `mockDisconnect()` to close connection and delete the created mock data:
+
+```{r}
+mockDisconnect(cdm)
+```
+
+### Recomendations
+
+Although it is technically possible, we do not recommend to pipe table or plot functions with the summarise ones. The main reason is that summarise functions take some time to run, a large scale characterisation in a big cdm object can take a few hours. If we pipe the output to a table/plot function we loose the summarise result object. In fact, some times we would send code around to be ran in others database and what we want to export is the summarised_result objects and not the table or plot which we would like to build after compiling results from different cdm objects.
+
+**Not recommended**:
+```{r, eval = FALSE}
+cdm$my_cohort |>
+  summariseCharacteristics() |>
+  tableCharacteristics()
+```
+
+**Recommended**:
+```{r, eval = FALSE}
+x <- summariseCharacteristics(cdm$my_cohort)
+
+tableCharacteristics(x)
+```
+

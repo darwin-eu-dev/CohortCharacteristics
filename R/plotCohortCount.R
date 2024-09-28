@@ -57,7 +57,8 @@ plotCohortCount <- function(result,
   # initial checks
   result <- omopgenerics::validateResultArgument(result) |>
     visOmopResults::filterSettings(
-      .data$result_type == "summarise_cohort_count")
+      .data$result_type == "summarise_cohort_count"
+    )
   if (nrow(result) == 0) {
     cli::cli_warn("No cohort count results found")
     return(emptyPlot())

@@ -81,5 +81,4 @@ test_that("basic functionality summarise large scale characteristics", {
 
 
   expect_no_error(tableLargeScaleCharacteristics(result))
-
 })

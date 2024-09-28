@@ -46,10 +46,10 @@ resultsLsc <- cdm$my_cohort |>
   )
 
 resultsLsc |>
- plotLargeScaleCharacteristics(
-   facet = c("cdm_name", "cohort_name"),
-   colour = "variable_level"
- )
+  plotLargeScaleCharacteristics(
+    facet = c("cdm_name", "cohort_name"),
+    colour = "variable_level"
+  )
 
 cdmDisconnect(cdm)
 }

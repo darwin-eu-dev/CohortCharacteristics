@@ -79,11 +79,14 @@ plotCharacteristics <- function(result,
                                 colour = NULL) {
   result <- omopgenerics::validateResultArgument(result)
   omopgenerics::assertChoice(
-    plotStyle, c("barplot", "scatterplot", "boxplot"), length = 1)
+    plotStyle, c("barplot", "scatterplot", "boxplot"),
+    length = 1
+  )
 
   result <- result |>
     visOmopResults::filterSettings(
-      .data$result_type == "summarise_characteristics")
+      .data$result_type == "summarise_characteristics"
+    )
   if (nrow(result) == 0) {
     cli::cli_warn("No summarised characteristics results found")
     return(emptyPlot())
@@ -105,25 +108,31 @@ plotCharacteristics <- function(result,
     x <- c(
       "variable_level", "cdm_name", visOmopResults::groupColumns(result),
       visOmopResults::strataColumns(result),
-      visOmopResults::additionalColumns(result))
+      visOmopResults::additionalColumns(result)
+    )
     res <- result |>
       dplyr::select(
         "variable_level", "cdm_name", "group_name", "group_level",
-        "strata_name", "strata_level", "additional_name", "additional_level") |>
+        "strata_name", "strata_level", "additional_name", "additional_level"
+      ) |>
       dplyr::distinct() |>
       visOmopResults::splitAll()
     x <- x[!x %in% facet]
-    x <- x[purrr::map_lgl(x, \(x) res[[x]] |> unique() |> length() > 1)]
+    x <- x[purrr::map_lgl(x, \(x) res[[x]] |>
+      unique() |>
+      length() > 1)]
     print(x)
     if (plotStyle == "barplot") {
       p <- result |>
         visOmopResults::barPlot(
-          x = x, y = estimate, facet = facet, colour = colour)
+          x = x, y = estimate, facet = facet, colour = colour
+        )
     } else if (plotStyle == "scatterplot") {
       p <- result |>
         visOmopResults::scatterPlot(
           x = x, y = estimate, facet = facet, colour = colour, line = FALSE,
-          point = TRUE, ribbon = FALSE, group = colour)
+          point = TRUE, ribbon = FALSE, group = colour
+        )
     }
     p <- p +
       ggplot2::labs(y = glue::glue("{variable} ({estimate})"))

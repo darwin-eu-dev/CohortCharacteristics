@@ -55,7 +55,8 @@ tableCohortAttrition <- function(result,
   # check settings
   result <- result |>
     visOmopResults::filterSettings(
-      .data$result_type == "summarise_cohort_attrition")
+      .data$result_type == "summarise_cohort_attrition"
+    )
 
   if (nrow(result) == 0) {
     cli::cli_warn("`result` object does not contain any `result_type == 'summarise_cohort_attrition'` information.")
@@ -77,9 +78,9 @@ tableCohortAttrition <- function(result,
 
 emptyResultTable <- function(type) {
   x <- dplyr::tibble(`Table has no data` = character())
-  if(type == "gt") {
+  if (type == "gt") {
     result <- gt::gt(x)
-  } else if(type == "flextable") {
+  } else if (type == "flextable") {
     result <- flextable::flextable(x)
   } else {
     result <- x

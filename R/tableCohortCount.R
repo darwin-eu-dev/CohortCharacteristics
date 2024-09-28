@@ -18,13 +18,14 @@
 #'
 #' `r lifecycle::badge("experimental")`
 #'
-#' @param result A summarised_result object. Output of summariseCohortCount().
-#' @param type Type of table. Check supported types with
-#' `visOmopResults::tableType()`.
-#' @param header Columns to use as header. See options with
-#' `tidyColumns(result)`.
-#' @param groupColumn Columns to group by. See options with
-#' `tidyColumns(result)`.
+#' @param result A summarise_characteristics object.
+#' @param type Type of desired formatted table, possibilities: "gt",
+#' "flextable", "tibble".
+#' @param header A vector containing which elements should go into the header
+#' in order. Allowed are: `cdm_name`, `group`, `strata`, `additional`,
+#' `variable`, `estimate`, `settings`.
+#' @param groupColumn Column to use as group labels.
+#' @param hide Columns to drop from the output table.
 #'
 #' @examples
 #' \donttest{
@@ -44,25 +45,11 @@
 #'
 #' @export
 #'
-#' @examples
-#' \donttest{
-#' #' library(CohortCharacteristics)
-#' library(dplyr, warn.conflicts = FALSE)
-#'
-#' cdm <- mockCohortCharacteristics()
-#'
-#' result <- summariseCohortCount(cohort = cdm$cohort1)
-#'
-#' tableCohortCount(result)
-#'
-#' mockDisconnect(cdm)
-#' }
-#'
-#'
 tableCohortCount <- function(result,
                              type = "gt",
                              header = "cohort_name",
-                             groupColumn = NULL) {
+                             groupColumn = NULL,
+                             hide = "variable_level") {
   # validate result
   result <- omopgenerics::validateResultArgument(result)
   omopgenerics::assertChoice(type, c("gt", "flextable", "tibble"))
@@ -70,7 +57,8 @@ tableCohortCount <- function(result,
   # check settings
   result <- result |>
     visOmopResults::filterSettings(
-      .data$result_type == "summarise_cohort_count")
+      .data$result_type == "summarise_cohort_count"
+    )
 
   if (nrow(result) == 0) {
     cli::cli_warn("`result` object does not contain any `result_type == 'summarise_cohort_count'` information.")
@@ -84,7 +72,7 @@ tableCohortCount <- function(result,
     header = header,
     groupColumn = groupColumn,
     type = type,
-    hide = "variable_level"
+    hide = hide
   )
 
   return(tab)

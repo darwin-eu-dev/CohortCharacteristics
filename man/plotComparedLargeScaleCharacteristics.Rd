@@ -54,12 +54,12 @@ resultsLsc <- cdm$my_cohort |>
   )
 
 resultsLsc |>
- plotComparedLargeScaleCharacteristics(
-   reference = c(variable_level = "-365 to -1"),
-   colour = "variable_name",
-   missings = NULL
- ) |>
- ggplotly()
+  plotComparedLargeScaleCharacteristics(
+    reference = c(variable_level = "-365 to -1"),
+    colour = "variable_name",
+    missings = NULL
+  ) |>
+  ggplotly()
 
 cdmDisconnect(cdm)
 }

@@ -6,26 +6,29 @@
 \usage{
 tableCohortOverlap(
   result,
-  uniqueCombinations = TRUE,
   type = "gt",
   header = c("variable_name"),
-  groupColumn = c("cdm_name")
+  groupColumn = c("cdm_name"),
+  hide = c("variable_level"),
+  uniqueCombinations = TRUE
 )
 }
 \arguments{
-\item{result}{A summarised_result object. Output of summariseCohortOverlap().}
+\item{result}{A summariseOverlapCohort result.}
 
-\item{uniqueCombinations}{Whether to restrict to unique reference and
-comparator comparisons.}
+\item{type}{Type of desired formatted table, possibilities: "gt",
+"flextable", "tibble".}
 
-\item{type}{Type of table. Check supported types with
-\code{visOmopResults::tableType()}.}
+\item{header}{A vector containing which elements should go into the header
+in order. Allowed are: \code{cdm_name}, \code{group}, \code{strata}, \code{additional},
+\code{variable}, \code{estimate}, \code{settings}.}
 
-\item{header}{Columns to use as header. See options with
-\code{tidyColumns(result)}.}
+\item{groupColumn}{Column to use as group labels.}
 
-\item{groupColumn}{Columns to group by. See options with
-\code{tidyColumns(result)}.}
+\item{hide}{Columns to drop from the output table.}
+
+\item{uniqueCombinations}{Whether to display unique combinations
+reference - comparator.}
 }
 \value{
 A formatted table of the summariseOverlapCohort result.
@@ -36,14 +39,10 @@ A formatted table of the summariseOverlapCohort result.
 \examples{
 \donttest{
 library(CohortCharacteristics)
-
 cdm <- mockCohortCharacteristics()
-
 overlap <- summariseCohortOverlap(cdm$cohort2)
-
 tableCohortOverlap(overlap)
-
-mockDisconnect(cdm)
+mockDisconnect(cdm = cdm)
 }
 
 }
