@@ -6,7 +6,7 @@
 \usage{
 plotCohortOverlap(
   result,
-  uniqueCombinations = FALSE,
+  uniqueCombinations = TRUE,
   y = NULL,
   facet = c("cdm_name", "cohort_name_reference"),
   colour = "variable_level",
