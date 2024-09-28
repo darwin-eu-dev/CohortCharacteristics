@@ -3,6 +3,7 @@ template:
   bootstrap: 5
 
 articles:
+- contents:
   - summarise_cohort_entries
   - summarise_characteristics
   - summarise_large_scale_characteristics
