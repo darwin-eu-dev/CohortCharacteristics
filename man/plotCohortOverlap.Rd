@@ -6,23 +6,26 @@
 \usage{
 plotCohortOverlap(
   result,
-  facet = c("cdm_name", "cohort_name_reference"),
-  uniqueCombinations = TRUE,
+  uniqueCombinations = FALSE,
   y = NULL,
+  facet = c("cdm_name", "cohort_name_reference"),
+  colour = "variable_level",
   .options = lifecycle::deprecated()
 )
 }
 \arguments{
 \item{result}{A summarised_result object. Output of summariseCohortOverlap().}
 
-\item{facet}{Columns to facet by. See options with \code{tidyColumns(result)}.
-Formula is also allowed to specify rows and columns.}
-
 \item{uniqueCombinations}{Whether to restrict to unique reference and
 comparator comparisons.}
 
 \item{y}{Variables to use in y axis, if NULL all variables not present in
 facet are used.}
+
+\item{facet}{Columns to facet by. See options with \code{tidyColumns(result)}.
+Formula is also allowed to specify rows and columns.}
+
+\item{colour}{Columns to color by. See options with \code{tidyColumns(result)}.}
 
 \item{.options}{deprecated.}
 }

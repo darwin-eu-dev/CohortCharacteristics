@@ -18,12 +18,13 @@
 #' `r lifecycle::badge("experimental")`
 #'
 #' @param result A summarised_result object. Output of summariseCohortOverlap().
-#' @param facet Columns to facet by. See options with `tidyColumns(result)`.
-#' Formula is also allowed to specify rows and columns.
 #' @param uniqueCombinations Whether to restrict to unique reference and
 #' comparator comparisons.
 #' @param y Variables to use in y axis, if NULL all variables not present in
 #' facet are used.
+#' @param facet Columns to facet by. See options with `tidyColumns(result)`.
+#' Formula is also allowed to specify rows and columns.
+#' @param colour Columns to color by. See options with `tidyColumns(result)`.
 #' @param .options deprecated.
 #'
 #' @return A ggplot.
@@ -43,9 +44,10 @@
 #' }
 #'
 plotCohortOverlap <- function(result,
-                              facet = c("cdm_name", "cohort_name_reference"),
                               uniqueCombinations = TRUE,
                               y = NULL,
+                              facet = c("cdm_name", "cohort_name_reference"),
+                              colour = "variable_level",
                               .options = lifecycle::deprecated()) {
   # initial checks
   result <- omopgenerics::validateResultArgument(result) |>
@@ -90,7 +92,7 @@ plotCohortOverlap <- function(result,
     result = result,
     x = y,
     y = "percentage",
-    colour = "variable_level",
+    colour = colour,
     facet = facet
   ) +
     ggplot2::coord_flip() +
