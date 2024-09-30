@@ -50,7 +50,8 @@
 <span>  <span class="va">result</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"gt"</span>,</span>
 <span>  header <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cdm_name"</span>, <span class="st">"cohort_name"</span><span class="op">)</span>,</span>
-<span>  groupColumn <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  groupColumn <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  hide <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -75,6 +76,11 @@ summariseCharacteristics().</p></dd>
 
 <dt id="arg-groupcolumn">groupColumn<a class="anchor" aria-label="anchor" href="#arg-groupcolumn"></a></dt>
 <dd><p>Columns to group by. See options with
+<code>tidyColumns(result)</code>.</p></dd>
+
+
+<dt id="arg-hide">hide<a class="anchor" aria-label="anchor" href="#arg-hide"></a></dt>
+<dd><p>Columns to hide from the visualisation. See options with
 <code>tidyColumns(result)</code>.</p></dd>
 
 </dl></div>
