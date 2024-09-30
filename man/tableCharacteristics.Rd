@@ -8,7 +8,8 @@ tableCharacteristics(
   result,
   type = "gt",
   header = c("cdm_name", "cohort_name"),
-  groupColumn = NULL
+  groupColumn = NULL,
+  hide = character()
 )
 }
 \arguments{
@@ -22,6 +23,9 @@ summariseCharacteristics().}
 \code{tidyColumns(result)}.}
 
 \item{groupColumn}{Columns to group by. See options with
+\code{tidyColumns(result)}.}
+
+\item{hide}{Columns to hide from the visualisation. See options with
 \code{tidyColumns(result)}.}
 }
 \value{

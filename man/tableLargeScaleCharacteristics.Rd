@@ -10,7 +10,8 @@ tableLargeScaleCharacteristics(
   type = "gt",
   header = c("cdm_name", "cohort_name", visOmopResults::strataColumns(result),
     "variable_level"),
-  groupColumn = c("table_name", "type", "analysis")
+  groupColumn = c("table_name", "type", "analysis"),
+  hide = character()
 )
 }
 \arguments{
@@ -26,6 +27,9 @@ summariseLargeScaleCharacteristics().}
 \code{tidyColumns(result)}.}
 
 \item{groupColumn}{Columns to group by. See options with
+\code{tidyColumns(result)}.}
+
+\item{hide}{Columns to hide from the visualisation. See options with
 \code{tidyColumns(result)}.}
 }
 \value{

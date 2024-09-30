@@ -10,7 +10,8 @@ tableCohortTiming(
   uniqueCombinations = TRUE,
   type = "gt",
   header = visOmopResults::strataColumns(result),
-  groupColumn = NULL
+  groupColumn = NULL,
+  hide = "variable_level"
 )
 }
 \arguments{
@@ -28,6 +29,9 @@ comparator comparisons.}
 \code{tidyColumns(result)}.}
 
 \item{groupColumn}{Columns to group by. See options with
+\code{tidyColumns(result)}.}
+
+\item{hide}{Columns to hide from the visualisation. See options with
 \code{tidyColumns(result)}.}
 }
 \value{

@@ -8,7 +8,8 @@ tableCohortAttrition(
   result,
   type = "gt",
   header = "variable_name",
-  groupColumn = c("cdm_name", "cohort_name")
+  groupColumn = c("cdm_name", "cohort_name"),
+  hide = c("variable_level", "reason_id", "estimate_name")
 )
 }
 \arguments{
@@ -22,6 +23,9 @@ summariseCohortAttrition().}
 \code{tidyColumns(result)}.}
 
 \item{groupColumn}{Columns to group by. See options with
+\code{tidyColumns(result)}.}
+
+\item{hide}{Columns to hide from the visualisation. See options with
 \code{tidyColumns(result)}.}
 }
 \value{

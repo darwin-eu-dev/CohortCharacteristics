@@ -26,6 +26,8 @@
 #' `tidyColumns(result)`.
 #' @param groupColumn Columns to group by. See options with
 #' `tidyColumns(result)`.
+#' @param hide Columns to hide from the visualisation. See options with
+#' `tidyColumns(result)`.
 #'
 #' @examples
 #' \donttest{
@@ -48,7 +50,8 @@
 tableCharacteristics <- function(result,
                                  type = "gt",
                                  header = c("cdm_name", "cohort_name"),
-                                 groupColumn = NULL) {
+                                 groupColumn = NULL,
+                                 hide = character()) {
   # initial checks
   result <- omopgenerics::validateResultArgument(result)
   omopgenerics::assertChoice(type, c("gt", "flextable", "tibble"))
@@ -78,7 +81,8 @@ tableCharacteristics <- function(result,
     estimateName = estimateName,
     header = header,
     groupColumn = groupColumn,
-    type = type
+    type = type,
+    hide = hide
   )
 
   return(tab)
