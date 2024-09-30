@@ -28,6 +28,8 @@
 #' `tidyColumns(result)`.
 #' @param groupColumn Columns to group by. See options with
 #' `tidyColumns(result)`.
+#' @param hide Columns to hide from the visualisation. See options with
+#' `tidyColumns(result)`.
 #'
 #' @return A formatted table of the summariseCohortTiming result.
 #'
@@ -66,7 +68,8 @@ tableCohortTiming <- function(result,
                               uniqueCombinations = TRUE,
                               type = "gt",
                               header = visOmopResults::strataColumns(result),
-                              groupColumn = NULL) {
+                              groupColumn = NULL,
+                              hide = "variable_level") {
   # initial checks
   result <- omopgenerics::validateResultArgument(result)
   omopgenerics::assertChoice(timeScale, c("days", "years"))
@@ -103,7 +106,7 @@ tableCohortTiming <- function(result,
     header = header,
     groupColumn = groupColumn,
     type = type,
-    hide = "variable_level"
+    hide = hide
   )
 
   return(tab)

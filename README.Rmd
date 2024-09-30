@@ -56,7 +56,7 @@ The package contain three types of functions:
 
 ### Mock data
 
-Althought the package provides some simple mock data for testing (`mockCohortCharacteristics()`), for these examples we will use the GiBleed dataset that can be downloaded using the CDMConnector package that will give us some more real results.
+Although the package provides some simple mock data for testing (`mockCohortCharacteristics()`), for these examples we will use the GiBleed dataset that can be downloaded using the CDMConnector package that will give us some more real results.
 
 ```{r}
 library(CDMConnector)
@@ -211,7 +211,7 @@ Disconnect from your database using `CDMConnector::cdmDisconnect()` to close the
 mockDisconnect(cdm)
 ```
 
-### Recomendations
+### Recommendations
 
 Although it is technically possible, we do not recommend to pipe table or plot functions with the summarise ones. The main reason is that summarise functions take some time to run, a large scale characterisation in a big cdm object can take a few hours. If we pipe the output to a table/plot function we loose the summarise result object. In fact, some times we would send code around to be ran in others database and what we want to export is the summarised_result objects and not the table or plot which we would like to build after compiling results from different cdm objects.
 

@@ -19,15 +19,16 @@
 #' `r lifecycle::badge("experimental")`
 #'
 #' @param result A summariseOverlapCohort result.
-#' @param type Type of desired formatted table, possibilities: "gt",
-#' "flextable", "tibble".
-#' @param header A vector containing which elements should go into the header
-#' in order. Allowed are: `cdm_name`, `group`, `strata`, `additional`,
-#' `variable`, `estimate`, `settings`.
-#' @param groupColumn Column to use as group labels.
-#' @param hide Columns to drop from the output table.
 #' @param uniqueCombinations Whether to display unique combinations
 #' reference - comparator.
+#' @param type Type of table. Check supported types with
+#' `visOmopResults::tableType()`.
+#' @param header Columns to use as header. See options with
+#' `tidyColumns(result)`.
+#' @param groupColumn Columns to group by. See options with
+#' `tidyColumns(result)`.
+#' @param hide Columns to hide from the visualisation. See options with
+#' `tidyColumns(result)`.
 #'
 #' @examples
 #' \donttest{
@@ -43,11 +44,11 @@
 #' @export
 #'
 tableCohortOverlap <- function(result,
+                               uniqueCombinations = TRUE,
                                type = "gt",
                                header = c("variable_name"),
                                groupColumn = c("cdm_name"),
-                               hide = c("variable_level"),
-                               uniqueCombinations = TRUE) {
+                               hide = c("variable_level")) {
   # validate result
   result <- omopgenerics::validateResultArgument(result)
   omopgenerics::assertChoice(type, c("gt", "flextable", "tibble"))

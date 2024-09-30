@@ -15,16 +15,17 @@ tableCohortCount(
 \arguments{
 \item{result}{A summarise_characteristics object.}
 
-\item{type}{Type of desired formatted table, possibilities: "gt",
-"flextable", "tibble".}
+\item{type}{Type of table. Check supported types with
+\code{visOmopResults::tableType()}.}
 
-\item{header}{A vector containing which elements should go into the header
-in order. Allowed are: \code{cdm_name}, \code{group}, \code{strata}, \code{additional},
-\code{variable}, \code{estimate}, \code{settings}.}
+\item{header}{Columns to use as header. See options with
+\code{tidyColumns(result)}.}
 
-\item{groupColumn}{Column to use as group labels.}
+\item{groupColumn}{Columns to group by. See options with
+\code{tidyColumns(result)}.}
 
-\item{hide}{Columns to drop from the output table.}
+\item{hide}{Columns to hide from the visualisation. See options with
+\code{tidyColumns(result)}.}
 }
 \value{
 A table with a formatted version of the summariseCohortCount result

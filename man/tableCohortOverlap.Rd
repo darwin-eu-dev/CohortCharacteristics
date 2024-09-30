@@ -6,29 +6,30 @@
 \usage{
 tableCohortOverlap(
   result,
+  uniqueCombinations = TRUE,
   type = "gt",
   header = c("variable_name"),
   groupColumn = c("cdm_name"),
-  hide = c("variable_level"),
-  uniqueCombinations = TRUE
+  hide = c("variable_level")
 )
 }
 \arguments{
 \item{result}{A summariseOverlapCohort result.}
 
-\item{type}{Type of desired formatted table, possibilities: "gt",
-"flextable", "tibble".}
-
-\item{header}{A vector containing which elements should go into the header
-in order. Allowed are: \code{cdm_name}, \code{group}, \code{strata}, \code{additional},
-\code{variable}, \code{estimate}, \code{settings}.}
-
-\item{groupColumn}{Column to use as group labels.}
-
-\item{hide}{Columns to drop from the output table.}
-
 \item{uniqueCombinations}{Whether to display unique combinations
 reference - comparator.}
+
+\item{type}{Type of table. Check supported types with
+\code{visOmopResults::tableType()}.}
+
+\item{header}{Columns to use as header. See options with
+\code{tidyColumns(result)}.}
+
+\item{groupColumn}{Columns to group by. See options with
+\code{tidyColumns(result)}.}
+
+\item{hide}{Columns to hide from the visualisation. See options with
+\code{tidyColumns(result)}.}
 }
 \value{
 A formatted table of the summariseOverlapCohort result.

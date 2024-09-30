@@ -75,7 +75,7 @@ The package contain three types of functions:
 
 ### Mock data
 
-Althought the package provides some simple mock data for testing
+Although the package provides some simple mock data for testing
 (`mockCohortCharacteristics()`), for these examples we will use the
 GiBleed dataset that can be downloaded using the CDMConnector package
 that will give us some more real results.
@@ -120,7 +120,7 @@ result |>
 #> $ variable_level   <chr> NA, NA, NA, NA
 #> $ estimate_name    <chr> "count", "count", "count", "count"
 #> $ estimate_type    <chr> "integer", "integer", "integer", "integer"
-#> $ estimate_value   <chr> "137", "2679", "13907", "137"
+#> $ estimate_value   <chr> "13907", "2679", "137", "137"
 #> $ additional_name  <chr> "overall", "overall", "overall", "overall"
 #> $ additional_level <chr> "overall", "overall", "overall", "overall"
 ```
@@ -165,8 +165,8 @@ result |>
   plotCohortAttrition()
 ```
 
-<div class="grViz html-widget html-fill-item" id="htmlwidget-277e5a8214cb8e2afc92" style="width:100%;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-277e5a8214cb8e2afc92">{"x":{"diagram":"digraph {\n\ngraph [layout = \"neato\",\n       outputorder = \"edgesfirst\",\n       bgcolor = \"white\"]\n\nnode [fontname = \"Helvetica\",\n      fontsize = \"10\",\n      shape = \"circle\",\n      fixedsize = \"true\",\n      width = \"0.5\",\n      style = \"filled\",\n      fillcolor = \"aliceblue\",\n      color = \"gray70\",\n      fontcolor = \"gray50\"]\n\nedge [fontname = \"Helvetica\",\n     fontsize = \"8\",\n     len = \"1.5\",\n     color = \"gray80\",\n     arrowsize = \"0.5\"]\n\n  \"1\" [label = \"Initial events\nN subjects = 2,679\nN records = 13,908\", shape = \"box\", penwidth = \"2\", color = \"black\", fillcolor = \"#F0F8FF\", fontname = \"Calibri\", fontsize = \"11\", fontcolor = \"black\", height = \"0.6\", width = \"1.44\", pos = \"1,2.1!\"] \n  \"2\" [label = \"Final events\nN subjects = 2,679\nN records = 13,907\", shape = \"box\", penwidth = \"2\", color = \"black\", fillcolor = \"#F0F8FF\", fontname = \"Calibri\", fontsize = \"11\", fontcolor = \"black\", height = \"0.6\", width = \"1.44\", pos = \"1,0.7!\"] \n  \"3\" [label = \"N subjects = 0\nN records = 1\", shape = \"box\", color = \"black\", fillcolor = \"#C0C0C0\", fontname = \"Calibri\", fontsize = \"9\", fontcolor = \"black\", height = \"0.4\", width = \"1.2\", pos = \"3,1.4!\"] \n  \"4\" [label = \"join exposures separated by\n1 or less days\", shape = \"box\", color = \"black\", fillcolor = \"#FFFFFF\", fontname = \"Calibri\", fontsize = \"10\", fontcolor = \"back\", height = \"0.4\", width = \"2.16\", pos = \"1,1.4!\"] \n\"1\"->\"2\" [color = \"black\"] \n\"4\"->\"3\" [color = \"black\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div class="grViz html-widget html-fill-item" id="htmlwidget-7a2e91c189cd0fba8e9d" style="width:100%;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-7a2e91c189cd0fba8e9d">{"x":{"diagram":"digraph {\n\ngraph [layout = \"neato\",\n       outputorder = \"edgesfirst\",\n       bgcolor = \"white\"]\n\nnode [fontname = \"Helvetica\",\n      fontsize = \"10\",\n      shape = \"circle\",\n      fixedsize = \"true\",\n      width = \"0.5\",\n      style = \"filled\",\n      fillcolor = \"aliceblue\",\n      color = \"gray70\",\n      fontcolor = \"gray50\"]\n\nedge [fontname = \"Helvetica\",\n     fontsize = \"8\",\n     len = \"1.5\",\n     color = \"gray80\",\n     arrowsize = \"0.5\"]\n\n  \"1\" [label = \"Initial events\nN subjects = 2,679\nN records = 13,908\", shape = \"box\", penwidth = \"2\", color = \"black\", fillcolor = \"#F0F8FF\", fontname = \"Calibri\", fontsize = \"11\", fontcolor = \"black\", height = \"0.6\", width = \"1.44\", pos = \"1,2.1!\"] \n  \"2\" [label = \"Final events\nN subjects = 2,679\nN records = 13,907\", shape = \"box\", penwidth = \"2\", color = \"black\", fillcolor = \"#F0F8FF\", fontname = \"Calibri\", fontsize = \"11\", fontcolor = \"black\", height = \"0.6\", width = \"1.44\", pos = \"1,0.7!\"] \n  \"3\" [label = \"N subjects = 0\nN records = 1\", shape = \"box\", color = \"black\", fillcolor = \"#C0C0C0\", fontname = \"Calibri\", fontsize = \"9\", fontcolor = \"black\", height = \"0.4\", width = \"1.2\", pos = \"3,1.4!\"] \n  \"4\" [label = \"join exposures separated by\n1 or less days\", shape = \"box\", color = \"black\", fillcolor = \"#FFFFFF\", fontname = \"Calibri\", fontsize = \"10\", fontcolor = \"back\", height = \"0.4\", width = \"2.16\", pos = \"1,1.4!\"] \n\"1\"->\"2\" [color = \"black\"] \n\"4\"->\"3\" [color = \"black\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 
 ### Characteristics
 
@@ -202,9 +202,9 @@ tableCohortTiming(result, header = "cdm_name", type = "flextable")
 
 ``` r
 plotCohortTiming(
-  result, 
-  uniqueCombinations = TRUE, 
-  facet = "cdm_name", 
+  result,
+  uniqueCombinations = TRUE,
+  facet = "cdm_name",
   colour = c("cohort_name_reference", "cohort_name_comparator"),
   timeScale = "years"
 )
@@ -214,10 +214,10 @@ plotCohortTiming(
 
 ``` r
 plotCohortTiming(
-  result, 
+  result,
   plotType = "density",
-  uniqueCombinations = FALSE, 
-  facet = "cdm_name", 
+  uniqueCombinations = FALSE,
+  facet = "cdm_name",
   colour = c("cohort_name_comparator"),
   timeScale = "years"
 )
@@ -287,7 +287,7 @@ delete the created mock data:
 mockDisconnect(cdm)
 ```
 
-### Recomendations
+### Recommendations
 
 Although it is technically possible, we do not recommend to pipe table
 or plot functions with the summarise ones. The main reason is that

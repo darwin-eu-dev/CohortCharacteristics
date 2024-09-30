@@ -26,6 +26,8 @@
 #' `tidyColumns(result)`.
 #' @param groupColumn Columns to group by. See options with
 #' `tidyColumns(result)`.
+#' @param hide Columns to hide from the visualisation. See options with
+#' `tidyColumns(result)`.
 #'
 #' @return A visual table.
 #'
@@ -47,7 +49,8 @@
 tableCohortAttrition <- function(result,
                                  type = "gt",
                                  header = "variable_name",
-                                 groupColumn = c("cdm_name", "cohort_name")) {
+                                 groupColumn = c("cdm_name", "cohort_name"),
+                                 hide = c("variable_level", "reason_id", "estimate_name")) {
   # initial checks
   result <- omopgenerics::validateResultArgument(result)
   omopgenerics::assertChoice(type, c("gt", "flextable", "tibble"))
@@ -70,7 +73,7 @@ tableCohortAttrition <- function(result,
     header = header,
     groupColumn = groupColumn,
     type = type,
-    hide = c("variable_level", "reason_id", "estimate_name")
+    hide = hide
   )
 
   return(tab)

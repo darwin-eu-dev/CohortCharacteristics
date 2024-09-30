@@ -27,6 +27,8 @@
 #' `tidyColumns(result)`.
 #' @param groupColumn Columns to group by. See options with
 #' `tidyColumns(result)`.
+#' @param hide Columns to hide from the visualisation. See options with
+#' `tidyColumns(result)`.
 #'
 #' @export
 #'
@@ -65,7 +67,8 @@ tableLargeScaleCharacteristics <- function(result,
                                              visOmopResults::strataColumns(result),
                                              "variable_level"
                                            ),
-                                           groupColumn = c("table_name", "type", "analysis")) {
+                                           groupColumn = c("table_name", "type", "analysis"),
+                                           hide = character()) {
   # validate result
   result <- omopgenerics::validateResultArgument(result)
   omopgenerics::assertChoice(type, c("gt", "flextable", "tibble"))
@@ -102,43 +105,9 @@ tableLargeScaleCharacteristics <- function(result,
     header = header,
     settingsColumns = c("table_name", "type", "analysis"),
     groupColumn = groupColumn,
-    type = type
+    type = type,
+    hide = hide
   )
 
   return(tab)
-}
-cleanHeader <- function(header, strata) {
-  header[header == "cdm name"] <- "CDM name"
-  header[header == "cohort name"] <- "Cohort name"
-  header[header == "window name"] <- "Window"
-  if ("strata" %in% header) {
-    id <- which(header == "strata")
-    header <- append(header, strata, after = id)
-    header <- header[header != "strata"]
-  }
-}
-orderWindow <- function(res) {
-  windows <- res |>
-    dplyr::select("window_name") |>
-    dplyr::distinct() |>
-    dplyr::pull()
-  win <- windows |>
-    stringr::str_split(pattern = " ") |>
-    lapply(function(x) {
-      if (length(x) == 3) {
-        if (x[2] == "to") {
-          return(dplyr::tibble(
-            lower = as.numeric(x[1]), upper = as.numeric(x[3])
-          ))
-        }
-      }
-      return(dplyr::tibble(lower = NA, upper = NA))
-    })
-  names(win) <- windows
-  tib <- dplyr::bind_rows(win, .id = "window_name") |>
-    dplyr::arrange(.data$lower, .data$upper) |>
-    dplyr::mutate("window_id" = dplyr::row_number())
-  res <- res |>
-    dplyr::left_join(tib, by = "window_name")
-  return(res)
 }
